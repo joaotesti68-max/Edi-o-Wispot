@@ -1,11 +1,21 @@
 export const FPS = 24;
 
+export type IconKey = "alert" | "server" | "shield" | "trending" | "chat";
+
+export type Cutaway = {
+  video: string;
+  startFrame: number;
+  durationInFrames: number;
+};
+
 export type Block = {
   id: string;
   video: string;
   durationInFrames: number;
   headline: string;
+  icon: IconKey;
   chips?: string[];
+  cutaway?: Cutaway;
 };
 
 export const INTRO_FRAMES = 24;
@@ -18,12 +28,14 @@ export const blocks: Block[] = [
     video: "videos/abertura.mp4",
     durationInFrames: 129,
     headline: "Já perdeu tempo ou dinheiro com um problema de TI?",
+    icon: "alert",
   },
   {
     id: "desenvolvimento-1",
     video: "videos/desenvolvimento-1.mp4",
     durationInFrames: 175,
     headline: "Infraestrutura cuidada de ponta a ponta",
+    icon: "server",
     chips: ["Servidores", "Rede", "Backup", "Atualizações"],
   },
   {
@@ -31,18 +43,26 @@ export const blocks: Block[] = [
     video: "videos/desenvolvimento-2.mp4",
     durationInFrames: 244,
     headline: "Corrigimos falhas antes que virem problema",
+    icon: "shield",
+    cutaway: {
+      video: "videos/cutaway-5670.mp4",
+      startFrame: 90,
+      durationInFrames: 60,
+    },
   },
   {
     id: "desenvolvimento-3",
     video: "videos/desenvolvimento-3.mp4",
     durationInFrames: 174,
     headline: "Sua equipe volta a focar no que importa",
+    icon: "trending",
   },
   {
     id: "fechamento",
     video: "videos/fechamento.mp4",
     durationInFrames: 154,
     headline: "Menos dor de cabeça de TI. Mais tempo pra crescer.",
+    icon: "chat",
   },
 ];
 
