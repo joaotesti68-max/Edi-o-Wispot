@@ -1,12 +1,6 @@
 export const FPS = 24;
 
-export type IconKey = "alert" | "server" | "shield" | "trending" | "chat";
-
-export type Cutaway = {
-  video: string;
-  startFrame: number;
-  durationInFrames: number;
-};
+export type IconKey = "alert" | "server" | "shield" | "trending" | "chat" | "network" | "cloud" | "refresh";
 
 export type Block = {
   id: string;
@@ -14,62 +8,121 @@ export type Block = {
   durationInFrames: number;
   headline: string;
   icon: IconKey;
-  chips?: string[];
-  cutaway?: Cutaway;
 };
+
+export type Interstitial = {
+  id: string;
+  durationInFrames: number;
+  items: { icon: IconKey; label: string }[];
+};
+
+export type TimelineItem = { type: "video"; block: Block } | { type: "interstitial"; interstitial: Interstitial };
 
 export const INTRO_FRAMES = 24;
 export const OUTRO_FRAMES = 72;
 export const TRANSITION_FRAMES = 8;
 
-export const blocks: Block[] = [
+export const timeline: TimelineItem[] = [
   {
-    id: "abertura",
-    video: "videos/abertura.mp4",
-    durationInFrames: 129,
-    headline: "Já perdeu tempo ou dinheiro com um problema de TI?",
-    icon: "alert",
-  },
-  {
-    id: "desenvolvimento-1",
-    video: "videos/desenvolvimento-1.mp4",
-    durationInFrames: 175,
-    headline: "Infraestrutura cuidada de ponta a ponta",
-    icon: "server",
-    chips: ["Servidores", "Rede", "Backup", "Atualizações"],
-  },
-  {
-    id: "desenvolvimento-2",
-    video: "videos/desenvolvimento-2.mp4",
-    durationInFrames: 244,
-    headline: "Corrigimos falhas antes que virem problema",
-    icon: "shield",
-    cutaway: {
-      video: "videos/cutaway-5670.mp4",
-      startFrame: 90,
-      durationInFrames: 60,
+    type: "video",
+    block: {
+      id: "abertura",
+      video: "videos/abertura.mp4",
+      durationInFrames: 129,
+      headline: "Já perdeu tempo ou dinheiro com um problema de TI?",
+      icon: "alert",
     },
   },
   {
-    id: "desenvolvimento-3",
-    video: "videos/desenvolvimento-3.mp4",
-    durationInFrames: 174,
-    headline: "Sua equipe volta a focar no que importa",
-    icon: "trending",
+    type: "video",
+    block: {
+      id: "desenvolvimento-1",
+      video: "videos/desenvolvimento-1.mp4",
+      durationInFrames: 175,
+      headline: "Infraestrutura cuidada de ponta a ponta",
+      icon: "server",
+    },
   },
   {
-    id: "fechamento",
-    video: "videos/fechamento.mp4",
-    durationInFrames: 154,
-    headline: "Menos dor de cabeça de TI. Mais tempo pra crescer.",
-    icon: "chat",
+    type: "interstitial",
+    interstitial: {
+      id: "infra-grid",
+      durationInFrames: 56,
+      items: [
+        { icon: "server", label: "Servidores" },
+        { icon: "network", label: "Rede" },
+        { icon: "cloud", label: "Backup" },
+        { icon: "refresh", label: "Atualizações" },
+      ],
+    },
+  },
+  {
+    type: "video",
+    block: {
+      id: "desenvolvimento-1b",
+      video: "videos/desenvolvimento-1b.mp4",
+      durationInFrames: 305,
+      // PLACEHOLDER: waiting on the actual line said in this clip.
+      headline: "(roteiro deste trecho pendente de confirmação)",
+      icon: "server",
+    },
+  },
+  {
+    type: "video",
+    block: {
+      id: "desenvolvimento-2",
+      video: "videos/desenvolvimento-2.mp4",
+      durationInFrames: 244,
+      headline: "Corrigimos falhas antes que virem problema",
+      icon: "shield",
+    },
+  },
+  {
+    type: "interstitial",
+    interstitial: {
+      id: "monitoramento",
+      durationInFrames: 44,
+      items: [{ icon: "shield", label: "Monitoramento contínuo" }],
+    },
+  },
+  {
+    type: "video",
+    block: {
+      id: "desenvolvimento-3",
+      video: "videos/desenvolvimento-3.mp4",
+      durationInFrames: 174,
+      headline: "Sua equipe volta a focar no que importa",
+      icon: "trending",
+    },
+  },
+  {
+    type: "interstitial",
+    interstitial: {
+      id: "resultado",
+      durationInFrames: 44,
+      items: [{ icon: "trending", label: "Mais foco, mais resultado" }],
+    },
+  },
+  {
+    type: "video",
+    block: {
+      id: "fechamento",
+      video: "videos/fechamento.mp4",
+      durationInFrames: 154,
+      headline: "Menos dor de cabeça de TI. Mais tempo pra crescer.",
+      icon: "chat",
+    },
   },
 ];
 
 // Mirrors how @remotion/transitions/TransitionSeries lays out overlapping
-// sequences, so the progress bar can know each block's on-screen frame range
+// sequences, so the progress bar can know each on-screen frame range
 // without duplicating the transition math.
-const sequenceDurations = [INTRO_FRAMES, ...blocks.map((b) => b.durationInFrames), OUTRO_FRAMES];
+const sequenceDurations = [
+  INTRO_FRAMES,
+  ...timeline.map((t) => (t.type === "video" ? t.block.durationInFrames : t.interstitial.durationInFrames)),
+  OUTRO_FRAMES,
+];
 const transitionCount = sequenceDurations.length - 1;
 
 const starts: number[] = [0];
@@ -78,10 +131,18 @@ for (let i = 1; i < sequenceDurations.length; i++) {
 }
 
 export const introRange = { start: starts[0], end: starts[0] + INTRO_FRAMES };
-export const blockRanges = blocks.map((b, i) => ({
+
+export const timelineRanges = timeline.map((t, i) => ({
   start: starts[i + 1],
-  end: starts[i + 1] + b.durationInFrames,
+  end: starts[i + 1] + (t.type === "video" ? t.block.durationInFrames : t.interstitial.durationInFrames),
 }));
+
+// Progress bar only tracks the talking-head video segments, not the graphic interstitials.
+export const videoRanges = timeline
+  .map((t, i) => ({ t, range: timelineRanges[i] }))
+  .filter((x) => x.t.type === "video")
+  .map((x) => x.range);
+
 export const outroRange = {
   start: starts[starts.length - 1],
   end: starts[starts.length - 1] + OUTRO_FRAMES,

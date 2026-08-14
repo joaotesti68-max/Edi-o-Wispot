@@ -4,17 +4,11 @@ import { TransitionSeries, linearTiming } from "@remotion/transitions";
 import { fade } from "@remotion/transitions/fade";
 import { LogoBumper } from "./LogoBumper";
 import { VideoBlock } from "./VideoBlock";
+import { GraphicInterstitial } from "./GraphicInterstitial";
 import { EndCard } from "./EndCard";
 import { ProgressBar } from "./ProgressBar";
 import { fontFamily } from "./loadFont";
-import {
-  FPS,
-  INTRO_FRAMES,
-  OUTRO_FRAMES,
-  TRANSITION_FRAMES,
-  blocks,
-  totalDurationInFrames,
-} from "./content";
+import { FPS, INTRO_FRAMES, OUTRO_FRAMES, TRANSITION_FRAMES, timeline, totalDurationInFrames } from "./content";
 
 export const ProAdvancedVideo: React.FC = () => {
   return (
@@ -24,17 +18,26 @@ export const ProAdvancedVideo: React.FC = () => {
           <LogoBumper />
         </TransitionSeries.Sequence>
 
-        {blocks.map((block, i) => (
-          <React.Fragment key={block.id}>
-            <TransitionSeries.Transition
-              presentation={fade()}
-              timing={linearTiming({ durationInFrames: TRANSITION_FRAMES })}
-            />
-            <TransitionSeries.Sequence durationInFrames={block.durationInFrames}>
-              <VideoBlock block={block} />
-            </TransitionSeries.Sequence>
-          </React.Fragment>
-        ))}
+        {timeline.map((item) => {
+          const key = item.type === "video" ? item.block.id : item.interstitial.id;
+          const durationInFrames =
+            item.type === "video" ? item.block.durationInFrames : item.interstitial.durationInFrames;
+          return (
+            <React.Fragment key={key}>
+              <TransitionSeries.Transition
+                presentation={fade()}
+                timing={linearTiming({ durationInFrames: TRANSITION_FRAMES })}
+              />
+              <TransitionSeries.Sequence durationInFrames={durationInFrames}>
+                {item.type === "video" ? (
+                  <VideoBlock block={item.block} />
+                ) : (
+                  <GraphicInterstitial items={item.interstitial.items} />
+                )}
+              </TransitionSeries.Sequence>
+            </React.Fragment>
+          );
+        })}
 
         <TransitionSeries.Transition
           presentation={fade()}

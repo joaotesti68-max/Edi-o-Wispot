@@ -47,3 +47,26 @@ export const ChatIcon: React.FC<IconProps> = ({ size = 40, color = "#fff", strok
     <line x1="7" y1="12.3" x2="14" y2="12.3" />
   </svg>
 );
+
+export const NetworkIcon: React.FC<IconProps> = ({ size = 40, color = "#fff", strokeWidth = 2 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" stroke={color} {...base(strokeWidth)}>
+    <path d="M6.5 15.5 C9.5 12.5 14.5 12.5 17.5 15.5" />
+    <path d="M3.5 12 C8.2 7.3 15.8 7.3 20.5 12" />
+    <circle cx="12" cy="19" r="1.1" fill={color} stroke="none" />
+  </svg>
+);
+
+export const CloudIcon: React.FC<IconProps> = ({ size = 40, color = "#fff", strokeWidth = 2 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" stroke={color} {...base(strokeWidth)}>
+    <path d="M7.5 18 A4 4 0 0 1 7.5 10 C8.2 7.5 10.4 6 12.8 6.4 C15 6.8 16.6 8.6 16.8 10.8 A3.6 3.6 0 0 1 16.3 18 Z" />
+    <polyline points="12,17 12,11.5" />
+    <polyline points="9.5,13.5 12,11 14.5,13.5" />
+  </svg>
+);
+
+export const RefreshIcon: React.FC<IconProps> = ({ size = 40, color = "#fff", strokeWidth = 2 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" stroke={color} {...base(strokeWidth)}>
+    <path d="M20 12 A8 8 0 1 1 17.5 6.3" />
+    <polyline points="20,4.5 20,9.5 15,9.5" />
+  </svg>
+);
