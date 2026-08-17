@@ -25,7 +25,7 @@ export const SeriesBadge: React.FC<{
         display: "flex",
         alignItems: "center",
         gap: 10,
-        background: brand.colors.accent,
+        background: brand.colors.blue,
         borderRadius: "0 8px 8px 0",
         padding: "10px 18px 10px 14px",
       }}
@@ -35,18 +35,18 @@ export const SeriesBadge: React.FC<{
           fontFamily: brand.fontFamily,
           fontWeight: 800,
           fontSize: 15,
-          color: brand.colors.ink,
+          color: brand.colors.white,
         }}
       >
         EP.{String(episodeNumber).padStart(2, "0")}
       </span>
-      <span style={{ width: 3, height: 3, borderRadius: "50%", background: brand.colors.ink, opacity: 0.5 }} />
+      <span style={{ width: 3, height: 3, borderRadius: "50%", background: brand.colors.white, opacity: 0.6 }} />
       <span
         style={{
           fontFamily: brand.fontFamily,
           fontWeight: 700,
           fontSize: 15,
-          color: brand.colors.ink,
+          color: brand.colors.white,
           letterSpacing: 0.6,
           textTransform: "uppercase",
         }}

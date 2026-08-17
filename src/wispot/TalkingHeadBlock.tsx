@@ -1,4 +1,13 @@
-import { AbsoluteFill, OffthreadVideo, interpolate, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
+import {
+  AbsoluteFill,
+  Audio,
+  Freeze,
+  OffthreadVideo,
+  interpolate,
+  staticFile,
+  useCurrentFrame,
+  useVideoConfig,
+} from "remotion";
 import { brand } from "./brand";
 import { CaptionCard } from "./CaptionCard";
 import { SeriesBadge } from "./SeriesBadge";
@@ -24,17 +33,30 @@ export const TalkingHeadBlock: React.FC<{
 
   return (
     <AbsoluteFill style={{ background: "#000" }}>
-      <AbsoluteFill style={{ transform: `scale(${kenBurns})` }}>
-        <OffthreadVideo
-          src={staticFile(block.video)}
-          style={{ width: "100%", height: "100%", objectFit: "cover" }}
-        />
-      </AbsoluteFill>
+      {block.demoVideo ? (
+        <>
+          <Audio src={staticFile(block.video)} />
+          <Freeze frame={block.demoVideo.freezeAtFrame} active={frame >= block.demoVideo.freezeAtFrame}>
+            <OffthreadVideo
+              src={staticFile(block.demoVideo.src)}
+              muted
+              style={{ width: "100%", height: "100%", objectFit: "cover" }}
+            />
+          </Freeze>
+        </>
+      ) : (
+        <AbsoluteFill style={{ transform: `scale(${kenBurns})` }}>
+          <OffthreadVideo
+            src={staticFile(block.video)}
+            style={{ width: "100%", height: "100%", objectFit: "cover" }}
+          />
+        </AbsoluteFill>
+      )}
 
       <AbsoluteFill
         style={{
           background:
-            "linear-gradient(to bottom, rgba(13,20,32,0.15) 0%, rgba(13,20,32,0) 24%, rgba(13,20,32,0) 46%, rgba(13,20,32,0.82) 80%, rgba(9,14,24,0.94) 100%)",
+            "linear-gradient(to bottom, rgba(13,20,32,0.15) 0%, rgba(13,20,32,0) 24%, rgba(13,20,32,0) 46%, rgba(13,20,32,0.72) 80%, rgba(9,14,24,0.88) 100%)",
         }}
       />
 

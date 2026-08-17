@@ -4,8 +4,9 @@ import type { Caption } from "./series";
 
 const CAPTION_TRANSITION = 10;
 
-// Borderless, left-marker caption style (no boxed card) — reads as native
-// social captioning rather than a bordered lower-third.
+// Centered closed-caption "pill" that hugs its text, not a full-width
+// bottom-left headline block — a different paradigm from ProAdvanced's
+// large left-aligned display type, not just a restyle of the same shape.
 export const CaptionCard: React.FC<{ captions: Caption[]; kicker: string }> = ({ captions, kicker }) => {
   const frame = useCurrentFrame();
 
@@ -17,7 +18,7 @@ export const CaptionCard: React.FC<{ captions: Caption[]; kicker: string }> = ({
   const active = captions.find((c) => frame >= c.startFrame - CAPTION_TRANSITION && frame <= c.endFrame);
 
   let captionOpacity = 0;
-  let captionShift = 18;
+  let captionScale = 0.94;
   if (active) {
     const inEnd = active.startFrame;
     const outStart = active.endFrame - CAPTION_TRANSITION;
@@ -27,7 +28,7 @@ export const CaptionCard: React.FC<{ captions: Caption[]; kicker: string }> = ({
       [0, 1, 1, 0],
       { extrapolateLeft: "clamp", extrapolateRight: "clamp" },
     );
-    captionShift = interpolate(frame, [active.startFrame - CAPTION_TRANSITION, inEnd], [18, 0], {
+    captionScale = interpolate(frame, [active.startFrame - CAPTION_TRANSITION, inEnd], [0.94, 1], {
       extrapolateLeft: "clamp",
       extrapolateRight: "clamp",
     });
@@ -37,46 +38,50 @@ export const CaptionCard: React.FC<{ captions: Caption[]; kicker: string }> = ({
     <div
       style={{
         position: "absolute",
-        left: 52,
-        right: 64,
-        bottom: 128,
+        left: 80,
+        right: 80,
+        bottom: 168,
         display: "flex",
         flexDirection: "column",
-        gap: 16,
+        alignItems: "center",
+        gap: 18,
       }}
     >
       <div
         style={{
           opacity: kickerOpacity,
-          fontFamily: "monospace",
+          fontFamily: brand.fontFamily,
           fontWeight: 700,
-          fontSize: 20,
-          color: brand.colors.accent,
-          letterSpacing: 1,
+          fontSize: 19,
+          color: brand.colors.white,
+          letterSpacing: 3,
+          textTransform: "uppercase",
+          textShadow: "0 2px 10px rgba(0,0,0,0.5)",
         }}
       >
-        {"// " + kicker.toUpperCase()}
+        {kicker}
       </div>
 
       {active ? (
         <div
           style={{
             opacity: captionOpacity,
-            transform: `translateY(${captionShift}px)`,
-            display: "flex",
-            gap: 16,
+            transform: `scale(${captionScale})`,
+            maxWidth: 780,
+            background: "rgba(0,0,0,0.62)",
+            borderRadius: 28,
+            padding: "20px 40px",
           }}
         >
-          <div style={{ width: 6, flexShrink: 0, background: brand.colors.accent, borderRadius: 3 }} />
           <div
             style={{
               fontFamily: brand.fontFamily,
-              fontWeight: 800,
-              fontSize: 46,
-              lineHeight: 1.2,
+              fontWeight: 700,
+              fontSize: 38,
+              lineHeight: 1.28,
               color: brand.colors.white,
-              letterSpacing: -0.4,
-              textShadow: "0 2px 18px rgba(0,0,0,0.5)",
+              textAlign: "center",
+              letterSpacing: -0.2,
             }}
           >
             {active.text}

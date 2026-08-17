@@ -43,6 +43,14 @@ export type Block = {
   kicker: string;
   captions: Caption[];
   termBadge?: { text: string; appearFrame: number };
+  /**
+   * When set, the block plays this clip full-screen instead of the talking
+   * head — `video` still supplies the voiceover track (muted visually) and
+   * the demo clip's own audio is muted. `freezeAtFrame` holds the demo's
+   * last frame for the remainder of the block if the demo is shorter than
+   * the narration.
+   */
+  demoVideo?: { src: string; freezeAtFrame: number };
 };
 
 export type Episode = {

@@ -2,7 +2,6 @@ import React from "react";
 import { AbsoluteFill, Composition } from "remotion";
 import { TransitionSeries, linearTiming } from "@remotion/transitions";
 import { fade } from "@remotion/transitions/fade";
-import { slide } from "@remotion/transitions/slide";
 import { fontFamily } from "../loadFont";
 import { EndCard } from "./EndCard";
 import { ProgressBar } from "./ProgressBar";
@@ -20,7 +19,7 @@ export const FeatureDaSemanaVideo: React.FC<{ episode: Episode }> = ({ episode }
           <React.Fragment key={block.id}>
             {i === 0 ? null : (
               <TransitionSeries.Transition
-                presentation={slide({ direction: "from-bottom" })}
+                presentation={fade()}
                 timing={linearTiming({ durationInFrames: TRANSITION_FRAMES })}
               />
             )}

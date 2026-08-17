@@ -29,16 +29,11 @@ export const EndCard: React.FC<{
   const ctaOpacity = interpolate(ctaIn, [0, 1], [0, 1]);
 
   return (
-    <AbsoluteFill style={{ background: brand.colors.navy }}>
-      <AbsoluteFill
-        style={{
-          backgroundImage: `radial-gradient(circle at 12% 8%, rgba(79,163,224,0.24) 0%, rgba(79,163,224,0) 42%)`,
-        }}
-      />
+    <AbsoluteFill style={{ background: brand.gradient }}>
       <AbsoluteFill
         style={{
           backgroundImage:
-            "repeating-linear-gradient(0deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 96px)",
+            "repeating-linear-gradient(0deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 1px, transparent 1px, transparent 96px)",
         }}
       />
 
@@ -61,7 +56,7 @@ export const EndCard: React.FC<{
               fontFamily: "monospace",
               fontWeight: 700,
               fontSize: 22,
-              color: brand.colors.accent,
+              color: "rgba(255,255,255,0.75)",
               letterSpacing: 1,
               marginBottom: 18,
             }}
@@ -102,13 +97,13 @@ export const EndCard: React.FC<{
           }}
         >
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <div style={{ width: 8, height: 8, borderRadius: "50%", background: brand.colors.accent }} />
+            <div style={{ width: 8, height: 8, borderRadius: "50%", background: brand.colors.white }} />
             <div
               style={{
                 fontFamily: brand.fontFamily,
                 fontWeight: 700,
                 fontSize: 20,
-                color: brand.colors.accent,
+                color: brand.colors.white,
                 letterSpacing: 1.5,
                 textTransform: "uppercase",
               }}

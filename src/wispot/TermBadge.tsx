@@ -36,13 +36,13 @@ export const TermBadge: React.FC<{ text: string; appearFrame: number }> = ({ tex
           width: 8,
           height: 8,
           borderRadius: "50%",
-          background: brand.colors.accent,
-          boxShadow: `0 0 0 5px rgba(79,163,224,0.28)`,
+          background: brand.colors.blue,
+          boxShadow: `0 0 0 5px rgba(37,168,224,0.28)`,
         }}
       />
       <div
         style={{
-          border: `1.5px solid ${brand.colors.accent}`,
+          border: `1.5px solid ${brand.colors.blue}`,
           borderRadius: 8,
           padding: "10px 18px",
           fontFamily: "monospace",

@@ -50,7 +50,7 @@ export const ProgressBar: React.FC<{
                 style={{
                   width: `${fill * 100}%`,
                   height: "100%",
-                  background: brand.colors.accent,
+                  background: brand.colors.blue,
                 }}
               />
             </div>
