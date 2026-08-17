@@ -9,6 +9,7 @@ import {
   useVideoConfig,
 } from "remotion";
 import { CaptionCard } from "./CaptionCard";
+import { NameCard } from "./NameCard";
 import { NotificationToast } from "./NotificationToast";
 import { SeriesBadge } from "./SeriesBadge";
 import { TermBadge } from "./TermBadge";
@@ -61,6 +62,8 @@ export const TalkingHeadBlock: React.FC<{
       />
 
       <SeriesBadge seriesLabel={seriesLabel} episodeNumber={episodeNumber} />
+
+      {block.nameCard ? <NameCard name={block.nameCard.name} role={block.nameCard.role} /> : null}
 
       <div
         style={{

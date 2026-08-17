@@ -40,7 +40,7 @@ export type Block = {
   id: string;
   video: string;
   durationInFrames: number;
-  kicker: string;
+  kicker?: string;
   captions: Caption[];
   termBadge?: { text: string; appearFrame: number };
   /**
@@ -58,6 +58,7 @@ export type Block = {
     appearFrame: number;
     durationFrames: number;
   }[];
+  nameCard?: { name: string; role: string };
 };
 
 export type Episode = {

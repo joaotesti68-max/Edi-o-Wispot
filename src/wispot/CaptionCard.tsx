@@ -7,7 +7,7 @@ const CAPTION_TRANSITION = 10;
 // Centered closed-caption "pill" that hugs its text, not a full-width
 // bottom-left headline block — a different paradigm from ProAdvanced's
 // large left-aligned display type, not just a restyle of the same shape.
-export const CaptionCard: React.FC<{ captions: Caption[]; kicker: string }> = ({ captions, kicker }) => {
+export const CaptionCard: React.FC<{ captions: Caption[]; kicker?: string }> = ({ captions, kicker }) => {
   const frame = useCurrentFrame();
 
   const kickerOpacity = interpolate(frame, [0, 12], [0, 1], {
@@ -47,20 +47,22 @@ export const CaptionCard: React.FC<{ captions: Caption[]; kicker: string }> = ({
         gap: 18,
       }}
     >
-      <div
-        style={{
-          opacity: kickerOpacity,
-          fontFamily: brand.fontFamily,
-          fontWeight: 700,
-          fontSize: 19,
-          color: brand.colors.white,
-          letterSpacing: 3,
-          textTransform: "uppercase",
-          textShadow: "0 2px 10px rgba(0,0,0,0.5)",
-        }}
-      >
-        {kicker}
-      </div>
+      {kicker ? (
+        <div
+          style={{
+            opacity: kickerOpacity,
+            fontFamily: brand.fontFamily,
+            fontWeight: 700,
+            fontSize: 19,
+            color: brand.colors.white,
+            letterSpacing: 3,
+            textTransform: "uppercase",
+            textShadow: "0 2px 10px rgba(0,0,0,0.5)",
+          }}
+        >
+          {kicker}
+        </div>
+      ) : null}
 
       {active ? (
         <div

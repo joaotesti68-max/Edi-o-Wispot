@@ -17,7 +17,7 @@ export const feature01: Episode = {
       id: "abertura",
       video: "videos/feature-01-abertura.mp4",
       durationInFrames: ABERTURA_FRAMES,
-      kicker: "Feature da semana #01",
+      nameCard: { name: "Vanessa Furiato", role: "Gerente Comercial" },
       captions: distributeCaptions(
         [
           "Esse é o primeiro vídeo",
@@ -87,6 +87,7 @@ export const feature01: Episode = {
       video: "videos/feature-01-fechamento.mp4",
       durationInFrames: FECHAMENTO_FRAMES,
       kicker: "Por que isso importa",
+      nameCard: { name: "Vanessa Furiato", role: "Gerente Comercial" },
       captions: distributeCaptions(
         [
           "Essa tela simples é o ponto de partida",
