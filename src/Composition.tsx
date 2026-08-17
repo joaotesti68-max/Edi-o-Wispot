@@ -11,7 +11,7 @@ import { FPS, OUTRO_FRAMES, TRANSITION_FRAMES, blocks, totalDurationInFrames } f
 export const ProAdvancedVideo: React.FC = () => {
   return (
     <AbsoluteFill style={{ fontFamily }}>
-      <Audio src={staticFile("audio/theme.mp3")} volume={0.55} />
+      <Audio src={staticFile("audio/theme.mp3")} volume={0.42} />
 
       <TransitionSeries>
         {blocks.map((block, i) => (

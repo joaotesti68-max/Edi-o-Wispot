@@ -34,8 +34,7 @@ export const blocks: Block[] = [
     id: "desenvolvimento-1b",
     video: "videos/desenvolvimento-1b.mp4",
     durationInFrames: 305,
-    // PLACEHOLDER: waiting on the actual line said in this clip.
-    headline: "(roteiro deste trecho pendente de confirmação)",
+    headline: "Servidores, rede, backup e atualizações — tudo planejado",
     icon: "server",
   },
   {
