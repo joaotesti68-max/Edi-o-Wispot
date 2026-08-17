@@ -100,7 +100,6 @@ export const feature01: Episode = {
     },
   ],
   endCard: {
-    tagline: "Toda semana, um recurso novo.",
     teaserLabel: "Semana que vem",
     teaserText: "O que acontece com o dado do cliente depois que ele conecta",
   },

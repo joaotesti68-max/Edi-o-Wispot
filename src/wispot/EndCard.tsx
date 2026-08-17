@@ -6,26 +6,21 @@ import { WispotLogo } from "./WispotLogo";
 // ProAdvanced pattern) — this reads more like a product screen: hero
 // headline top, a "next episode" notification toast, browser-bar CTA.
 export const EndCard: React.FC<{
-  tagline: string;
   teaserLabel: string;
   teaserText: string;
-}> = ({ tagline, teaserLabel, teaserText }) => {
+}> = ({ teaserLabel, teaserText }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  const taglineIn = spring({ frame, fps, config: { damping: 16, mass: 0.7 } });
-  const taglineOpacity = interpolate(taglineIn, [0, 1], [0, 1]);
-  const taglineShift = interpolate(taglineIn, [0, 1], [-18, 0]);
-
-  const logoIn = spring({ frame: frame - 10, fps, config: { damping: 15, mass: 0.7 } });
+  const logoIn = spring({ frame, fps, config: { damping: 15, mass: 0.7 } });
   const logoOpacity = interpolate(logoIn, [0, 1], [0, 1]);
   const logoScale = interpolate(logoIn, [0, 1], [0.86, 1]);
 
-  const teaserIn = spring({ frame: frame - 26, fps, config: { damping: 15, mass: 0.7 } });
+  const teaserIn = spring({ frame: frame - 16, fps, config: { damping: 15, mass: 0.7 } });
   const teaserOpacity = interpolate(teaserIn, [0, 1], [0, 1]);
   const teaserShift = interpolate(teaserIn, [0, 1], [40, 0]);
 
-  const ctaIn = spring({ frame: frame - 44, fps, config: { damping: 16 } });
+  const ctaIn = spring({ frame: frame - 34, fps, config: { damping: 16 } });
   const ctaOpacity = interpolate(ctaIn, [0, 1], [0, 1]);
 
   return (
@@ -50,36 +45,9 @@ export const EndCard: React.FC<{
           gap: 64,
         }}
       >
-        <div style={{ opacity: taglineOpacity, transform: `translateY(${taglineShift}px)` }}>
-          <div
-            style={{
-              fontFamily: "monospace",
-              fontWeight: 700,
-              fontSize: 22,
-              color: "rgba(255,255,255,0.75)",
-              letterSpacing: 1,
-              marginBottom: 18,
-            }}
-          >
-            {"// feature da semana"}
-          </div>
-          <div
-            style={{
-              fontFamily: brand.fontFamily,
-              fontWeight: 800,
-              fontSize: 56,
-              lineHeight: 1.14,
-              color: brand.colors.white,
-              letterSpacing: -0.8,
-            }}
-          >
-            {tagline}
-          </div>
-        </div>
-
-        <div style={{ opacity: logoOpacity, transform: `scale(${logoScale})`, transformOrigin: "left center" }}>
-          <div style={{ display: "flex", justifyContent: "flex-start" }}>
-            <WispotLogo size={110} />
+        <div style={{ opacity: logoOpacity, transform: `scale(${logoScale})`, transformOrigin: "center center" }}>
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <WispotLogo size={130} />
           </div>
         </div>
 

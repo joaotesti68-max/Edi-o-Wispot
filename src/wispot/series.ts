@@ -66,7 +66,6 @@ export type Episode = {
   episodeTitle: string;
   blocks: Block[];
   endCard: {
-    tagline: string;
     teaserLabel: string;
     teaserText: string;
   };

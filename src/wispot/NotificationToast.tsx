@@ -34,42 +34,42 @@ export const NotificationToast: React.FC<{
       style={{
         position: "absolute",
         top: 168,
-        left: 64,
-        right: 64,
+        left: 48,
+        right: 48,
         opacity,
         transform: `translateY(${shiftIn + shiftOut}px)`,
         background: "rgba(255,255,255,0.97)",
-        borderRadius: 20,
-        padding: "16px 20px",
+        borderRadius: 26,
+        padding: "24px 28px",
         display: "flex",
         alignItems: "center",
-        gap: 14,
-        boxShadow: "0 12px 28px rgba(0,0,0,0.35)",
+        gap: 18,
+        boxShadow: "0 16px 36px rgba(0,0,0,0.38)",
       }}
     >
       <div
         style={{
-          width: 46,
-          height: 46,
+          width: 64,
+          height: 64,
           flexShrink: 0,
-          borderRadius: 13,
+          borderRadius: 17,
           background: brand.colors.blue,
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          fontSize: 24,
+          fontSize: 34,
         }}
       >
         {icon}
       </div>
-      <div style={{ display: "flex", flexDirection: "column", gap: 2, minWidth: 0 }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: 4, minWidth: 0 }}>
         <div
           style={{
             fontFamily: brand.fontFamily,
             fontWeight: 800,
-            fontSize: 24,
+            fontSize: 32,
             color: brand.colors.gray,
-            letterSpacing: -0.2,
+            letterSpacing: -0.3,
           }}
         >
           {title}
@@ -78,7 +78,7 @@ export const NotificationToast: React.FC<{
           style={{
             fontFamily: brand.fontFamily,
             fontWeight: 500,
-            fontSize: 20,
+            fontSize: 26,
             color: brand.colors.gray,
             opacity: 0.75,
           }}
@@ -91,7 +91,7 @@ export const NotificationToast: React.FC<{
           marginLeft: "auto",
           fontFamily: brand.fontFamily,
           fontWeight: 600,
-          fontSize: 16,
+          fontSize: 19,
           color: brand.colors.gray,
           opacity: 0.5,
           flexShrink: 0,
