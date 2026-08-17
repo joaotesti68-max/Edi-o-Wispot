@@ -87,7 +87,6 @@ export const feature01: Episode = {
       video: "videos/feature-01-fechamento.mp4",
       durationInFrames: FECHAMENTO_FRAMES,
       kicker: "Por que isso importa",
-      nameCard: { name: "Vanessa Furiato", role: "Gerente Comercial" },
       captions: distributeCaptions(
         [
           "Essa tela simples é o ponto de partida",
