@@ -51,6 +51,13 @@ export type Block = {
    * the narration.
    */
   demoVideo?: { src: string; freezeAtFrame: number };
+  notifications?: {
+    icon: string;
+    title: string;
+    subtitle: string;
+    appearFrame: number;
+    durationFrames: number;
+  }[];
 };
 
 export type Episode = {

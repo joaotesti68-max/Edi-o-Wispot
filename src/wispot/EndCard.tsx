@@ -79,7 +79,7 @@ export const EndCard: React.FC<{
 
         <div style={{ opacity: logoOpacity, transform: `scale(${logoScale})`, transformOrigin: "left center" }}>
           <div style={{ display: "flex", justifyContent: "flex-start" }}>
-            <WispotLogo size={52} />
+            <WispotLogo size={110} />
           </div>
         </div>
 

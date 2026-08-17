@@ -8,8 +8,8 @@ import {
   useCurrentFrame,
   useVideoConfig,
 } from "remotion";
-import { brand } from "./brand";
 import { CaptionCard } from "./CaptionCard";
+import { NotificationToast } from "./NotificationToast";
 import { SeriesBadge } from "./SeriesBadge";
 import { TermBadge } from "./TermBadge";
 import { WispotLogo } from "./WispotLogo";
@@ -73,10 +73,14 @@ export const TalkingHeadBlock: React.FC<{
           padding: "10px 14px",
         }}
       >
-        <WispotLogo size={26} showTagline={false} color={brand.colors.white} />
+        <WispotLogo size={24} showTagline={false} />
       </div>
 
       {block.termBadge ? <TermBadge text={block.termBadge.text} appearFrame={block.termBadge.appearFrame} /> : null}
+
+      {block.notifications?.map((n, i) => (
+        <NotificationToast key={i} {...n} />
+      ))}
 
       <CaptionCard captions={block.captions} kicker={block.kicker} />
     </AbsoluteFill>

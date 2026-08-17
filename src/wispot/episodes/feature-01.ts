@@ -30,13 +30,8 @@ export const feature01: Episode = {
         ABERTURA_FRAMES,
       ),
     },
-    {
-      id: "desenvolvimento",
-      video: "videos/feature-01-desenvolvimento.mp4",
-      durationInFrames: DESENVOLVIMENTO_FRAMES,
-      kicker: "Como funciona",
-      demoVideo: { src: "videos/feature-01-login-demo.mp4", freezeAtFrame: LOGIN_DEMO_FREEZE_FRAME },
-      captions: distributeCaptions(
+    (() => {
+      const captions = distributeCaptions(
         [
           "Essa tela se chama",
           "Captive Portal.",
@@ -52,8 +47,41 @@ export const feature01: Episode = {
           "precise baixar nenhum aplicativo.",
         ],
         DESENVOLVIMENTO_FRAMES,
-      ),
-    },
+      );
+      // Indices 7-9 are the "promoção / avaliação / pergunta rápida" lines —
+      // each gets a push-notification mockup timed to its caption.
+      return {
+        id: "desenvolvimento",
+        video: "videos/feature-01-desenvolvimento.mp4",
+        durationInFrames: DESENVOLVIMENTO_FRAMES,
+        kicker: "Como funciona",
+        demoVideo: { src: "videos/feature-01-login-demo.mp4", freezeAtFrame: LOGIN_DEMO_FREEZE_FRAME },
+        captions,
+        notifications: [
+          {
+            icon: "🎉",
+            title: "Promoção",
+            subtitle: "10% de desconto hoje",
+            appearFrame: captions[7].startFrame,
+            durationFrames: captions[7].endFrame - captions[7].startFrame + 30,
+          },
+          {
+            icon: "⭐",
+            title: "Avalie no Google",
+            subtitle: "Conta pra gente como foi",
+            appearFrame: captions[8].startFrame,
+            durationFrames: captions[8].endFrame - captions[8].startFrame + 30,
+          },
+          {
+            icon: "💬",
+            title: "Pergunta rápida",
+            subtitle: "Qual dessas opções você prefere?",
+            appearFrame: captions[9].startFrame,
+            durationFrames: captions[9].endFrame - captions[9].startFrame + 30,
+          },
+        ],
+      };
+    })(),
     {
       id: "fechamento",
       video: "videos/feature-01-fechamento.mp4",
