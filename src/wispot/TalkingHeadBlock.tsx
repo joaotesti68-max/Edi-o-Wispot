@@ -36,7 +36,7 @@ export const TalkingHeadBlock: React.FC<{
     <AbsoluteFill style={{ background: "#000" }}>
       {block.demoVideo ? (
         <>
-          <Audio src={staticFile(block.video)} />
+          <Audio src={staticFile(block.video)} trimBefore={block.trimBefore} trimAfter={block.trimAfter} />
           <Freeze frame={block.demoVideo.freezeAtFrame} active={frame >= block.demoVideo.freezeAtFrame}>
             <OffthreadVideo
               src={staticFile(block.demoVideo.src)}
@@ -49,6 +49,8 @@ export const TalkingHeadBlock: React.FC<{
         <AbsoluteFill style={{ transform: `scale(${kenBurns})` }}>
           <OffthreadVideo
             src={staticFile(block.video)}
+            trimBefore={block.trimBefore}
+            trimAfter={block.trimAfter}
             style={{ width: "100%", height: "100%", objectFit: "cover" }}
           />
         </AbsoluteFill>

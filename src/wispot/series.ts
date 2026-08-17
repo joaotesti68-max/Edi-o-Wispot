@@ -42,6 +42,10 @@ export type Block = {
   durationInFrames: number;
   kicker?: string;
   captions: Caption[];
+  /** Trims dead air off the `video` source (in comp-fps frames), so the
+   * cut between blocks doesn't land on a silent breath/pause. */
+  trimBefore?: number;
+  trimAfter?: number;
   termBadge?: { text: string; appearFrame: number };
   /**
    * When set, the block plays this clip full-screen instead of the talking

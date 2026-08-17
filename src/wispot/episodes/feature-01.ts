@@ -1,8 +1,32 @@
 import { distributeCaptions, type Episode } from "../series";
 
-const ABERTURA_FRAMES = 468;
-const DESENVOLVIMENTO_FRAMES = 605;
-const FECHAMENTO_FRAMES = 357;
+// Each clip has dead air at its head/tail (breaths, pauses before/after
+// the take) — trimmed via trimBefore/trimAfter so cuts between blocks
+// land on speech instead of silence. Boundaries found with
+// `ffmpeg -af silencedetect`. Note feature-01-fechamento.mp4's container
+// only has ~14.585s of decodable video despite reporting 357 frames'
+// worth of duration at 24fps — 350 is the real, playable frame count.
+//
+// Remotion's trimBefore/trimAfter are absolute source-frame positions
+// (trimAfter is where playback stops, not a duration cut from the end),
+// so the *_TAIL_SILENCE constants below get converted to an absolute
+// trimAfter at the point they're used.
+const ABERTURA_SOURCE_FRAMES = 468;
+const ABERTURA_TRIM_BEFORE = 28; // ~1.17s leading silence
+const ABERTURA_TAIL_SILENCE = 15; // ~0.63s trailing silence
+const ABERTURA_TRIM_AFTER = ABERTURA_SOURCE_FRAMES - ABERTURA_TAIL_SILENCE;
+const ABERTURA_FRAMES = ABERTURA_TRIM_AFTER - ABERTURA_TRIM_BEFORE;
+
+const DESENVOLVIMENTO_SOURCE_FRAMES = 605;
+const DESENVOLVIMENTO_TRIM_BEFORE = 27; // ~1.13s leading silence
+const DESENVOLVIMENTO_TAIL_SILENCE = 17; // ~0.71s trailing silence
+const DESENVOLVIMENTO_TRIM_AFTER = DESENVOLVIMENTO_SOURCE_FRAMES - DESENVOLVIMENTO_TAIL_SILENCE;
+const DESENVOLVIMENTO_FRAMES = DESENVOLVIMENTO_TRIM_AFTER - DESENVOLVIMENTO_TRIM_BEFORE;
+
+const FECHAMENTO_SOURCE_FRAMES = 350;
+const FECHAMENTO_TAIL_SILENCE = 31; // ~1.3s trailing silence
+const FECHAMENTO_TRIM_AFTER = FECHAMENTO_SOURCE_FRAMES - FECHAMENTO_TAIL_SILENCE;
+const FECHAMENTO_FRAMES = FECHAMENTO_TRIM_AFTER;
 
 // Login demo clip: 22s native at 30fps, held on its last frame for the
 // remaining ~3.2s of narration once the Vanessa audio track runs long.
@@ -17,6 +41,8 @@ export const feature01: Episode = {
       id: "abertura",
       video: "videos/feature-01-abertura.mp4",
       durationInFrames: ABERTURA_FRAMES,
+      trimBefore: ABERTURA_TRIM_BEFORE,
+      trimAfter: ABERTURA_TRIM_AFTER,
       nameCard: { name: "Vanessa Furiato", role: "Gerente Comercial" },
       captions: distributeCaptions(
         [
@@ -54,6 +80,8 @@ export const feature01: Episode = {
         id: "desenvolvimento",
         video: "videos/feature-01-desenvolvimento.mp4",
         durationInFrames: DESENVOLVIMENTO_FRAMES,
+        trimBefore: DESENVOLVIMENTO_TRIM_BEFORE,
+        trimAfter: DESENVOLVIMENTO_TRIM_AFTER,
         kicker: "Como funciona",
         demoVideo: { src: "videos/feature-01-login-demo.mp4", freezeAtFrame: LOGIN_DEMO_FREEZE_FRAME },
         captions,
@@ -86,6 +114,7 @@ export const feature01: Episode = {
       id: "fechamento",
       video: "videos/feature-01-fechamento.mp4",
       durationInFrames: FECHAMENTO_FRAMES,
+      trimAfter: FECHAMENTO_TRIM_AFTER,
       kicker: "Por que isso importa",
       captions: distributeCaptions(
         [
