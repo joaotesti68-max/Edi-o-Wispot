@@ -12,15 +12,12 @@ import { brand } from "./brand";
 import { AlertIcon, ChatIcon, ServerIcon, ShieldCheckIcon, TrendingUpIcon } from "./Icons";
 import type { Block, IconKey } from "./content";
 
-const ICONS: Record<IconKey, React.FC<{ size?: number; color?: string; strokeWidth?: number }> | undefined> = {
+const ICONS: Record<IconKey, React.FC<{ size?: number; color?: string; strokeWidth?: number }>> = {
   alert: AlertIcon,
   server: ServerIcon,
   shield: ShieldCheckIcon,
   trending: TrendingUpIcon,
   chat: ChatIcon,
-  network: undefined,
-  cloud: undefined,
-  refresh: undefined,
 };
 
 export const VideoBlock: React.FC<{ block: Block }> = ({ block }) => {
@@ -52,7 +49,7 @@ export const VideoBlock: React.FC<{ block: Block }> = ({ block }) => {
   });
   const nameCardShift = interpolate(nameCardIn, [0, 1], [-18, 0]);
 
-  const Icon = ICONS[block.icon] ?? AlertIcon;
+  const Icon = ICONS[block.icon];
 
   return (
     <AbsoluteFill style={{ background: "#000" }}>
