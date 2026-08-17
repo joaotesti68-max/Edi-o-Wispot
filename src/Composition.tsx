@@ -1,33 +1,32 @@
 import React from "react";
-import { AbsoluteFill, Composition } from "remotion";
+import { AbsoluteFill, Audio, Composition, staticFile } from "remotion";
 import { TransitionSeries, linearTiming } from "@remotion/transitions";
 import { fade } from "@remotion/transitions/fade";
-import { LogoBumper } from "./LogoBumper";
 import { VideoBlock } from "./VideoBlock";
 import { GraphicInterstitial } from "./GraphicInterstitial";
 import { EndCard } from "./EndCard";
 import { ProgressBar } from "./ProgressBar";
 import { fontFamily } from "./loadFont";
-import { FPS, INTRO_FRAMES, OUTRO_FRAMES, TRANSITION_FRAMES, timeline, totalDurationInFrames } from "./content";
+import { FPS, OUTRO_FRAMES, TRANSITION_FRAMES, timeline, totalDurationInFrames } from "./content";
 
 export const ProAdvancedVideo: React.FC = () => {
   return (
     <AbsoluteFill style={{ fontFamily }}>
-      <TransitionSeries>
-        <TransitionSeries.Sequence durationInFrames={INTRO_FRAMES}>
-          <LogoBumper />
-        </TransitionSeries.Sequence>
+      <Audio src={staticFile("audio/theme.mp3")} volume={0.55} />
 
-        {timeline.map((item) => {
+      <TransitionSeries>
+        {timeline.map((item, i) => {
           const key = item.type === "video" ? item.block.id : item.interstitial.id;
           const durationInFrames =
             item.type === "video" ? item.block.durationInFrames : item.interstitial.durationInFrames;
           return (
             <React.Fragment key={key}>
-              <TransitionSeries.Transition
-                presentation={fade()}
-                timing={linearTiming({ durationInFrames: TRANSITION_FRAMES })}
-              />
+              {i === 0 ? null : (
+                <TransitionSeries.Transition
+                  presentation={fade()}
+                  timing={linearTiming({ durationInFrames: TRANSITION_FRAMES })}
+                />
+              )}
               <TransitionSeries.Sequence durationInFrames={durationInFrames}>
                 {item.type === "video" ? (
                   <VideoBlock block={item.block} />

@@ -1,10 +1,10 @@
 import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
-import { introRange, outroRange, videoRanges } from "./content";
+import { outroRange, videoRanges } from "./content";
 import { brand } from "./brand";
 
 export const ProgressBar: React.FC = () => {
   const frame = useCurrentFrame();
-  const fadeIn = interpolate(frame, [introRange.end - 6, introRange.end + 6], [0, 1], {
+  const fadeIn = interpolate(frame, [0, 12], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });

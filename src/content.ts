@@ -8,6 +8,7 @@ export type Block = {
   durationInFrames: number;
   headline: string;
   icon: IconKey;
+  nameCard?: string;
 };
 
 export type Interstitial = {
@@ -18,7 +19,6 @@ export type Interstitial = {
 
 export type TimelineItem = { type: "video"; block: Block } | { type: "interstitial"; interstitial: Interstitial };
 
-export const INTRO_FRAMES = 24;
 export const OUTRO_FRAMES = 72;
 export const TRANSITION_FRAMES = 8;
 
@@ -31,6 +31,7 @@ export const timeline: TimelineItem[] = [
       durationInFrames: 129,
       headline: "Já perdeu tempo ou dinheiro com um problema de TI?",
       icon: "alert",
+      nameCard: "Isabella Marques",
     },
   },
   {
@@ -73,7 +74,7 @@ export const timeline: TimelineItem[] = [
       id: "desenvolvimento-2",
       video: "videos/desenvolvimento-2.mp4",
       durationInFrames: 244,
-      headline: "Corrigimos falhas antes que virem problema",
+      headline: "Corrigimos falhas antes que se tornem problemas",
       icon: "shield",
     },
   },
@@ -119,7 +120,6 @@ export const timeline: TimelineItem[] = [
 // sequences, so the progress bar can know each on-screen frame range
 // without duplicating the transition math.
 const sequenceDurations = [
-  INTRO_FRAMES,
   ...timeline.map((t) => (t.type === "video" ? t.block.durationInFrames : t.interstitial.durationInFrames)),
   OUTRO_FRAMES,
 ];
@@ -130,11 +130,9 @@ for (let i = 1; i < sequenceDurations.length; i++) {
   starts.push(starts[i - 1] + sequenceDurations[i - 1] - TRANSITION_FRAMES);
 }
 
-export const introRange = { start: starts[0], end: starts[0] + INTRO_FRAMES };
-
 export const timelineRanges = timeline.map((t, i) => ({
-  start: starts[i + 1],
-  end: starts[i + 1] + (t.type === "video" ? t.block.durationInFrames : t.interstitial.durationInFrames),
+  start: starts[i],
+  end: starts[i] + (t.type === "video" ? t.block.durationInFrames : t.interstitial.durationInFrames),
 }));
 
 // Progress bar only tracks the talking-head video segments, not the graphic interstitials.

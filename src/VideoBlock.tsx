@@ -45,6 +45,13 @@ export const VideoBlock: React.FC<{ block: Block }> = ({ block }) => {
     extrapolateRight: "clamp",
   });
 
+  const nameCardIn = spring({ frame: frame - 10, fps, config: { damping: 16, mass: 0.7 } });
+  const nameCardOpacity = interpolate(frame, [10, 20, 78, 92], [0, 1, 1, 0], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
+  const nameCardShift = interpolate(nameCardIn, [0, 1], [-18, 0]);
+
   const Icon = ICONS[block.icon] ?? AlertIcon;
 
   return (
@@ -73,6 +80,37 @@ export const VideoBlock: React.FC<{ block: Block }> = ({ block }) => {
           opacity: watermarkOpacity,
         }}
       />
+
+      {block.nameCard ? (
+        <div
+          style={{
+            position: "absolute",
+            top: 64,
+            left: 48,
+            display: "flex",
+            alignItems: "center",
+            gap: 12,
+            opacity: nameCardOpacity,
+            transform: `translateX(${nameCardShift}px)`,
+            background: "rgba(6,9,12,0.55)",
+            borderRadius: 12,
+            padding: "12px 22px 12px 16px",
+          }}
+        >
+          <div style={{ width: 4, height: 26, background: brand.colors.primaryLight, borderRadius: 2 }} />
+          <div
+            style={{
+              fontFamily: brand.fontFamily,
+              fontWeight: 700,
+              fontSize: 30,
+              color: brand.colors.white,
+              letterSpacing: -0.2,
+            }}
+          >
+            {block.nameCard}
+          </div>
+        </div>
+      ) : null}
 
       <div
         style={{
