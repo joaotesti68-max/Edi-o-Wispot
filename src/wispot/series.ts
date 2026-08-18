@@ -44,25 +44,73 @@ export type TimedLine = {
   end: number;
 };
 
+/** A mid-clip edit: removes [start, end) (seconds, original clip time) —
+ * e.g. cutting one redundant word out of a sentence. */
+export type Cut = { start: number; end: number };
+
+const shiftForCuts = (seconds: number, cutsFrames: { start: number; end: number }[], fps: number) => {
+  let shiftedFrame = Math.round(seconds * fps);
+  for (const cut of cutsFrames) {
+    if (shiftedFrame <= cut.start) continue;
+    shiftedFrame -= Math.min(shiftedFrame, cut.end) - cut.start;
+  }
+  return shiftedFrame;
+};
+
 /**
  * Converts real transcript timestamps (in the source clip's own timeline)
- * into block-local caption frames, accounting for `trimBefore` and
- * clamping to the block's duration. Use this instead of distributeCaptions
- * whenever actual speech timing is known — it doesn't assume steady,
- * on-script pacing.
+ * into block-local caption frames, accounting for `trimBefore`, mid-clip
+ * `cuts`, and clamping to the block's duration. Use this instead of
+ * distributeCaptions whenever actual speech timing is known — it doesn't
+ * assume steady, on-script pacing.
  */
 export const captionsFromTimestamps = (
   lines: TimedLine[],
   fps: number,
   trimBeforeFrames: number,
   blockDurationInFrames: number,
+  cuts: Cut[] = [],
 ): Caption[] => {
-  const trimBeforeSeconds = trimBeforeFrames / fps;
+  const cutsFrames = cuts
+    .map((c) => ({ start: Math.round(c.start * fps), end: Math.round(c.end * fps) }))
+    .sort((a, b) => a.start - b.start);
+  const toLocalFrame = (seconds: number) => shiftForCuts(seconds, cutsFrames, fps) - trimBeforeFrames;
+
   return lines.map(({ text, start, end }) => ({
     text,
-    startFrame: Math.max(0, Math.round((start - trimBeforeSeconds) * fps)),
-    endFrame: Math.min(blockDurationInFrames, Math.round((end - trimBeforeSeconds) * fps)),
+    startFrame: Math.max(0, toLocalFrame(start)),
+    endFrame: Math.min(blockDurationInFrames, toLocalFrame(end)),
   }));
+};
+
+/**
+ * Splits a clip's playable range into the audio/video segments left after
+ * removing `cuts` (in frames, original clip time), each with the
+ * block-local frame range it should occupy. Segments play back to back
+ * with no gap — a straight cut, no crossfade.
+ */
+export const buildCutSegments = (trimBeforeFrames: number, trimAfterFrames: number, cuts: Cut[], fps: number) => {
+  const cutsFrames = cuts
+    .map((c) => ({ start: Math.round(c.start * fps), end: Math.round(c.end * fps) }))
+    .sort((a, b) => a.start - b.start);
+
+  const segments: { originalStart: number; originalEnd: number }[] = [];
+  let cursor = trimBeforeFrames;
+  for (const cut of cutsFrames) {
+    segments.push({ originalStart: cursor, originalEnd: cut.start });
+    cursor = cut.end;
+  }
+  segments.push({ originalStart: cursor, originalEnd: trimAfterFrames });
+
+  let localFrom = 0;
+  return segments
+    .filter((s) => s.originalEnd > s.originalStart)
+    .map((s) => {
+      const durationInFrames = s.originalEnd - s.originalStart;
+      const segment = { ...s, from: localFrom, durationInFrames };
+      localFrom += durationInFrames;
+      return segment;
+    });
 };
 
 export type Block = {
@@ -75,6 +123,9 @@ export type Block = {
    * cut between blocks doesn't land on a silent breath/pause. */
   trimBefore?: number;
   trimAfter?: number;
+  /** Mid-clip edits — removes a word/phrase from the middle of the take
+   * (see buildCutSegments). Seconds, original clip time. */
+  cuts?: Cut[];
   termBadge?: { text: string; appearFrame: number };
   /**
    * When set, the block plays this clip full-screen instead of the talking

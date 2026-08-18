@@ -1,4 +1,4 @@
-import { FPS, captionsFromTimestamps, type Episode } from "../series";
+import { FPS, captionsFromTimestamps, type Cut, type Episode } from "../series";
 
 // Timing for every clip below comes from the real transcript the client
 // provided (with "Westpot" -> "Wispot" and "Captive Bottle" -> "Captive
@@ -19,7 +19,14 @@ const ABERTURA_FRAMES = ABERTURA_TRIM_AFTER - ABERTURA_TRIM_BEFORE;
 
 const DESENVOLVIMENTO_TRIM_BEFORE = 26; // 1.083s
 const DESENVOLVIMENTO_TRIM_AFTER = 590; // 24.583s
-const DESENVOLVIMENTO_FRAMES = DESENVOLVIMENTO_TRIM_AFTER - DESENVOLVIMENTO_TRIM_BEFORE;
+// She says "Twitter" redundantly right before "X" (same platform) — cut
+// just that word. Boundaries from a fine silencedetect pass (-40dB/0.06s):
+// "LinkedIn," ends 14.817s, "Twitter," spans 14.930-15.707s, "X," starts
+// 15.850s — cutting the word itself leaves a natural ~0.26s pause.
+const DESENVOLVIMENTO_CUTS: Cut[] = [{ start: 14.93, end: 15.707 }];
+const DESENVOLVIMENTO_CUT_FRAMES = Math.round(15.707 * FPS) - Math.round(14.93 * FPS);
+const DESENVOLVIMENTO_FRAMES =
+  DESENVOLVIMENTO_TRIM_AFTER - DESENVOLVIMENTO_TRIM_BEFORE - DESENVOLVIMENTO_CUT_FRAMES;
 
 const FECHAMENTO_TRIM_AFTER = 323; // 13.458s, keeps "Não perca!" intact
 const FECHAMENTO_FRAMES = FECHAMENTO_TRIM_AFTER;
@@ -58,6 +65,7 @@ export const feature01: Episode = {
       durationInFrames: DESENVOLVIMENTO_FRAMES,
       trimBefore: DESENVOLVIMENTO_TRIM_BEFORE,
       trimAfter: DESENVOLVIMENTO_TRIM_AFTER,
+      cuts: DESENVOLVIMENTO_CUTS,
       kicker: "Como funciona",
       demoVideo: { src: "videos/feature-01-login-demo.mp4", freezeAtFrame: LOGIN_DEMO_FREEZE_FRAME },
       captions: captionsFromTimestamps(
@@ -68,17 +76,21 @@ export const feature01: Episode = {
             start: 5.185,
             end: 9.654,
           },
-          { text: "Entre elas, você tem Facebook, Google, LinkedIn, Twitter, X, Apple ID.", start: 10.188, end: 15.667 },
+          // Corrected from an earlier pass that mis-split this list from
+          // the next sentence: the real pause after "Apple ID." is at
+          // 17.2-17.5s (fine silencedetect), not 15.7s.
+          { text: "Entre elas, você tem Facebook, Google, LinkedIn, X, Apple ID.", start: 10.188, end: 17.208 },
           {
             text: "E dentro dessas variedades de conexão, você escolhe os dados que você captar.",
-            start: 16.052,
-            end: 20.85,
+            start: 17.516,
+            end: 21.49,
           },
-          { text: "Então, é a primeira interação do cliente com o seu negócio.", start: 20.85, end: 24.542 },
+          { text: "Então, é a primeira interação do cliente com o seu negócio.", start: 21.49, end: 24.542 },
         ],
         FPS,
         DESENVOLVIMENTO_TRIM_BEFORE,
         DESENVOLVIMENTO_FRAMES,
+        DESENVOLVIMENTO_CUTS,
       ),
     },
     {

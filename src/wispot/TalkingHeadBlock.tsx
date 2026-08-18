@@ -3,6 +3,7 @@ import {
   Audio,
   Freeze,
   OffthreadVideo,
+  Sequence,
   interpolate,
   staticFile,
   useCurrentFrame,
@@ -14,7 +15,26 @@ import { NotificationToast } from "./NotificationToast";
 import { SeriesBadge } from "./SeriesBadge";
 import { TermBadge } from "./TermBadge";
 import { WispotLogo } from "./WispotLogo";
-import type { Block } from "./series";
+import { FPS, buildCutSegments, type Block } from "./series";
+
+// Voiceover track for the block, straight-cut around any mid-clip `cuts`
+// (no crossfade — the visual is the full-screen demo, not her face, so a
+// hard audio splice doesn't show).
+const NarrationAudio: React.FC<{ block: Block }> = ({ block }) => {
+  if (!block.cuts?.length) {
+    return <Audio src={staticFile(block.video)} trimBefore={block.trimBefore} trimAfter={block.trimAfter} />;
+  }
+  const segments = buildCutSegments(block.trimBefore ?? 0, block.trimAfter ?? 0, block.cuts, FPS);
+  return (
+    <>
+      {segments.map((s, i) => (
+        <Sequence key={i} from={s.from} durationInFrames={s.durationInFrames} layout="none">
+          <Audio src={staticFile(block.video)} trimBefore={s.originalStart} trimAfter={s.originalEnd} />
+        </Sequence>
+      ))}
+    </>
+  );
+};
 
 export const TalkingHeadBlock: React.FC<{
   block: Block;
@@ -36,7 +56,7 @@ export const TalkingHeadBlock: React.FC<{
     <AbsoluteFill style={{ background: "#000" }}>
       {block.demoVideo ? (
         <>
-          <Audio src={staticFile(block.video)} trimBefore={block.trimBefore} trimAfter={block.trimAfter} />
+          <NarrationAudio block={block} />
           <Freeze frame={block.demoVideo.freezeAtFrame} active={frame >= block.demoVideo.freezeAtFrame}>
             <OffthreadVideo
               src={staticFile(block.demoVideo.src)}
