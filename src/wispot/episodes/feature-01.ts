@@ -19,12 +19,18 @@ const ABERTURA_FRAMES = ABERTURA_TRIM_AFTER - ABERTURA_TRIM_BEFORE;
 
 const DESENVOLVIMENTO_TRIM_BEFORE = 26; // 1.083s
 const DESENVOLVIMENTO_TRIM_AFTER = 590; // 24.583s
-// TODO: cut the redundant "Twitter" (client confirmed it's still audible
-// at ~25.x-26.x s in the rendered preview, meaning the previous guess at
-// 14.93-15.71s in the source clip cut the wrong span — reverted pending
-// a more precise timestamp).
-const DESENVOLVIMENTO_CUTS: Cut[] = [];
-const DESENVOLVIMENTO_FRAMES = DESENVOLVIMENTO_TRIM_AFTER - DESENVOLVIMENTO_TRIM_BEFORE;
+// She says "Twitter" redundantly right before "X" (same platform) — cut
+// just that word. The "LinkedIn, Twitter, X," run has no clean detected
+// pause between items, but the client confirmed hearing "Twitter" at the
+// end of second 25 in the rendered preview (block starts at comp frame
+// 317 = 13.208s, so ~25.7-25.9s there maps back to ~13.4-13.9s in this
+// source clip). Splitting that 3-item run evenly (~0.72s/item after the
+// 12.394s pause) puts "Twitter," at 13.11-13.83s — cutting 13.15-13.79
+// stays just inside that word.
+const DESENVOLVIMENTO_CUTS: Cut[] = [{ start: 13.15, end: 13.79 }];
+const DESENVOLVIMENTO_CUT_FRAMES = Math.round(13.79 * FPS) - Math.round(13.15 * FPS);
+const DESENVOLVIMENTO_FRAMES =
+  DESENVOLVIMENTO_TRIM_AFTER - DESENVOLVIMENTO_TRIM_BEFORE - DESENVOLVIMENTO_CUT_FRAMES;
 
 const FECHAMENTO_TRIM_AFTER = 323; // 13.458s, keeps "Não perca!" intact
 const FECHAMENTO_FRAMES = FECHAMENTO_TRIM_AFTER;
@@ -78,7 +84,7 @@ export const feature01: Episode = {
           // the next sentence: the real pause after "Apple ID." is at
           // 17.2-17.5s (fine silencedetect), not 15.7s.
           {
-            text: "Entre elas, você tem Facebook, Google, LinkedIn, Twitter, X, Apple ID.",
+            text: "Entre elas, você tem Facebook, Google, LinkedIn, X, Apple ID.",
             start: 10.188,
             end: 17.208,
           },
