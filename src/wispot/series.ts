@@ -36,6 +36,35 @@ export const distributeCaptions = (
   });
 };
 
+export type TimedLine = {
+  text: string;
+  /** Seconds into the ORIGINAL (untrimmed) source clip — from a real
+   * transcript or `ffmpeg -af silencedetect` boundaries, not a guess. */
+  start: number;
+  end: number;
+};
+
+/**
+ * Converts real transcript timestamps (in the source clip's own timeline)
+ * into block-local caption frames, accounting for `trimBefore` and
+ * clamping to the block's duration. Use this instead of distributeCaptions
+ * whenever actual speech timing is known — it doesn't assume steady,
+ * on-script pacing.
+ */
+export const captionsFromTimestamps = (
+  lines: TimedLine[],
+  fps: number,
+  trimBeforeFrames: number,
+  blockDurationInFrames: number,
+): Caption[] => {
+  const trimBeforeSeconds = trimBeforeFrames / fps;
+  return lines.map(({ text, start, end }) => ({
+    text,
+    startFrame: Math.max(0, Math.round((start - trimBeforeSeconds) * fps)),
+    endFrame: Math.min(blockDurationInFrames, Math.round((end - trimBeforeSeconds) * fps)),
+  }));
+};
+
 export type Block = {
   id: string;
   video: string;

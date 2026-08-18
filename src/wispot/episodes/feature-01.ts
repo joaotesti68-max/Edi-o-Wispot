@@ -1,35 +1,31 @@
-import { distributeCaptions, type Episode } from "../series";
+import { FPS, captionsFromTimestamps, type Episode } from "../series";
 
-// Each clip has dead air at its head/tail (breaths, pauses before/after
-// the take) — trimmed via trimBefore/trimAfter so cuts between blocks
-// land on speech instead of silence. Boundaries found with
-// `ffmpeg -af silencedetect`. Note feature-01-fechamento.mp4's container
-// only has ~14.585s of decodable video despite reporting 357 frames'
-// worth of duration at 24fps — 350 is the real, playable frame count.
+// Timing for every clip below comes from the real transcript the client
+// provided (with "Westpot" -> "Wispot" and "Captive Bottle" -> "Captive
+// Portal" corrected) cross-checked against `ffmpeg -af silencedetect`
+// pause boundaries in each source file — not the original shooting
+// script, which she didn't follow. All start/end values are seconds into
+// the ORIGINAL, untrimmed source clip.
 //
 // Remotion's trimBefore/trimAfter are absolute source-frame positions
-// (trimAfter is where playback stops, not a duration cut from the end),
-// so the *_TAIL_SILENCE constants below get converted to an absolute
-// trimAfter at the point they're used.
-const ABERTURA_SOURCE_FRAMES = 468;
-const ABERTURA_TRIM_BEFORE = 28; // ~1.17s leading silence
-const ABERTURA_TAIL_SILENCE = 15; // ~0.63s trailing silence
-const ABERTURA_TRIM_AFTER = ABERTURA_SOURCE_FRAMES - ABERTURA_TAIL_SILENCE;
+// (trimAfter is where playback stops, not a duration cut from the end).
+
+// --- abertura: cut past her off-script opening line straight to
+// "Toda semana estarei aqui com vocês..." (real onset ~5.54s; the
+// client's own "0:06" estimate was rounded, so we go slightly earlier).
+const ABERTURA_TRIM_BEFORE = 130; // 5.417s
+const ABERTURA_TRIM_AFTER = 455; // 18.958s, just past her last word
 const ABERTURA_FRAMES = ABERTURA_TRIM_AFTER - ABERTURA_TRIM_BEFORE;
 
-const DESENVOLVIMENTO_SOURCE_FRAMES = 605;
-const DESENVOLVIMENTO_TRIM_BEFORE = 27; // ~1.13s leading silence
-const DESENVOLVIMENTO_TAIL_SILENCE = 17; // ~0.71s trailing silence
-const DESENVOLVIMENTO_TRIM_AFTER = DESENVOLVIMENTO_SOURCE_FRAMES - DESENVOLVIMENTO_TAIL_SILENCE;
+const DESENVOLVIMENTO_TRIM_BEFORE = 26; // 1.083s
+const DESENVOLVIMENTO_TRIM_AFTER = 590; // 24.583s
 const DESENVOLVIMENTO_FRAMES = DESENVOLVIMENTO_TRIM_AFTER - DESENVOLVIMENTO_TRIM_BEFORE;
 
-const FECHAMENTO_SOURCE_FRAMES = 350;
-const FECHAMENTO_TAIL_SILENCE = 31; // ~1.3s trailing silence
-const FECHAMENTO_TRIM_AFTER = FECHAMENTO_SOURCE_FRAMES - FECHAMENTO_TAIL_SILENCE;
+const FECHAMENTO_TRIM_AFTER = 323; // 13.458s, keeps "Não perca!" intact
 const FECHAMENTO_FRAMES = FECHAMENTO_TRIM_AFTER;
 
 // Login demo clip: 22s native at 30fps, held on its last frame for the
-// remaining ~3.2s of narration once the Vanessa audio track runs long.
+// remainder of the desenvolvimento block once the demo runs out.
 const LOGIN_DEMO_FREEZE_FRAME = 528;
 
 export const feature01: Episode = {
@@ -44,92 +40,76 @@ export const feature01: Episode = {
       trimBefore: ABERTURA_TRIM_BEFORE,
       trimAfter: ABERTURA_TRIM_AFTER,
       nameCard: { name: "Vanessa Furiato", role: "Gerente Comercial" },
-      captions: distributeCaptions(
+      captions: captionsFromTimestamps(
         [
-          "Esse é o primeiro vídeo",
-          "da nossa série Feature da Semana.",
-          "Toda semana, eu vou apresentar um recurso da Wispot",
-          "e explicar exatamente como ele funciona.",
-          "Hoje: a tela que aparece",
-          "quando o cliente se conecta ao seu Wi-Fi.",
+          { text: "Toda semana, eu estarei aqui com vocês", start: 5.535, end: 8.073 },
+          { text: "para falar de uma funcionalidade nova que a Wispot traz.", start: 8.546, end: 11.933 },
+          { text: "Hoje, o primeiro dia, a gente vai falar da Tela Login,", start: 12.432, end: 14.759 },
+          { text: "a primeira tela personalizada do nosso Captive Portal.", start: 16.095, end: 18.921 },
         ],
+        FPS,
+        ABERTURA_TRIM_BEFORE,
         ABERTURA_FRAMES,
       ),
     },
-    (() => {
-      const captions = distributeCaptions(
+    {
+      id: "desenvolvimento",
+      video: "videos/feature-01-desenvolvimento.mp4",
+      durationInFrames: DESENVOLVIMENTO_FRAMES,
+      trimBefore: DESENVOLVIMENTO_TRIM_BEFORE,
+      trimAfter: DESENVOLVIMENTO_TRIM_AFTER,
+      kicker: "Como funciona",
+      demoVideo: { src: "videos/feature-01-login-demo.mp4", freezeAtFrame: LOGIN_DEMO_FREEZE_FRAME },
+      captions: captionsFromTimestamps(
         [
-          "Essa tela se chama",
-          "Captive Portal.",
-          "Ela é personalizada com a identidade visual da sua marca,",
-          "e você escolhe como o cliente faz login:",
-          "pelo Facebook, Google,",
-          "número de celular ou e-mail.",
-          "Enquanto a conexão carrega,",
-          "você também pode exibir uma promoção,",
-          "pedir uma avaliação no Google",
-          "ou fazer uma pergunta rápida,",
-          "tudo isso sem que o cliente",
-          "precise baixar nenhum aplicativo.",
+          { text: "A Tela Login é a primeira tela de interação com o cliente.", start: 1.189, end: 4.817 },
+          {
+            text: "Nela, você personaliza a sua marca e escolhe as formas que ele vai se conectar.",
+            start: 5.185,
+            end: 9.654,
+          },
+          { text: "Entre elas, você tem Facebook, Google, LinkedIn, Twitter, X, Apple ID.", start: 10.188, end: 15.667 },
+          {
+            text: "E dentro dessas variedades de conexão, você escolhe os dados que você captar.",
+            start: 16.052,
+            end: 20.85,
+          },
+          { text: "Então, é a primeira interação do cliente com o seu negócio.", start: 20.85, end: 24.542 },
         ],
+        FPS,
+        DESENVOLVIMENTO_TRIM_BEFORE,
         DESENVOLVIMENTO_FRAMES,
-      );
-      // Indices 7-9 are the "promoção / avaliação / pergunta rápida" lines —
-      // each gets a push-notification mockup timed to its caption.
-      return {
-        id: "desenvolvimento",
-        video: "videos/feature-01-desenvolvimento.mp4",
-        durationInFrames: DESENVOLVIMENTO_FRAMES,
-        trimBefore: DESENVOLVIMENTO_TRIM_BEFORE,
-        trimAfter: DESENVOLVIMENTO_TRIM_AFTER,
-        kicker: "Como funciona",
-        demoVideo: { src: "videos/feature-01-login-demo.mp4", freezeAtFrame: LOGIN_DEMO_FREEZE_FRAME },
-        captions,
-        notifications: [
-          {
-            icon: "🎉",
-            title: "Promoção",
-            subtitle: "10% de desconto hoje",
-            appearFrame: captions[7].startFrame,
-            durationFrames: captions[7].endFrame - captions[7].startFrame + 30,
-          },
-          {
-            icon: "⭐",
-            title: "Avalie no Google",
-            subtitle: "Conta pra gente como foi",
-            appearFrame: captions[8].startFrame,
-            durationFrames: captions[8].endFrame - captions[8].startFrame + 30,
-          },
-          {
-            icon: "💬",
-            title: "Pergunta rápida",
-            subtitle: "Qual dessas opções você prefere?",
-            appearFrame: captions[9].startFrame,
-            durationFrames: captions[9].endFrame - captions[9].startFrame + 30,
-          },
-        ],
-      };
-    })(),
+      ),
+    },
     {
       id: "fechamento",
       video: "videos/feature-01-fechamento.mp4",
       durationInFrames: FECHAMENTO_FRAMES,
       trimAfter: FECHAMENTO_TRIM_AFTER,
       kicker: "Por que isso importa",
-      captions: distributeCaptions(
+      captions: captionsFromTimestamps(
         [
-          "Essa tela simples é o ponto de partida",
-          "de tudo que a Wispot oferece.",
-          "Na próxima semana, eu explico",
-          "o que acontece com esse dado",
-          "depois que o cliente conecta.",
+          {
+            text: "A conexão do usuário é apenas o ponto de partida de tudo que a Wispot oferece.",
+            start: 0,
+            end: 5.13,
+          },
+          { text: "A semana que vem, eu volto aqui pra te contar", start: 5.663, end: 8.189 },
+          {
+            text: "o que acontece com a captação de dados e tudo mais que a gente pode te oferecer.",
+            start: 8.457,
+            end: 12.315,
+          },
+          { text: "Não perca!", start: 12.725, end: 13.361 },
         ],
+        FPS,
+        0,
         FECHAMENTO_FRAMES,
       ),
     },
   ],
   endCard: {
     teaserLabel: "Semana que vem",
-    teaserText: "O que acontece com o dado do cliente depois que ele conecta",
+    teaserText: "O que acontece com a captação de dados do cliente",
   },
 };
