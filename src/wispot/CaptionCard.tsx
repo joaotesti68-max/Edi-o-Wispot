@@ -2,7 +2,7 @@ import { interpolate, useCurrentFrame } from "remotion";
 import { brand } from "./brand";
 import type { Caption } from "./series";
 
-const CAPTION_TRANSITION = 10;
+const CAPTION_TRANSITION = 6;
 
 // Centered closed-caption "pill" that hugs its text, not a full-width
 // bottom-left headline block — a different paradigm from ProAdvanced's
@@ -15,20 +15,24 @@ export const CaptionCard: React.FC<{ captions: Caption[]; kicker?: string }> = (
     extrapolateRight: "clamp",
   });
 
-  const active = captions.find((c) => frame >= c.startFrame - CAPTION_TRANSITION && frame <= c.endFrame);
+  // Stay fully visible through the whole real speech span (startFrame to
+  // endFrame come straight from the transcript timing) and only fade out
+  // *after* she stops talking — fading beforehand made captions vanish
+  // while she was still mid-word.
+  const active = captions.find(
+    (c) => frame >= c.startFrame - CAPTION_TRANSITION && frame <= c.endFrame + CAPTION_TRANSITION,
+  );
 
   let captionOpacity = 0;
   let captionScale = 0.94;
   if (active) {
-    const inEnd = active.startFrame;
-    const outStart = active.endFrame - CAPTION_TRANSITION;
     captionOpacity = interpolate(
       frame,
-      [active.startFrame - CAPTION_TRANSITION, inEnd, outStart, active.endFrame],
+      [active.startFrame - CAPTION_TRANSITION, active.startFrame, active.endFrame, active.endFrame + CAPTION_TRANSITION],
       [0, 1, 1, 0],
       { extrapolateLeft: "clamp", extrapolateRight: "clamp" },
     );
-    captionScale = interpolate(frame, [active.startFrame - CAPTION_TRANSITION, inEnd], [0.94, 1], {
+    captionScale = interpolate(frame, [active.startFrame - CAPTION_TRANSITION, active.startFrame], [0.94, 1], {
       extrapolateLeft: "clamp",
       extrapolateRight: "clamp",
     });
