@@ -86,7 +86,6 @@ export const feature01: Episode = {
       video: "videos/feature-01-fechamento.mp4",
       durationInFrames: FECHAMENTO_FRAMES,
       trimAfter: FECHAMENTO_TRIM_AFTER,
-      kicker: "Por que isso importa",
       captions: captionsFromTimestamps(
         [
           {
