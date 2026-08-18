@@ -9,7 +9,7 @@ import { TalkingHeadBlock } from "./TalkingHeadBlock";
 import { FPS, OUTRO_FRAMES, TRANSITION_FRAMES, buildTimeline, type Episode } from "./series";
 import { feature01 } from "./episodes/feature-01";
 
-const MUSIC_PEAK_VOLUME = 0.13;
+const MUSIC_PEAK_VOLUME = 0.06;
 
 const BackgroundMusic: React.FC<{ totalDurationInFrames: number }> = ({ totalDurationInFrames }) => {
   const frame = useCurrentFrame();
