@@ -1,18 +1,16 @@
 export const brand = {
   colors: {
-    primary: "#3696cd",
-    primaryLight: "#20a3d6",
-    gray: "#676868",
+    // Sampled from the Wispot uniform in the footage, then lifted for screen use.
+    navy: "#0f2350",
+    navyDeep: "#081733",
+    primary: "#1aa7e0",
+    primaryLight: "#4fd0f5",
+    accent: "#7ce8c4",
     white: "#ffffff",
-    ink: "#111417",
+    mist: "#c9d8ee",
   },
-  gradient: "linear-gradient(135deg, #1c3f57 0%, #3696cd 55%, #20a3d6 100%)",
+  gradient: "linear-gradient(155deg, #081733 0%, #0f2350 45%, #16406f 100%)",
   fontFamily: "Montserrat",
-  logo: {
-    white: "brand/logo-white.png",
-    color: "brand/logo-color.png",
-    iconWhite: "brand/icon-white.png",
-    iconColor: "brand/icon-color.png",
-  },
-  site: "proadvanced.com.br",
+  handle: "@wispot",
+  site: "wispot.com.br",
 };

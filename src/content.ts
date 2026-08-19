@@ -1,79 +1,97 @@
-export const FPS = 24;
+export const FPS = 30;
+export const WIDTH = 1080;
+export const HEIGHT = 1920;
 
-export type IconKey = "alert" | "server" | "shield" | "trending" | "chat";
+export const TRANSITION_FRAMES = 9;
 
-export type Block = {
+/**
+ * The raw takes each opened with João asking the question off-camera, picked up
+ * faintly by Mari's lavalier. Those heads are trimmed out of the mp4s in
+ * public/videos, so the questions live here as cards instead — the card is what
+ * now carries the question that used to be spoken.
+ */
+export type QuestionCard = {
+  kind: "question";
+  id: string;
+  index: number;
+  question: string;
+  durationInFrames: number;
+};
+
+export type Clip = {
+  kind: "clip";
   id: string;
   video: string;
   durationInFrames: number;
-  headline: string;
-  icon: IconKey;
-  nameCard?: string;
+  /** Small ribbon reminding late viewers which question is being answered. */
+  ribbon?: string;
+  /** Speaker lower third, shown once near the top of the video. */
+  nameCard?: { name: string; role: string };
+  /** Kicker shown over the opening take. */
+  kicker?: string;
 };
 
-export const OUTRO_FRAMES = 72;
-export const TRANSITION_FRAMES = 8;
+export type Segment = QuestionCard | Clip;
 
-export const blocks: Block[] = [
+export const segments: Segment[] = [
   {
+    kind: "clip",
     id: "abertura",
     video: "videos/abertura.mp4",
-    durationInFrames: 129,
-    headline: "Já perdeu tempo ou dinheiro com um problema de TI?",
-    icon: "alert",
-    nameCard: "Isabella Marques",
+    durationInFrames: 400,
+    kicker: "Feature da Semana #3",
+    nameCard: { name: "Mari", role: "Time Wispot" },
   },
   {
-    id: "desenvolvimento-1",
-    video: "videos/desenvolvimento-1.mp4",
-    durationInFrames: 175,
-    headline: "Infraestrutura cuidada de ponta a ponta",
-    icon: "server",
+    kind: "question",
+    id: "pergunta-1",
+    index: 1,
+    question: "Quanto tempo leva pra implantar?",
+    durationInFrames: 75,
   },
   {
-    id: "desenvolvimento-1b",
-    video: "videos/desenvolvimento-1b.mp4",
-    durationInFrames: 305,
-    headline: "Servidores, rede, backup e atualizações — tudo planejado",
-    icon: "server",
+    kind: "clip",
+    id: "resposta-1",
+    video: "videos/resposta-1.mp4",
+    durationInFrames: 325,
+    ribbon: "Quanto tempo leva pra implantar?",
   },
   {
-    id: "desenvolvimento-2",
-    video: "videos/desenvolvimento-2.mp4",
-    durationInFrames: 244,
-    headline: "Corrigimos falhas antes que se tornem problemas",
-    icon: "shield",
+    kind: "question",
+    id: "pergunta-2",
+    index: 2,
+    question: "Meu cliente vai precisar baixar algum aplicativo pra conectar?",
+    durationInFrames: 96,
   },
   {
-    id: "desenvolvimento-3",
-    video: "videos/desenvolvimento-3.mp4",
-    durationInFrames: 174,
-    headline: "Sua equipe volta a focar no que importa",
-    icon: "trending",
+    kind: "clip",
+    id: "resposta-2",
+    video: "videos/resposta-2.mp4",
+    durationInFrames: 388,
+    ribbon: "Precisa baixar aplicativo?",
   },
   {
+    kind: "clip",
     id: "fechamento",
     video: "videos/fechamento.mp4",
-    durationInFrames: 154,
-    headline: "Menos dor de cabeça de TI. Mais tempo pra crescer.",
-    icon: "chat",
+    durationInFrames: 233,
   },
 ];
 
-// Mirrors how @remotion/transitions/TransitionSeries lays out overlapping
-// sequences, so the progress bar can know each block's on-screen frame range
-// without duplicating the transition math.
-const sequenceDurations = [...blocks.map((b) => b.durationInFrames), OUTRO_FRAMES];
-const transitionCount = sequenceDurations.length - 1;
+export const OUTRO_FRAMES = 90;
+
+// Mirrors how TransitionSeries overlaps its sequences, so the progress bar can
+// map a frame back to its segment without redoing the transition math.
+const durations = [...segments.map((s) => s.durationInFrames), OUTRO_FRAMES];
 
 const starts: number[] = [0];
-for (let i = 1; i < sequenceDurations.length; i++) {
-  starts.push(starts[i - 1] + sequenceDurations[i - 1] - TRANSITION_FRAMES);
+for (let i = 1; i < durations.length; i++) {
+  starts.push(starts[i - 1] + durations[i - 1] - TRANSITION_FRAMES);
 }
 
-export const blockRanges = blocks.map((b, i) => ({
+export const segmentRanges = segments.map((s, i) => ({
   start: starts[i],
-  end: starts[i] + b.durationInFrames,
+  end: starts[i] + s.durationInFrames,
 }));
 
 export const outroRange = {
@@ -82,4 +100,4 @@ export const outroRange = {
 };
 
 export const totalDurationInFrames =
-  sequenceDurations.reduce((sum, d) => sum + d, 0) - TRANSITION_FRAMES * transitionCount;
+  durations.reduce((sum, d) => sum + d, 0) - TRANSITION_FRAMES * (durations.length - 1);
