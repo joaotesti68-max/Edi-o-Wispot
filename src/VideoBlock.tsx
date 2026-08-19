@@ -8,16 +8,18 @@ import {
   useVideoConfig,
 } from "remotion";
 import { brand } from "./brand";
-import { hexA } from "./QuestionCard";
 import { WifiArcs, WispotMark } from "./WispotMark";
 import type { Clip } from "./content";
 
 export const VideoBlock: React.FC<{ clip: Clip }> = ({ clip }) => {
   return (
-    <AbsoluteFill style={{ background: brand.colors.navyDeep }}>
-      <OffthreadVideo src={staticFile(clip.video)} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+    <AbsoluteFill style={{ background: brand.colors.gray }}>
+      <OffthreadVideo
+        src={staticFile(clip.video)}
+        style={{ width: "100%", height: "100%", objectFit: "cover" }}
+      />
 
-      <Vignette />
+      <Scrim />
 
       {clip.kicker ? <Kicker text={clip.kicker} /> : null}
       {clip.ribbon ? <QuestionRibbon text={clip.ribbon} /> : null}
@@ -28,11 +30,16 @@ export const VideoBlock: React.FC<{ clip: Clip }> = ({ clip }) => {
   );
 };
 
-/** Keeps the top and bottom overlays readable over the footage. */
-const Vignette: React.FC = () => (
+/**
+ * Escurece topo e base para os elementos brancos lerem sobre a imagem. Preto
+ * neutro de propósito: o manual pede contraste preservado, e uma tinta azul
+ * aqui competiria com a própria cor da marca nas tarjas.
+ */
+const Scrim: React.FC = () => (
   <AbsoluteFill
     style={{
-      background: `linear-gradient(to bottom, ${hexA(brand.colors.navyDeep, 0.72)} 0%, transparent 26%, transparent 62%, ${hexA(brand.colors.navyDeep, 0.86)} 100%)`,
+      background:
+        "linear-gradient(to bottom, rgba(0,0,0,0.62) 0%, transparent 26%, transparent 62%, rgba(0,0,0,0.78) 100%)",
     }}
   />
 );
@@ -66,12 +73,10 @@ const Kicker: React.FC<{ text: string }> = ({ text }) => {
           gap: 16,
           padding: "16px 34px",
           borderRadius: 999,
-          background: hexA(brand.colors.navyDeep, 0.72),
-          border: `2px solid ${hexA(brand.colors.primaryLight, 0.5)}`,
-          backdropFilter: "blur(8px)",
+          background: brand.colors.blue,
         }}
       >
-        <WifiArcs size={44} color={brand.colors.accent} />
+        <WifiArcs size={44} color={brand.colors.white} />
         <span
           style={{
             fontSize: 38,
@@ -88,8 +93,8 @@ const Kicker: React.FC<{ text: string }> = ({ text }) => {
 };
 
 /**
- * Compact reminder of the question, so someone landing mid-answer still knows
- * what Mari is answering. Retracts once the answer is under way.
+ * Lembrete compacto da pergunta, para quem cai no meio da resposta. Recolhe
+ * assim que a resposta engata.
  */
 const QuestionRibbon: React.FC<{ text: string }> = ({ text }) => {
   const frame = useCurrentFrame();
@@ -120,9 +125,7 @@ const QuestionRibbon: React.FC<{ text: string }> = ({ text }) => {
           gap: 18,
           padding: "18px 32px",
           borderRadius: 28,
-          background: hexA(brand.colors.navyDeep, 0.78),
-          border: `2px solid ${hexA(brand.colors.primaryLight, 0.42)}`,
-          backdropFilter: "blur(8px)",
+          background: brand.colors.white,
         }}
       >
         <span
@@ -131,7 +134,7 @@ const QuestionRibbon: React.FC<{ text: string }> = ({ text }) => {
             width: 46,
             height: 46,
             borderRadius: "50%",
-            background: brand.colors.primary,
+            background: brand.colors.blue,
             color: brand.colors.white,
             fontSize: 30,
             fontWeight: 800,
@@ -146,7 +149,7 @@ const QuestionRibbon: React.FC<{ text: string }> = ({ text }) => {
           style={{
             fontSize: 36,
             fontWeight: 700,
-            color: brand.colors.white,
+            color: brand.colors.gray,
             lineHeight: 1.2,
           }}
         >
@@ -179,12 +182,12 @@ const NameCard: React.FC<{ name: string; role: string }> = ({ name, role }) => {
         gap: 22,
       }}
     >
-      <div style={{ width: 8, height: 92, borderRadius: 999, background: brand.colors.accent }} />
+      <div style={{ width: 8, height: 92, borderRadius: 999, background: brand.colors.blue }} />
       <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
         <span style={{ fontSize: 58, fontWeight: 800, color: brand.colors.white, lineHeight: 1 }}>
           {name}
         </span>
-        <span style={{ fontSize: 32, fontWeight: 700, color: brand.colors.mist, lineHeight: 1 }}>
+        <span style={{ fontSize: 32, fontWeight: 700, color: brand.colors.white, opacity: 0.82, lineHeight: 1 }}>
           {role}
         </span>
       </div>
@@ -193,7 +196,7 @@ const NameCard: React.FC<{ name: string; role: string }> = ({ name, role }) => {
 };
 
 const Watermark: React.FC = () => (
-  <div style={{ position: "absolute", right: 56, bottom: 74, opacity: 0.88 }}>
-    <WispotMark size={40} />
+  <div style={{ position: "absolute", right: 56, bottom: 74, opacity: 0.9 }}>
+    <WispotMark size={40} variant="white" />
   </div>
 );

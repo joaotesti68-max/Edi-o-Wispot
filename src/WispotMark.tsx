@@ -1,19 +1,21 @@
 import { brand } from "./brand";
 
 /**
- * Stand-in for the Wispot lockup: the Wi-Fi arcs that sit over the "i" in the
- * uniform wordmark, plus the name set in Montserrat. Swap in the official
- * artwork by dropping it into public/brand and rendering an <Img> here.
+ * Reconstrução do lockup Wispot: os arcos de Wi-Fi sobre o "i" do wordmark do
+ * uniforme, com o nome em Montserrat. O manual só autoriza duas versões da
+ * logomarca — branca (#ffffff) e azul (#25a8e0) — então `color` fica restrito a
+ * essas duas. Chegando o vetor oficial, basta trocar o corpo por um <Img>.
  */
 export const WispotMark: React.FC<{
   size?: number;
-  color?: string;
-  accent?: string;
+  variant?: "white" | "blue";
   withTagline?: boolean;
-}> = ({ size = 56, color = brand.colors.white, accent = brand.colors.primaryLight, withTagline }) => {
+}> = ({ size = 56, variant = "white", withTagline }) => {
+  const color = variant === "white" ? brand.colors.white : brand.colors.blue;
+
   return (
     <div style={{ display: "flex", alignItems: "center", gap: size * 0.32 }}>
-      <WifiArcs size={size} color={accent} />
+      <WifiArcs size={size} color={color} />
       <div style={{ display: "flex", flexDirection: "column", gap: size * 0.06 }}>
         <span
           style={{
@@ -32,7 +34,7 @@ export const WispotMark: React.FC<{
               fontSize: size * 0.3,
               fontWeight: 700,
               color,
-              opacity: 0.72,
+              opacity: 0.78,
               letterSpacing: size * 0.05,
               lineHeight: 1,
             }}
@@ -48,10 +50,9 @@ export const WispotMark: React.FC<{
 export const WifiArcs: React.FC<{
   size?: number;
   color?: string;
-  /** 0 → only the dot, 1 → every arc drawn. Lets the mark animate on. */
+  /** 0 → só o ponto, 1 → todos os arcos. Permite animar a entrada da marca. */
   progress?: number;
-}> = ({ size = 56, color = brand.colors.primaryLight, progress = 1 }) => {
-  // Three arcs sweeping up from a dot, matching the uniform mark.
+}> = ({ size = 56, color = brand.colors.white, progress = 1 }) => {
   const arcs = [
     { r: 13, w: 5.5 },
     { r: 23, w: 6 },
@@ -62,7 +63,7 @@ export const WifiArcs: React.FC<{
     <svg width={size} height={size} viewBox="0 0 80 80" fill="none">
       <circle cx="40" cy="61" r="6" fill={color} opacity={progress > 0 ? 1 : 0} />
       {arcs.map((arc, i) => {
-        // Each arc waits its turn so the signal reads as it "connects".
+        // Cada arco espera a sua vez, para o sinal "conectar" na entrada.
         const local = Math.min(1, Math.max(0, progress * 3 - i));
         const sweep = 108 * local;
         return (

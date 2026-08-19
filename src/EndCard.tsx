@@ -1,6 +1,5 @@
 import { AbsoluteFill, spring, useCurrentFrame, useVideoConfig } from "remotion";
 import { brand } from "./brand";
-import { hexA } from "./QuestionCard";
 import { WispotMark } from "./WispotMark";
 
 export const EndCard: React.FC = () => {
@@ -23,17 +22,13 @@ export const EndCard: React.FC = () => {
       <div
         style={{
           position: "absolute",
-          top: -240,
-          left: -200,
-          width: 880,
-          height: 880,
-          borderRadius: "50%",
-          background: `radial-gradient(circle, ${hexA(brand.colors.primary, 0.36)} 0%, transparent 68%)`,
+          inset: 0,
+          background: `radial-gradient(circle at 50% 42%, transparent 32%, ${brand.alpha(brand.colors.gray, 0.32)} 100%)`,
         }}
       />
 
       <div style={{ opacity: enter, transform: `scale(${0.9 + enter * 0.1})` }}>
-        <WispotMark size={86} withTagline />
+        <WispotMark size={86} variant="white" withTagline />
       </div>
 
       <h2
@@ -47,6 +42,7 @@ export const EndCard: React.FC = () => {
           opacity: line,
           transform: `translateY(${(1 - line) * 26}px)`,
           textWrap: "balance",
+          textShadow: "0 4px 28px rgba(0,0,0,0.26)",
         }}
       >
         Ficou com alguma dúvida?
@@ -58,8 +54,8 @@ export const EndCard: React.FC = () => {
           fontSize: 42,
           fontWeight: 700,
           lineHeight: 1.35,
-          color: brand.colors.mist,
-          opacity: line,
+          color: brand.colors.white,
+          opacity: line * 0.92,
         }}
       >
         Comenta aqui embaixo ou manda mensagem.
@@ -72,7 +68,7 @@ export const EndCard: React.FC = () => {
           padding: "22px 52px",
           borderRadius: 999,
           background: brand.colors.white,
-          color: brand.colors.navy,
+          color: brand.colors.blueDeep,
           fontSize: 40,
           fontWeight: 800,
           opacity: line,

@@ -1,7 +1,6 @@
 import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
 import { outroRange, segmentRanges } from "./content";
 import { brand } from "./brand";
-import { hexA } from "./QuestionCard";
 
 export const ProgressBar: React.FC = () => {
   const frame = useCurrentFrame();
@@ -41,7 +40,7 @@ export const ProgressBar: React.FC = () => {
                 flex: range.end - range.start,
                 height: 6,
                 borderRadius: 3,
-                background: hexA(brand.colors.white, 0.3),
+                background: "rgba(255,255,255,0.34)",
                 overflow: "hidden",
               }}
             >
@@ -49,7 +48,7 @@ export const ProgressBar: React.FC = () => {
                 style={{
                   width: `${fill * 100}%`,
                   height: "100%",
-                  background: brand.colors.accent,
+                  background: brand.colors.white,
                   borderRadius: 3,
                 }}
               />

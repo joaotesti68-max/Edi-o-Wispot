@@ -4,8 +4,12 @@ import { WifiArcs } from "./WispotMark";
 import type { QuestionCard as QuestionCardData } from "./content";
 
 /**
- * Full-frame card that stands in for the question João asked off-camera. It
- * holds long enough to read before cutting to Mari's answer.
+ * Card que assume a pergunta feita fora de quadro. Fica no ar tempo suficiente
+ * para ler antes de cortar para a resposta.
+ *
+ * Fundo no degradê institucional; o manual deixa o fundo livre desde que
+ * priorize as cores da marca e preserve o contraste — daí o texto em branco no
+ * corpo mais fechado do degradê e a tarja da pergunta em branco sólido.
  */
 export const QuestionCard: React.FC<{ data: QuestionCardData }> = ({ data }) => {
   const frame = useCurrentFrame();
@@ -31,7 +35,7 @@ export const QuestionCard: React.FC<{ data: QuestionCardData }> = ({ data }) => 
         padding: "0 96px",
       }}
     >
-      <Glow />
+      <Depth />
 
       <div
         style={{
@@ -49,19 +53,18 @@ export const QuestionCard: React.FC<{ data: QuestionCardData }> = ({ data }) => 
           style={{
             display: "flex",
             alignItems: "center",
-            gap: 20,
-            padding: "16px 34px 16px 24px",
+            gap: 18,
+            padding: "14px 34px 14px 22px",
             borderRadius: 999,
-            background: "rgba(255,255,255,0.10)",
-            border: `2px solid ${hexA(brand.colors.primaryLight, 0.45)}`,
+            background: brand.colors.white,
           }}
         >
-          <WifiArcs size={54} color={brand.colors.primaryLight} progress={arcProgress} />
+          <WifiArcs size={52} color={brand.colors.blue} progress={arcProgress} />
           <span
             style={{
               fontSize: 36,
               fontWeight: 800,
-              color: brand.colors.primaryLight,
+              color: brand.colors.blueDeep,
               letterSpacing: 3,
             }}
           >
@@ -78,6 +81,7 @@ export const QuestionCard: React.FC<{ data: QuestionCardData }> = ({ data }) => 
             color: brand.colors.white,
             letterSpacing: -2,
             textWrap: "balance",
+            textShadow: "0 4px 28px rgba(0,0,0,0.28)",
           }}
         >
           {data.question}
@@ -91,7 +95,7 @@ export const QuestionCard: React.FC<{ data: QuestionCardData }> = ({ data }) => 
             }),
             height: 8,
             borderRadius: 999,
-            background: brand.colors.accent,
+            background: brand.colors.white,
           }}
         />
       </div>
@@ -99,34 +103,15 @@ export const QuestionCard: React.FC<{ data: QuestionCardData }> = ({ data }) => 
   );
 };
 
-const Glow: React.FC = () => (
+/** Fecha os cantos para o branco do texto não competir com o azul aberto. */
+const Depth: React.FC = () => (
   <AbsoluteFill style={{ overflow: "hidden" }}>
     <div
       style={{
         position: "absolute",
-        top: -260,
-        right: -220,
-        width: 900,
-        height: 900,
-        borderRadius: "50%",
-        background: `radial-gradient(circle, ${hexA(brand.colors.primary, 0.4)} 0%, transparent 68%)`,
-      }}
-    />
-    <div
-      style={{
-        position: "absolute",
-        bottom: -320,
-        left: -260,
-        width: 940,
-        height: 940,
-        borderRadius: "50%",
-        background: `radial-gradient(circle, ${hexA(brand.colors.accent, 0.2)} 0%, transparent 66%)`,
+        inset: 0,
+        background: `radial-gradient(circle at 50% 45%, transparent 30%, ${brand.alpha(brand.colors.gray, 0.34)} 100%)`,
       }}
     />
   </AbsoluteFill>
 );
-
-export const hexA = (hex: string, alpha: number) => {
-  const n = parseInt(hex.slice(1), 16);
-  return `rgba(${(n >> 16) & 255}, ${(n >> 8) & 255}, ${n & 255}, ${alpha})`;
-};

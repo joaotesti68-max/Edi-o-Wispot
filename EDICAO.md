@@ -39,8 +39,23 @@ segmento e a faixa de lembrete que aparece sobre as respostas.
 npx remotion render FeatureDaSemana out/feature-da-semana-03.mp4
 ```
 
-## Logo
+## Marca
 
-`src/WispotMark.tsx` recria a marca (arcos de Wi-Fi + "wispot" em Montserrat)
-porque o repositório ainda tem só os assets da ProAdvanced. Com o PNG oficial em
-`public/brand/`, basta trocar o conteúdo desse componente por um `<Img>`.
+Cores e tipografia saíram do *Manual de Marca - Wispot - 2026* (Drive), em
+`src/brand.ts`:
+
+| | |
+| --- | --- |
+| Azul | `#25a8e0` |
+| Cinza | `#514d4b` |
+| Branco | `#ffffff` |
+| Degradê | `#25a8e0` → `#0b91c1` |
+
+Tipografia institucional: Adineue Pro e Montserrat. Adineue Pro é licenciada e
+não está empacotada — o vídeo usa Montserrat, que o manual lista com o mesmo
+peso de uso.
+
+`src/WispotMark.tsx` ainda é uma reconstrução da logomarca (arcos de Wi-Fi +
+"wispot" em Montserrat): o vetor oficial não está no Drive, só dentro do PDF do
+manual. Com o arquivo em `public/brand/`, trocar o corpo do componente por um
+`<Img>`. O manual só autoriza duas versões, branca e `#25a8e0`.
