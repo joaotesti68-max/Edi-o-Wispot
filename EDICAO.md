@@ -65,6 +65,20 @@ O manual só autoriza duas versões, branca e `#25a8e0`, e é o que
 | `wispot-color.png` | versão azul, sobre fundo claro |
 | `wispot-icon-*.png` | símbolo de Wi-Fi (arcos + ponto), ao lado de texto curto |
 
+## Legendas
+
+`src/captions.ts` — texto e quadros de cada legenda, relativos ao clipe.
+
+O texto veio de transcrição do próprio áudio (Whisper small em português, via
+sherpa-onnx), **não** do roteiro: a Mari improvisa bastante, e o que ela fala
+difere do texto escrito. Corrija palavras nesse arquivo, não no roteiro.
+
+O modelo não devolve timestamps, então o tempo sai de alinhamento: as sílabas de
+cada trecho são distribuídas sobre o tempo de fala do clipe, com as pausas
+descontadas. O ajuste de +3 quadros foi escolhido medindo — cada janela de
+legenda foi reconhecida de volta e comparada com o texto exibido; +0,10s deu a
+melhor sobreposição (F1 0,87 contra 0,80 sem ajuste).
+
 ## Trilha
 
 `public/audio/theme.mp3` com volume variável (`musicVolume` em

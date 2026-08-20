@@ -10,6 +10,7 @@ import {
 import { brand } from "./brand";
 import { WifiIcon, WispotMark } from "./WispotMark";
 import type { Clip } from "./content";
+import { captions } from "./captions";
 
 export const VideoBlock: React.FC<{ clip: Clip }> = ({ clip }) => {
   return (
@@ -25,6 +26,8 @@ export const VideoBlock: React.FC<{ clip: Clip }> = ({ clip }) => {
       {clip.ribbon ? <QuestionRibbon text={clip.ribbon} /> : null}
       {clip.nameCard ? <NameCard name={clip.nameCard.name} role={clip.nameCard.role} /> : null}
 
+      <Captions clipId={clip.id} />
+
       <Watermark />
     </AbsoluteFill>
   );
@@ -39,7 +42,7 @@ const Scrim: React.FC = () => (
   <AbsoluteFill
     style={{
       background:
-        "linear-gradient(to bottom, rgba(0,0,0,0.62) 0%, transparent 26%, transparent 62%, rgba(0,0,0,0.78) 100%)",
+        "linear-gradient(to bottom, rgba(0,0,0,0.62) 0%, transparent 26%, transparent 54%, rgba(0,0,0,0.55) 78%, rgba(0,0,0,0.84) 100%)",
     }}
   />
 );
@@ -174,7 +177,7 @@ const NameCard: React.FC<{ name: string; role: string }> = ({ name, role }) => {
       style={{
         position: "absolute",
         left: 64,
-        bottom: 188,
+        bottom: 372,
         opacity: Math.min(enter, 1 - exit),
         transform: `translateX(${(1 - enter) * -40}px)`,
         display: "flex",
@@ -191,6 +194,54 @@ const NameCard: React.FC<{ name: string; role: string }> = ({ name, role }) => {
           {role}
         </span>
       </div>
+    </div>
+  );
+};
+
+/**
+ * Legendas queimadas. Ficam acima da marca d'água e abaixo do lower third,
+ * numa faixa reservada só para elas.
+ */
+const Captions: React.FC<{ clipId: string }> = ({ clipId }) => {
+  const frame = useCurrentFrame();
+  const lines = captions[clipId] ?? [];
+  const current = lines.find((l) => frame >= l.from && frame < l.to);
+  if (!current) return null;
+
+  const age = frame - current.from;
+  const pop = interpolate(age, [0, 5], [0, 1], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
+
+  return (
+    <div
+      style={{
+        position: "absolute",
+        left: 70,
+        right: 70,
+        bottom: 196,
+        display: "flex",
+        justifyContent: "center",
+      }}
+    >
+      <span
+        style={{
+          maxWidth: 900,
+          textAlign: "center",
+          fontSize: 56,
+          fontWeight: 800,
+          lineHeight: 1.2,
+          color: brand.colors.white,
+          letterSpacing: -0.5,
+          textWrap: "balance",
+          textShadow: "0 3px 18px rgba(0,0,0,0.9), 0 1px 4px rgba(0,0,0,0.8)",
+          opacity: pop,
+          transform: `translateY(${(1 - pop) * 10}px)`,
+        }}
+      >
+        {current.text}
+      </span>
     </div>
   );
 };
