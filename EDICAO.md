@@ -1,4 +1,4 @@
-# Feature da Semana #3 — notas de edição
+# Feature da Semana #2 — notas de edição
 
 Vídeo vertical 1080×1920, 30 fps, ~51,8 s. Composição Remotion: `FeatureDaSemana`.
 
@@ -36,7 +36,7 @@ segmento e a faixa de lembrete que aparece sobre as respostas.
 ## Renderizar
 
 ```console
-npx remotion render FeatureDaSemana out/feature-da-semana-03.mp4
+npx remotion render FeatureDaSemana out/feature-da-semana-02.mp4
 ```
 
 ## Marca

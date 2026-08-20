@@ -39,7 +39,7 @@ export const segments: Segment[] = [
     id: "abertura",
     video: "videos/abertura.mp4",
     durationInFrames: 400,
-    kicker: "Feature da Semana #3",
+    kicker: "Feature da Semana #2",
     nameCard: { name: "Mari", role: "Time Wispot" },
   },
   {
