@@ -101,3 +101,29 @@ export const outroRange = {
 
 export const totalDurationInFrames =
   durations.reduce((sum, d) => sum + d, 0) - TRANSITION_FRAMES * (durations.length - 1);
+
+/**
+ * A trilha se abre nos cards e no encerramento, onde ninguém fala, e recua para
+ * um leito discreto por baixo da Mari. Sem isso ela ou some no vídeo inteiro ou
+ * briga com a voz.
+ */
+const MUSIC_DUCKED = 0.16;
+const MUSIC_OPEN = 0.45;
+const MUSIC_RAMP = 8;
+const MUSIC_FADE_OUT = 22;
+
+const musicKeyframes: { frame: number; volume: number }[] = [];
+[...segments.map((s) => s.kind === "question"), true].forEach((isOpen, i) => {
+  const range = i < segments.length ? segmentRanges[i] : outroRange;
+  const volume = isOpen ? MUSIC_OPEN : MUSIC_DUCKED;
+  // Os platôs param antes das bordas para as rampas caírem dentro das
+  // transições, onde a mudança de volume passa despercebida.
+  musicKeyframes.push({ frame: i === 0 ? 0 : range.start + MUSIC_RAMP, volume });
+  musicKeyframes.push({ frame: range.end - MUSIC_RAMP, volume });
+});
+
+export const musicVolume = {
+  frames: musicKeyframes.map((k) => k.frame),
+  volumes: musicKeyframes.map((k) => k.volume),
+  fadeOutFrom: totalDurationInFrames - MUSIC_FADE_OUT,
+};

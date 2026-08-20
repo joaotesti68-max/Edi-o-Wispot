@@ -1,5 +1,5 @@
 import React from "react";
-import { AbsoluteFill, Audio, Composition, staticFile } from "remotion";
+import { AbsoluteFill, Audio, Composition, interpolate, staticFile } from "remotion";
 import { TransitionSeries, linearTiming } from "@remotion/transitions";
 import { fade } from "@remotion/transitions/fade";
 import { VideoBlock } from "./VideoBlock";
@@ -13,6 +13,7 @@ import {
   OUTRO_FRAMES,
   TRANSITION_FRAMES,
   WIDTH,
+  musicVolume,
   segments,
   totalDurationInFrames,
 } from "./content";
@@ -20,8 +21,19 @@ import {
 export const FeatureDaSemana: React.FC = () => {
   return (
     <AbsoluteFill style={{ fontFamily }}>
-      {/* Sits well under Mari's voice — the clips carry the audio. */}
-      <Audio src={staticFile("audio/theme.mp3")} volume={0.12} />
+      <Audio
+        src={staticFile("audio/theme.mp3")}
+        volume={(f) =>
+          interpolate(f, musicVolume.frames, musicVolume.volumes, {
+            extrapolateLeft: "clamp",
+            extrapolateRight: "clamp",
+          }) *
+          interpolate(f, [musicVolume.fadeOutFrom, totalDurationInFrames], [1, 0], {
+            extrapolateLeft: "clamp",
+            extrapolateRight: "clamp",
+          })
+        }
+      />
 
       <TransitionSeries>
         {segments.map((segment, i) => (

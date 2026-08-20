@@ -8,7 +8,7 @@ import {
   useVideoConfig,
 } from "remotion";
 import { brand } from "./brand";
-import { WifiArcs, WispotMark } from "./WispotMark";
+import { WifiIcon, WispotMark } from "./WispotMark";
 import type { Clip } from "./content";
 
 export const VideoBlock: React.FC<{ clip: Clip }> = ({ clip }) => {
@@ -76,7 +76,7 @@ const Kicker: React.FC<{ text: string }> = ({ text }) => {
           background: brand.colors.blue,
         }}
       >
-        <WifiArcs size={44} color={brand.colors.white} />
+        <WifiIcon height={30} variant="white" />
         <span
           style={{
             fontSize: 38,
@@ -196,7 +196,7 @@ const NameCard: React.FC<{ name: string; role: string }> = ({ name, role }) => {
 };
 
 const Watermark: React.FC = () => (
-  <div style={{ position: "absolute", right: 56, bottom: 74, opacity: 0.9 }}>
-    <WispotMark size={40} variant="white" />
+  <div style={{ position: "absolute", right: 56, bottom: 70, opacity: 0.92 }}>
+    <WispotMark height={84} variant="white" />
   </div>
 );

@@ -55,7 +55,19 @@ Tipografia institucional: Adineue Pro e Montserrat. Adineue Pro é licenciada e
 não está empacotada — o vídeo usa Montserrat, que o manual lista com o mesmo
 peso de uso.
 
-`src/WispotMark.tsx` ainda é uma reconstrução da logomarca (arcos de Wi-Fi +
-"wispot" em Montserrat): o vetor oficial não está no Drive, só dentro do PDF do
-manual. Com o arquivo em `public/brand/`, trocar o corpo do componente por um
-`<Img>`. O manual só autoriza duas versões, branca e `#25a8e0`.
+A logomarca oficial saiu do `wispot_colorido.png` (Drive), recortada no alpha.
+O manual só autoriza duas versões, branca e `#25a8e0`, e é o que
+`src/WispotMark.tsx` expõe:
+
+| Arquivo | Uso |
+| --- | --- |
+| `wispot-white.png` | rodapé dos clipes e card final |
+| `wispot-color.png` | versão azul, sobre fundo claro |
+| `wispot-icon-*.png` | só os arcos, ao lado de texto curto |
+
+## Trilha
+
+`public/audio/theme.mp3` com volume variável (`musicVolume` em
+`src/content.ts`): abre nos cards e no encerramento, onde ninguém fala, e recua
+para um leito por baixo da voz da Mari — cerca de 16 dB abaixo dela. As rampas
+caem dentro das transições. Para trocar a música, basta substituir o arquivo.

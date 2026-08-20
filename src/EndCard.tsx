@@ -28,7 +28,7 @@ export const EndCard: React.FC = () => {
       />
 
       <div style={{ opacity: enter, transform: `scale(${0.9 + enter * 0.1})` }}>
-        <WispotMark size={86} variant="white" withTagline />
+        <WispotMark height={188} variant="white" />
       </div>
 
       <h2

@@ -1,6 +1,6 @@
 import { AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
 import { brand } from "./brand";
-import { WifiArcs } from "./WispotMark";
+import { WifiIcon } from "./WispotMark";
 import type { QuestionCard as QuestionCardData } from "./content";
 
 /**
@@ -21,7 +21,7 @@ export const QuestionCard: React.FC<{ data: QuestionCardData }> = ({ data }) => 
     extrapolateRight: "clamp",
   });
 
-  const arcProgress = interpolate(frame, [4, 26], [0, 1], {
+  const iconIn = interpolate(frame, [4, 22], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
@@ -59,7 +59,9 @@ export const QuestionCard: React.FC<{ data: QuestionCardData }> = ({ data }) => 
             background: brand.colors.white,
           }}
         >
-          <WifiArcs size={52} color={brand.colors.blue} progress={arcProgress} />
+          <div style={{ opacity: iconIn, transform: `scale(${0.7 + iconIn * 0.3})` }}>
+            <WifiIcon height={34} variant="color" />
+          </div>
           <span
             style={{
               fontSize: 36,
