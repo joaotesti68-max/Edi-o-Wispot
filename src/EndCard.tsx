@@ -1,69 +1,81 @@
-import { AbsoluteFill, Img, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
+import { AbsoluteFill, spring, useCurrentFrame, useVideoConfig } from "remotion";
 import { brand } from "./brand";
+import { WispotMark } from "./WispotMark";
 
 export const EndCard: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-
-  const logoIn = spring({ frame, fps, config: { damping: 15, mass: 0.7 } });
-  const logoScale = interpolate(logoIn, [0, 1], [0.82, 1]);
-  const logoOpacity = interpolate(logoIn, [0, 1], [0, 1]);
-
-  const ctaIn = spring({ frame: frame - 16, fps, config: { damping: 16 } });
-  const ctaOpacity = interpolate(ctaIn, [0, 1], [0, 1]);
-  const ctaShift = interpolate(ctaIn, [0, 1], [16, 0]);
-
-  const siteIn = spring({ frame: frame - 28, fps, config: { damping: 16 } });
-  const siteOpacity = interpolate(siteIn, [0, 1], [0, 1]);
-  const siteScale = interpolate(siteIn, [0, 1], [0.94, 1]);
+  const enter = spring({ frame, fps, config: { damping: 200, mass: 0.8 } });
+  const line = spring({ frame: frame - 12, fps, config: { damping: 200, mass: 0.7 } });
 
   return (
-    <AbsoluteFill style={{ background: brand.gradient, alignItems: "center", justifyContent: "center" }}>
-      <AbsoluteFill
+    <AbsoluteFill
+      style={{
+        background: brand.gradient,
+        alignItems: "center",
+        justifyContent: "center",
+        gap: 56,
+        padding: "0 110px",
+        textAlign: "center",
+      }}
+    >
+      <div
         style={{
-          backgroundImage:
-            "radial-gradient(circle at 50% 38%, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 55%)",
+          position: "absolute",
+          inset: 0,
+          background: `radial-gradient(circle at 50% 42%, transparent 32%, ${brand.alpha(brand.colors.gray, 0.32)} 100%)`,
         }}
       />
-      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 44 }}>
-        <Img
-          src={staticFile(brand.logo.white)}
-          style={{
-            width: 560,
-            opacity: logoOpacity,
-            transform: `scale(${logoScale})`,
-          }}
-        />
 
-        <div
-          style={{
-            fontFamily: brand.fontFamily,
-            fontWeight: 800,
-            fontSize: 46,
-            color: brand.colors.white,
-            textAlign: "center",
-            opacity: ctaOpacity,
-            transform: `translateY(${ctaShift}px)`,
-          }}
-        >
-          Fale com a gente agora
-        </div>
+      <div style={{ opacity: enter, transform: `scale(${0.9 + enter * 0.1})` }}>
+        <WispotMark height={188} variant="white" />
+      </div>
 
-        <div
-          style={{
-            opacity: siteOpacity,
-            transform: `scale(${siteScale})`,
-            fontFamily: brand.fontFamily,
-            fontWeight: 700,
-            fontSize: 32,
-            color: brand.colors.ink,
-            background: brand.colors.white,
-            borderRadius: 999,
-            padding: "16px 40px",
-          }}
-        >
-          {brand.site}
-        </div>
+      <h2
+        style={{
+          margin: 0,
+          fontSize: 78,
+          lineHeight: 1.18,
+          fontWeight: 800,
+          color: brand.colors.white,
+          letterSpacing: -1.5,
+          opacity: line,
+          transform: `translateY(${(1 - line) * 26}px)`,
+          textWrap: "balance",
+          textShadow: "0 4px 28px rgba(0,0,0,0.26)",
+        }}
+      >
+        Ficou com alguma dúvida?
+      </h2>
+
+      <p
+        style={{
+          margin: 0,
+          fontSize: 42,
+          fontWeight: 700,
+          lineHeight: 1.35,
+          color: brand.colors.white,
+          opacity: line * 0.92,
+        }}
+      >
+        Comenta aqui embaixo ou manda mensagem.
+        <br />A gente responde no próximo vídeo.
+      </p>
+
+      <div
+        style={{
+          marginTop: 12,
+          padding: "22px 52px",
+          borderRadius: 999,
+          background: brand.colors.white,
+          color: brand.colors.blueDeep,
+          fontSize: 40,
+          fontWeight: 800,
+          opacity: line,
+          transform: `translateY(${(1 - line) * 20}px)`,
+        }}
+      >
+        {brand.site}
       </div>
     </AbsoluteFill>
   );

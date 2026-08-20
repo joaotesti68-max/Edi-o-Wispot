@@ -1,29 +1,55 @@
 import React from "react";
-import { AbsoluteFill, Audio, Composition, staticFile } from "remotion";
+import { AbsoluteFill, Audio, Composition, interpolate, staticFile } from "remotion";
 import { TransitionSeries, linearTiming } from "@remotion/transitions";
 import { fade } from "@remotion/transitions/fade";
 import { VideoBlock } from "./VideoBlock";
+import { QuestionCard } from "./QuestionCard";
 import { EndCard } from "./EndCard";
 import { ProgressBar } from "./ProgressBar";
 import { fontFamily } from "./loadFont";
-import { FPS, OUTRO_FRAMES, TRANSITION_FRAMES, blocks, totalDurationInFrames } from "./content";
+import {
+  FPS,
+  HEIGHT,
+  OUTRO_FRAMES,
+  TRANSITION_FRAMES,
+  WIDTH,
+  musicVolume,
+  segments,
+  totalDurationInFrames,
+} from "./content";
 
-export const ProAdvancedVideo: React.FC = () => {
+export const FeatureDaSemana: React.FC = () => {
   return (
     <AbsoluteFill style={{ fontFamily }}>
-      <Audio src={staticFile("audio/theme.mp3")} volume={0.42} />
+      <Audio
+        src={staticFile("audio/theme.mp3")}
+        volume={(f) =>
+          interpolate(f, musicVolume.frames, musicVolume.volumes, {
+            extrapolateLeft: "clamp",
+            extrapolateRight: "clamp",
+          }) *
+          interpolate(f, [musicVolume.fadeOutFrom, totalDurationInFrames], [1, 0], {
+            extrapolateLeft: "clamp",
+            extrapolateRight: "clamp",
+          })
+        }
+      />
 
       <TransitionSeries>
-        {blocks.map((block, i) => (
-          <React.Fragment key={block.id}>
+        {segments.map((segment, i) => (
+          <React.Fragment key={segment.id}>
             {i === 0 ? null : (
               <TransitionSeries.Transition
                 presentation={fade()}
                 timing={linearTiming({ durationInFrames: TRANSITION_FRAMES })}
               />
             )}
-            <TransitionSeries.Sequence durationInFrames={block.durationInFrames}>
-              <VideoBlock block={block} />
+            <TransitionSeries.Sequence durationInFrames={segment.durationInFrames}>
+              {segment.kind === "question" ? (
+                <QuestionCard data={segment} />
+              ) : (
+                <VideoBlock clip={segment} />
+              )}
             </TransitionSeries.Sequence>
           </React.Fragment>
         ))}
@@ -45,12 +71,12 @@ export const ProAdvancedVideo: React.FC = () => {
 export const MyComposition = () => {
   return (
     <Composition
-      id="ProAdvanced"
-      component={ProAdvancedVideo}
+      id="FeatureDaSemana"
+      component={FeatureDaSemana}
       durationInFrames={totalDurationInFrames}
       fps={FPS}
-      width={1080}
-      height={1920}
+      width={WIDTH}
+      height={HEIGHT}
     />
   );
 };
