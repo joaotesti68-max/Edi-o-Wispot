@@ -76,7 +76,7 @@ const Kicker: React.FC<{ text: string }> = ({ text }) => {
           background: brand.colors.blue,
         }}
       >
-        <WifiIcon height={30} variant="white" />
+        <WifiIcon height={38} variant="white" />
         <span
           style={{
             fontSize: 38,

@@ -60,7 +60,7 @@ export const QuestionCard: React.FC<{ data: QuestionCardData }> = ({ data }) => 
           }}
         >
           <div style={{ opacity: iconIn, transform: `scale(${0.7 + iconIn * 0.3})` }}>
-            <WifiIcon height={34} variant="color" />
+            <WifiIcon height={44} variant="color" />
           </div>
           <span
             style={{

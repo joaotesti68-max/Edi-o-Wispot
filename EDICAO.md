@@ -63,7 +63,7 @@ O manual só autoriza duas versões, branca e `#25a8e0`, e é o que
 | --- | --- |
 | `wispot-white.png` | rodapé dos clipes e card final |
 | `wispot-color.png` | versão azul, sobre fundo claro |
-| `wispot-icon-*.png` | só os arcos, ao lado de texto curto |
+| `wispot-icon-*.png` | símbolo de Wi-Fi (arcos + ponto), ao lado de texto curto |
 
 ## Trilha
 

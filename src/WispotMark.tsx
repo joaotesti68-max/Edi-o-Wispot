@@ -8,7 +8,7 @@ import { Img, staticFile } from "remotion";
 
 /** Proporções dos PNGs, para dimensionar pela altura sem distorcer. */
 const LOCKUP_RATIO = 1912 / 897;
-const ICON_RATIO = 485 / 238;
+const ICON_RATIO = 485 / 303;
 
 export const WispotMark: React.FC<{
   height: number;
@@ -20,7 +20,11 @@ export const WispotMark: React.FC<{
   />
 );
 
-/** Só os arcos de Wi-Fi do lockup, para usos pequenos ao lado de texto. */
+/**
+ * O símbolo de Wi-Fi do lockup — os três arcos mais o ponto de origem —, para
+ * usos pequenos ao lado de texto. O ponto faz parte do ícone: é por ele que o
+ * manual mede o respiro mínimo em volta.
+ */
 export const WifiIcon: React.FC<{
   height: number;
   variant?: "white" | "color";
