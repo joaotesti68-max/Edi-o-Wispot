@@ -120,11 +120,14 @@ export const totalDurationInFrames =
  * A trilha se abre nos cards e no encerramento, onde ninguém fala, e recua para
  * um leito discreto por baixo da Mari. Sem isso ela ou some no vídeo inteiro ou
  * briga com a voz.
+ *
+ * O fade final é curto de propósito: a faixa foi cortada para o tempo forte do
+ * último compasso cair no quadro 1878, e o fade só entra depois dele.
  */
 const MUSIC_DUCKED = 0.16;
-const MUSIC_OPEN = 0.45;
+const MUSIC_OPEN = 0.52;
 const MUSIC_RAMP = 8;
-const MUSIC_FADE_OUT = 22;
+const MUSIC_FADE_OUT = 12;
 
 const musicKeyframes: { frame: number; volume: number }[] = [];
 [...segments.map((s) => s.kind === "question"), true].forEach((isOpen, i) => {

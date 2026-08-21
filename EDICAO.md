@@ -107,20 +107,33 @@ anterior, que existia só para compensar a distribuição silábica.
 
 ## Trilha
 
-`public/audio/theme.mp3` é sintetizada, não licenciada — `tools/music.py` gera o
-arquivo. Pad, arpejo de sino, baixo e uma percussão leve, 96 BPM, sobre
-Cm7 – A♭maj7 – E♭ – B♭. O arranjo é casado com o corte: o beat entra junto com o
-primeiro card de pergunta e sai antes do card final, que fica só com pad e
-arpejo.
+`public/audio/theme.mp3` — *Lite Saturation Motivation*, 110 BPM, instrumental,
+fornecida pelo cliente. Do arquivo original (93,9 s) saem os 64,6 s usados aqui.
+
+Dois tratamentos antes de entrar:
+
+- **Corte com a grade do compasso.** O primeiro tempo forte da faixa cai em
+  2,181 s e o compasso dura 2,1818 s. Cortando 0,673 s da cabeça, o tempo forte
+  do compasso 28 cai no quadro 1878 — quinze quadros antes do fim. O vídeo
+  fecha em cima da batida em vez de cortar no meio de um compasso, e o fade
+  final (`MUSIC_FADE_OUT`) é curto justamente para entrar só depois dela.
+- **Nivelamento entre seções.** A faixa abre discreta, ganha os chimbais aos
+  19 s e estoura no refrão aos 36 s — uma variação de 12 dB. Sob a voz da Mari
+  isso significaria trilha inaudível no começo e brigando com ela no fim. Um
+  compressor lento fecha essa variação para 4,8 dB, preservando o arco:
 
 ```console
-python3 tools/music.py    # precisa de numpy e scipy; gera theme.wav
-ffmpeg -i theme.wav -c:a libmp3lame -b:a 192k public/audio/theme.mp3
+ffmpeg -ss 0.673 -t 64.6 -i <original>.mp3 \
+  -af "acompressor=threshold=-26dB:ratio=3:attack=300:release=2500,volume=8dB,\
+       alimiter=limit=0.94:level=disabled,afade=t=in:st=0:d=0.6" \
+  -c:a libmp3lame -b:a 192k -ar 44100 public/audio/theme.mp3
 ```
 
-O volume varia (`musicVolume` em `src/content.ts`): abre nos cards e no
-encerramento, onde ninguém fala, e recua para um leito por baixo da voz da Mari
-— cerca de 15 dB abaixo dela. As rampas caem dentro das transições. Para trocar
-a música, basta substituir o arquivo.
+Resultado: -19,1 dB RMS na abertura, -14,3 dB no trecho final, pico -0,5 dBFS.
 
-Mixagem final: -16,2 LUFS integrado, pico real -0,9 dBTP.
+Por cima disso o volume ainda varia no `musicVolume` (`src/content.ts`): abre
+nos cards e no encerramento, onde ninguém fala, e recua para um leito por baixo
+da voz da Mari. As rampas caem dentro das transições. Para trocar a música,
+refaça o corte acima com a faixa nova — os números do compasso mudam com o BPM.
+
+Mixagem final: -16,2 LUFS integrado, pico real -0,8 dBTP.
