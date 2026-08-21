@@ -31,7 +31,7 @@ export const blocks: Block[] = [
     video: "videos/01-abertura.mp4",
     durationInFrames: 124,
     captionKey: "abertura",
-    presenter: { name: "Vinicius", role: "Gestão de TI · ProAdvanced" },
+    presenter: { name: "Vinicius Miranda", role: "Gestão de TI · ProAdvanced" },
     cards: [],
   },
   {
@@ -40,7 +40,7 @@ export const blocks: Block[] = [
     durationInFrames: 432,
     captionKey: "gestao",
     cards: [
-      { from: 150, durationInFrames: 110, icon: "trending", title: "Melhoria contínua" },
+      { from: 150, durationInFrames: 110, icon: "trending", title: "Monitoria contínua" },
       { from: 270, durationInFrames: 100, icon: "shield", title: "Agir antes do problema" },
     ],
   },
