@@ -1,42 +1,54 @@
 /**
- * Legendas transcritas do áudio (Whisper small, pt) e alinhadas ao tempo de
- * fala de cada clipe, com +3 quadros de ajuste — o offset que deu a melhor
- * sobreposição ao reconhecer de volta cada janela de legenda.
+ * Legendas transcritas do áudio (Whisper small, pt, via sherpa-onnx) e alinhadas
+ * ao clipe já cortado.
  *
- * O texto é o que a Mari efetivamente falou, que difere do roteiro escrito;
- * é aqui que se corrige qualquer palavra. Os quadros são relativos ao clipe.
+ * O texto é o que a Mari efetivamente falou, que difere do roteiro escrito; é
+ * aqui que se corrige qualquer palavra. Os quadros são relativos ao clipe.
+ *
+ * O modelo não devolve timestamps, então cada fronteira foi procurada: para
+ * cada linha, janelas de 2,2 s a partir de vários instantes foram reconhecidas
+ * e ficou o instante cuja transcrição melhor abria com as palavras esperadas.
+ * Um segundo passe pontuou cada fronteira pelos dois lados e a encostou no vale
+ * de silêncio mais próximo, que é onde a troca passa despercebida.
  */
 export type Caption = { text: string; from: number; to: number };
 
 export const captions: Record<string, Caption[]> = {
   "abertura": [
-    { text: "Olá, eu sou a Mari.", from: 9, to: 39 },
-    { text: "Reunimos com o time comercial quais são", from: 39, to: 106 },
-    { text: "as principais dúvidas que aparecem no dia", from: 106, to: 179 },
-    { text: "a dia dos atendimentos.", from: 179, to: 214 },
-    { text: "Então, bora lá para mais uma série de perguntas", from: 214, to: 304 },
-    { text: "e respostas sobre as funcionalidades da Wispot.", from: 304, to: 381 },
+    { text: "Fechando o mês com mais uma rodada", from: 4, to: 57 },
+    { text: "de dúvidas sobre a Wispot.", from: 57, to: 86 },
+    { text: "Eu sou a Mari, e hoje é comigo.", from: 86, to: 155 },
   ],
   "resposta-1": [
-    { text: "No geral, poucos dias.", from: 12, to: 37 },
-    { text: "A configuração é feita em conjunto", from: 37, to: 97 },
-    { text: "com o seu time de TI ou com um parceiro", from: 97, to: 163 },
-    { text: "que cuida da sua infraestrutura,", from: 163, to: 231 },
-    { text: "e a gente acompanha o processo até o portal estar no ar.", from: 231, to: 323 },
+    { text: "Dá sim.", from: 1, to: 26 },
+    { text: "Os dados que são coletados", from: 26, to: 64 },
+    { text: "não ficam presos dentro da nossa ferramenta.", from: 64, to: 140 },
+    { text: "Eles alimentam as ferramentas", from: 140, to: 198 },
+    { text: "que o seu time usa no dia a dia.", from: 198, to: 254 },
   ],
   "resposta-2": [
-    { text: "Não precisa.", from: 11, to: 29 },
-    { text: "Ele vai buscar a sua rede Wi-Fi,", from: 29, to: 82 },
-    { text: "o portal cativo vai abrir para ele,", from: 82, to: 147 },
-    { text: "ele vai fazer um cadastro em poucos segundos", from: 147, to: 220 },
-    { text: "e já vai sair navegando.", from: 220, to: 263 },
-    { text: "Sem a necessidade de um aplicativo", from: 263, to: 335 },
-    { text: "e muito menos de senha na parede.", from: 335, to: 385 },
+    { text: "Nosso time continua junto.", from: 1, to: 42 },
+    { text: "Você tem total suporte", from: 42, to: 86 },
+    { text: "para qualquer mudança que você queira fazer no painel.", from: 86, to: 191 },
+    { text: "Seja uma campanha,", from: 191, to: 215 },
+    { text: "seja um dado que você queira captar novo dos seus visitantes.", from: 215, to: 329 },
+    { text: "Você vai ter todo o suporte necessário", from: 329, to: 384 },
+    { text: "para operar o seu painel Wispot.", from: 384, to: 460 },
+  ],
+  "resposta-3": [
+    { text: "Consegue sim.", from: 5, to: 36 },
+    { text: "A gente consegue unificar todas as suas unidades", from: 36, to: 122 },
+    { text: "ou as suas filiais no mesmo painel,", from: 122, to: 196 },
+    { text: "e separá-las para que você consiga", from: 196, to: 254 },
+    { text: "visualizá-las totalmente separadamente,", from: 254, to: 327 },
+    { text: "e também fazer configurações diferentes", from: 327, to: 406 },
+    { text: "para cada um desses locais.", from: 406, to: 453 },
   ],
   "fechamento": [
-    { text: "Tire a sua dúvida também.", from: 18, to: 53 },
-    { text: "Deixe uma mensagem para a gente ou um comentário", from: 53, to: 131 },
-    { text: "aqui embaixo, que a gente vai responder", from: 131, to: 185 },
-    { text: "a sua dúvida no próximo vídeo.", from: 185, to: 229 },
+    { text: "Esse foi o último vídeo do mês,", from: 1, to: 53 },
+    { text: "mas a série continua em setembro.", from: 53, to: 105 },
+    { text: "Então nos acompanhe para conhecer mais", from: 105, to: 167 },
+    { text: "sobre as funcionalidades da Wispot na prática.", from: 167, to: 244 },
+    { text: "Segue aqui para não perder.", from: 244, to: 284 },
   ],
 };

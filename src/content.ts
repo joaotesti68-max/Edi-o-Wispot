@@ -5,7 +5,7 @@ export const HEIGHT = 1920;
 export const TRANSITION_FRAMES = 9;
 
 /**
- * The raw takes each opened with João asking the question off-camera, picked up
+ * The raw takes each opened with the question asked off-camera, picked up
  * faintly by Mari's lavalier. Those heads are trimmed out of the mp4s in
  * public/videos, so the questions live here as cards instead — the card is what
  * now carries the question that used to be spoken.
@@ -38,43 +38,57 @@ export const segments: Segment[] = [
     kind: "clip",
     id: "abertura",
     video: "videos/abertura.mp4",
-    durationInFrames: 400,
-    kicker: "Feature da Semana #2",
+    durationInFrames: 156,
+    kicker: "Perguntas e Respostas",
     nameCard: { name: "Mari", role: "Time Wispot" },
   },
   {
     kind: "question",
     id: "pergunta-1",
     index: 1,
-    question: "Quanto tempo leva pra implantar?",
-    durationInFrames: 75,
+    question: "Dá pra integrar com o CRM que eu já uso?",
+    durationInFrames: 78,
   },
   {
     kind: "clip",
     id: "resposta-1",
     video: "videos/resposta-1.mp4",
-    durationInFrames: 325,
-    ribbon: "Quanto tempo leva pra implantar?",
+    durationInFrames: 257,
+    ribbon: "Integra com o meu CRM?",
   },
   {
     kind: "question",
     id: "pergunta-2",
     index: 2,
-    question: "Meu cliente vai precisar baixar algum aplicativo pra conectar?",
-    durationInFrames: 96,
+    question: "Depois que instala, quem atende?",
+    durationInFrames: 72,
   },
   {
     kind: "clip",
     id: "resposta-2",
     video: "videos/resposta-2.mp4",
-    durationInFrames: 388,
-    ribbon: "Precisa baixar aplicativo?",
+    durationInFrames: 463,
+    ribbon: "Depois que instala, quem atende?",
+  },
+  {
+    kind: "question",
+    id: "pergunta-3",
+    index: 3,
+    question: "Tenho vários pontos de acesso. Consigo ver tudo junto?",
+    durationInFrames: 100,
+  },
+  {
+    kind: "clip",
+    id: "resposta-3",
+    video: "videos/resposta-3.mp4",
+    durationInFrames: 460,
+    ribbon: "Dá pra ver todas as unidades juntas?",
   },
   {
     kind: "clip",
     id: "fechamento",
     video: "videos/fechamento.mp4",
-    durationInFrames: 233,
+    durationInFrames: 289,
   },
 ];
 

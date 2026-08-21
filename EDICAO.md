@@ -1,22 +1,32 @@
-# Feature da Semana #2 — notas de edição
+# Perguntas e Respostas — fechamento de agosto
 
-Vídeo vertical 1080×1920, 30 fps, ~51,8 s. Composição Remotion: `FeatureDaSemana`.
+Vídeo vertical 1080×1920, 30 fps, ~63,1 s. Composição Remotion: `FeatureDaSemana`.
+
+Terceiro vídeo da série de perguntas e respostas, gravado com a Mari. Fecha o
+mês: a abertura anuncia a última rodada de agosto e o encerramento aponta para
+setembro.
 
 ## Cortes
 
 Cada take de pergunta e resposta começava com a pergunta feita fora de quadro,
-captada fraca pela lapela da Mari (8–10 dB abaixo da voz dela). Esses trechos
+captada fraca pela lapela da Mari (6–10 dB abaixo da voz dela). Esses trechos
 foram removidos no corte — as perguntas agora aparecem como cards.
 
 Os `.mov` originais não ficam no repositório. Pontos usados para gerar
 `public/videos/`:
 
-| Origem      | Trecho cortado (pergunta) | Trecho mantido  | Saída            |
-| ----------- | ------------------------- | --------------- | ---------------- |
-| `IMG_7670`  | —                         | 1,00 → 14,30 s  | `abertura.mp4`   |
-| `IMG_7672`  | 1,70 → 3,02 s             | 3,30 → 14,10 s  | `resposta-1.mp4` |
-| `IMG_7677`  | 1,48 → 4,22 s             | 4,32 → 17,25 s  | `resposta-2.mp4` |
-| `IMG_7680`  | 0,00 → 0,60 s (sobra)     | 1,70 → 9,45 s   | `fechamento.mp4` |
+| Origem     | Trecho cortado (pergunta) | Trecho mantido   | Saída            |
+| ---------- | ------------------------- | ---------------- | ---------------- |
+| `IMG_7683` | —                         | 1,00 → 6,20 s    | `abertura.mp4`   |
+| `IMG_7686` | 1,00 → 2,90 s             | 3,08 → 11,60 s   | `resposta-1.mp4` |
+| `IMG_7688` | 0,80 → 2,45 s             | 2,70 → 18,10 s   | `resposta-2.mp4` |
+| `IMG_7689` | 0,85 → 3,40 s             | 3,62 → 18,95 s   | `resposta-3.mp4` |
+| `IMG_7691` | —                         | 0,85 → 10,45 s   | `fechamento.mp4` |
+
+As fronteiras não foram estimadas no olho: em cada take o áudio foi varrido em
+janelas curtas com o reconhecedor, e o corte ficou no primeiro instante em que a
+transcrição já abria pela resposta da Mari, dentro do vale de silêncio entre a
+pergunta e ela.
 
 Comando por clipe (rotação do iPhone já aplicada, áudio nivelado em -16 LUFS):
 
@@ -33,10 +43,23 @@ ffmpeg -ss <inicio> -to <fim> -i <origem>.mov \
 O roteiro fica em `src/content.ts` — texto das perguntas, duração de cada
 segmento e a faixa de lembrete que aparece sobre as respostas.
 
+| # | Pergunta (card) | Resposta |
+| - | --------------- | -------- |
+| 1 | Dá pra integrar com o CRM que eu já uso? | `resposta-1.mp4` |
+| 2 | Depois que instala, quem atende? | `resposta-2.mp4` |
+| 3 | Tenho vários pontos de acesso. Consigo ver tudo junto? | `resposta-3.mp4` |
+
+Ressalva na pergunta 1: a sigla sai muito abafada no take (a pergunta é feita
+longe da lapela) e o reconhecedor devolve "série"/"serre" em toda tentativa,
+com ganho ou sem. "CRM" é a leitura que casa com o som e com a resposta dela,
+sobre os dados alimentarem as ferramentas que o time já usa — mas é uma leitura,
+não uma transcrição limpa. Se tiver sido outra palavra, é trocar em
+`src/content.ts`.
+
 ## Renderizar
 
 ```console
-npx remotion render FeatureDaSemana out/feature-da-semana-02.mp4
+npx remotion render FeatureDaSemana out/perguntas-respostas-agosto.mp4
 ```
 
 ## Marca
@@ -73,15 +96,31 @@ O texto veio de transcrição do próprio áudio (Whisper small em português, v
 sherpa-onnx), **não** do roteiro: a Mari improvisa bastante, e o que ela fala
 difere do texto escrito. Corrija palavras nesse arquivo, não no roteiro.
 
-O modelo não devolve timestamps, então o tempo sai de alinhamento: as sílabas de
-cada trecho são distribuídas sobre o tempo de fala do clipe, com as pausas
-descontadas. O ajuste de +3 quadros foi escolhido medindo — cada janela de
-legenda foi reconhecida de volta e comparada com o texto exibido; +0,10s deu a
-melhor sobreposição (F1 0,87 contra 0,80 sem ajuste).
+O modelo não devolve timestamps, então cada fronteira foi procurada. Primeiro
+passe: para cada linha, janelas de 2,2 s a partir de vários instantes são
+reconhecidas e fica o instante cuja transcrição melhor abre com as palavras
+esperadas, com a busca semeada por uma estimativa silábica sobre o tempo de
+fala. Segundo passe: cada fronteira é pontuada pelos dois lados — a linha que
+fecha e a que abre — e encostada no vale de silêncio mais próximo, que é onde a
+troca passa despercebida. Isso substituiu o ajuste fixo de +3 quadros da versão
+anterior, que existia só para compensar a distribuição silábica.
 
 ## Trilha
 
-`public/audio/theme.mp3` com volume variável (`musicVolume` em
-`src/content.ts`): abre nos cards e no encerramento, onde ninguém fala, e recua
-para um leito por baixo da voz da Mari — cerca de 16 dB abaixo dela. As rampas
-caem dentro das transições. Para trocar a música, basta substituir o arquivo.
+`public/audio/theme.mp3` é sintetizada, não licenciada — `tools/music.py` gera o
+arquivo. Pad, arpejo de sino, baixo e uma percussão leve, 96 BPM, sobre
+Cm7 – A♭maj7 – E♭ – B♭. O arranjo é casado com o corte: o beat entra junto com o
+primeiro card de pergunta e sai antes do card final, que fica só com pad e
+arpejo.
+
+```console
+python3 tools/music.py    # precisa de numpy e scipy; gera theme.wav
+ffmpeg -i theme.wav -c:a libmp3lame -b:a 192k public/audio/theme.mp3
+```
+
+O volume varia (`musicVolume` em `src/content.ts`): abre nos cards e no
+encerramento, onde ninguém fala, e recua para um leito por baixo da voz da Mari
+— cerca de 15 dB abaixo dela. As rampas caem dentro das transições. Para trocar
+a música, basta substituir o arquivo.
+
+Mixagem final: -16,2 LUFS integrado, pico real -0,9 dBTP.

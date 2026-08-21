@@ -49,9 +49,11 @@ const Scrim: React.FC = () => (
 
 const Kicker: React.FC<{ text: string }> = ({ text }) => {
   const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
+  const { fps, durationInFrames } = useVideoConfig();
   const enter = spring({ frame: frame - 6, fps, config: { damping: 200, mass: 0.6 } });
-  const exit = interpolate(frame, [110, 128], [0, 1], {
+  // Tied to the clip length so the label retires before the cut, however long
+  // the opening take happens to be.
+  const exit = interpolate(frame, [durationInFrames - 46, durationInFrames - 28], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
@@ -165,9 +167,9 @@ const QuestionRibbon: React.FC<{ text: string }> = ({ text }) => {
 
 const NameCard: React.FC<{ name: string; role: string }> = ({ name, role }) => {
   const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
+  const { fps, durationInFrames } = useVideoConfig();
   const enter = spring({ frame: frame - 26, fps, config: { damping: 200, mass: 0.7 } });
-  const exit = interpolate(frame, [150, 168], [0, 1], {
+  const exit = interpolate(frame, [durationInFrames - 34, durationInFrames - 16], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
