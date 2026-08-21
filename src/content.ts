@@ -1,62 +1,76 @@
-export const FPS = 24;
+export const FPS = 30;
 
-export type IconKey = "alert" | "server" | "shield" | "trending" | "chat";
+export type IconKey = "alert" | "server" | "shield" | "trending" | "chat" | "pulse" | "clock";
+
+/** A graphic card that illustrates what is being said, floating over the top of the frame. */
+export type Card = {
+  from: number;
+  durationInFrames: number;
+  icon: IconKey;
+  title: string;
+  /** Optional checklist items, revealed one by one. */
+  items?: { label: string; from: number }[];
+};
 
 export type Block = {
   id: string;
   video: string;
   durationInFrames: number;
-  headline: string;
-  icon: IconKey;
-  nameCard?: string;
+  /** Key into `captions` in captions.ts. */
+  captionKey: string;
+  cards: Card[];
+  presenter?: { name: string; role: string };
 };
 
-export const OUTRO_FRAMES = 72;
+export const OUTRO_FRAMES = 96;
 export const TRANSITION_FRAMES = 8;
 
 export const blocks: Block[] = [
   {
     id: "abertura",
-    video: "videos/abertura.mp4",
-    durationInFrames: 129,
-    headline: "Já perdeu tempo ou dinheiro com um problema de TI?",
-    icon: "alert",
-    nameCard: "Isabella Marques",
+    video: "videos/01-abertura.mp4",
+    durationInFrames: 124,
+    captionKey: "abertura",
+    presenter: { name: "Vinicius", role: "Gestão de TI · ProAdvanced" },
+    cards: [],
   },
   {
-    id: "desenvolvimento-1",
-    video: "videos/desenvolvimento-1.mp4",
-    durationInFrames: 175,
-    headline: "Infraestrutura cuidada de ponta a ponta",
-    icon: "server",
+    id: "gestao",
+    video: "videos/02-gestao.mp4",
+    durationInFrames: 432,
+    captionKey: "gestao",
+    cards: [
+      { from: 150, durationInFrames: 110, icon: "trending", title: "Melhoria contínua" },
+      { from: 270, durationInFrames: 100, icon: "shield", title: "Agir antes do problema" },
+    ],
   },
   {
-    id: "desenvolvimento-1b",
-    video: "videos/desenvolvimento-1b.mp4",
-    durationInFrames: 305,
-    headline: "Servidores, rede, backup e atualizações — tudo planejado",
-    icon: "server",
-  },
-  {
-    id: "desenvolvimento-2",
-    video: "videos/desenvolvimento-2.mp4",
-    durationInFrames: 244,
-    headline: "Corrigimos falhas antes que se tornem problemas",
-    icon: "shield",
-  },
-  {
-    id: "desenvolvimento-3",
-    video: "videos/desenvolvimento-3.mp4",
-    durationInFrames: 174,
-    headline: "Sua equipe volta a focar no que importa",
-    icon: "trending",
+    id: "monitoramento",
+    video: "videos/03-monitoramento.mp4",
+    durationInFrames: 615,
+    captionKey: "monitoramento",
+    cards: [
+      { from: 40, durationInFrames: 105, icon: "pulse", title: "Monitoramento em tempo real" },
+      {
+        from: 148,
+        durationInFrames: 142,
+        icon: "server",
+        title: "Rotina preventiva",
+        items: [
+          { label: "Manutenções", from: 4 },
+          { label: "Atualizações", from: 36 },
+          { label: "Correções", from: 65 },
+        ],
+      },
+      { from: 470, durationInFrames: 100, icon: "trending", title: "Equipe focada no negócio" },
+    ],
   },
   {
     id: "fechamento",
-    video: "videos/fechamento.mp4",
-    durationInFrames: 154,
-    headline: "Menos dor de cabeça de TI. Mais tempo pra crescer.",
-    icon: "chat",
+    video: "videos/04-fechamento.mp4",
+    durationInFrames: 399,
+    captionKey: "fechamento",
+    cards: [],
   },
 ];
 

@@ -47,3 +47,22 @@ export const ChatIcon: React.FC<IconProps> = ({ size = 40, color = "#fff", strok
     <line x1="7" y1="12.3" x2="14" y2="12.3" />
   </svg>
 );
+
+export const PulseIcon: React.FC<IconProps> = ({ size = 40, color = "#fff", strokeWidth = 2 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" stroke={color} {...base(strokeWidth)}>
+    <polyline points="2.5,12 7,12 9.5,6.5 14,17.5 16.5,12 21.5,12" />
+  </svg>
+);
+
+export const ClockIcon: React.FC<IconProps> = ({ size = 40, color = "#fff", strokeWidth = 2 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" stroke={color} {...base(strokeWidth)}>
+    <circle cx="12" cy="12" r="9" />
+    <polyline points="12,6.8 12,12 15.6,14" />
+  </svg>
+);
+
+export const CheckIcon: React.FC<IconProps> = ({ size = 40, color = "#fff", strokeWidth = 2 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" stroke={color} {...base(strokeWidth)}>
+    <polyline points="4.5,12.5 9.8,17.5 19.5,6.8" />
+  </svg>
+);

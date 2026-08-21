@@ -1,17 +1,35 @@
 import React from "react";
-import { AbsoluteFill, Audio, Composition, staticFile } from "remotion";
+import { AbsoluteFill, Audio, Composition, interpolate, staticFile } from "remotion";
 import { TransitionSeries, linearTiming } from "@remotion/transitions";
 import { fade } from "@remotion/transitions/fade";
 import { VideoBlock } from "./VideoBlock";
 import { EndCard } from "./EndCard";
 import { ProgressBar } from "./ProgressBar";
 import { fontFamily } from "./loadFont";
-import { FPS, OUTRO_FRAMES, TRANSITION_FRAMES, blocks, totalDurationInFrames } from "./content";
+import { FPS, OUTRO_FRAMES, TRANSITION_FRAMES, blocks, outroRange, totalDurationInFrames } from "./content";
 
 export const ProAdvancedVideo: React.FC = () => {
   return (
     <AbsoluteFill style={{ fontFamily }}>
-      <Audio src={staticFile("audio/theme.mp3")} volume={0.42} />
+      {/* Music bed sits ~20 dB under the voice, then opens up over the end card. */}
+      <Audio
+        src={staticFile("audio/trilha-corporate.mp3")}
+        volume={(f) =>
+          interpolate(
+            f,
+            [
+              0,
+              20,
+              outroRange.start - 18,
+              outroRange.start + 22,
+              totalDurationInFrames - 14,
+              totalDurationInFrames,
+            ],
+            [0, 0.1, 0.1, 0.26, 0.26, 0],
+            { extrapolateLeft: "clamp", extrapolateRight: "clamp" },
+          )
+        }
+      />
 
       <TransitionSeries>
         {blocks.map((block, i) => (
