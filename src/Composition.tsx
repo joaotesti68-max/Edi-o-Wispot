@@ -25,7 +25,7 @@ export const ProAdvancedVideo: React.FC = () => {
               totalDurationInFrames - 14,
               totalDurationInFrames,
             ],
-            [0, 0.065, 0.065, 0.17, 0.17, 0],
+            [0, 0.038, 0.038, 0.14, 0.14, 0],
             { extrapolateLeft: "clamp", extrapolateRight: "clamp" },
           )
         }

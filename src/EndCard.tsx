@@ -46,7 +46,7 @@ export const EndCard: React.FC = () => {
             transform: `translateY(${ctaShift}px)`,
           }}
         >
-          Fale com a gente agora
+          Fale conosco
         </div>
 
         <div
