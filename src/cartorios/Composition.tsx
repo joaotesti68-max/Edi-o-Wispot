@@ -6,6 +6,7 @@ import { fontFamily } from "../shared/loadFont";
 import { Caption } from "./Caption";
 import { Chrome, musicVolume } from "./Chrome";
 import { EndCard } from "./EndCard";
+import { NameCard } from "./NameCard";
 import { Shot } from "./Shot";
 import { theme } from "./theme";
 import { AlertaPanel } from "./panels/AlertaPanel";
@@ -45,6 +46,18 @@ const BlockLayer: React.FC<{ block: Block }> = ({ block }) => (
         </Sequence>
       );
     })}
+
+    {block.nameCard ? (
+      <Sequence
+        from={sec(block.nameCard.from)}
+        durationInFrames={sec(block.nameCard.to) - sec(block.nameCard.from)}
+      >
+        <NameCard
+          name={block.nameCard.name}
+          frames={sec(block.nameCard.to) - sec(block.nameCard.from)}
+        />
+      </Sequence>
+    ) : null}
 
     {block.panels.map((panel) => {
       const from = sec(panel.from);

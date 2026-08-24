@@ -21,6 +21,16 @@ export type Caption = {
   text: string;
 };
 
+/**
+ * Identificação de quem fala. O nome sai daqui — é o único lugar a mudar se a
+ * grafia ou a pessoa em cena mudar.
+ */
+export type NameCardCue = {
+  name: string;
+  from: number;
+  to: number;
+};
+
 export type PanelCue = {
   kind: PanelKind;
   from: number;
@@ -33,6 +43,7 @@ export type Block = {
   frames: number;
   captions: Caption[];
   panels: PanelCue[];
+  nameCard?: NameCardCue;
 };
 
 export const TRANSITION_FRAMES = 8;
@@ -61,6 +72,8 @@ export const blocks: Block[] = [
       },
     ],
     panels: [{ kind: "alerta", from: 2.6, to: 6.8 }],
+    // Sai antes do painel de alerta entrar, que ocupa o mesmo canto da tela.
+    nameCard: { name: "Vinicius", from: 0.45, to: 2.55 },
   },
   {
     // "Primeiro, analisamos e identificamos onde estão os dados sensíveis (...)
