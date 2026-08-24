@@ -5,7 +5,7 @@ import { fade } from "@remotion/transitions/fade";
 import { VideoBlock } from "./VideoBlock";
 import { EndCard } from "./EndCard";
 import { ProgressBar } from "./ProgressBar";
-import { fontFamily } from "./loadFont";
+import { fontFamily } from "../shared/loadFont";
 import { FPS, OUTRO_FRAMES, TRANSITION_FRAMES, blocks, totalDurationInFrames } from "./content";
 
 export const ProAdvancedVideo: React.FC = () => {

@@ -1,6 +1,6 @@
 import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
 import { blockRanges, outroRange } from "./content";
-import { brand } from "./brand";
+import { brand } from "../shared/brand";
 
 export const ProgressBar: React.FC = () => {
   const frame = useCurrentFrame();

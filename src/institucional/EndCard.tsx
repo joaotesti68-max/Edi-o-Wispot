@@ -1,5 +1,5 @@
 import { AbsoluteFill, Img, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
-import { brand } from "./brand";
+import { brand } from "../shared/brand";
 
 export const EndCard: React.FC = () => {
   const frame = useCurrentFrame();

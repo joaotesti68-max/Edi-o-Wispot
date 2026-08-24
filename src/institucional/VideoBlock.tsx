@@ -8,7 +8,7 @@ import {
   useCurrentFrame,
   useVideoConfig,
 } from "remotion";
-import { brand } from "./brand";
+import { brand } from "../shared/brand";
 import { AlertIcon, ChatIcon, ServerIcon, ShieldCheckIcon, TrendingUpIcon } from "./Icons";
 import type { Block, IconKey } from "./content";
 

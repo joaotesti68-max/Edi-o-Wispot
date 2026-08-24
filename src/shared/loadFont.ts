@@ -3,7 +3,7 @@ import { loadFont } from "@remotion/fonts";
 
 export const fontFamily = "Montserrat";
 
-const weights = ["700", "800"] as const;
+const weights = ["400", "500", "600", "700", "800"] as const;
 const subsets = ["latin", "latin-ext"] as const;
 
 for (const weight of weights) {
