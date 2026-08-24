@@ -73,7 +73,7 @@ export const blocks: Block[] = [
     ],
     panels: [{ kind: "alerta", from: 2.6, to: 6.8 }],
     // Sai antes do painel de alerta entrar, que ocupa o mesmo canto da tela.
-    nameCard: { name: "Vinicius", from: 0.45, to: 2.55 },
+    nameCard: { name: "Vinícius Miranda", from: 0.45, to: 2.55 },
   },
   {
     // "Primeiro, analisamos e identificamos onde estão os dados sensíveis (...)
