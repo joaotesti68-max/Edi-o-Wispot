@@ -57,13 +57,9 @@ export const blocks: Block[] = [
     id: "abertura",
     video: "videos/cartorios/01-abertura.mp4",
     frames: 398,
+    // A tarja de abertura sairia repetindo a legenda; fica só a do trecho em
+    // que ele apresenta o processo.
     captions: [
-      {
-        from: 0.35,
-        to: 2.7,
-        eyebrow: "Segurança digital em cartórios",
-        text: "Nova lei já em vigor",
-      },
       {
         from: 6.95,
         to: 13.27,
@@ -110,20 +106,8 @@ export const blocks: Block[] = [
     id: "fechamento",
     video: "videos/cartorios/04-fechamento.mp4",
     frames: 264,
-    captions: [
-      {
-        from: 0.3,
-        to: 2.45,
-        eyebrow: "Prazo",
-        text: "Ainda dá tempo\nde se adequar",
-      },
-      {
-        from: 2.75,
-        to: 8.8,
-        eyebrow: "Próximo passo",
-        text: "Fale com um especialista\ne comece seu diagnóstico",
-      },
-    ],
+    // No fechamento a legenda já carrega a chamada; tarja aqui seria eco.
+    captions: [],
     panels: [],
   },
 ];

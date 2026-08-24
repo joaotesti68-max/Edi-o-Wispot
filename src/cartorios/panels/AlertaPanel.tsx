@@ -53,7 +53,7 @@ export const AlertaPanel: React.FC<{ frames: number }> = ({ frames }) => {
           position: "absolute",
           left: theme.gutter,
           right: theme.gutter,
-          bottom: 250,
+          bottom: 440,
           display: "flex",
           alignItems: "center",
           gap: 26,

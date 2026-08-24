@@ -108,7 +108,7 @@ export const DocumentacaoPanel: React.FC<{ frames: number }> = ({ frames }) => {
           position: "absolute",
           left: theme.gutter,
           right: theme.gutter,
-          bottom: 250,
+          bottom: 440,
           ...footer.style,
         }}
       >

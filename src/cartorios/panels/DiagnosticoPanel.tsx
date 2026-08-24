@@ -5,7 +5,7 @@ import { ScanIcon } from "../Icons";
 
 const COLUMNS = 4;
 const ROWS = 4;
-const CELL = 196;
+const CELL = 176;
 const GAP = 22;
 
 const SCAN_FROM = 9; // ~0,3 s de painel
@@ -126,7 +126,7 @@ export const DiagnosticoPanel: React.FC<{ frames: number }> = ({ frames }) => {
           position: "absolute",
           left: theme.gutter,
           right: theme.gutter,
-          bottom: 290,
+          bottom: 440,
           display: "flex",
           flexDirection: "column",
           gap: 30,

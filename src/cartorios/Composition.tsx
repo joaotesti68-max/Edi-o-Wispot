@@ -8,7 +8,9 @@ import { Chrome, musicVolume } from "./Chrome";
 import { EndCard } from "./EndCard";
 import { NameCard } from "./NameCard";
 import { Shot } from "./Shot";
+import { SpeechCaption } from "./SpeechCaption";
 import { theme } from "./theme";
+import { speechCaptions } from "./captions";
 import { AlertaPanel } from "./panels/AlertaPanel";
 import { DiagnosticoPanel } from "./panels/DiagnosticoPanel";
 import { DocumentacaoPanel } from "./panels/DocumentacaoPanel";
@@ -66,6 +68,17 @@ const BlockLayer: React.FC<{ block: Block }> = ({ block }) => (
       return (
         <Sequence key={`${block.id}-${panel.kind}`} from={from} durationInFrames={frames}>
           <Panel frames={frames} />
+        </Sequence>
+      );
+    })}
+
+    {/* A legenda fica por último: ela é lida por cima de tudo, inclusive dos painéis. */}
+    {(speechCaptions[block.id] ?? []).map((caption, i, all) => {
+      const from = sec(caption.from);
+      const frames = sec(caption.to) - from;
+      return (
+        <Sequence key={`${block.id}-cc-${caption.from}`} from={from} durationInFrames={frames}>
+          <SpeechCaption caption={caption} frames={frames} isLast={i === all.length - 1} />
         </Sequence>
       );
     })}

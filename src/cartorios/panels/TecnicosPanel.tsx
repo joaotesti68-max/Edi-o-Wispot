@@ -17,7 +17,7 @@ const ITEMS = [
 const FOOTER_AT = 179;
 
 const CARD_W = 416;
-const CARD_H = 384;
+const CARD_H = 360;
 const GAP = 26;
 
 const Card: React.FC<{ item: (typeof ITEMS)[number]; index: number }> = ({ item, index }) => {
@@ -102,7 +102,7 @@ export const TecnicosPanel: React.FC<{ frames: number }> = ({ frames }) => {
           position: "absolute",
           left: theme.gutter,
           right: theme.gutter,
-          bottom: 250,
+          bottom: 440,
           ...footer.style,
         }}
       >

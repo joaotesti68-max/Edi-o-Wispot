@@ -78,6 +78,16 @@ python3 tools/make_cartorios_theme.py public/audio/cartorios-theme.wav
 ffmpeg -i public/audio/cartorios-theme.wav -b:a 192k public/audio/cartorios-theme.mp3
 ```
 
+**Gerar as legendas**
+
+```console
+python3 tools/align_captions.py <pasta-do-modelo> <pasta-com-os-wav>
+```
+
+Alinha a narração com o Parakeet TDT via sherpa-onnx e escreve
+`src/cartorios/captions.ts`. O texto que vai para a tela sai de `SCRIPT`, dentro
+do script — mudar uma frase ali e gerar de novo mantém texto e tempo juntos.
+
 **Renderizar**
 
 ```console

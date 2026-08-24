@@ -6,9 +6,11 @@ const IN_FRAMES = 14;
 const OUT_FRAMES = 8;
 
 /**
- * Lower third do vídeo: um filete azul, a etiqueta em caixa alta e a frase.
- * Entra por baixo e some rápido, sempre dentro da janela de fala a que
- * pertence.
+ * Tarja editorial: nomeia o assunto do trecho.
+ *
+ * Fica no alto, à esquerda, na mesma linguagem do selo de nome — a base da tela
+ * é da legenda da narração. Entra só onde acrescenta alguma coisa que a legenda
+ * não diz.
  */
 export const Caption: React.FC<{ caption: CaptionData; frames: number }> = ({
   caption,
@@ -23,41 +25,51 @@ export const Caption: React.FC<{ caption: CaptionData; frames: number }> = ({
     extrapolateRight: "clamp",
   });
 
-  const opacity = enter * (1 - exit);
-  const shift = interpolate(enter, [0, 1], [30, 0]);
-
   return (
     <div
       style={{
         position: "absolute",
+        top: 104,
         left: theme.gutter,
-        right: theme.gutter,
-        bottom: 150,
-        opacity,
-        transform: `translateY(${shift}px)`,
+        maxWidth: 780,
+        padding: "18px 32px 20px 22px",
+        borderRadius: 14,
+        background: "rgba(7,18,26,0.58)",
+        border: `1px solid ${theme.color.line}`,
+        opacity: enter * (1 - exit),
+        transform: `translateX(${interpolate(enter, [0, 1], [-22, 0])}px)`,
         fontFamily: theme.font,
       }}
     >
-      <div style={{ display: "flex", alignItems: "center", gap: 18, marginBottom: 22 }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 10 }}>
         <div
           style={{
-            width: interpolate(enter, [0, 1], [0, 56]),
-            height: 5,
-            borderRadius: 3,
+            width: interpolate(enter, [0, 1], [0, 34]),
+            height: 4,
+            borderRadius: 2,
             background: theme.color.primaryLight,
           }}
         />
-        <div style={{ ...theme.type.eyebrow, color: theme.color.primaryLight }}>
+        <div
+          style={{
+            ...theme.type.eyebrow,
+            fontSize: 22,
+            letterSpacing: 2.8,
+            color: theme.color.primaryLight,
+          }}
+        >
           {caption.eyebrow}
         </div>
       </div>
 
       <div
         style={{
-          ...theme.type.headline,
+          fontWeight: 700,
+          fontSize: 42,
+          lineHeight: 1.14,
+          letterSpacing: -0.4,
           color: theme.color.white,
           whiteSpace: "pre-line",
-          textShadow: "0 6px 30px rgba(0,0,0,0.45)",
         }}
       >
         {caption.text}
