@@ -103,5 +103,6 @@ tools/render-cartorios.sh out/proadvanced-cartorios.mp4
 ```
 
 Renderiza e normaliza o áudio final em -14 LUFS / -1,5 dBTP, que é o alvo das
-redes sociais. Em ambientes sem o Chromium próprio do Remotion, defina
+redes sociais. O render roda num processo só, de propósito — o motivo está
+comentado no script —, então leva uns dez minutos. Em ambientes sem o Chromium próprio do Remotion, defina
 `CHROMIUM` com o caminho de um binário local antes de rodar.

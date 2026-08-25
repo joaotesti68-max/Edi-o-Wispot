@@ -77,12 +77,18 @@ export const Stamp: React.FC<{
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
+  // `durationInFrames` fecha a mola num ponto exato. Sem ele, ela fica um bom
+  // tempo variando na sétima casa decimal, e o `transform` do carimbo muda a
+  // cada quadro — o suficiente para o Chromium reescrever o texto do painel
+  // inteiro com frações de pixel diferentes, o que se vê como tremor.
   const impact = spring({
     frame: frame - atFrame,
     fps,
     config: { damping: 13, mass: 0.5, stiffness: 130 },
+    durationInFrames: 24,
   });
   const scale = interpolate(impact, [0, 1], [2.5, 1]);
+  const settled = Math.abs(scale - 1) < 0.001;
   const opacity = interpolate(frame - atFrame, [0, 3], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
@@ -92,7 +98,8 @@ export const Stamp: React.FC<{
     <div
       style={{
         opacity,
-        transform: `rotate(${rotate}deg) scale(${scale})`,
+        // Assentado, fica só a inclinação: um transform a menos mudando por quadro.
+        transform: settled ? `rotate(${rotate}deg)` : `rotate(${rotate}deg) scale(${scale})`,
         display: "inline-block",
         border: `6px solid ${color}`,
         borderRadius: 10,

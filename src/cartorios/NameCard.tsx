@@ -1,5 +1,6 @@
 import { interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
 import { theme } from "./theme";
+import { scaleY, slideX } from "./motion";
 
 const IN_FRAMES = 14;
 const OUT_FRAMES = 8;
@@ -33,7 +34,7 @@ export const NameCard: React.FC<{ name: string; frames: number }> = ({ name, fra
         background: "rgba(7,18,26,0.58)",
         border: `1px solid ${theme.color.line}`,
         opacity: enter * (1 - exit),
-        transform: `translateX(${interpolate(enter, [0, 1], [-22, 0])}px)`,
+        ...slideX(interpolate(enter, [0, 1], [-22, 0])),
         fontFamily: theme.font,
       }}
     >
@@ -44,7 +45,7 @@ export const NameCard: React.FC<{ name: string; frames: number }> = ({ name, fra
           borderRadius: 3,
           background: theme.color.primaryLight,
           transformOrigin: "center",
-          transform: `scaleY(${enter})`,
+          ...scaleY(enter),
         }}
       />
       <div

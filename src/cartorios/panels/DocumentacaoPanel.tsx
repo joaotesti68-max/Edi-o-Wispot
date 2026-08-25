@@ -57,16 +57,7 @@ export const DocumentacaoPanel: React.FC<PanelProps> = ({ frames, fadeOut }) => 
           justifyContent: "center",
         }}
       >
-        {/* Sobe alguns pixels ao longo do painel: o quadro nunca fica parado. */}
-        <div
-          style={{
-            position: "relative",
-            transform: `translateY(${interpolate(frame, [0, frames], [10, -8], {
-              extrapolateLeft: "clamp",
-              extrapolateRight: "clamp",
-            })}px)`,
-          }}
-        >
+        <div style={{ position: "relative" }}>
           <DocumentSheet
             width={520}
             height={690}

@@ -1,6 +1,7 @@
 import { AbsoluteFill, Img, interpolate, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
 import { brand } from "../shared/brand";
 import { theme } from "./theme";
+import { scaleX, slideY } from "./motion";
 import { ClockIcon } from "./Icons";
 
 const useReveal = (atFrame: number, shift = 20) => {
@@ -11,10 +12,7 @@ const useReveal = (atFrame: number, shift = 20) => {
     extrapolateRight: "clamp",
   });
   const eased = 1 - Math.pow(1 - progress, 3);
-  return {
-    opacity: eased,
-    transform: `translateY(${interpolate(eased, [0, 1], [shift, 0])}px)`,
-  };
+  return { opacity: eased, ...slideY(interpolate(eased, [0, 1], [shift, 0])) };
 };
 
 export const EndCard: React.FC = () => {
@@ -52,7 +50,7 @@ export const EndCard: React.FC = () => {
               height: 2,
               background: theme.color.primaryLight,
               opacity: rule.opacity,
-              transform: `scaleX(${rule.opacity})`,
+              ...scaleX(rule.opacity),
             }}
           />
 

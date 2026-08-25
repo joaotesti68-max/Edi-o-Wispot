@@ -13,7 +13,17 @@ OUT="${1:-out/proadvanced-cartorios.mp4}"
 RAW="$(dirname "$OUT")/.$(basename "$OUT" .mp4)-raw.mp4"
 mkdir -p "$(dirname "$OUT")"
 
-RENDER_ARGS=(src/index.ts ProAdvancedCartorios "$RAW" --concurrency=4)
+# concurrency=1 não é sobra de teste: com mais de um processo, cada um rasteriza
+# o texto pequeno num deslocamento de subpixel próprio, e como quadros vizinhos
+# saem de processos diferentes, as etiquetas em caixa alta ficam alternando entre
+# duas versões de si mesmas — o que se vê como tremor. Medido: pico de 97 níveis
+# de diferença entre quadros vizinhos com 4 processos, contra 6 com um só.
+# Custa tempo de render; é o preço de texto parado.
+#
+# Quadros em PNG em vez de JPEG, para as letras não passarem por uma compressão
+# antes da outra.
+RENDER_ARGS=(src/index.ts ProAdvancedCartorios "$RAW"
+  --concurrency=1 --image-format=png --crf=16)
 # Em máquinas sem o Chromium do Remotion, aponte CHROMIUM para um binário local.
 if [ -n "${CHROMIUM:-}" ]; then
   RENDER_ARGS+=(--browser-executable="$CHROMIUM")

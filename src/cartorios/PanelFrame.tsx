@@ -1,5 +1,6 @@
 import { AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
 import { theme } from "./theme";
+import { scaleX, slideY } from "./motion";
 
 /** Todo painel recebe a duração da sua sequência e se deve esmaecer no fim. */
 export type PanelProps = { frames: number; fadeOut?: boolean };
@@ -45,10 +46,7 @@ export const useCue = (atFrame: number, shift = 22) => {
   });
   return {
     progress,
-    style: {
-      opacity: progress,
-      transform: `translateY(${interpolate(progress, [0, 1], [shift, 0])}px)`,
-    },
+    style: { opacity: progress, ...slideY(interpolate(progress, [0, 1], [shift, 0])) },
   };
 };
 
@@ -108,10 +106,12 @@ export const PanelFrame: React.FC<{
         <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
           <div
             style={{
-              width: interpolate(enter, [0, 1], [0, 56]),
+              width: 56,
               height: 5,
               borderRadius: 3,
               background: theme.color.primaryLight,
+              transformOrigin: "left center",
+              ...scaleX(enter),
             }}
           />
           <div style={{ ...theme.type.eyebrow, color: theme.color.primaryLight }}>{eyebrow}</div>
@@ -127,7 +127,7 @@ export const PanelFrame: React.FC<{
             height: 1,
             background: theme.color.lineStrong,
             transformOrigin: "left center",
-            transform: `scaleX(${enter})`,
+            ...scaleX(enter),
           }}
         />
       </div>

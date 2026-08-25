@@ -1,5 +1,6 @@
 import { interpolate, useCurrentFrame } from "remotion";
 import { theme } from "./theme";
+import { slideY } from "./motion";
 import type { SpeechCaption as CaptionData } from "./captions";
 
 const IN_FRAMES = 4;
@@ -41,7 +42,7 @@ export const SpeechCaption: React.FC<{
         // interface, para a legenda não ficar atrás dos botões do app.
         bottom: 260,
         opacity: enter * exit,
-        transform: `translateY(${interpolate(enter, [0, 1], [8, 0])}px)`,
+        ...slideY(interpolate(enter, [0, 1], [8, 0])),
         fontFamily: theme.font,
       }}
     >

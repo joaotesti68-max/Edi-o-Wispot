@@ -1,5 +1,6 @@
 import { interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
 import { theme } from "./theme";
+import { scaleX, slideX } from "./motion";
 import type { Caption as CaptionData } from "./content";
 
 const IN_FRAMES = 14;
@@ -37,17 +38,19 @@ export const Caption: React.FC<{ caption: CaptionData; frames: number }> = ({
         background: "rgba(7,18,26,0.58)",
         border: `1px solid ${theme.color.line}`,
         opacity: enter * (1 - exit),
-        transform: `translateX(${interpolate(enter, [0, 1], [-22, 0])}px)`,
+        ...slideX(interpolate(enter, [0, 1], [-22, 0])),
         fontFamily: theme.font,
       }}
     >
       <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 10 }}>
         <div
           style={{
-            width: interpolate(enter, [0, 1], [0, 34]),
+            width: 34,
             height: 4,
             borderRadius: 2,
             background: theme.color.primaryLight,
+            transformOrigin: "left center",
+            ...scaleX(enter),
           }}
         />
         <div
