@@ -3,9 +3,8 @@ import { PanelFrame, useCue, type PanelProps } from "../PanelFrame";
 import { AccessIcon, BackupIcon, MonitorPulseIcon, UsersIcon } from "../Icons";
 
 /**
- * Cada item entra no instante em que é dito na narração — "controle de acesso,
- * backup, gestão de usuários, monitoramento ativo" — e a régua final fecha em
- * "tudo dentro do que a lei está exigindo".
+ * Cada item entra no instante em que é dito na narração: "controle de acesso,
+ * backup, gestão de usuários, monitoramento ativo".
  */
 const ITEMS = [
   { at: 29, label: "Controle\nde acesso", Icon: AccessIcon },
@@ -13,8 +12,6 @@ const ITEMS = [
   { at: 73, label: "Gestão\nde usuários", Icon: UsersIcon },
   { at: 125, label: "Monitoramento\nativo", Icon: MonitorPulseIcon },
 ];
-
-const FOOTER_AT = 190;
 
 const CARD_W = 416;
 const CARD_H = 360;
@@ -78,7 +75,6 @@ const Card: React.FC<{ item: (typeof ITEMS)[number]; index: number }> = ({ item,
 };
 
 export const TecnicosPanel: React.FC<PanelProps> = ({ frames, fadeOut }) => {
-  const footer = useCue(FOOTER_AT);
   const gridWidth = 2 * CARD_W + GAP;
 
   return (
@@ -97,20 +93,6 @@ export const TecnicosPanel: React.FC<PanelProps> = ({ frames, fadeOut }) => {
         ))}
       </div>
 
-      <div
-        style={{
-          position: "absolute",
-          left: theme.gutter,
-          right: theme.gutter,
-          bottom: 440,
-          ...footer.style,
-        }}
-      >
-        <div style={{ height: 1, background: theme.color.lineStrong, marginBottom: 32 }} />
-        <div style={{ ...theme.type.item, color: theme.color.white, lineHeight: 1.2 }}>
-          Tudo alinhado ao que a lei exige
-        </div>
-      </div>
     </PanelFrame>
   );
 };

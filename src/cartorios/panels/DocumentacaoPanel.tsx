@@ -10,7 +10,6 @@ const LINES_TO = 90;
 const CHIP_REGISTROS_AT = 89; // "…todos os registros"
 const CHIP_EVIDENCIAS_AT = 105; // "…e evidências"
 const STAMP_AT = 215; // "…está dentro dos parâmetros exigidos"
-const FOOTER_AT = 228;
 
 const Chip: React.FC<{ atFrame: number; label: string }> = ({ atFrame, label }) => {
   const cue = useCue(atFrame, 18);
@@ -39,7 +38,6 @@ const Chip: React.FC<{ atFrame: number; label: string }> = ({ atFrame, label }) 
 
 export const DocumentacaoPanel: React.FC<PanelProps> = ({ frames, fadeOut }) => {
   const frame = useCurrentFrame();
-  const footer = useCue(FOOTER_AT);
 
   // O documento é "lavrado" linha a linha antes de receber o carimbo.
   const lineProgress = interpolate(frame, [LINES_FROM, LINES_TO], [0, 1], {
@@ -103,20 +101,6 @@ export const DocumentacaoPanel: React.FC<PanelProps> = ({ frames, fadeOut }) => 
         <Chip atFrame={CHIP_EVIDENCIAS_AT} label="Evidências" />
       </div>
 
-      <div
-        style={{
-          position: "absolute",
-          left: theme.gutter,
-          right: theme.gutter,
-          bottom: 440,
-          ...footer.style,
-        }}
-      >
-        <div style={{ height: 1, background: theme.color.lineStrong, marginBottom: 32 }} />
-        <div style={{ ...theme.type.item, color: theme.color.white, lineHeight: 1.2 }}>
-          Dentro dos parâmetros exigidos
-        </div>
-      </div>
     </PanelFrame>
   );
 };
