@@ -1,5 +1,5 @@
 import { theme } from "../theme";
-import { PanelFrame, useCue } from "../PanelFrame";
+import { PanelFrame, useCue, type PanelProps } from "../PanelFrame";
 import { AccessIcon, BackupIcon, MonitorPulseIcon, UsersIcon } from "../Icons";
 
 /**
@@ -77,12 +77,12 @@ const Card: React.FC<{ item: (typeof ITEMS)[number]; index: number }> = ({ item,
   );
 };
 
-export const TecnicosPanel: React.FC<{ frames: number }> = ({ frames }) => {
+export const TecnicosPanel: React.FC<PanelProps> = ({ frames, fadeOut }) => {
   const footer = useCue(FOOTER_AT);
   const gridWidth = 2 * CARD_W + GAP;
 
   return (
-    <PanelFrame frames={frames} eyebrow="Etapa 02" title="Ajustes técnicos" watermark="02">
+    <PanelFrame frames={frames} fadeOut={fadeOut} eyebrow="Etapa 02" title="Ajustes técnicos" watermark="02">
       <div
         style={{
           position: "absolute",

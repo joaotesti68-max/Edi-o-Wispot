@@ -1,6 +1,6 @@
 import { AbsoluteFill, OffthreadVideo, interpolate, staticFile, useCurrentFrame } from "remotion";
 import { theme } from "../theme";
-import { PanelFrame, useCue } from "../PanelFrame";
+import { PanelFrame, useCue, type PanelProps } from "../PanelFrame";
 import { ScanIcon } from "../Icons";
 
 const B_ROLL = "videos/cartorios/b-roll-diagnostico.mp4";
@@ -14,7 +14,7 @@ const LABEL_RISK_AT = 111; // "…qual é a exposição atual do risco"
 const SCAN_FROM_Y = 340;
 const SCAN_TO_Y = 1400;
 
-export const DiagnosticoPanel: React.FC<{ frames: number }> = ({ frames }) => {
+export const DiagnosticoPanel: React.FC<PanelProps> = ({ frames, fadeOut }) => {
   const frame = useCurrentFrame();
   const mapLabel = useCue(LABEL_MAP_AT);
   const riskLabel = useCue(LABEL_RISK_AT);
@@ -34,6 +34,7 @@ export const DiagnosticoPanel: React.FC<{ frames: number }> = ({ frames }) => {
   return (
     <PanelFrame
       frames={frames}
+      fadeOut={fadeOut}
       eyebrow="Etapa 01"
       title="Diagnóstico"
       watermark="01"

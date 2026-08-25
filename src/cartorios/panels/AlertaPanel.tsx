@@ -1,5 +1,5 @@
 import { theme } from "../theme";
-import { PanelFrame, useCue } from "../PanelFrame";
+import { PanelFrame, useCue, type PanelProps } from "../PanelFrame";
 import { DocumentSheet, Stamp } from "../Marks";
 import { GavelIcon } from "../Icons";
 
@@ -7,12 +7,13 @@ import { GavelIcon } from "../Icons";
 const STAMP_AT = 21;
 const NOTE_AT = 44;
 
-export const AlertaPanel: React.FC<{ frames: number }> = ({ frames }) => {
+export const AlertaPanel: React.FC<PanelProps> = ({ frames, fadeOut }) => {
   const note = useCue(NOTE_AT);
 
   return (
     <PanelFrame
       frames={frames}
+      fadeOut={fadeOut}
       eyebrow="Nova lei em vigor"
       title={
         <>

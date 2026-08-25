@@ -1,6 +1,6 @@
 import { interpolate, useCurrentFrame } from "remotion";
 import { theme } from "../theme";
-import { PanelFrame, useCue } from "../PanelFrame";
+import { PanelFrame, useCue, type PanelProps } from "../PanelFrame";
 import { DocumentSheet, Stamp } from "../Marks";
 import { DocCheckIcon } from "../Icons";
 
@@ -37,7 +37,7 @@ const Chip: React.FC<{ atFrame: number; label: string }> = ({ atFrame, label }) 
   );
 };
 
-export const DocumentacaoPanel: React.FC<{ frames: number }> = ({ frames }) => {
+export const DocumentacaoPanel: React.FC<PanelProps> = ({ frames, fadeOut }) => {
   const frame = useCurrentFrame();
   const footer = useCue(FOOTER_AT);
 
@@ -48,7 +48,7 @@ export const DocumentacaoPanel: React.FC<{ frames: number }> = ({ frames }) => {
   });
 
   return (
-    <PanelFrame frames={frames} eyebrow="Etapa 03" title="Documentação" watermark="03">
+    <PanelFrame frames={frames} fadeOut={fadeOut} eyebrow="Etapa 03" title="Documentação" watermark="03">
       <div
         style={{
           position: "absolute",

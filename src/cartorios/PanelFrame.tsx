@@ -1,19 +1,30 @@
 import { AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
 import { theme } from "./theme";
 
+/** Todo painel recebe a duração da sua sequência e se deve esmaecer no fim. */
+export type PanelProps = { frames: number; fadeOut?: boolean };
+
 const IN_FRAMES = 16;
 const OUT_FRAMES = 7;
 
-/** Entrada e saída dos painéis: contida, sem deslizes largos. */
-export const usePanelReveal = (frames: number) => {
+/**
+ * Entrada e saída dos painéis: contida, sem deslizes largos.
+ *
+ * `fadeOut` fica falso quando o painel vai até o fim do bloco. Aí quem faz a
+ * passagem é a transição entre blocos, e esmaecer aqui também acenderia o plano
+ * gravado por baixo por uma fração de segundo antes dela — a piscada.
+ */
+export const usePanelReveal = (frames: number, fadeOut = true) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
   const enter = spring({ frame, fps, config: { damping: 200 }, durationInFrames: IN_FRAMES });
-  const exit = interpolate(frame, [frames - OUT_FRAMES, frames], [0, 1], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-  });
+  const exit = fadeOut
+    ? interpolate(frame, [frames - OUT_FRAMES, frames], [0, 1], {
+        extrapolateLeft: "clamp",
+        extrapolateRight: "clamp",
+      })
+    : 0;
 
   return { frame, enter, exit, opacity: enter * (1 - exit) };
 };
@@ -54,9 +65,10 @@ export const PanelFrame: React.FC<{
   title: React.ReactNode;
   watermark?: string;
   backdrop?: React.ReactNode;
+  fadeOut?: boolean;
   children: React.ReactNode;
-}> = ({ frames, eyebrow, title, watermark, backdrop, children }) => {
-  const { enter, opacity } = usePanelReveal(frames);
+}> = ({ frames, eyebrow, title, watermark, backdrop, fadeOut, children }) => {
+  const { enter, opacity } = usePanelReveal(frames, fadeOut);
 
   return (
     <AbsoluteFill style={{ opacity, fontFamily: theme.font }}>

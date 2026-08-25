@@ -34,7 +34,14 @@ export type NameCardCue = {
 export type PanelCue = {
   kind: PanelKind;
   from: number;
+  /** Ignorado quando `holdToEnd` está ligado. */
   to: number;
+  /**
+   * Segura o painel até o fim do bloco, em vez de esmaecer sozinho antes da
+   * transição. Sem isso, o painel some, o plano gravado acende por três ou
+   * quatro quadros e só então vem a transição — o que se lê como uma piscada.
+   */
+  holdToEnd?: boolean;
 };
 
 export type Block = {
@@ -88,7 +95,7 @@ export const blocks: Block[] = [
     ],
     panels: [
       { kind: "diagnostico", from: 1.1, to: 6.55 },
-      { kind: "tecnicos", from: 8.8, to: 17.06 },
+      { kind: "tecnicos", from: 8.8, to: 17.06, holdToEnd: true },
     ],
   },
   {
@@ -99,7 +106,7 @@ export const blocks: Block[] = [
     video: "videos/cartorios/03-documentacao.mp4",
     frames: 311,
     captions: [],
-    panels: [{ kind: "documentacao", from: 1.1, to: 10.1 }],
+    panels: [{ kind: "documentacao", from: 1.1, to: 10.1, holdToEnd: true }],
   },
   {
     // "Ainda dá tempo de se enquadrar à nova lei. Contate agora (...) antes que
