@@ -78,6 +78,10 @@ python3 tools/make_cartorios_theme.py public/audio/cartorios-theme.wav
 ffmpeg -i public/audio/cartorios-theme.wav -b:a 192k public/audio/cartorios-theme.mp3
 ```
 
+O painel da Etapa 01 usa uma imagem de apoio em `b-roll-diagnostico.mp4`, com a
+duração exata do painel — trocá-la exige recortar o novo material no mesmo
+tamanho.
+
 **Gerar as legendas**
 
 ```console

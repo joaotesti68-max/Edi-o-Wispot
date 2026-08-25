@@ -44,19 +44,24 @@ export const useCue = (atFrame: number, shift = 22) => {
 /**
  * Casca comum dos painéis de cobertura: fundo navy, malha técnica discreta,
  * cabeçalho com etiqueta e título, e o número da etapa em marca d'água.
+ *
+ * `backdrop` entra por cima do navy e por baixo de todo o resto — é onde vai
+ * uma imagem em movimento quando o painel tem uma.
  */
 export const PanelFrame: React.FC<{
   frames: number;
   eyebrow: string;
   title: React.ReactNode;
   watermark?: string;
+  backdrop?: React.ReactNode;
   children: React.ReactNode;
-}> = ({ frames, eyebrow, title, watermark, children }) => {
+}> = ({ frames, eyebrow, title, watermark, backdrop, children }) => {
   const { enter, opacity } = usePanelReveal(frames);
 
   return (
     <AbsoluteFill style={{ opacity, fontFamily: theme.font }}>
       <AbsoluteFill style={{ background: theme.panelBackground }} />
+      {backdrop}
       <AbsoluteFill style={{ background: theme.panelGlow }} />
 
       {/* Malha técnica: sugere planta/blueprint sem competir com o conteúdo. */}
