@@ -54,15 +54,15 @@ export const Chrome: React.FC = () => {
 
 /**
  * Volume da trilha. Os planos de fala estão normalizados em -18 LUFS e a trilha
- * mede -13,5 LUFS em ganho unitário; 0,15 põe o leito uns 12 LU abaixo da voz,
- * que é onde a música sustenta sem disputar com a narração. No cartão final não
- * há voz, então a trilha sobe e termina em fade.
+ * em -14 LUFS; 0,16 põe o leito uns 12 LU abaixo da voz, que é onde a música
+ * sustenta sem disputar com a narração. No cartão final não há voz, então a
+ * trilha sobe e termina em fade.
  */
 export const musicVolume = (frame: number) => {
   const bed = interpolate(
     frame,
     [0, 26, endcardStart - 10, endcardStart + 20],
-    [0, 0.15, 0.15, 0.4],
+    [0, 0.16, 0.16, 0.45],
     { extrapolateLeft: "clamp", extrapolateRight: "clamp" },
   );
   const tail = interpolate(frame, [totalFrames - 30, totalFrames - 2], [1, 0], {

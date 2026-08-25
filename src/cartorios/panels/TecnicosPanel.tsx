@@ -8,13 +8,13 @@ import { AccessIcon, BackupIcon, MonitorPulseIcon, UsersIcon } from "../Icons";
  * "tudo dentro do que a lei está exigindo".
  */
 const ITEMS = [
-  { at: 56, label: "Controle\nde acesso", Icon: AccessIcon },
-  { at: 87, label: "Backup", Icon: BackupIcon },
-  { at: 98, label: "Gestão\nde usuários", Icon: UsersIcon },
-  { at: 131, label: "Monitoramento\nativo", Icon: MonitorPulseIcon },
+  { at: 29, label: "Controle\nde acesso", Icon: AccessIcon },
+  { at: 55, label: "Backup", Icon: BackupIcon },
+  { at: 73, label: "Gestão\nde usuários", Icon: UsersIcon },
+  { at: 125, label: "Monitoramento\nativo", Icon: MonitorPulseIcon },
 ];
 
-const FOOTER_AT = 179;
+const FOOTER_AT = 190;
 
 const CARD_W = 416;
 const CARD_H = 360;

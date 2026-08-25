@@ -56,38 +56,39 @@ export const blocks: Block[] = [
     // vídeo aqui é para você..."
     id: "abertura",
     video: "videos/cartorios/01-abertura.mp4",
-    frames: 398,
+    frames: 340,
     // A tarja de abertura sairia repetindo a legenda; fica só a do trecho em
     // que ele apresenta o processo.
     captions: [
       {
-        from: 6.95,
-        to: 13.27,
+        from: 6.05,
+        to: 11.33,
         eyebrow: "ProAdvanced",
         text: "A adequação na prática",
       },
     ],
-    panels: [{ kind: "alerta", from: 2.6, to: 6.8 }],
+    // Entra e sai em cima das emendas do corte, que somem sob o painel.
+    panels: [{ kind: "alerta", from: 1.9, to: 5.9 }],
     // Sai antes do painel de alerta entrar, que ocupa o mesmo canto da tela.
-    nameCard: { name: "Vinícius Miranda", from: 0.45, to: 2.55 },
+    nameCard: { name: "Vinícius Miranda", from: 0.3, to: 1.9 },
   },
   {
     // "Primeiro, analisamos e identificamos onde estão os dados sensíveis (...)
     // Depois disso, a gente entra com a parte técnica (...)"
     id: "etapas",
     video: "videos/cartorios/02-etapas.mp4",
-    frames: 549,
+    frames: 520,
     captions: [
       {
-        from: 6.95,
-        to: 9.35,
+        from: 6.65,
+        to: 8.8,
         eyebrow: "Etapa 02",
         text: "Ajustes técnicos",
       },
     ],
     panels: [
-      { kind: "diagnostico", from: 1.3, to: 6.55 },
-      { kind: "tecnicos", from: 9.25, to: 17.75 },
+      { kind: "diagnostico", from: 1.1, to: 6.55 },
+      { kind: "tecnicos", from: 8.8, to: 17.06 },
     ],
   },
   {
@@ -96,16 +97,16 @@ export const blocks: Block[] = [
     // parâmetros exigidos por essa nova lei."
     id: "documentacao",
     video: "videos/cartorios/03-documentacao.mp4",
-    frames: 338,
+    frames: 311,
     captions: [],
-    panels: [{ kind: "documentacao", from: 1.35, to: 10.1 }],
+    panels: [{ kind: "documentacao", from: 1.1, to: 10.1 }],
   },
   {
     // "Ainda dá tempo de se enquadrar à nova lei. Contate agora (...) antes que
     // o prazo feche."
     id: "fechamento",
     video: "videos/cartorios/04-fechamento.mp4",
-    frames: 264,
+    frames: 251,
     // No fechamento a legenda já carrega a chamada; tarja aqui seria eco.
     captions: [],
     panels: [],

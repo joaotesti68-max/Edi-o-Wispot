@@ -64,19 +64,23 @@ contagens em `frames` correspondem exatamente aos mp4 em
 **Preparar os planos a partir das gravações originais**
 
 ```console
-tools/prepare-cartorios-clips.sh <pasta-com-os-mov>
+python3 tools/prepare_cartorios_clips.py <pasta-com-os-mov>
 ```
 
-Corta, aplica um leve tratamento de imagem e nivela o áudio de cada plano em
--18 LUFS. Mudar um ponto de corte exige atualizar o `frames` do bloco
-correspondente em `src/cartorios/content.ts`.
+Corta cada plano nos trechos listados no próprio script, emenda os cortes
+internos com um dissolve curto, aplica um leve tratamento de imagem e nivela o
+áudio em -18 LUFS. Mudar um ponto de corte exige atualizar o `frames` do bloco
+correspondente em `src/cartorios/content.ts` e gerar as legendas de novo.
 
-**Gerar a trilha**
+**Trilha**
 
-```console
-python3 tools/make_cartorios_theme.py public/audio/cartorios-theme.wav
-ffmpeg -i public/audio/cartorios-theme.wav -b:a 192k public/audio/cartorios-theme.mp3
-```
+A trilha em `public/audio/cartorios-trilha.mp3` é um trecho de 50 s de uma
+música licenciada, normalizado em -14 LUFS. Para trocar, corte no comprimento do
+vídeo, normalize no mesmo alvo e ajuste o leito em `musicVolume`
+(`src/cartorios/Chrome.tsx`) se a nova referência for outra.
+
+`tools/make_cartorios_theme.py` gera uma trilha sintética em ré menor, como
+alternativa quando não houver música licenciada à mão.
 
 O painel da Etapa 01 usa uma imagem de apoio em `b-roll-diagnostico.mp4`, com a
 duração exata do painel — trocá-la exige recortar o novo material no mesmo

@@ -152,9 +152,9 @@ def wrap(text):
     for split in range(1, len(words)):
         first = " ".join(words[:split])
         second = " ".join(words[split:])
-        if len(first) > MAX_LINE or len(second) > MAX_LINE:
-            continue
         cost = abs(len(first) - len(second))
+        # Estourar o limite de linha é o pior defeito: o texto sai da margem.
+        cost += 60 * (max(0, len(first) - MAX_LINE) + max(0, len(second) - MAX_LINE))
         # Também aqui, evita terminar a linha numa palavra que puxa a seguinte.
         if normalize(words[split - 1]) in WEAK_ENDINGS:
             cost += 14
@@ -195,6 +195,9 @@ def split_sentence(words):
     def chunk_cost(i, j):
         text = " ".join(w["text"] for w in words[i:j])
         if len(text) > MAX_CHARS:
+            return None
+        end = words[j]["start"] if j < n else words[-1]["start"] + TAIL
+        if end - words[i]["start"] > MAX_DUR:
             return None
         cost = (len(text) - target) ** 2
         last = normalize(words[j - 1]["text"])

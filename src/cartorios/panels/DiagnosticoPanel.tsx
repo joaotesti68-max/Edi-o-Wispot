@@ -6,32 +6,30 @@ import { ScanIcon } from "../Icons";
 const B_ROLL = "videos/cartorios/b-roll-diagnostico.mp4";
 
 const SCAN_FROM = 12; // ~0,4 s de painel
-const SCAN_TO = 96; // ~3,2 s
-const LABEL_MAP_AT = 27; // "…onde estão os dados sensíveis"
-const LABEL_RISK_AT = 120; // "…qual é a exposição atual do risco"
+const SCAN_TO = 108; // ~3,6 s
+const LABEL_MAP_AT = 24; // "…onde estão os dados sensíveis"
+const LABEL_RISK_AT = 111; // "…qual é a exposição atual do risco"
 
-const CARD_TOP = 470;
-const CARD_WIDTH = 928;
-const CARD_HEIGHT = 690;
+// A varredura corre a área livre entre o cabeçalho e as etiquetas.
+const SCAN_FROM_Y = 340;
+const SCAN_TO_Y = 1400;
 
 export const DiagnosticoPanel: React.FC<{ frames: number }> = ({ frames }) => {
   const frame = useCurrentFrame();
   const mapLabel = useCue(LABEL_MAP_AT);
   const riskLabel = useCue(LABEL_RISK_AT);
 
-  // A varredura desce a imagem uma vez, no gesto de quem está examinando.
   const scan = interpolate(frame, [SCAN_FROM, SCAN_TO], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
+  const scanY = SCAN_FROM_Y + scan * (SCAN_TO_Y - SCAN_FROM_Y);
   const scanVisible = interpolate(
     frame,
-    [SCAN_FROM, SCAN_FROM + 6, SCAN_TO - 10, SCAN_TO],
+    [SCAN_FROM, SCAN_FROM + 8, SCAN_TO - 12, SCAN_TO],
     [0, 1, 1, 0],
     { extrapolateLeft: "clamp", extrapolateRight: "clamp" },
   );
-
-  const cardReveal = useCue(4, 26);
 
   return (
     <PanelFrame
@@ -40,8 +38,9 @@ export const DiagnosticoPanel: React.FC<{ frames: number }> = ({ frames }) => {
       title="Diagnóstico"
       watermark="01"
       backdrop={
-        // A mesma imagem preenche o fundo, desfocada e escura: dá cor e
-        // movimento ao painel sem disputar leitura com o texto.
+        // A imagem de apoio ocupa a tela inteira. O escurecimento por cima é o
+        // que segura a leitura do painel: sem ele, o texto branco disputa com
+        // os monitores acesos da imagem.
         <AbsoluteFill>
           <OffthreadVideo
             src={staticFile(B_ROLL)}
@@ -50,61 +49,47 @@ export const DiagnosticoPanel: React.FC<{ frames: number }> = ({ frames }) => {
               width: "100%",
               height: "100%",
               objectFit: "cover",
-              filter: "blur(26px) brightness(0.42) saturate(0.9)",
-              transform: "scale(1.12)",
+              filter: "blur(3px) brightness(0.58) saturate(0.95)",
+              transform: "scale(1.04)",
             }}
           />
-          <AbsoluteFill style={{ background: "rgba(11,27,38,0.58)" }} />
+          <AbsoluteFill style={{ background: "rgba(11,27,38,0.50)" }} />
+          {/* Faixas mais escuras onde ficam o cabeçalho e as etiquetas. */}
+          <AbsoluteFill
+            style={{
+              background:
+                "linear-gradient(to bottom, rgba(8,20,29,0.78) 0%, rgba(8,20,29,0) 22%," +
+                " rgba(8,20,29,0) 62%, rgba(8,20,29,0.80) 88%)",
+            }}
+          />
         </AbsoluteFill>
       }
     >
+      {/* Linha de varredura, correndo a tela toda. */}
       <div
         style={{
           position: "absolute",
-          top: CARD_TOP,
-          left: (1080 - CARD_WIDTH) / 2,
-          width: CARD_WIDTH,
-          height: CARD_HEIGHT,
-          borderRadius: 22,
-          overflow: "hidden",
-          border: `1.5px solid ${theme.color.lineStrong}`,
-          boxShadow: "0 40px 90px rgba(0,0,0,0.45)",
-          ...cardReveal.style,
+          left: 0,
+          right: 0,
+          top: scanY,
+          height: 3,
+          background: theme.color.primaryLight,
+          boxShadow: "0 0 40px 8px rgba(32,163,214,0.55)",
+          opacity: scanVisible,
         }}
-      >
-        <OffthreadVideo
-          src={staticFile(B_ROLL)}
-          muted
-          style={{ width: "100%", height: "100%", objectFit: "cover" }}
-        />
-
-        {/* Linha de varredura, contida na imagem. */}
-        <div
-          style={{
-            position: "absolute",
-            left: 0,
-            right: 0,
-            top: scan * CARD_HEIGHT,
-            height: 3,
-            background: theme.color.primaryLight,
-            boxShadow: "0 0 34px 6px rgba(32,163,214,0.55)",
-            opacity: scanVisible,
-          }}
-        />
-        {/* Rastro logo acima da linha, para a varredura ter direção. */}
-        <div
-          style={{
-            position: "absolute",
-            left: 0,
-            right: 0,
-            top: 0,
-            height: scan * CARD_HEIGHT,
-            background:
-              "linear-gradient(to bottom, rgba(32,163,214,0) 72%, rgba(32,163,214,0.20) 100%)",
-            opacity: scanVisible,
-          }}
-        />
-      </div>
+      />
+      <div
+        style={{
+          position: "absolute",
+          left: 0,
+          right: 0,
+          top: SCAN_FROM_Y,
+          height: Math.max(0, scanY - SCAN_FROM_Y),
+          background:
+            "linear-gradient(to bottom, rgba(32,163,214,0) 68%, rgba(32,163,214,0.16) 100%)",
+          opacity: scanVisible,
+        }}
+      />
 
       <div
         style={{

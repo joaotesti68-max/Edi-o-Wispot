@@ -87,7 +87,7 @@ const BlockLayer: React.FC<{ block: Block }> = ({ block }) => (
 
 export const ProAdvancedCartorios: React.FC = () => (
   <AbsoluteFill style={{ fontFamily, background: theme.color.navy }}>
-    <Audio src={staticFile("audio/cartorios-theme.mp3")} volume={musicVolume} />
+    <Audio src={staticFile("audio/cartorios-trilha.mp3")} volume={musicVolume} />
 
     <TransitionSeries>
       {blocks.map((block, i) => (

@@ -7,10 +7,10 @@ import { DocCheckIcon } from "../Icons";
 // O documento vai sendo lavrado enquanto ele fala, e fecha em "…registros".
 const LINES_FROM = 6;
 const LINES_TO = 90;
-const CHIP_REGISTROS_AT = 95; // "…todos os registros"
-const CHIP_EVIDENCIAS_AT = 119; // "…e evidências"
-const STAMP_AT = 218; // "…está dentro dos parâmetros exigidos"
-const FOOTER_AT = 237;
+const CHIP_REGISTROS_AT = 89; // "…todos os registros"
+const CHIP_EVIDENCIAS_AT = 105; // "…e evidências"
+const STAMP_AT = 215; // "…está dentro dos parâmetros exigidos"
+const FOOTER_AT = 228;
 
 const Chip: React.FC<{ atFrame: number; label: string }> = ({ atFrame, label }) => {
   const cue = useCue(atFrame, 18);
