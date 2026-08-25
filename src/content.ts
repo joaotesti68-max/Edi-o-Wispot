@@ -124,8 +124,8 @@ export const totalDurationInFrames =
  * O fade final é curto de propósito: a faixa foi cortada para o tempo forte do
  * último compasso cair no quadro 1878, e o fade só entra depois dele.
  */
-const MUSIC_DUCKED = 0.16;
-const MUSIC_OPEN = 0.52;
+const MUSIC_DUCKED = 0.09;
+const MUSIC_OPEN = 0.38;
 const MUSIC_RAMP = 8;
 const MUSIC_FADE_OUT = 12;
 

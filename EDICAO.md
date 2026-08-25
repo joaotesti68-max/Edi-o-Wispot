@@ -133,7 +133,8 @@ Resultado: -19,1 dB RMS na abertura, -14,3 dB no trecho final, pico -0,5 dBFS.
 
 Por cima disso o volume ainda varia no `musicVolume` (`src/content.ts`): abre
 nos cards e no encerramento, onde ninguém fala, e recua para um leito por baixo
-da voz da Mari. As rampas caem dentro das transições. Para trocar a música,
-refaça o corte acima com a faixa nova — os números do compasso mudam com o BPM.
+da voz da Mari — cerca de 17 dB abaixo dela. As rampas caem dentro das
+transições. Para trocar a música, refaça o corte acima com a faixa nova — os
+números do compasso mudam com o BPM.
 
-Mixagem final: -16,2 LUFS integrado, pico real -0,8 dBTP.
+Mixagem final: -16,4 LUFS integrado, pico real -1,1 dBTP.
