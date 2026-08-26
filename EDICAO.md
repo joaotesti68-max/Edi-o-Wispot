@@ -33,10 +33,14 @@ Comando por clipe (rotação do iPhone já aplicada, áudio nivelado em -16 LUFS
 ```console
 ffmpeg -ss <inicio> -to <fim> -i <origem>.mov \
   -vf "scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,setsar=1" \
-  -c:v libx264 -preset slow -crf 19 -pix_fmt yuv420p -r 30 \
+  -c:v libx264 -preset veryslow -crf 14 -pix_fmt yuv420p -r 30 \
   -af "loudnorm=I=-16:TP=-1.5:LRA=11,afade=t=in:st=0:d=0.10" \
-  -c:a aac -b:a 192k -ar 48000 -ac 2 -movflags +faststart <saida>.mp4
+  -c:a aac -b:a 256k -ar 48000 -ac 2 -movflags +faststart <saida>.mp4
 ```
+
+O CRF 14 aqui é o teto de qualidade do vídeo inteiro: o render final reencoda
+por cima destes arquivos, então o que se perde no corte não volta. Os cinco
+clipes somam 52 MB — é o custo de não estrangular a fonte.
 
 ## Estrutura
 
@@ -60,6 +64,23 @@ não uma transcrição limpa. Se tiver sido outra palavra, é trocar em
 
 ```console
 npx remotion render FeatureDaSemana out/perguntas-respostas-agosto.mp4
+```
+
+O `remotion.config.ts` já carrega os parâmetros de qualidade: quadros
+intermediários em PNG (o padrão é JPEG, que é uma geração de perda no meio do
+caminho, e ainda marca a saída como `yuvj420p`), CRF 13, preset `veryslow` e
+áudio em 320k. Sai um master de ~56 MB a 6,8 Mbps.
+
+Para uma cópia menor sem perda visível, reencode em dois passes a partir do
+master — 3500k dá ~28 MiB com SSIM 0,998 contra ele:
+
+```console
+ffmpeg -i out/perguntas-respostas-agosto.mp4 -c:v libx264 -preset veryslow \
+  -b:v 3500k -pass 1 -an -f null /dev/null
+ffmpeg -i out/perguntas-respostas-agosto.mp4 -c:v libx264 -preset veryslow \
+  -b:v 3500k -pass 2 -pix_fmt yuv420p -profile:v high -level 4.1 \
+  -movflags +faststart -c:a aac -b:a 256k -ar 48000 \
+  out/perguntas-respostas-agosto-hq.mp4
 ```
 
 ## Marca
