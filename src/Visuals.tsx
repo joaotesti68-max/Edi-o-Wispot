@@ -7,17 +7,17 @@ const PANEL: React.CSSProperties = {
   background: "rgba(6,9,12,0.5)",
   border: `1.5px solid ${brand.alpha.light30}`,
   borderRadius: 20,
-  padding: "22px 26px",
+  padding: "16px 22px",
   display: "flex",
   flexDirection: "column",
-  gap: 16,
+  gap: 12,
   backdropFilter: "blur(6px)",
 };
 
 const LABEL: React.CSSProperties = {
   fontFamily: brand.fontFamily,
   fontWeight: 700,
-  fontSize: 25,
+  fontSize: 23,
   letterSpacing: 0.6,
   color: brand.colors.white,
   textTransform: "uppercase",
@@ -37,13 +37,13 @@ const useEnter = (delay: number) => {
 
 const DeadlineBar: React.FC = () => {
   const frame = useCurrentFrame();
-  const { opacity, shift } = useEnter(12);
-  const fill = interpolate(frame, [18, 64], [0, 0.82], {
+  const { opacity, shift } = useEnter(15);
+  const fill = interpolate(frame, [22, 80], [0, 0.82], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
   // Pulso no marcador de prazo, para o olho voltar ali.
-  const pulse = 1 + Math.sin(frame / 6) * 0.06;
+  const pulse = 1 + Math.sin(frame / 7.5) * 0.06;
 
   return (
     <div style={{ ...PANEL, opacity, transform: `translateY(${shift}px)` }}>
@@ -51,7 +51,7 @@ const DeadlineBar: React.FC = () => {
         <ScaleIcon size={26} color={brand.colors.primaryLight} strokeWidth={2.2} />
         <div style={LABEL}>Adequação obrigatória</div>
       </div>
-      <div style={{ position: "relative", height: 16 }}>
+      <div style={{ position: "relative", height: 14 }}>
         <div
           style={{
             position: "absolute",
@@ -103,7 +103,7 @@ const DeadlineBar: React.FC = () => {
 const CalendarWindow: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-  const { opacity, shift } = useEnter(12);
+  const { opacity, shift } = useEnter(15);
   const months = ["Ago", "Set", "Out"];
 
   return (
@@ -115,7 +115,7 @@ const CalendarWindow: React.FC = () => {
       <div style={{ display: "flex", gap: 14 }}>
         {months.map((month, i) => {
           const chip = spring({
-            frame: frame - 20 - i * 7,
+            frame: frame - 25 - i * 9,
             fps,
             config: { damping: 14, mass: 0.6 },
           });
@@ -125,12 +125,12 @@ const CalendarWindow: React.FC = () => {
               style={{
                 flex: 1,
                 textAlign: "center",
-                padding: "16px 0",
+                padding: "12px 0",
                 borderRadius: 14,
                 background: `linear-gradient(135deg, ${brand.colors.primary}, ${brand.colors.primaryLight})`,
                 fontFamily: brand.fontFamily,
                 fontWeight: 800,
-                fontSize: 42,
+                fontSize: 34,
                 color: brand.colors.white,
                 textTransform: "uppercase",
                 letterSpacing: 1,
@@ -149,13 +149,13 @@ const CalendarWindow: React.FC = () => {
 
 const RiskMeter: React.FC = () => {
   const frame = useCurrentFrame();
-  const { opacity, shift } = useEnter(12);
+  const { opacity, shift } = useEnter(15);
   const blocks = 8;
-  const lit = interpolate(frame, [22, 78], [0, blocks], {
+  const lit = interpolate(frame, [28, 98], [0, blocks], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
-  const arrow = interpolate(frame, [22, 78], [10, -6], {
+  const arrow = interpolate(frame, [28, 98], [10, -6], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
@@ -192,13 +192,13 @@ const RiskMeter: React.FC = () => {
 const ProcessSteps: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-  const { opacity, shift } = useEnter(10);
+  const { opacity, shift } = useEnter(12);
   const steps = ["Levantamento de risco", "Plano e execução", "Documentação final"];
 
   return (
-    <div style={{ ...PANEL, opacity, transform: `translateY(${shift}px)`, gap: 12 }}>
+    <div style={{ ...PANEL, opacity, transform: `translateY(${shift}px)`, gap: 9 }}>
       {steps.map((step, i) => {
-        const item = spring({ frame: frame - 16 - i * 14, fps, config: { damping: 15, mass: 0.6 } });
+        const item = spring({ frame: frame - 20 - i * 18, fps, config: { damping: 15, mass: 0.6 } });
         return (
           <div
             key={step}
@@ -212,8 +212,8 @@ const ProcessSteps: React.FC = () => {
           >
             <div
               style={{
-                width: 40,
-                height: 40,
+                width: 34,
+                height: 34,
                 borderRadius: 12,
                 background: brand.colors.primary,
                 display: "flex",
@@ -228,7 +228,7 @@ const ProcessSteps: React.FC = () => {
               style={{
                 fontFamily: brand.fontFamily,
                 fontWeight: 700,
-                fontSize: 31,
+                fontSize: 28,
                 color: brand.colors.white,
               }}
             >
@@ -243,7 +243,7 @@ const ProcessSteps: React.FC = () => {
           alignItems: "center",
           gap: 10,
           marginTop: 4,
-          opacity: interpolate(frame, [58, 72], [0, 0.85], {
+          opacity: interpolate(frame, [72, 90], [0, 0.85], {
             extrapolateLeft: "clamp",
             extrapolateRight: "clamp",
           }),
@@ -254,7 +254,7 @@ const ProcessSteps: React.FC = () => {
           style={{
             fontFamily: brand.fontFamily,
             fontWeight: 700,
-            fontSize: 24,
+            fontSize: 22,
             color: brand.colors.white,
           }}
         >
@@ -267,10 +267,10 @@ const ProcessSteps: React.FC = () => {
 
 const UrgencyCta: React.FC = () => {
   const frame = useCurrentFrame();
-  const { opacity, shift } = useEnter(10);
+  const { opacity, shift } = useEnter(12);
   // Ponteiro girando: leitura imediata de tempo correndo.
-  const hand = interpolate(frame, [0, 96], [0, 360]);
-  const pulse = 1 + Math.sin(frame / 7) * 0.03;
+  const hand = interpolate(frame, [0, 120], [0, 360]);
+  const pulse = 1 + Math.sin(frame / 9) * 0.03;
 
   return (
     <div
@@ -303,7 +303,7 @@ const UrgencyCta: React.FC = () => {
         style={{
           fontFamily: brand.fontFamily,
           fontWeight: 800,
-          fontSize: 38,
+          fontSize: 34,
           color: brand.colors.white,
           lineHeight: 1.15,
         }}

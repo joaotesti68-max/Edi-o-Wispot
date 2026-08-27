@@ -30,10 +30,16 @@ const ffprobe = execFileSync("node", ["-p", "require('@ffprobe-installer/ffprobe
 
 const RAW_DIR = path.join(root, "footage", "raw");
 const OUT_DIR = path.join(root, "public", "videos");
-const FPS = 24;
+const FPS = 30;
 
-// Só pausas acima disso viram corte. Abaixo é respiração natural da fala.
+// Pausas acima disso são removidas de fato.
 const MIN_SILENCE = 0.62;
+// Pausas menores ficam no vídeo, mas servem de emenda: são as respiradas
+// entre frases, onde um corte de enquadramento passa despercebido.
+const PUNCH_SILENCE = 0.18;
+// Só troca de enquadramento se o trecho atual já durou isso, senão o corte
+// vira nervosismo em vez de ritmo.
+const PUNCH_MIN_HOLD = 2.4;
 // Sobra mantida nas bordas do corte, pra não decepar o ataque das palavras.
 const PAD = 0.14;
 // Nível considerado silêncio. Grave de celular tem ruído de fundo, então
@@ -63,7 +69,7 @@ async function detectSilences(file) {
   // silencedetect escreve no stderr; um exit != 0 aqui é falha real.
   const { stderr } = await execFileAsync(
     ffmpeg,
-    ["-hide_banner", "-i", file, "-af", `silencedetect=noise=${NOISE_FLOOR}:d=${MIN_SILENCE}`, "-f", "null", "-"],
+    ["-hide_banner", "-i", file, "-af", `silencedetect=noise=${NOISE_FLOOR}:d=${PUNCH_SILENCE}`, "-f", "null", "-"],
     { maxBuffer: 32 * 1024 * 1024 },
   );
 
@@ -90,15 +96,32 @@ function speechSegments(duration, silences) {
   const segments = [];
   let cursor = 0;
 
+  const push = (from, to, cut) => {
+    if (to - from >= MIN_SPEECH) segments.push({ from, to, cut });
+  };
+
   for (const silence of silences) {
-    const speechEnd = Math.min(silence.start + PAD, duration);
-    if (speechEnd - cursor >= MIN_SPEECH) segments.push({ from: cursor, to: speechEnd });
-    cursor = Math.max(cursor, Math.min(silence.end - PAD, duration));
+    const length = Math.min(silence.end, duration) - silence.start;
+
+    if (length >= MIN_SILENCE) {
+      // Pausa longa: sai do vídeo, com sobra nas bordas para não decepar
+      // o ataque das palavras.
+      push(cursor, Math.min(silence.start + PAD, duration), "silencio");
+      cursor = Math.max(cursor, Math.min(silence.end - PAD, duration));
+      continue;
+    }
+
+    // Pausa curta: fica no vídeo, mas vira emenda de enquadramento.
+    const at = Math.min(silence.start + length / 2, duration);
+    if (at - cursor >= PUNCH_MIN_HOLD && duration - at >= MIN_SPEECH) {
+      push(cursor, at, "punch");
+      cursor = at;
+    }
   }
-  if (duration - cursor >= MIN_SPEECH) segments.push({ from: cursor, to: duration });
+  push(cursor, duration, "fim");
 
   // Sem fala detectada, devolve o clipe inteiro em vez de nada.
-  return segments.length > 0 ? segments : [{ from: 0, to: duration }];
+  return segments.length > 0 ? segments : [{ from: 0, to: duration, cut: "fim" }];
 }
 
 async function transcode(input, output) {
@@ -109,6 +132,9 @@ async function transcode(input, output) {
       // Enquadra em 1080x1920 cobrindo a tela, sem distorcer.
       "-vf", "scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,fps=" + FPS,
       "-c:v", "libx264", "-preset", "medium", "-crf", "20", "-pix_fmt", "yuv420p",
+      // Normaliza cada take para o padrão de streaming: são gravações
+      // separadas, e sem isso um clipe entra mais alto que o outro.
+      "-af", "loudnorm=I=-16:TP=-1.5:LRA=11",
       "-c:a", "aac", "-b:a", "160k", "-ar", "48000",
       "-movflags", "+faststart",
       output,
@@ -142,9 +168,10 @@ const main = async () => {
     const segments = speechSegments(duration, silences);
 
     const kept = segments.reduce((sum, s) => sum + (s.to - s.from), 0);
+    const punches = segments.filter((s) => s.cut === "punch").length;
     console.log(
-      `${duration.toFixed(1)}s → ${kept.toFixed(1)}s em ${segments.length} trecho(s) ` +
-        `(-${(duration - kept).toFixed(1)}s de silêncio)`,
+      `${duration.toFixed(1)}s → ${kept.toFixed(1)}s ` +
+        `(-${(duration - kept).toFixed(1)}s de silêncio, ${punches} punch)`,
     );
 
     clips.push({

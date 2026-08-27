@@ -4,11 +4,11 @@ import { brand } from "./brand";
 
 export const ProgressBar: React.FC = () => {
   const frame = useCurrentFrame();
-  const fadeIn = interpolate(frame, [0, 12], [0, 1], {
+  const fadeIn = interpolate(frame, [0, 15], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
-  const fadeOut = interpolate(frame, [outroRange.start - 10, outroRange.start + 4], [1, 0], {
+  const fadeOut = interpolate(frame, [outroRange.start - 12, outroRange.start + 5], [1, 0], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });

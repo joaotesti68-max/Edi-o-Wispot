@@ -1,30 +1,25 @@
 import { footage } from "./footage";
 
-export const FPS = 24;
+export const FPS = 30;
 
 /**
- * Mapa fala → clipe gravado. É o único ponto que precisa mudar se a ordem
- * das tomadas do João for diferente: os ids vêm do nome do arquivo em
- * footage/raw/ (IMG_7949.MOV vira "img-7949").
- *
- * ATENÇÃO: os valores abaixo ainda apontam para clipes de teste montados a
- * partir do vídeo anterior, porque as gravações do João não chegaram ao
- * repositório. Assim que os arquivos estiverem em footage/raw/, rode
- * `npm run footage` e troque os ids aqui pelos reais.
+ * Mapa fala → tomadas. Cada bloco pode juntar mais de um take: são 8 clipes
+ * para 5 blocos, então a fala de um bloco às vezes vem partida em dois.
+ * Os ids saem do nome do arquivo em footage/raw/ (IMG_7949.MOV → "img-7949").
  */
 export const CLIP_IDS = {
-  abertura: "standin-abertura",
-  prazo: "standin-prazo",
-  risco: "standin-risco",
-  time: "standin-time",
-  fechamento: "standin-fechamento",
+  abertura: ["img-7949"],
+  prazo: ["img-7952"],
+  risco: ["img-7954"],
+  time: ["img-7956"],
+  fechamento: ["img-7958"],
 };
 
 export type VisualKey = "law" | "calendar" | "risk" | "steps" | "clock";
 
 export type Block = {
   id: string;
-  clip: string;
+  clips: string[];
   kicker: string;
   headline: string;
   /** Trecho do headline que recebe destaque na cor da marca. */
@@ -35,13 +30,13 @@ export type Block = {
   script: string;
 };
 
-export const OUTRO_FRAMES = 84;
-export const TRANSITION_FRAMES = 7;
+export const OUTRO_FRAMES = 105;
+export const TRANSITION_FRAMES = 9;
 
 export const blocks: Block[] = [
   {
     id: "abertura",
-    clip: CLIP_IDS.abertura,
+    clips: CLIP_IDS.abertura,
     kicker: "Nova lei · Cartórios",
     headline: "Faltam poucas semanas para o fim do prazo",
     highlight: "poucas semanas",
@@ -54,7 +49,7 @@ export const blocks: Block[] = [
   },
   {
     id: "prazo",
-    clip: CLIP_IDS.prazo,
+    clips: CLIP_IDS.prazo,
     kicker: "O que a lei exige",
     headline: "Comprovar a adequação entre agosto e outubro",
     highlight: "agosto e outubro",
@@ -63,7 +58,7 @@ export const blocks: Block[] = [
   },
   {
     id: "risco",
-    clip: CLIP_IDS.risco,
+    clips: CLIP_IDS.risco,
     kicker: "Depois do prazo",
     headline: "O risco de penalidade e auditoria aumenta",
     highlight: "aumenta",
@@ -72,7 +67,7 @@ export const blocks: Block[] = [
   },
   {
     id: "time",
-    clip: CLIP_IDS.time,
+    clips: CLIP_IDS.time,
     kicker: "Como a gente conduz",
     headline: "Do levantamento de risco à documentação final",
     highlight: "documentação final",
@@ -83,7 +78,7 @@ export const blocks: Block[] = [
   },
   {
     id: "fechamento",
-    clip: CLIP_IDS.fechamento,
+    clips: CLIP_IDS.fechamento,
     kicker: "Última chamada",
     headline: "O prazo não espera",
     highlight: "não espera",
@@ -94,20 +89,25 @@ export const blocks: Block[] = [
   },
 ];
 
-export const clipFor = (block: Block) => {
-  const clip = footage[block.clip];
-  if (!clip) {
-    throw new Error(
-      `Clipe "${block.clip}" não existe em src/footage.ts. ` +
-        `Coloque o arquivo em footage/raw/ e rode "npm run footage".`,
-    );
-  }
-  return clip;
-};
+export const clipsFor = (block: Block) =>
+  block.clips.map((id) => {
+    const clip = footage[id];
+    if (!clip) {
+      throw new Error(
+        `Clipe "${id}" não existe em src/footage.ts. ` +
+          `Coloque o arquivo em footage/raw/ e rode "npm run footage".`,
+      );
+    }
+    return clip;
+  });
 
 /** Duração do bloco = só os trechos de fala, já sem os silêncios longos. */
 export const blockDuration = (block: Block) =>
-  clipFor(block).segments.reduce((sum, s) => sum + (s.trimAfter - s.trimBefore), 0);
+  clipsFor(block).reduce(
+    (total, clip) =>
+      total + clip.segments.reduce((sum, s) => sum + (s.trimAfter - s.trimBefore), 0),
+    0,
+  );
 
 // Espelha como o TransitionSeries sobrepõe as sequências, para a barra de
 // progresso saber a faixa de frames de cada bloco sem repetir a conta.

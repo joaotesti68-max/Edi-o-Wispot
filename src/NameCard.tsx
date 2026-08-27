@@ -1,8 +1,8 @@
 import { interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
 import { brand } from "./brand";
 
-const IN_AT = 8;
-const OUT_AT = 92;
+const IN_AT = 10;
+const OUT_AT = 115;
 
 /** Identifica quem fala logo na abertura e sai antes de virar poluição. */
 export const NameCard: React.FC<{ name: string }> = ({ name }) => {
@@ -10,7 +10,7 @@ export const NameCard: React.FC<{ name: string }> = ({ name }) => {
   const { fps } = useVideoConfig();
 
   const enter = spring({ frame: frame - IN_AT, fps, config: { damping: 16, mass: 0.7 } });
-  const opacity = interpolate(frame, [IN_AT, IN_AT + 10, OUT_AT, OUT_AT + 14], [0, 1, 1, 0], {
+  const opacity = interpolate(frame, [IN_AT, IN_AT + 12, OUT_AT, OUT_AT + 18], [0, 1, 1, 0], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });

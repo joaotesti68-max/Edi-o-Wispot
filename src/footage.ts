@@ -11,75 +11,79 @@ export type FootageClip = {
 };
 
 export const footage: Record<string, FootageClip> = {
-  "standin-abertura": {
-    "id": "standin-abertura",
-    "source": "standin-abertura.mov",
-    "file": "videos/standin-abertura.mp4",
-    "durationInFrames": 129,
+  "img-7949": {
+    "id": "img-7949",
+    "source": "IMG_7949.MOV",
+    "file": "videos/img-7949.mp4",
+    "durationInFrames": 377,
     "segments": [
       {
         "trimBefore": 0,
-        "trimAfter": 42
+        "trimAfter": 15
       },
       {
-        "trimBefore": 59,
-        "trimAfter": 129
-      }
-    ]
-  },
-  "standin-fechamento": {
-    "id": "standin-fechamento",
-    "source": "standin-fechamento.mov",
-    "file": "videos/standin-fechamento.mp4",
-    "durationInFrames": 154,
-    "segments": [
-      {
-        "trimBefore": 0,
-        "trimAfter": 154
-      }
-    ]
-  },
-  "standin-prazo": {
-    "id": "standin-prazo",
-    "source": "standin-prazo.mov",
-    "file": "videos/standin-prazo.mp4",
-    "durationInFrames": 175,
-    "segments": [
-      {
-        "trimBefore": 0,
-        "trimAfter": 75
+        "trimBefore": 33,
+        "trimAfter": 130
       },
       {
-        "trimBefore": 98,
-        "trimAfter": 175
-      }
-    ]
-  },
-  "standin-risco": {
-    "id": "standin-risco",
-    "source": "standin-risco.mov",
-    "file": "videos/standin-risco.mp4",
-    "durationInFrames": 244,
-    "segments": [
-      {
-        "trimBefore": 0,
-        "trimAfter": 244
-      }
-    ]
-  },
-  "standin-time": {
-    "id": "standin-time",
-    "source": "standin-time.mov",
-    "file": "videos/standin-time.mp4",
-    "durationInFrames": 305,
-    "segments": [
-      {
-        "trimBefore": 0,
-        "trimAfter": 124
+        "trimBefore": 130,
+        "trimAfter": 246
       },
       {
-        "trimBefore": 151,
-        "trimAfter": 305
+        "trimBefore": 246,
+        "trimAfter": 364
+      },
+      {
+        "trimBefore": 364,
+        "trimAfter": 378
+      }
+    ]
+  },
+  "img-7952": {
+    "id": "img-7952",
+    "source": "IMG_7952.MOV",
+    "file": "videos/img-7952.mp4",
+    "durationInFrames": 125,
+    "segments": [
+      {
+        "trimBefore": 0,
+        "trimAfter": 125
+      }
+    ]
+  },
+  "img-7954": {
+    "id": "img-7954",
+    "source": "IMG_7954.MOV",
+    "file": "videos/img-7954.mp4",
+    "durationInFrames": 114,
+    "segments": [
+      {
+        "trimBefore": 0,
+        "trimAfter": 115
+      }
+    ]
+  },
+  "img-7956": {
+    "id": "img-7956",
+    "source": "IMG_7956.MOV",
+    "file": "videos/img-7956.mp4",
+    "durationInFrames": 168,
+    "segments": [
+      {
+        "trimBefore": 0,
+        "trimAfter": 168
+      }
+    ]
+  },
+  "img-7958": {
+    "id": "img-7958",
+    "source": "IMG_7958.MOV",
+    "file": "videos/img-7958.mp4",
+    "durationInFrames": 165,
+    "segments": [
+      {
+        "trimBefore": 40,
+        "trimAfter": 149
       }
     ]
   }

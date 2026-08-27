@@ -32,7 +32,7 @@ const SegmentView: React.FC<{
   const framing = FRAMINGS[framingIndex % FRAMINGS.length];
 
   // Assentamento curto no corte: entra um pouco maior e acomoda.
-  const settle = spring({ frame, fps, durationInFrames: 14, config: { damping: 200, mass: 0.5 } });
+  const settle = spring({ frame, fps, durationInFrames: 18, config: { damping: 200, mass: 0.5 } });
   const punch = interpolate(settle, [0, 1], [framing.scale * 1.06, framing.scale]);
 
   // Deriva lenta ao longo do trecho, para nada ficar completamente estático.
@@ -41,8 +41,8 @@ const SegmentView: React.FC<{
   });
 
   // Respiro tipo câmera na mão, de amplitude baixa para não embrulhar.
-  const swayX = Math.sin(frame / 37) * 3.5;
-  const swayY = Math.cos(frame / 43) * 2.5;
+  const swayX = Math.sin(frame / 46) * 3.5;
+  const swayY = Math.cos(frame / 54) * 2.5;
 
   return (
     <AbsoluteFill
@@ -61,22 +61,31 @@ const SegmentView: React.FC<{
 };
 
 /**
- * Toca os trechos de fala do clipe em sequência, pulando os silêncios longos
- * que o prepare-footage detectou.
+ * Toca os trechos de fala do bloco em sequência: pula os silêncios longos e
+ * troca de enquadramento em cada emenda, seja ela um corte de silêncio, uma
+ * respirada ou a virada de um take para o outro.
  */
-export const Clip: React.FC<{ clip: FootageClip; framingOffset?: number }> = ({
-  clip,
+export const Clip: React.FC<{ clips: FootageClip[]; framingOffset?: number }> = ({
+  clips,
   framingOffset = 0,
 }) => {
+  const pieces = clips.flatMap((clip) =>
+    clip.segments.map((segment) => ({ file: clip.file, id: clip.id, segment })),
+  );
+
   return (
     <AbsoluteFill style={{ background: "#000" }}>
       <Series>
-        {clip.segments.map((segment, i) => (
+        {pieces.map((piece, i) => (
           <Series.Sequence
-            key={`${segment.trimBefore}-${segment.trimAfter}`}
-            durationInFrames={segment.trimAfter - segment.trimBefore}
+            key={`${piece.id}-${piece.segment.trimBefore}-${piece.segment.trimAfter}`}
+            durationInFrames={piece.segment.trimAfter - piece.segment.trimBefore}
           >
-            <SegmentView file={clip.file} segment={segment} framingIndex={framingOffset + i} />
+            <SegmentView
+              file={piece.file}
+              segment={piece.segment}
+              framingIndex={framingOffset + i}
+            />
           </Series.Sequence>
         ))}
       </Series>

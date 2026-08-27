@@ -12,7 +12,7 @@ export const Music: React.FC = () => {
       volume={(frame) =>
         interpolate(
           frame,
-          [0, 20, 46, outroRange.start - 24, outroRange.start, totalDurationInFrames - 16, totalDurationInFrames],
+          [0, 25, 58, outroRange.start - 30, outroRange.start, totalDurationInFrames - 20, totalDurationInFrames],
           [0, 0.34, 0.17, 0.17, 0.36, 0.36, 0],
           { extrapolateLeft: "clamp", extrapolateRight: "clamp" },
         )

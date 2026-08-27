@@ -24,9 +24,9 @@ export const Headline: React.FC<{ kicker: string; headline: string; highlight?: 
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  const kickerIn = spring({ frame: frame - 4, fps, config: { damping: 16, mass: 0.6 } });
-  const headlineIn = spring({ frame: frame - 9, fps, config: { damping: 16, mass: 0.7 } });
-  const sweep = interpolate(frame, [22, 40], [0, 1], {
+  const kickerIn = spring({ frame: frame - 5, fps, config: { damping: 16, mass: 0.6 } });
+  const headlineIn = spring({ frame: frame - 11, fps, config: { damping: 16, mass: 0.7 } });
+  const sweep = interpolate(frame, [28, 50], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
@@ -61,7 +61,7 @@ export const Headline: React.FC<{ kicker: string; headline: string; highlight?: 
         style={{
           fontFamily: brand.fontFamily,
           fontWeight: 800,
-          fontSize: 60,
+          fontSize: 52,
           lineHeight: 1.1,
           color: brand.colors.white,
           letterSpacing: -0.6,

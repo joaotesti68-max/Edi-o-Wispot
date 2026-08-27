@@ -14,9 +14,9 @@ export const EndCard: React.FC = () => {
   const { fps } = useVideoConfig();
 
   const logoIn = spring({ frame, fps, config: { damping: 15, mass: 0.7 } });
-  const ctaIn = spring({ frame: frame - 14, fps, config: { damping: 16 } });
-  const subIn = spring({ frame: frame - 24, fps, config: { damping: 16 } });
-  const siteIn = spring({ frame: frame - 34, fps, config: { damping: 16 } });
+  const ctaIn = spring({ frame: frame - 18, fps, config: { damping: 16 } });
+  const subIn = spring({ frame: frame - 30, fps, config: { damping: 16 } });
+  const siteIn = spring({ frame: frame - 43, fps, config: { damping: 16 } });
 
   return (
     <AbsoluteFill
