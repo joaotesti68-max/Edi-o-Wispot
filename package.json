@@ -16,6 +16,8 @@
     "tailwindcss": "4.0.0"
   },
   "devDependencies": {
+    "@ffmpeg-installer/ffmpeg": "^1.1.0",
+    "@ffprobe-installer/ffprobe": "^2.1.2",
     "@remotion/eslint-config-flat": "4.0.508",
     "@types/react": "19.2.7",
     "@types/web": "0.0.166",
@@ -27,7 +29,8 @@
     "dev": "remotion studio",
     "build": "remotion bundle",
     "upgrade": "remotion upgrade",
-    "lint": "eslint src && tsc"
+    "lint": "eslint src && tsc",
+    "footage": "node scripts/prepare-footage.mjs"
   },
   "sideEffects": [
     "*.css"

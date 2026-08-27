@@ -15,17 +15,6 @@ export const AlertIcon: React.FC<IconProps> = ({ size = 40, color = "#fff", stro
   </svg>
 );
 
-export const ServerIcon: React.FC<IconProps> = ({ size = 40, color = "#fff", strokeWidth = 2 }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" stroke={color} {...base(strokeWidth)}>
-    <rect x="3" y="3.5" width="18" height="7" rx="1.8" />
-    <rect x="3" y="13.5" width="18" height="7" rx="1.8" />
-    <circle cx="17.3" cy="7" r="0.9" fill={color} stroke="none" />
-    <circle cx="17.3" cy="17" r="0.9" fill={color} stroke="none" />
-    <line x1="6.2" y1="7" x2="10" y2="7" />
-    <line x1="6.2" y1="17" x2="10" y2="17" />
-  </svg>
-);
-
 export const ShieldCheckIcon: React.FC<IconProps> = ({ size = 40, color = "#fff", strokeWidth = 2 }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" stroke={color} {...base(strokeWidth)}>
     <path d="M12 2.5 L4.5 5.5 V11 C4.5 16 7.8 20 12 21.5 C16.2 20 19.5 16 19.5 11 V5.5 Z" />
@@ -40,10 +29,44 @@ export const TrendingUpIcon: React.FC<IconProps> = ({ size = 40, color = "#fff",
   </svg>
 );
 
-export const ChatIcon: React.FC<IconProps> = ({ size = 40, color = "#fff", strokeWidth = 2 }) => (
+export const CalendarIcon: React.FC<IconProps> = ({ size = 40, color = "#fff", strokeWidth = 2 }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" stroke={color} {...base(strokeWidth)}>
-    <path d="M4 4.5 H20 A1.5 1.5 0 0 1 21.5 6 V15 A1.5 1.5 0 0 1 20 16.5 H9 L4.5 20.5 V16.5 H4 A1.5 1.5 0 0 1 2.5 15 V6 A1.5 1.5 0 0 1 4 4.5 Z" />
-    <line x1="7" y1="9" x2="17" y2="9" />
-    <line x1="7" y1="12.3" x2="14" y2="12.3" />
+    <rect x="3.2" y="5" width="17.6" height="16" rx="2.2" />
+    <line x1="3.2" y1="9.6" x2="20.8" y2="9.6" />
+    <line x1="8" y1="3" x2="8" y2="6.4" />
+    <line x1="16" y1="3" x2="16" y2="6.4" />
+  </svg>
+);
+
+export const ClockIcon: React.FC<IconProps> = ({ size = 40, color = "#fff", strokeWidth = 2 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" stroke={color} {...base(strokeWidth)}>
+    <circle cx="12" cy="12" r="9" />
+    <polyline points="12,6.6 12,12 16,14.2" />
+  </svg>
+);
+
+export const CheckIcon: React.FC<IconProps> = ({ size = 40, color = "#fff", strokeWidth = 2 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" stroke={color} {...base(strokeWidth)}>
+    <polyline points="4.5,12.6 9.6,17.7 19.5,6.8" />
+  </svg>
+);
+
+export const DocIcon: React.FC<IconProps> = ({ size = 40, color = "#fff", strokeWidth = 2 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" stroke={color} {...base(strokeWidth)}>
+    <path d="M6 2.8 H14 L19 7.8 V21.2 H6 Z" />
+    <polyline points="13.6,3 13.6,8.2 19,8.2" />
+    <line x1="9" y1="13" x2="16" y2="13" />
+    <line x1="9" y1="16.6" x2="14" y2="16.6" />
+  </svg>
+);
+
+export const ScaleIcon: React.FC<IconProps> = ({ size = 40, color = "#fff", strokeWidth = 2 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" stroke={color} {...base(strokeWidth)}>
+    <line x1="12" y1="4.2" x2="12" y2="20.5" />
+    <line x1="7" y1="20.5" x2="17" y2="20.5" />
+    <line x1="4.5" y1="7.4" x2="19.5" y2="7.4" />
+    <path d="M4.6 7.6 L1.8 14.2 H7.4 Z" />
+    <path d="M19.4 7.6 L16.6 14.2 H22.2 Z" />
+    <circle cx="12" cy="4.2" r="1.4" />
   </svg>
 );

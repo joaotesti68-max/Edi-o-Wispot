@@ -6,3 +6,8 @@ build
 
 # Ignore the output video from Git but not videos you import into src/.
 out
+
+# Material bruto de gravação (entra em footage/raw e é convertido por npm run footage)
+footage/raw
+# Clipes de teste gerados a partir do vídeo anterior
+public/videos/standin-*.mp4

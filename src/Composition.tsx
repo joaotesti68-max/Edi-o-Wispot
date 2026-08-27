@@ -1,17 +1,25 @@
 import React from "react";
-import { AbsoluteFill, Audio, Composition, staticFile } from "remotion";
+import { AbsoluteFill, Composition } from "remotion";
 import { TransitionSeries, linearTiming } from "@remotion/transitions";
 import { fade } from "@remotion/transitions/fade";
-import { VideoBlock } from "./VideoBlock";
+import { BlockView } from "./BlockView";
 import { EndCard } from "./EndCard";
+import { Music } from "./Music";
 import { ProgressBar } from "./ProgressBar";
 import { fontFamily } from "./loadFont";
-import { FPS, OUTRO_FRAMES, TRANSITION_FRAMES, blocks, totalDurationInFrames } from "./content";
+import {
+  FPS,
+  OUTRO_FRAMES,
+  TRANSITION_FRAMES,
+  blockDuration,
+  blocks,
+  totalDurationInFrames,
+} from "./content";
 
 export const ProAdvancedVideo: React.FC = () => {
   return (
     <AbsoluteFill style={{ fontFamily }}>
-      <Audio src={staticFile("audio/theme.mp3")} volume={0.42} />
+      <Music />
 
       <TransitionSeries>
         {blocks.map((block, i) => (
@@ -22,8 +30,8 @@ export const ProAdvancedVideo: React.FC = () => {
                 timing={linearTiming({ durationInFrames: TRANSITION_FRAMES })}
               />
             )}
-            <TransitionSeries.Sequence durationInFrames={block.durationInFrames}>
-              <VideoBlock block={block} />
+            <TransitionSeries.Sequence durationInFrames={blockDuration(block)}>
+              <BlockView block={block} index={i} />
             </TransitionSeries.Sequence>
           </React.Fragment>
         ))}

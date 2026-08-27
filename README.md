@@ -1,54 +1,55 @@
-# Remotion video
+# Vídeo ProAdvanced — prazo da nova lei para cartórios
 
-<p align="center">
-  <a href="https://github.com/remotion-dev/logo">
-    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="https://github.com/remotion-dev/logo/raw/main/animated-logo-banner-dark.apng">
-      <img alt="Animated Remotion Logo" src="https://github.com/remotion-dev/logo/raw/main/animated-logo-banner-light.gif">
-    </picture>
-  </a>
-</p>
+Vídeo vertical (1080x1920, 24fps) montado em [Remotion](https://remotion.dev),
+com o João Dourado na câmera.
 
-Welcome to your Remotion project!
+## Fluxo de edição
 
-## Commands
+O material bruto não fica no repositório. O processo é de dois passos:
 
-**Install Dependencies**
+1. Coloque as gravações em `footage/raw/` (`.MOV` ou `.mp4`).
+2. Rode `npm run footage`.
 
-```console
-npm i
-```
+O script `scripts/prepare-footage.mjs` faz três coisas para cada arquivo:
 
-**Start Preview**
+- converte para MP4 vertical 1080x1920 em `public/videos/`;
+- mede a duração real com `ffprobe`;
+- detecta os silêncios e monta os trechos de fala.
 
-```console
-npm run dev
-```
+Só pausas acima de 0,62s viram corte, com 0,14s de sobra nas bordas — pausas
+curtas são respiração e ritmo, e cortar todas deixa a fala robótica. O
+resultado vai para `src/footage.ts`, que a composição consome.
 
-**Render video**
+Depois é só `npm run dev` para abrir o estúdio.
 
-```console
-npx remotion render
-```
+## Onde mexer
 
-**Upgrade Remotion**
+| Arquivo | O que faz |
+| --- | --- |
+| `src/content.ts` | Roteiro: blocos, headlines, kickers e o mapa fala → clipe (`CLIP_IDS`) |
+| `src/Clip.tsx` | Toca os trechos de fala em sequência e reenquadra a cada corte |
+| `src/Visuals.tsx` | Os cinco elementos gráficos (prazo, calendário, risco, etapas, CTA) |
+| `src/Headline.tsx` | Kicker + headline com o destaque na cor da marca |
+| `src/NameCard.tsx` | Card de identificação na abertura |
+| `src/Music.tsx` | Dinâmica da trilha (entra, recua na fala, cresce no fechamento) |
+| `src/brand.ts` | Cores, tipografia e logos do manual de marca |
 
-```console
-npx remotion upgrade
-```
+Se a ordem das tomadas for diferente da esperada, o ajuste é só em `CLIP_IDS`
+em `src/content.ts` — os ids vêm do nome do arquivo (`IMG_7949.MOV` → `img-7949`).
 
-## Docs
+## Dinamismo
 
-Get started with Remotion by reading the [fundamentals page](https://www.remotion.dev/docs/the-fundamentals).
+A gravação é bem estática, então o movimento vem da montagem:
 
-## Help
+- cada corte de silêncio troca o enquadramento (jump cut), com quatro
+  escalas/posições alternadas em `Clip.tsx`;
+- cada trecho entra com um assentamento curto e depois deriva devagar, mais um
+  respiro tipo câmera na mão de amplitude baixa;
+- os painéis gráficos entram escalonados sobre a fala;
+- a trilha recua durante a fala e cresce no fechamento.
 
-We provide help on our [Discord server](https://discord.gg/6VzzNDwUwV).
+## Identidade
 
-## Issues
-
-Found an issue with Remotion? [File an issue here](https://github.com/remotion-dev/remotion/issues/new).
-
-## License
-
-Note that for some entities a company license is needed. [Read the terms here](https://github.com/remotion-dev/remotion/blob/main/LICENSE.md).
+Tudo sai do *Brandbook ProAdvanced — Manual de Marca 2026*: `#3696cd`,
+`#20a3d6`, `#676868`, `#ffffff`, tipografia Montserrat e o sistema de
+transparências (30% / 60% / 100%) da cor principal.
