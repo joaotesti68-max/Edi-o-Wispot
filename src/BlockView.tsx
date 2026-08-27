@@ -5,7 +5,7 @@ import { Headline } from "./Headline";
 import { NameCard } from "./NameCard";
 import { Takeover, takeoverProgress } from "./Takeover";
 import { Visual } from "./Visuals";
-import { blockRanges, clipsFor, takeStartsFor, type Block } from "./content";
+import { blockDuration, blockRanges, clipsFor, takeStartsFor, type Block } from "./content";
 
 export const BlockView: React.FC<{ block: Block; index: number }> = ({ block, index }) => {
   const frame = useCurrentFrame();
@@ -55,7 +55,9 @@ export const BlockView: React.FC<{ block: Block; index: number }> = ({ block, in
         <Headline kicker={block.kicker} headline={block.headline} highlight={block.highlight} />
       </div>
 
-      {block.takeover ? <Takeover takeover={block.takeover} /> : null}
+      {block.takeover ? (
+        <Takeover takeover={block.takeover} duration={blockDuration(block)} />
+      ) : null}
     </AbsoluteFill>
   );
 };

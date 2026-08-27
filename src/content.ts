@@ -55,9 +55,18 @@ export const blocks: Block[] = [
     highlight: "poucas semanas",
     visual: "law",
     nameCard: "João Dourado",
-    // Ele olha para baixo de 4,95s a 7,15s; a tela cheia entra antes e sai
-    // depois, para o desvio acontecer já coberto.
-    takeover: { from: 138, to: 226 },
+    // O João aparece só nos 3,3s iniciais, o suficiente para o público ver
+    // quem fala; a partir daí a imagem passa para o ambiente de cartório e
+    // não volta — "to" fica além dos 327 frames do bloco de propósito.
+    // Os tempos do texto acompanham as duas frases: a segunda começa em 7,33s.
+    takeover: {
+      from: 100,
+      to: 345,
+      beats: [
+        { at: 100, kicker: "Adequação obrigatória", headline: "Segurança da informação em cartórios" },
+        { at: 210, kicker: "Última chamada", headline: "Se você ainda não se preparou" },
+      ],
+    },
     script:
       "Faltam poucas semanas para o fim do prazo da nova lei que exige adequação " +
       "em segurança da informação para cartórios. Se você ainda não se preparou, " +
