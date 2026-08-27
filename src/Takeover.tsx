@@ -1,6 +1,7 @@
 import {
   AbsoluteFill,
   OffthreadVideo,
+  Sequence,
   interpolate,
   spring,
   staticFile,
@@ -15,6 +16,8 @@ export type TakeoverBeat = {
   at: number;
   kicker: string;
   headline: string;
+  /** Vídeo de ambiente que roda atrás deste tempo, em public/. */
+  clip: string;
 };
 
 export type TakeoverWindow = {
@@ -32,6 +35,35 @@ const FADE = 10;
 const BEAT_FADE = 9;
 
 /**
+ * Vídeo de ambiente de um tempo. Vai dentro de uma Sequence para que o clipe
+ * comece do zero quando o tempo entra, em vez de continuar do tempo do bloco.
+ */
+const Backdrop: React.FC<{ clip: string; opacity: number; span: number }> = ({
+  clip,
+  opacity,
+  span,
+}) => {
+  const frame = useCurrentFrame();
+  return (
+    <AbsoluteFill style={{ opacity }}>
+      <OffthreadVideo
+        src={staticFile(clip)}
+        muted
+        style={{
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          filter: "blur(2px) saturate(0.82)",
+          transform: `scale(${interpolate(frame, [0, span], [1.04, 1.14], {
+            extrapolateRight: "clamp",
+          })})`,
+        }}
+      />
+    </AbsoluteFill>
+  );
+};
+
+/**
  * Quanto o takeover está cobrindo a tela, de 0 a 1. Fica aqui para que o
  * BlockView possa sumir com os overlays normais na mesma curva.
  */
@@ -44,6 +76,26 @@ export const takeoverProgress = (frame: number, takeover?: TakeoverWindow) => {
     { extrapolateLeft: "clamp", extrapolateRight: "clamp" },
   );
 };
+
+const CLAMP = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
+
+/**
+ * Fundo: travessia cruzada. As duas cenas se sobrepõem por um instante, que é
+ * o que faz a troca de ambiente não piscar.
+ */
+const beatOpacity = (frame: number, beat: TakeoverBeat, next?: TakeoverBeat) =>
+  next
+    ? interpolate(frame, [beat.at, beat.at + BEAT_FADE, next.at, next.at + BEAT_FADE], [0, 1, 1, 0], CLAMP)
+    : interpolate(frame, [beat.at, beat.at + BEAT_FADE], [0, 1], CLAMP);
+
+/**
+ * Texto: um sai antes do outro entrar. Cruzar dois textos deixa os dois
+ * ilegíveis no meio da travessia.
+ */
+const beatTextOpacity = (frame: number, beat: TakeoverBeat, next?: TakeoverBeat) =>
+  next
+    ? interpolate(frame, [beat.at, beat.at + BEAT_FADE, next.at - BEAT_FADE, next.at], [0, 1, 1, 0], CLAMP)
+    : interpolate(frame, [beat.at, beat.at + BEAT_FADE], [0, 1], CLAMP);
 
 /**
  * Estoura o elemento de prazo em tela cheia, sobre o vídeo de ambiente em
@@ -75,20 +127,21 @@ export const Takeover: React.FC<{ takeover: TakeoverWindow; duration: number }> 
           ficar fantasmando por trás. */}
       <AbsoluteFill style={{ background: "#0c1c28" }} />
 
-      <AbsoluteFill>
-        <OffthreadVideo
-          src={staticFile("videos/ambiente-cartorio.mp4")}
-          muted
-          style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            opacity: 0.62,
-            filter: "blur(2px) saturate(0.82)",
-            transform: `scale(${interpolate(local, [0, span], [1.04, 1.16])})`,
-          }}
-        />
-      </AbsoluteFill>
+      {takeover.beats.map((beat, i) => {
+        const next = takeover.beats[i + 1];
+        const until = next ? next.at + BEAT_FADE : Math.min(takeover.to, duration);
+        const opacity = beatOpacity(frame, beat, next);
+        if (opacity <= 0) return null;
+        return (
+          <Sequence
+            key={`bg-${beat.clip}`}
+            from={beat.at}
+            durationInFrames={Math.max(1, until - beat.at)}
+          >
+            <Backdrop clip={beat.clip} opacity={opacity * 0.62} span={until - beat.at} />
+          </Sequence>
+        );
+      })}
 
       {/* Tinta da marca por cima, leve o bastante para o ambiente aparecer. */}
       <AbsoluteFill
@@ -111,19 +164,9 @@ export const Takeover: React.FC<{ takeover: TakeoverWindow; duration: number }> 
               quando ele vira, em vez de ficar 7s parado. */}
           <div style={{ position: "relative", minHeight: 380 }}>
             {takeover.beats.map((beat, i) => {
-              const next = takeover.beats[i + 1];
               // O último tempo só entra: quem tira ele da tela é o fim do bloco.
-              const opacity = next
-                ? interpolate(
-                    frame,
-                    [beat.at, beat.at + BEAT_FADE, next.at, next.at + BEAT_FADE],
-                    [0, 1, 1, 0],
-                    { extrapolateLeft: "clamp", extrapolateRight: "clamp" },
-                  )
-                : interpolate(frame, [beat.at, beat.at + BEAT_FADE], [0, 1], {
-                    extrapolateLeft: "clamp",
-                    extrapolateRight: "clamp",
-                  });
+              const opacity = beatTextOpacity(frame, beat, takeover.beats[i + 1]);
+              const rise = interpolate(frame, [beat.at, beat.at + BEAT_FADE], [16, 0], CLAMP);
               if (opacity <= 0) return null;
               return (
                 <div
@@ -132,6 +175,7 @@ export const Takeover: React.FC<{ takeover: TakeoverWindow; duration: number }> 
                     position: "absolute",
                     inset: 0,
                     opacity,
+                    transform: `translateY(${rise}px)`,
                     display: "flex",
                     flexDirection: "column",
                     gap: 30,

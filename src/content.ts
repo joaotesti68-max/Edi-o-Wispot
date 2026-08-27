@@ -63,8 +63,18 @@ export const blocks: Block[] = [
       from: 100,
       to: 345,
       beats: [
-        { at: 100, kicker: "Adequação obrigatória", headline: "Segurança da informação em cartórios" },
-        { at: 210, kicker: "Última chamada", headline: "Se você ainda não se preparou" },
+        {
+          at: 100,
+          kicker: "Adequação obrigatória",
+          headline: "Segurança da informação em cartórios",
+          clip: "videos/ambiente-monitoramento.mp4",
+        },
+        {
+          at: 210,
+          kicker: "Última chamada",
+          headline: "Se você ainda não se preparou",
+          clip: "videos/ambiente-cartorio.mp4",
+        },
       ],
     },
     script:

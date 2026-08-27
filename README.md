@@ -102,8 +102,7 @@ vídeo ficar consistente.
 
 Na abertura o João aparece só nos 3,3s iniciais — o suficiente para o público
 ver quem fala, com o name card cumprindo a função. Dali em diante a imagem
-passa para o vídeo de ambiente de cartório
-(`public/videos/ambiente-cartorio.mp4`), rebaixado e desfocado, com a tinta da
+passa para os vídeos de ambiente, rebaixados e desfocados, com a tinta da
 marca por cima e o elemento de prazo em tela cheia.
 
 A fala continua rodando por baixo: o que troca é a imagem, não o áudio.
@@ -113,8 +112,19 @@ A configuração fica em `takeover` no bloco, em frames relativos ao bloco:
 - `from` / `to` — quando entra e sai. Um `to` além da duração do bloco (aqui
   345 contra 327 frames) mantém a tela cheia até o fim, e a transição leva
   direto ao bloco seguinte em vez de voltar ao João por um instante.
-- `beats` — o texto vira junto com a fala. A segunda frase da abertura começa
-  em 7,33s, então o segundo tempo entra no frame 210.
+- `beats` — o texto e o vídeo de fundo viram junto com a fala. A segunda frase
+  da abertura começa em 7,33s, então o segundo tempo entra no frame 210.
+  Cada tempo tem seu `clip`: `ambiente-monitoramento.mp4` (dashboards) no
+  trecho sobre segurança da informação, `ambiente-cartorio.mp4` (atendimento,
+  documentos) no "se você ainda não se preparou".
+
+O fundo faz travessia cruzada, para a cena trocar sem piscar. O texto não: um
+sai antes do outro entrar, porque dois textos sobrepostos ficam ilegíveis no
+meio da travessia. São duas curvas separadas, `beatOpacity` e
+`beatTextOpacity`.
+
+Cada fundo fica dentro de uma `Sequence`, para o clipe começar do zero quando
+o tempo entra em vez de continuar do tempo do bloco.
 
 Os overlays normais (name card, gráfico, headline, marca d'água) somem na
 mesma curva, via `takeoverProgress`.
