@@ -1,4 +1,5 @@
 import { footage } from "./footage";
+import type { TakeoverWindow } from "./Takeover";
 
 export const FPS = 30;
 
@@ -33,6 +34,11 @@ export type Block = {
   highlight?: string;
   visual: VisualKey;
   nameCard?: string;
+  /**
+   * Trecho em que o gráfico estoura em tela cheia, em frames relativos ao
+   * bloco. Usado onde o João desvia o olhar da câmera.
+   */
+  takeover?: TakeoverWindow;
   /** Fala correspondente no roteiro — referência de edição, não vai à tela. */
   script: string;
 };
@@ -49,6 +55,9 @@ export const blocks: Block[] = [
     highlight: "poucas semanas",
     visual: "law",
     nameCard: "João Dourado",
+    // Ele olha para baixo de 4,95s a 7,15s; a tela cheia entra antes e sai
+    // depois, para o desvio acontecer já coberto.
+    takeover: { from: 138, to: 226 },
     script:
       "Faltam poucas semanas para o fim do prazo da nova lei que exige adequação " +
       "em segurança da informação para cartórios. Se você ainda não se preparou, " +

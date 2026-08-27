@@ -42,6 +42,7 @@ Depois é só `npm run dev` para abrir o estúdio.
 | `src/NameCard.tsx` | Card de identificação na abertura |
 | `src/Music.tsx` | Dinâmica da trilha (entra, recua na fala, cresce no fechamento) |
 | `src/BlockView.tsx` | Empilha vídeo, máscara, marca d'água, name card, gráfico e headline |
+| `src/Takeover.tsx` | Estoura o gráfico em tela cheia sobre o vídeo de ambiente |
 | `src/brand.ts` | Cores, tipografia e logos do manual de marca |
 
 Se a ordem das tomadas for diferente da esperada, o ajuste é só em `CLIP_IDS`
@@ -96,3 +97,18 @@ excepcionais.
 e "faltam poucas semanas", que vêm da redação antiga do roteiro. O gráfico
 está correto, a fala não — essas duas linhas precisam ser regravadas para o
 vídeo ficar consistente.
+
+## Takeover de tela cheia
+
+Na abertura o João desvia o olhar da câmera entre 4,95s e 7,15s. Em vez de
+disfarçar, a tela troca de assunto: o elemento de prazo estoura em tela
+cheia, sobre o vídeo de ambiente de cartório (`public/videos/ambiente-cartorio.mp4`)
+rebaixado e desfocado, com a tinta da marca por cima.
+
+A janela fica em `takeover` no bloco, em frames relativos ao bloco, e entra
+antes / sai depois do desvio para ele acontecer já coberto. Os overlays
+normais (name card, gráfico, headline, marca d'água) somem na mesma curva,
+via `takeoverProgress`.
+
+Para achar janelas assim em outros blocos: amostre o clipe com
+`ffmpeg -i ... -vf fps=5,drawtext=...` e olhe o contact sheet.
