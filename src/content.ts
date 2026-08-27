@@ -3,16 +3,23 @@ import { footage } from "./footage";
 export const FPS = 30;
 
 /**
- * Mapa fala → tomadas. Cada bloco pode juntar mais de um take: são 8 clipes
- * para 5 blocos, então a fala de um bloco às vezes vem partida em dois.
+ * Mapa fala → tomadas. Os clipes são o roteiro lido em ordem, uma frase por
+ * take (o 7949 carrega a abertura inteira). Confere pelo ritmo: cada take
+ * cai entre 1,9 e 3,3 palavras por segundo, agrupado em 2,6.
  * Os ids saem do nome do arquivo em footage/raw/ (IMG_7949.MOV → "img-7949").
  */
 export const CLIP_IDS = {
+  // "Faltam poucas semanas..." + "Se você ainda não se preparou..."
   abertura: ["img-7949"],
+  // "A lei exige que cartórios comprovem essa adequação entre agosto e outubro."
   prazo: ["img-7952"],
+  // "Depois deste prazo, o risco de penalidade e de auditoria aumenta."
   risco: ["img-7954"],
-  time: ["img-7956"],
-  fechamento: ["img-7958"],
+  // "Nosso time já está preparado..." + "do levantamento de risco até a
+  // documentação final," + "sem parar a operação no dia a dia."
+  time: ["img-7956", "img-7958", "img-7959"],
+  // "O prazo não espera." + "Fale com a gente agora, agende seu diagnóstico..."
+  fechamento: ["img-7960", "img-7963"],
 };
 
 export type VisualKey = "law" | "calendar" | "risk" | "steps" | "clock";
@@ -108,6 +115,20 @@ export const blockDuration = (block: Block) =>
       total + clip.segments.reduce((sum, s) => sum + (s.trimAfter - s.trimBefore), 0),
     0,
   );
+
+/**
+ * Frame em que cada take começa dentro do bloco. Permite que um gráfico
+ * acompanhe a virada de fala em vez de rodar num tempo fixo.
+ */
+export const takeStartsFor = (block: Block) => {
+  const starts: number[] = [];
+  let at = 0;
+  for (const clip of clipsFor(block)) {
+    starts.push(at);
+    at += clip.segments.reduce((sum, s) => sum + (s.trimAfter - s.trimBefore), 0);
+  }
+  return starts;
+};
 
 // Espelha como o TransitionSeries sobrepõe as sequências, para a barra de
 // progresso saber a faixa de frames de cada bloco sem repetir a conta.

@@ -86,5 +86,45 @@ export const footage: Record<string, FootageClip> = {
         "trimAfter": 149
       }
     ]
+  },
+  "img-7959": {
+    "id": "img-7959",
+    "source": "IMG_7959.MOV",
+    "file": "videos/img-7959.mp4",
+    "durationInFrames": 118,
+    "segments": [
+      {
+        "trimBefore": 28,
+        "trimAfter": 118
+      }
+    ]
+  },
+  "img-7960": {
+    "id": "img-7960",
+    "source": "IMG_7960.MOV",
+    "file": "videos/img-7960.mp4",
+    "durationInFrames": 100,
+    "segments": [
+      {
+        "trimBefore": 20,
+        "trimAfter": 82
+      }
+    ]
+  },
+  "img-7963": {
+    "id": "img-7963",
+    "source": "IMG_7963.MOV",
+    "file": "videos/img-7963.mp4",
+    "durationInFrames": 178,
+    "segments": [
+      {
+        "trimBefore": 0,
+        "trimAfter": 21
+      },
+      {
+        "trimBefore": 32,
+        "trimAfter": 179
+      }
+    ]
   }
 };

@@ -4,7 +4,7 @@ import { Clip } from "./Clip";
 import { Headline } from "./Headline";
 import { NameCard } from "./NameCard";
 import { Visual } from "./Visuals";
-import { clipsFor, type Block } from "./content";
+import { clipsFor, takeStartsFor, type Block } from "./content";
 
 export const BlockView: React.FC<{ block: Block; index: number }> = ({ block, index }) => {
   const frame = useCurrentFrame();
@@ -40,7 +40,7 @@ export const BlockView: React.FC<{ block: Block; index: number }> = ({ block, in
           gap: 20,
         }}
       >
-        <Visual visual={block.visual} />
+        <Visual visual={block.visual} takeStarts={takeStartsFor(block)} />
         <Headline kicker={block.kicker} headline={block.headline} highlight={block.highlight} />
       </div>
     </AbsoluteFill>

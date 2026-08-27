@@ -3,6 +3,9 @@ import { brand } from "./brand";
 import { CalendarIcon, CheckIcon, ClockIcon, DocIcon, ScaleIcon, TrendingUpIcon } from "./Icons";
 import type { VisualKey } from "./content";
 
+/** takeStarts: frame em que cada take do bloco começa, para sincronizar com a fala. */
+type VisualProps = { takeStarts: number[] };
+
 const PANEL: React.CSSProperties = {
   background: "rgba(6,9,12,0.5)",
   border: `1.5px solid ${brand.alpha.light30}`,
@@ -35,7 +38,7 @@ const useEnter = (delay: number) => {
   };
 };
 
-const DeadlineBar: React.FC = () => {
+const DeadlineBar: React.FC<VisualProps> = () => {
   const frame = useCurrentFrame();
   const { opacity, shift } = useEnter(15);
   const fill = interpolate(frame, [22, 80], [0, 0.82], {
@@ -100,7 +103,7 @@ const DeadlineBar: React.FC = () => {
   );
 };
 
-const CalendarWindow: React.FC = () => {
+const CalendarWindow: React.FC<VisualProps> = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const { opacity, shift } = useEnter(15);
@@ -147,7 +150,7 @@ const CalendarWindow: React.FC = () => {
   );
 };
 
-const RiskMeter: React.FC = () => {
+const RiskMeter: React.FC<VisualProps> = () => {
   const frame = useCurrentFrame();
   const { opacity, shift } = useEnter(15);
   const blocks = 8;
@@ -189,16 +192,28 @@ const RiskMeter: React.FC = () => {
   );
 };
 
-const ProcessSteps: React.FC = () => {
+const ProcessSteps: React.FC<VisualProps> = ({ takeStarts }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const { opacity, shift } = useEnter(12);
   const steps = ["Levantamento de risco", "Plano e execução", "Documentação final"];
 
+  // O bloco tem três takes: ele apresenta o time, depois enumera o processo,
+  // depois emenda o "sem parar a operação". As etapas marcam junto com a fala
+  // do meio, e o rodapé entra com a última.
+  const checkFrom = takeStarts[1] ?? 30;
+  const noteFrom = takeStarts[2] ?? checkFrom + 70;
+  const perStep = Math.max(12, Math.round(((noteFrom - checkFrom) / steps.length) * 0.8));
+
   return (
     <div style={{ ...PANEL, opacity, transform: `translateY(${shift}px)`, gap: 9 }}>
       {steps.map((step, i) => {
-        const item = spring({ frame: frame - 20 - i * 18, fps, config: { damping: 15, mass: 0.6 } });
+        const item = spring({ frame: frame - 12 - i * 8, fps, config: { damping: 15, mass: 0.6 } });
+        const check = spring({
+          frame: frame - checkFrom - i * perStep,
+          fps,
+          config: { damping: 13, mass: 0.5 },
+        });
         return (
           <div
             key={step}
@@ -214,15 +229,20 @@ const ProcessSteps: React.FC = () => {
               style={{
                 width: 34,
                 height: 34,
-                borderRadius: 12,
-                background: brand.colors.primary,
+                borderRadius: 11,
+                // Vai de pendente para marcado quando ele cita a etapa.
+                background: `rgba(54,150,205,${interpolate(check, [0, 1], [0.22, 1])})`,
+                border: `1.5px solid ${brand.alpha.light30}`,
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
                 flexShrink: 0,
+                transform: `scale(${interpolate(check, [0, 1], [1, 1.12])})`,
               }}
             >
-              <CheckIcon size={22} color={brand.colors.white} strokeWidth={2.8} />
+              <div style={{ opacity: check, transform: `scale(${check})` }}>
+                <CheckIcon size={20} color={brand.colors.white} strokeWidth={2.8} />
+              </div>
             </div>
             <div
               style={{
@@ -230,6 +250,7 @@ const ProcessSteps: React.FC = () => {
                 fontWeight: 700,
                 fontSize: 28,
                 color: brand.colors.white,
+                opacity: interpolate(check, [0, 1], [0.62, 1]),
               }}
             >
               {step}
@@ -243,7 +264,7 @@ const ProcessSteps: React.FC = () => {
           alignItems: "center",
           gap: 10,
           marginTop: 4,
-          opacity: interpolate(frame, [72, 90], [0, 0.85], {
+          opacity: interpolate(frame, [noteFrom, noteFrom + 14], [0, 0.85], {
             extrapolateLeft: "clamp",
             extrapolateRight: "clamp",
           }),
@@ -265,9 +286,11 @@ const ProcessSteps: React.FC = () => {
   );
 };
 
-const UrgencyCta: React.FC = () => {
+const UrgencyCta: React.FC<VisualProps> = ({ takeStarts }) => {
   const frame = useCurrentFrame();
-  const { opacity, shift } = useEnter(12);
+  // O bloco tem dois takes: "O prazo não espera" e depois a chamada. O painel
+  // entra junto com o segundo, quando ele de fato convida a agendar.
+  const { opacity, shift } = useEnter(takeStarts[1] ?? 12);
   // Ponteiro girando: leitura imediata de tempo correndo.
   const hand = interpolate(frame, [0, 120], [0, 360]);
   const pulse = 1 + Math.sin(frame / 9) * 0.03;
@@ -314,7 +337,7 @@ const UrgencyCta: React.FC = () => {
   );
 };
 
-const VISUALS: Record<VisualKey, React.FC> = {
+const VISUALS: Record<VisualKey, React.FC<VisualProps>> = {
   law: DeadlineBar,
   calendar: CalendarWindow,
   risk: RiskMeter,
@@ -322,7 +345,10 @@ const VISUALS: Record<VisualKey, React.FC> = {
   clock: UrgencyCta,
 };
 
-export const Visual: React.FC<{ visual: VisualKey }> = ({ visual }) => {
+export const Visual: React.FC<{ visual: VisualKey; takeStarts: number[] }> = ({
+  visual,
+  takeStarts,
+}) => {
   const Component = VISUALS[visual];
-  return <Component />;
+  return <Component takeStarts={takeStarts} />;
 };
