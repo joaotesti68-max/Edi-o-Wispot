@@ -22,7 +22,7 @@ export const CLIP_IDS = {
   fechamento: ["img-7960", "img-7963"],
 };
 
-export type VisualKey = "law" | "calendar" | "risk" | "steps" | "clock";
+export type VisualKey = "law" | "classes" | "risk" | "steps" | "clock";
 
 export type Block = {
   id: string;
@@ -57,10 +57,10 @@ export const blocks: Block[] = [
   {
     id: "prazo",
     clips: CLIP_IDS.prazo,
-    kicker: "O que a lei exige",
-    headline: "Comprovar a adequação entre agosto e outubro",
-    highlight: "agosto e outubro",
-    visual: "calendar",
+    kicker: "Prazo de adequação",
+    headline: "O limite depende da classe do cartório",
+    highlight: "classe do cartório",
+    visual: "classes",
     script: "A lei exige que cartórios comprovem essa adequação entre agosto e outubro deste ano.",
   },
   {

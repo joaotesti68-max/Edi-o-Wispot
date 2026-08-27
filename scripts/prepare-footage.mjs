@@ -34,12 +34,15 @@ const FPS = 30;
 
 // Pausas acima disso são removidas de fato.
 const MIN_SILENCE = 0.62;
-// Pausas menores ficam no vídeo, mas servem de emenda: são as respiradas
-// entre frases, onde um corte de enquadramento passa despercebido.
-const PUNCH_SILENCE = 0.18;
-// Só troca de enquadramento se o trecho atual já durou isso, senão o corte
-// vira nervosismo em vez de ritmo.
-const PUNCH_MIN_HOLD = 2.4;
+// Janelas de corte manuais. A detecção de silêncio não serve aqui porque a
+// voz indesejada é humana e tem o mesmo nível da fala do João: são as
+// deixas da direção fora de quadro ("pode ir", "boa") e um "hm" solto.
+// Medido com silencedetect a -38dB, ilha por ilha.
+const KEEP = {
+  "IMG_7949.MOV": [1.1, 12.0], // corta "pode ir" na entrada e a voz no fim
+  "IMG_7959.MOV": [0.95, 3.65], // corta um blip de 0,17s na entrada
+  "IMG_7963.MOV": [1.05, 5.5], // corta o "hm" na entrada e o "boa" no fim
+};
 // Sobra mantida nas bordas do corte, pra não decepar o ataque das palavras.
 const PAD = 0.14;
 // Nível considerado silêncio. Grave de celular tem ruído de fundo, então
@@ -69,7 +72,7 @@ async function detectSilences(file) {
   // silencedetect escreve no stderr; um exit != 0 aqui é falha real.
   const { stderr } = await execFileAsync(
     ffmpeg,
-    ["-hide_banner", "-i", file, "-af", `silencedetect=noise=${NOISE_FLOOR}:d=${PUNCH_SILENCE}`, "-f", "null", "-"],
+    ["-hide_banner", "-i", file, "-af", `silencedetect=noise=${NOISE_FLOOR}:d=${MIN_SILENCE}`, "-f", "null", "-"],
     { maxBuffer: 32 * 1024 * 1024 },
   );
 
@@ -96,39 +99,24 @@ function speechSegments(duration, silences) {
   const segments = [];
   let cursor = 0;
 
-  const push = (from, to, cut) => {
-    if (to - from >= MIN_SPEECH) segments.push({ from, to, cut });
-  };
-
   for (const silence of silences) {
-    const length = Math.min(silence.end, duration) - silence.start;
-
-    if (length >= MIN_SILENCE) {
-      // Pausa longa: sai do vídeo, com sobra nas bordas para não decepar
-      // o ataque das palavras.
-      push(cursor, Math.min(silence.start + PAD, duration), "silencio");
-      cursor = Math.max(cursor, Math.min(silence.end - PAD, duration));
-      continue;
-    }
-
-    // Pausa curta: fica no vídeo, mas vira emenda de enquadramento.
-    const at = Math.min(silence.start + length / 2, duration);
-    if (at - cursor >= PUNCH_MIN_HOLD && duration - at >= MIN_SPEECH) {
-      push(cursor, at, "punch");
-      cursor = at;
-    }
+    const speechEnd = Math.min(silence.start + PAD, duration);
+    if (speechEnd - cursor >= MIN_SPEECH) segments.push({ from: cursor, to: speechEnd });
+    cursor = Math.max(cursor, Math.min(silence.end - PAD, duration));
   }
-  push(cursor, duration, "fim");
+  if (duration - cursor >= MIN_SPEECH) segments.push({ from: cursor, to: duration });
 
   // Sem fala detectada, devolve o clipe inteiro em vez de nada.
-  return segments.length > 0 ? segments : [{ from: 0, to: duration, cut: "fim" }];
+  return segments.length > 0 ? segments : [{ from: 0, to: duration }];
 }
 
-async function transcode(input, output) {
+async function transcode(input, output, keep) {
+  // -ss/-to depois do -i para corte exato no frame, já que reencodamos.
+  const window = keep ? ["-ss", String(keep[0]), "-to", String(keep[1])] : [];
   await execFileAsync(
     ffmpeg,
     [
-      "-y", "-i", input,
+      "-y", "-i", input, ...window,
       // Enquadra em 1080x1920 cobrindo a tela, sem distorcer.
       "-vf", "scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,fps=" + FPS,
       "-c:v", "libx264", "-preset", "medium", "-crf", "20", "-pix_fmt", "yuv420p",
@@ -162,16 +150,16 @@ const main = async () => {
     const output = path.join(OUT_DIR, `${id}.mp4`);
 
     process.stdout.write(`• ${entry} … `);
-    await transcode(input, output);
+    await transcode(input, output, KEEP[entry]);
     const duration = await probeDuration(output);
     const silences = await detectSilences(output);
     const segments = speechSegments(duration, silences);
 
     const kept = segments.reduce((sum, s) => sum + (s.to - s.from), 0);
-    const punches = segments.filter((s) => s.cut === "punch").length;
+    const trimmed = KEEP[entry] ? " [janela manual]" : "";
     console.log(
       `${duration.toFixed(1)}s → ${kept.toFixed(1)}s ` +
-        `(-${(duration - kept).toFixed(1)}s de silêncio, ${punches} punch)`,
+        `(-${(duration - kept).toFixed(1)}s de silêncio)${trimmed}`,
     );
 
     clips.push({

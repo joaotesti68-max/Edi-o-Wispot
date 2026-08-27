@@ -4,7 +4,7 @@ import { Clip } from "./Clip";
 import { Headline } from "./Headline";
 import { NameCard } from "./NameCard";
 import { Visual } from "./Visuals";
-import { clipsFor, takeStartsFor, type Block } from "./content";
+import { blockRanges, clipsFor, takeStartsFor, type Block } from "./content";
 
 export const BlockView: React.FC<{ block: Block; index: number }> = ({ block, index }) => {
   const frame = useCurrentFrame();
@@ -12,8 +12,7 @@ export const BlockView: React.FC<{ block: Block; index: number }> = ({ block, in
 
   return (
     <AbsoluteFill style={{ background: "#000" }}>
-      {/* Cada bloco começa num enquadramento diferente do anterior. */}
-      <Clip clips={clipsFor(block)} framingOffset={index} />
+      <Clip clips={clipsFor(block)} blockStart={blockRanges[index].start} />
 
       <AbsoluteFill
         style={{

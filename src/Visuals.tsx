@@ -1,3 +1,4 @@
+import React from "react";
 import { interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
 import { brand } from "./brand";
 import { CalendarIcon, CheckIcon, ClockIcon, DocIcon, ScaleIcon, TrendingUpIcon } from "./Icons";
@@ -103,46 +104,87 @@ const DeadlineBar: React.FC<VisualProps> = () => {
   );
 };
 
-const CalendarWindow: React.FC<VisualProps> = () => {
+const ClassDeadlines: React.FC<VisualProps> = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-  const { opacity, shift } = useEnter(15);
-  const months = ["Ago", "Set", "Out"];
+  const { opacity, shift } = useEnter(10);
+
+  // Provimento CNJ 213/2026, com os prazos ampliados pelo 243/2026: o limite
+  // depende da classe de faturamento da serventia, não de uma data única.
+  const rows = [
+    { classe: "Classe 3", inicial: "180 dias", total: "24 meses" },
+    { classe: "Classe 2", inicial: "240 dias", total: "30 meses" },
+    { classe: "Classe 1", inicial: "300 dias", total: "36 meses" },
+  ];
+
+  const cell: React.CSSProperties = {
+    fontFamily: brand.fontFamily,
+    fontWeight: 800,
+    fontSize: 25,
+    color: brand.colors.white,
+    textAlign: "right",
+  };
 
   return (
-    <div style={{ ...PANEL, opacity, transform: `translateY(${shift}px)` }}>
+    <div style={{ ...PANEL, opacity, transform: `translateY(${shift}px)`, gap: 8 }}>
       <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-        <CalendarIcon size={26} color={brand.colors.primaryLight} strokeWidth={2.2} />
-        <div style={LABEL}>Janela de comprovação</div>
+        <CalendarIcon size={24} color={brand.colors.primaryLight} strokeWidth={2.2} />
+        <div style={{ ...LABEL, fontSize: 21 }}>Provimento CNJ 213/2026</div>
       </div>
-      <div style={{ display: "flex", gap: 14 }}>
-        {months.map((month, i) => {
-          const chip = spring({
-            frame: frame - 25 - i * 9,
+
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "1fr auto auto",
+          columnGap: 26,
+          rowGap: 7,
+          alignItems: "center",
+        }}
+      >
+        <div />
+        {["etapas iniciais", "conclusão"].map((head) => (
+          <div
+            key={head}
+            style={{
+              fontFamily: brand.fontFamily,
+              fontWeight: 700,
+              fontSize: 17,
+              letterSpacing: 1.1,
+              textTransform: "uppercase",
+              color: brand.colors.primaryLight,
+              textAlign: "right",
+            }}
+          >
+            {head}
+          </div>
+        ))}
+
+        {rows.map((row, i) => {
+          const enter = spring({
+            frame: frame - 15 - i * 8,
             fps,
-            config: { damping: 14, mass: 0.6 },
+            config: { damping: 15, mass: 0.6 },
           });
+          const style = {
+            opacity: interpolate(enter, [0, 1], [0, 1]),
+            transform: `translateX(${interpolate(enter, [0, 1], [-16, 0])}px)`,
+          };
           return (
-            <div
-              key={month}
-              style={{
-                flex: 1,
-                textAlign: "center",
-                padding: "12px 0",
-                borderRadius: 14,
-                background: `linear-gradient(135deg, ${brand.colors.primary}, ${brand.colors.primaryLight})`,
-                fontFamily: brand.fontFamily,
-                fontWeight: 800,
-                fontSize: 34,
-                color: brand.colors.white,
-                textTransform: "uppercase",
-                letterSpacing: 1,
-                opacity: interpolate(chip, [0, 1], [0, 1]),
-                transform: `scale(${interpolate(chip, [0, 1], [0.7, 1])})`,
-              }}
-            >
-              {month}
-            </div>
+            <React.Fragment key={row.classe}>
+              <div
+                style={{
+                  ...style,
+                  fontFamily: brand.fontFamily,
+                  fontWeight: 700,
+                  fontSize: 25,
+                  color: brand.colors.white,
+                }}
+              >
+                {row.classe}
+              </div>
+              <div style={{ ...cell, ...style }}>{row.inicial}</div>
+              <div style={{ ...cell, ...style, color: brand.colors.primaryLight }}>{row.total}</div>
+            </React.Fragment>
           );
         })}
       </div>
@@ -339,7 +381,7 @@ const UrgencyCta: React.FC<VisualProps> = ({ takeStarts }) => {
 
 const VISUALS: Record<VisualKey, React.FC<VisualProps>> = {
   law: DeadlineBar,
-  calendar: CalendarWindow,
+  classes: ClassDeadlines,
   risk: RiskMeter,
   steps: ProcessSteps,
   clock: UrgencyCta,
