@@ -57,9 +57,9 @@ export const blocks: Block[] = [
     nameCard: "João Dourado",
     // O João aparece só nos 2s iniciais, o suficiente para o público ver quem
     // fala; daí em diante a imagem passa para o ambiente e não volta — "to"
-    // fica além dos 297 frames do bloco de propósito.
+    // fica além dos 296 frames do bloco de propósito.
     // Os tempos acompanham as duas frases: com o silêncio entre elas cortado,
-    // a segunda começa no frame 194, e o texto vira exatamente na emenda.
+    // a segunda começa no frame 193, e o texto vira exatamente na emenda.
     takeover: {
       from: 60,
       to: 310,
@@ -71,7 +71,7 @@ export const blocks: Block[] = [
           clip: "videos/ambiente-monitoramento.mp4",
         },
         {
-          at: 194,
+          at: 193,
           kicker: "Última chamada",
           headline: "Se você ainda não se preparou",
           clip: "videos/ambiente-cartorio.mp4",

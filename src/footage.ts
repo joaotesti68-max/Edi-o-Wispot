@@ -18,7 +18,7 @@ export const footage: Record<string, FootageClip> = {
     "durationInFrames": 303,
     "segments": [
       {
-        "trimBefore": 0,
+        "trimBefore": 1,
         "trimAfter": 194
       },
       {
@@ -34,7 +34,7 @@ export const footage: Record<string, FootageClip> = {
     "durationInFrames": 117,
     "segments": [
       {
-        "trimBefore": 0,
+        "trimBefore": 5,
         "trimAfter": 117
       }
     ]
@@ -59,7 +59,7 @@ export const footage: Record<string, FootageClip> = {
     "segments": [
       {
         "trimBefore": 0,
-        "trimAfter": 156
+        "trimAfter": 149
       }
     ]
   },
@@ -70,7 +70,7 @@ export const footage: Record<string, FootageClip> = {
     "durationInFrames": 153,
     "segments": [
       {
-        "trimBefore": 37,
+        "trimBefore": 38,
         "trimAfter": 139
       }
     ]
@@ -82,7 +82,7 @@ export const footage: Record<string, FootageClip> = {
     "durationInFrames": 77,
     "segments": [
       {
-        "trimBefore": 0,
+        "trimBefore": 3,
         "trimAfter": 77
       }
     ]
@@ -94,8 +94,8 @@ export const footage: Record<string, FootageClip> = {
     "durationInFrames": 93,
     "segments": [
       {
-        "trimBefore": 19,
-        "trimAfter": 77
+        "trimBefore": 20,
+        "trimAfter": 75
       }
     ]
   },
@@ -106,7 +106,7 @@ export const footage: Record<string, FootageClip> = {
     "durationInFrames": 126,
     "segments": [
       {
-        "trimBefore": 0,
+        "trimBefore": 1,
         "trimAfter": 126
       }
     ]

@@ -16,11 +16,20 @@ O script `scripts/prepare-footage.mjs` faz três coisas para cada arquivo:
 - mede a duração real com `ffprobe`;
 - detecta os silêncios e monta os trechos de fala.
 
-Pausas acima de 0,45s são removidas, com 0,14s de sobra nas bordas para não
-decepar o ataque das palavras. O limite era 0,62s e a sobra depois de
-"documentação final" media exatamente 0,62s, escapando por um triz; 0,45
-pega essa e continua deixando passar as respiradas entre frases, que ficam
-entre 0,21s e 0,39s.
+Silêncio no meio da fala e silêncio nas pontas do take são coisas diferentes
+e têm regras separadas:
+
+- **no meio** (`MIN_SILENCE`, 0,45s): acima disso é buraco e sai, com 0,14s de
+  sobra nas bordas para não decepar o ataque das palavras. Abaixo é respiração
+  entre frases e fica — as do João ficam entre 0,21s e 0,39s, e cortá-las
+  deixaria o discurso robótico.
+- **nas pontas** (`EDGE_SILENCE`, 0,12s): ninguém começa a falar no mesmo
+  instante em que aperta o gravador. Isso nunca é ritmo de fala, então corta
+  rente a partir de um valor bem menor, deixando 0,1s de folga.
+
+Sem a segunda regra, sobras de 0,3s a 0,6s no fim dos takes passavam, e o
+único jeito de pegá-las seria baixar o limite geral a ponto de comer as
+respiradas.
 
 Alguns cortes a detecção não pega: as deixas da direção fora de quadro
 ("pode ir", "boa") e um "hm" solto têm o mesmo nível da fala do João. Esses

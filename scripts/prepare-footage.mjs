@@ -39,11 +39,16 @@ const RAW_DIR = path.join(root, "footage", "raw");
 const OUT_DIR = path.join(root, "public", "videos");
 const FPS = 30;
 
-// Pausas acima disso são removidas de fato. Em 0,62 a sobra depois de
-// "documentação final" media exatamente 0,62s e escapava por um triz; 0,45
-// pega essa e continua deixando passar as respiradas entre frases, que aqui
+// Pausa NO MEIO da fala. Acima disso é buraco e sai; abaixo é respiração
+// entre frases e fica, senão o discurso soa robótico. As respiradas do João
 // ficam entre 0,21s e 0,39s.
 const MIN_SILENCE = 0.45;
+// Sobra NAS PONTAS do take, que é outra coisa: ninguém começa a falar no
+// mesmo instante em que aperta o gravador. Isso nunca é ritmo de fala, então
+// corta rente a partir de um valor bem menor.
+const EDGE_SILENCE = 0.12;
+// Folga deixada nas pontas depois do corte rente.
+const EDGE_PAD = 0.1;
 // Janelas de corte manuais. A detecção de silêncio não serve aqui porque a
 // voz indesejada é humana e tem o mesmo nível da fala do João: são as
 // deixas da direção fora de quadro ("pode ir", "boa") e um "hm" solto.
@@ -82,7 +87,7 @@ async function detectSilences(file) {
   // silencedetect escreve no stderr; um exit != 0 aqui é falha real.
   const { stderr } = await execFileAsync(
     ffmpeg,
-    ["-hide_banner", "-i", file, "-af", `silencedetect=noise=${NOISE_FLOOR}:d=${MIN_SILENCE}`, "-f", "null", "-"],
+    ["-hide_banner", "-i", file, "-af", `silencedetect=noise=${NOISE_FLOOR}:d=${EDGE_SILENCE}`, "-f", "null", "-"],
     { maxBuffer: 32 * 1024 * 1024 },
   );
 
@@ -106,18 +111,36 @@ async function detectSilences(file) {
 }
 
 function speechSegments(duration, silences) {
+  // Pontas primeiro: se o take abre ou fecha em silêncio, corta rente com uma
+  // folga curta, independente do tamanho da sobra.
+  let head = 0;
+  let tail = duration;
+
+  const first = silences[0];
+  if (first && first.start <= 0.02) {
+    head = Math.max(0, Math.min(first.end, duration) - EDGE_PAD);
+  }
+  const last = silences[silences.length - 1];
+  if (last && Math.min(last.end, duration) >= duration - 0.02) {
+    tail = Math.min(duration, last.start + EDGE_PAD);
+  }
+
   const segments = [];
-  let cursor = 0;
+  let cursor = head;
 
   for (const silence of silences) {
-    const speechEnd = Math.min(silence.start + PAD, duration);
-    if (speechEnd - cursor >= MIN_SPEECH) segments.push({ from: cursor, to: speechEnd });
-    cursor = Math.max(cursor, Math.min(silence.end - PAD, duration));
-  }
-  if (duration - cursor >= MIN_SPEECH) segments.push({ from: cursor, to: duration });
+    // As das pontas já foram resolvidas acima.
+    if (silence.start <= head || silence.end >= tail) continue;
+    if (silence.end - silence.start < MIN_SILENCE) continue;
 
-  // Sem fala detectada, devolve o clipe inteiro em vez de nada.
-  return segments.length > 0 ? segments : [{ from: 0, to: duration }];
+    const speechEnd = Math.min(silence.start + PAD, tail);
+    if (speechEnd - cursor >= MIN_SPEECH) segments.push({ from: cursor, to: speechEnd });
+    cursor = Math.max(cursor, Math.min(silence.end - PAD, tail));
+  }
+  if (tail - cursor >= MIN_SPEECH) segments.push({ from: cursor, to: tail });
+
+  // Sem fala detectada, devolve o take inteiro em vez de nada.
+  return segments.length > 0 ? segments : [{ from: head, to: tail }];
 }
 
 async function transcode(input, output, keep) {
