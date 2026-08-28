@@ -28,6 +28,13 @@ const ffprobe = execFileSync("node", ["-p", "require('@ffprobe-installer/ffprobe
   cwd: root,
 }).toString().trim();
 
+// Acelera a fala do João. 8% aperta o ritmo sem soar corrido: leva o
+// discurso de 2,63 para 2,84 palavras por segundo, ainda dentro do natural.
+// O atempo corrige o pitch, então a voz não fica fina, e o setpts acelera a
+// imagem junto para o sincronismo labial não quebrar nos blocos em que ele
+// aparece em cena.
+const SPEED = 1.08;
+
 const RAW_DIR = path.join(root, "footage", "raw");
 const OUT_DIR = path.join(root, "public", "videos");
 const FPS = 30;
@@ -111,18 +118,25 @@ function speechSegments(duration, silences) {
 }
 
 async function transcode(input, output, keep) {
-  // -ss/-to depois do -i para corte exato no frame, já que reencodamos.
-  const window = keep ? ["-ss", String(keep[0]), "-to", String(keep[1])] : [];
+  // Recorte no lado da entrada: entrega ao filtro um fluxo já começando em
+  // zero e com a duração certa. Do lado da saída, o -to passaria a valer
+  // sobre a linha de tempo já acelerada e cortaria o clipe no lugar errado.
+  const window = keep ? ["-ss", String(keep[0]), "-t", String(keep[1] - keep[0])] : [];
   await execFileAsync(
     ffmpeg,
     [
-      "-y", "-i", input, ...window,
-      // Enquadra em 1080x1920 cobrindo a tela, sem distorcer.
-      "-vf", "scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,fps=" + FPS,
+      "-y", ...window, "-i", input,
+      // Enquadra em 1080x1920 cobrindo a tela, sem distorcer, e acelera.
+      // A taxa final vai no encoder (-r) e não num filtro fps depois do
+      // setpts: o filtro fps re-cronometra os quadros e desfaz a aceleração.
+      "-vf",
+      "scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920," +
+        `setpts=PTS/${SPEED}`,
+      "-r", String(FPS),
       "-c:v", "libx264", "-preset", "medium", "-crf", "20", "-pix_fmt", "yuv420p",
       // Normaliza cada take para o padrão de streaming: são gravações
       // separadas, e sem isso um clipe entra mais alto que o outro.
-      "-af", "loudnorm=I=-16:TP=-1.5:LRA=11",
+      "-af", `atempo=${SPEED},loudnorm=I=-16:TP=-1.5:LRA=11`,
       "-c:a", "aac", "-b:a", "160k", "-ar", "48000",
       "-movflags", "+faststart",
       output,
@@ -162,14 +176,17 @@ const main = async () => {
         `(-${(duration - kept).toFixed(1)}s de silêncio)${trimmed}`,
     );
 
+    const durationInFrames = Math.floor(duration * FPS);
     clips.push({
       id,
       source: entry,
       file: `videos/${id}.mp4`,
-      durationInFrames: Math.floor(duration * FPS),
+      durationInFrames,
       segments: segments.map((s) => ({
         trimBefore: Math.round(s.from * FPS),
-        trimAfter: Math.round(s.to * FPS),
+        // Sem o teto, o arredondamento passa um quadro além do clipe e o
+        // último frame fica congelado.
+        trimAfter: Math.min(Math.round(s.to * FPS), durationInFrames),
       })),
     });
   }

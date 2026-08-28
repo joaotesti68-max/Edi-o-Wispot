@@ -1,9 +1,9 @@
 import { interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
 import { brand } from "./brand";
 
-const IN_AT = 10;
-// Sai antes do takeover subir no frame 100.
-const OUT_AT = 80;
+const IN_AT = 3;
+// Sai antes do takeover subir no frame 60.
+const OUT_AT = 44;
 
 /** Identifica quem fala logo na abertura e sai antes de virar poluição. */
 export const NameCard: React.FC<{ name: string }> = ({ name }) => {

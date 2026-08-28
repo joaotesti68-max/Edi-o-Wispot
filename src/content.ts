@@ -55,22 +55,22 @@ export const blocks: Block[] = [
     highlight: "poucas semanas",
     visual: "law",
     nameCard: "João Dourado",
-    // O João aparece só nos 3,3s iniciais, o suficiente para o público ver
-    // quem fala; a partir daí a imagem passa para o ambiente de cartório e
-    // não volta — "to" fica além dos 327 frames do bloco de propósito.
-    // Os tempos do texto acompanham as duas frases: a segunda começa em 7,33s.
+    // O João aparece só nos 2s iniciais, o suficiente para o público ver quem
+    // fala; daí em diante a imagem passa para o ambiente e não volta — "to"
+    // fica além dos 304 frames do bloco de propósito.
+    // Os tempos acompanham as duas frases: a segunda começa em 6,79s.
     takeover: {
-      from: 100,
-      to: 345,
+      from: 60,
+      to: 320,
       beats: [
         {
-          at: 100,
+          at: 60,
           kicker: "Adequação obrigatória",
           headline: "Segurança da informação em cartórios",
           clip: "videos/ambiente-monitoramento.mp4",
         },
         {
-          at: 210,
+          at: 200,
           kicker: "Última chamada",
           headline: "Se você ainda não se preparou",
           clip: "videos/ambiente-cartorio.mp4",

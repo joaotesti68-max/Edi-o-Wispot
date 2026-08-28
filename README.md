@@ -27,6 +27,16 @@ com `silencedetect` a -38dB, ilha por ilha.
 Cada take também é normalizado para -16 LUFS com teto de -1,5dB, porque são
 gravações separadas e chegam em volumes diferentes.
 
+A fala é acelerada em 8% (`SPEED`). O `atempo` corrige o pitch, então a voz
+não fica fina, e o `setpts` acelera a imagem junto para o sincronismo labial
+não quebrar nos blocos em que ele aparece em cena. Duas armadilhas aqui:
+
+- a taxa final vai no encoder (`-r`), não num filtro `fps` depois do `setpts`
+  — o filtro `fps` re-cronometra os quadros e desfaz a aceleração;
+- o recorte manual vai no lado da **entrada** (`-ss`/`-t` antes do `-i`) —
+  do lado da saída o `-to` passa a valer sobre a linha de tempo já acelerada
+  e corta o clipe no lugar errado.
+
 O resultado vai para `src/footage.ts`, que a composição consome.
 
 Depois é só `npm run dev` para abrir o estúdio.
@@ -100,7 +110,7 @@ vídeo ficar consistente.
 
 ## Takeover de tela cheia
 
-Na abertura o João aparece só nos 3,3s iniciais — o suficiente para o público
+Na abertura o João aparece só nos 2s iniciais — o suficiente para o público
 ver quem fala, com o name card cumprindo a função. Dali em diante a imagem
 passa para os vídeos de ambiente, rebaixados e desfocados, com a tinta da
 marca por cima e o elemento de prazo em tela cheia.
@@ -110,10 +120,10 @@ A fala continua rodando por baixo: o que troca é a imagem, não o áudio.
 A configuração fica em `takeover` no bloco, em frames relativos ao bloco:
 
 - `from` / `to` — quando entra e sai. Um `to` além da duração do bloco (aqui
-  345 contra 327 frames) mantém a tela cheia até o fim, e a transição leva
+  320 contra 304 frames) mantém a tela cheia até o fim, e a transição leva
   direto ao bloco seguinte em vez de voltar ao João por um instante.
 - `beats` — o texto e o vídeo de fundo viram junto com a fala. A segunda frase
-  da abertura começa em 7,33s, então o segundo tempo entra no frame 210.
+  da abertura começa em 6,79s, então o segundo tempo entra no frame 200.
   Cada tempo tem seu `clip`: `ambiente-monitoramento.mp4` (dashboards) no
   trecho sobre segurança da informação, `ambiente-cartorio.mp4` (atendimento,
   documentos) no "se você ainda não se preparou".
