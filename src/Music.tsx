@@ -2,16 +2,21 @@ import { Audio, interpolate, staticFile } from "remotion";
 import { outroRange, totalDurationInFrames } from "./content";
 
 /**
- * Trilha de fundo com dinâmica: entra presente, recua para não disputar com
- * a fala do João e volta a crescer no fechamento, onde entra a chamada.
+ * Trilha de fundo. Entra direto no nível de fundo e só cresce no fechamento,
+ * onde não há mais fala.
  *
  * Os ganhos são baixos porque a trilha vem masterizada quente (pico em 0dB,
- * média -10,4dB) enquanto a fala está normalizada em -16 LUFS. Sob a voz ela
- * fica em torno de -32dB, que é presença sem disputa.
+ * média -10,4dB) contra a fala em torno de -19dB. Em 0,05 ela fica em
+ * -36,7dB, ou seja, cerca de 18dB abaixo da voz — a faixa confortável para
+ * música sob narração é de 15 a 20dB.
+ *
+ * Não existe um degrau de entrada mais alto: o João começa a falar no
+ * primeiro frame, então não há abertura instrumental para preencher, e um
+ * degrau ali colocava o ponto mais alto da trilha exatamente em cima do
+ * começo da fala.
  */
-const INTRO = 0.15;
-const UNDER_SPEECH = 0.085;
-const OUTRO = 0.3;
+const UNDER_SPEECH = 0.05;
+const OUTRO = 0.21;
 
 export const Music: React.FC = () => {
   return (
@@ -22,14 +27,13 @@ export const Music: React.FC = () => {
           frame,
           [
             0,
-            25,
-            58,
+            20,
             outroRange.start - 30,
             outroRange.start,
             totalDurationInFrames - 20,
             totalDurationInFrames,
           ],
-          [0, INTRO, UNDER_SPEECH, UNDER_SPEECH, OUTRO, OUTRO, 0],
+          [0, UNDER_SPEECH, UNDER_SPEECH, OUTRO, OUTRO, 0],
           { extrapolateLeft: "clamp", extrapolateRight: "clamp" },
         )
       }

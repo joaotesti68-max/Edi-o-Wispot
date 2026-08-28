@@ -16,8 +16,11 @@ O script `scripts/prepare-footage.mjs` faz três coisas para cada arquivo:
 - mede a duração real com `ffprobe`;
 - detecta os silêncios e monta os trechos de fala.
 
-Pausas acima de 0,62s são removidas, com 0,14s de sobra nas bordas para não
-decepar o ataque das palavras.
+Pausas acima de 0,45s são removidas, com 0,14s de sobra nas bordas para não
+decepar o ataque das palavras. O limite era 0,62s e a sobra depois de
+"documentação final" media exatamente 0,62s, escapando por um triz; 0,45
+pega essa e continua deixando passar as respiradas entre frases, que ficam
+entre 0,21s e 0,39s.
 
 Alguns cortes a detecção não pega: as deixas da direção fora de quadro
 ("pode ir", "boa") e um "hm" solto têm o mesmo nível da fala do João. Esses
@@ -50,7 +53,7 @@ Depois é só `npm run dev` para abrir o estúdio.
 | `src/Visuals.tsx` | Os cinco elementos gráficos (prazo, calendário, risco, etapas, CTA) |
 | `src/Headline.tsx` | Kicker + headline com o destaque na cor da marca |
 | `src/NameCard.tsx` | Card de identificação na abertura |
-| `src/Music.tsx` | Dinâmica da trilha (entra, recua na fala, cresce no fechamento) |
+| `src/Music.tsx` | Nível da trilha (fundo sob a fala, cresce no fechamento) |
 | `src/BlockView.tsx` | Empilha vídeo, máscara, marca d'água, name card, gráfico e headline |
 | `src/Takeover.tsx` | Estoura o gráfico em tela cheia sobre o vídeo de ambiente |
 | `src/brand.ts` | Cores, tipografia e logos do manual de marca |
@@ -120,10 +123,11 @@ A fala continua rodando por baixo: o que troca é a imagem, não o áudio.
 A configuração fica em `takeover` no bloco, em frames relativos ao bloco:
 
 - `from` / `to` — quando entra e sai. Um `to` além da duração do bloco (aqui
-  320 contra 304 frames) mantém a tela cheia até o fim, e a transição leva
+  310 contra 297 frames) mantém a tela cheia até o fim, e a transição leva
   direto ao bloco seguinte em vez de voltar ao João por um instante.
 - `beats` — o texto e o vídeo de fundo viram junto com a fala. A segunda frase
-  da abertura começa em 6,79s, então o segundo tempo entra no frame 200.
+  da abertura começa no frame 194, com o silêncio entre elas cortado, e o
+  texto vira exatamente nessa emenda.
   Cada tempo tem seu `clip`: `ambiente-monitoramento.mp4` (dashboards) no
   trecho sobre segurança da informação, `ambiente-cartorio.mp4` (atendimento,
   documentos) no "se você ainda não se preparou".
@@ -141,3 +145,15 @@ mesma curva, via `takeoverProgress`.
 
 Para achar janelas assim em outros blocos: amostre o clipe com
 `ffmpeg -i ... -vf fps=5,drawtext=...` e olhe o contact sheet.
+
+## Nível da trilha
+
+A trilha vem masterizada quente (pico em 0dB, média -10,4dB) e a fala fica em
+torno de -19dB, então os ganhos em `Music.tsx` são baixos: 0,05 sob a fala
+deixa a música em -36,7dB, cerca de 18dB abaixo da voz. A faixa confortável
+para música sob narração é de 15 a 20dB abaixo — em 0,085 ela ficava a 13dB,
+alto demais.
+
+Não há degrau de entrada mais alto: o João começa a falar no primeiro frame,
+então não existe abertura instrumental para preencher, e um degrau ali punha
+o ponto mais alto da trilha em cima do começo da fala.

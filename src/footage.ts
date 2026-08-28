@@ -19,6 +19,10 @@ export const footage: Record<string, FootageClip> = {
     "segments": [
       {
         "trimBefore": 0,
+        "trimAfter": 194
+      },
+      {
+        "trimBefore": 200,
         "trimAfter": 303
       }
     ]
@@ -67,7 +71,7 @@ export const footage: Record<string, FootageClip> = {
     "segments": [
       {
         "trimBefore": 37,
-        "trimAfter": 153
+        "trimAfter": 139
       }
     ]
   },

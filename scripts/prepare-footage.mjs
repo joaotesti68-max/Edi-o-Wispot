@@ -39,8 +39,11 @@ const RAW_DIR = path.join(root, "footage", "raw");
 const OUT_DIR = path.join(root, "public", "videos");
 const FPS = 30;
 
-// Pausas acima disso são removidas de fato.
-const MIN_SILENCE = 0.62;
+// Pausas acima disso são removidas de fato. Em 0,62 a sobra depois de
+// "documentação final" media exatamente 0,62s e escapava por um triz; 0,45
+// pega essa e continua deixando passar as respiradas entre frases, que aqui
+// ficam entre 0,21s e 0,39s.
+const MIN_SILENCE = 0.45;
 // Janelas de corte manuais. A detecção de silêncio não serve aqui porque a
 // voz indesejada é humana e tem o mesmo nível da fala do João: são as
 // deixas da direção fora de quadro ("pode ir", "boa") e um "hm" solto.
