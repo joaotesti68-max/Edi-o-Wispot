@@ -5,13 +5,11 @@ export const HEIGHT = 1920;
 const sec = (s: number) => Math.round(s * FPS);
 
 /**
- * Cada take bruto foi analisado por envelope de RMS (janela de 30ms) para achar
+ * Cada take bruto foi analisado por envelope de RMS (janela de 30 ms) para achar
  * os trechos de fala. `src` são os pontos de corte no arquivo original, em
- * segundos, já com 0,10s de folga na entrada e 0,22s na saída — o que sai fora
- * disso é silêncio/respiração e não entra na edição.
- *
- * Ordem dos blocos = ordem do roteiro. O mapeamento take -> parágrafo foi
- * deduzido da duração e do desenho das pausas de cada take (ver README-wiquest).
+ * segundos, com 0,08 s de folga na entrada e 0,15 s na saída; pausas menores
+ * que 0,22 s ficam como estão, para a fala não soar picotada. O que sobra fora
+ * disso é silêncio e não entra na edição.
  */
 export type Shot = { src: [number, number] };
 
@@ -19,9 +17,9 @@ export type Block = {
   id: string;
   video: string;
   /**
-   * Ganho de nivelamento. Os quatro takes chegaram com 3,4 dB de diferença de
-   * volume de fala entre si; esses fatores igualam todos em RMS -23,5 dB, com
-   * o pico real de cada um ainda abaixo de -1,7 dBFS.
+   * Ganho de nivelamento. Os quatro takes chegaram com 3,5 dB de diferença de
+   * volume de fala entre si; esses fatores igualam todos em RMS -23,5 dB,
+   * mantendo o pico real de cada um abaixo de -1,8 dBFS.
    */
   gain: number;
   shots: Shot[];
@@ -33,21 +31,25 @@ export const blocks: Block[] = [
     //  a pergunta dentro do próprio acesso ao Wi-Fi, no momento em que o
     //  cliente ainda está no seu estabelecimento."
     id: "desenvolvimento-1",
-    video: "wiquest/videos/img7922.mp4",
-    gain: 1.27,
-    shots: [{ src: [1.45, 6.33] }, { src: [6.61, 14.26] }],
+    video: "wiquest/videos/img7918.mp4",
+    gain: 0.91,
+    shots: [
+      { src: [0.3, 2.84] },
+      { src: [3.14, 6.26] },
+      { src: [6.71, 12.21] },
+    ],
   },
   {
     // "Ele responde em segundos, sem baixar aplicativo e sem sair do lugar.
     //  A resposta chega com a experiência ainda fresca, e não três dias depois
     //  por e-mail."
     id: "desenvolvimento-2",
-    video: "wiquest/videos/img7918.mp4",
-    gain: 0.92,
+    video: "wiquest/videos/img7922.mp4",
+    gain: 1.25,
     shots: [
-      { src: [0.28, 2.91] },
-      { src: [3.12, 6.33] },
-      { src: [6.69, 12.28] },
+      { src: [1.47, 6.26] },
+      { src: [6.63, 9.09] },
+      { src: [9.21, 14.19] },
     ],
   },
   {
@@ -56,11 +58,11 @@ export const blocks: Block[] = [
     //  permanência. É assim que a opinião do cliente vira decisão estratégica."
     id: "desenvolvimento-3",
     video: "wiquest/videos/img7929.mp4",
-    gain: 1.18,
+    gain: 1.17,
     shots: [
-      { src: [1.95, 9.05] },
-      { src: [9.39, 12.1] },
-      { src: [12.52, 18.61] },
+      { src: [1.97, 8.98] },
+      { src: [9.41, 12.03] },
+      { src: [12.54, 18.54] },
     ],
   },
   {
@@ -68,12 +70,11 @@ export const blocks: Block[] = [
     //  cliente em decisão que gera resultado."
     id: "fechamento",
     video: "wiquest/videos/img7932.mp4",
-    gain: 1.36,
-    shots: [{ src: [1.26, 8.87] }],
+    gain: 1.35,
+    shots: [{ src: [1.28, 8.8] }],
   },
 ];
 
-export const HOOK_FRAMES = sec(4);
 export const END_FRAMES = sec(4.5);
 
 export type PlacedShot = {
@@ -96,7 +97,7 @@ export type PlacedBlock = {
 const shots: PlacedShot[] = [];
 const placedBlocks: PlacedBlock[] = [];
 
-let cursor = HOOK_FRAMES;
+let cursor = 0;
 blocks.forEach((block, blockIndex) => {
   const blockStart = cursor;
   block.shots.forEach((shot, shotIndex) => {
@@ -127,10 +128,14 @@ export const blockRanges = placedBlocks;
 export const END_START = cursor;
 export const TOTAL_FRAMES = cursor + END_FRAMES;
 
-/** Índice global do primeiro frame de cada take (para achar os pontos de corte). */
+/** Índice global do primeiro frame de cada take (para ancorar textos e inserts). */
 const shotStart = (blockIndex: number, shotIndex: number) =>
   shots.find((s) => s.blockIndex === blockIndex && s.shotIndex === shotIndex)!
     .from;
+
+const shotLength = (blockIndex: number, shotIndex: number) =>
+  shots.find((s) => s.blockIndex === blockIndex && s.shotIndex === shotIndex)!
+    .durationInFrames;
 
 /** Textos que entram como lower third sobre a Mari. */
 export type Caption = {
@@ -151,7 +156,7 @@ export const captions: Caption[] = [
   },
   {
     from: shotStart(1, 0) + 6,
-    durationInFrames: sec(5.2),
+    durationInFrames: sec(4.2),
     kicker: "Do lado do cliente",
     title: "Responde em segundos",
     accent: "sem baixar aplicativo",
@@ -185,12 +190,17 @@ export type Cutaway = {
 };
 
 export const cutaways: Cutaway[] = [
-  // "Ela coloca a pergunta dentro do próprio acesso ao Wi-Fi..."
-  { kind: "phone", from: shotStart(0, 1) + 24, durationInFrames: sec(5) },
+  // "Ela coloca a pergunta dentro do próprio acesso ao Wi-Fi..." — segura até o
+  // corte de bloco, para a volta à Mari coincidir com a troca de take.
+  {
+    kind: "phone",
+    from: shotStart(0, 2) + 18,
+    durationInFrames: shotLength(0, 2) - 18,
+  },
   // "...e não três dias depois por e-mail."
-  { kind: "speed", from: shotStart(1, 2) + 30, durationInFrames: sec(3.6) },
+  { kind: "speed", from: shotStart(1, 2) + 12, durationInFrames: sec(3.6) },
   // "...junto com os outros dados que a rede já captura, como frequência de
-  //  visita e tempo de permanência." — termina exatamente no corte do take.
+  //  visita e tempo de permanência."
   {
     kind: "dashboard",
     from: shotStart(2, 0) + 105,
@@ -198,7 +208,7 @@ export const cutaways: Cutaway[] = [
   },
 ];
 
-/** Nome de quem grava, no canto superior esquerdo da abertura do bloco 1. */
-export const NAME_CARD = "Mari";
+/** Nome de quem apresenta, no canto superior esquerdo da abertura. */
+export const NAME_CARD = "Mari Sumie";
 export const NAME_CARD_FROM = shotStart(0, 0) + 10;
 export const NAME_CARD_FRAMES = sec(3);

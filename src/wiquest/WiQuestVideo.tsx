@@ -13,7 +13,6 @@ import {
   END_START,
   FPS,
   HEIGHT,
-  HOOK_FRAMES,
   TOTAL_FRAMES,
   WIDTH,
   captions,
@@ -23,7 +22,6 @@ import {
 import { Shot } from "./Shot";
 import { Chrome, NameCard } from "./Chrome";
 import { CaptionCard } from "./Captions";
-import { Hook } from "./Hook";
 import { EndCard } from "./EndCard";
 import { PhoneSurvey } from "./cutaways/PhoneSurvey";
 import { SpeedCompare } from "./cutaways/SpeedCompare";
@@ -35,21 +33,12 @@ const CUTAWAYS = {
   dashboard: Dashboard,
 };
 
-/** Cama musical baixa, abrindo espaço para a fala e crescendo nas cartelas. */
+/** Cama musical baixa por baixo da fala, subindo só na cartela final. */
 const musicVolume = (frame: number) =>
   interpolate(
     frame,
-    [
-      0,
-      18,
-      HOOK_FRAMES - 8,
-      HOOK_FRAMES + 10,
-      END_START - 6,
-      END_START + 12,
-      TOTAL_FRAMES - 20,
-      TOTAL_FRAMES,
-    ],
-    [0, 0.3, 0.3, 0.1, 0.1, 0.26, 0.26, 0],
+    [0, 14, END_START - 6, END_START + 12, TOTAL_FRAMES - 20, TOTAL_FRAMES],
+    [0, 0.1, 0.1, 0.26, 0.26, 0],
     { extrapolateLeft: "clamp", extrapolateRight: "clamp" },
   );
 
@@ -57,10 +46,6 @@ export const WiQuestVideo: React.FC = () => {
   return (
     <AbsoluteFill style={{ fontFamily, background: "#04141c" }}>
       <Audio src={staticFile("audio/theme.mp3")} volume={musicVolume} />
-
-      <Sequence durationInFrames={HOOK_FRAMES}>
-        <Hook />
-      </Sequence>
 
       {placedShots.map((shot) => (
         <Sequence

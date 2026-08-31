@@ -11,7 +11,6 @@ import {
 import { wispot, font } from "./brand";
 import {
   END_START,
-  HOOK_FRAMES,
   NAME_CARD,
   NAME_CARD_FRAMES,
   NAME_CARD_FROM,
@@ -22,15 +21,10 @@ import {
 export const Chrome: React.FC = () => {
   const frame = useCurrentFrame();
 
-  const fadeIn = interpolate(
-    frame,
-    [HOOK_FRAMES - 6, HOOK_FRAMES + 8],
-    [0, 1],
-    {
-      extrapolateLeft: "clamp",
-      extrapolateRight: "clamp",
-    },
-  );
+  const fadeIn = interpolate(frame, [0, 10], [0, 1], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
   const fadeOut = interpolate(frame, [END_START - 14, END_START], [1, 0], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",

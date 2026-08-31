@@ -8,7 +8,7 @@ import {
 } from "remotion";
 import type { PlacedShot } from "./content";
 
-const AUDIO_FADE = 3;
+const AUDIO_FADE = 1;
 
 /**
  * Um take já cortado. Os cortes de silêncio deixam saltos de imagem, então
