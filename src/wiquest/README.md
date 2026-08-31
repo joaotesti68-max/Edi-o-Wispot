@@ -66,9 +66,11 @@ continua rodando:
 
 ## Trilha
 
-`public/audio/theme.mp3`, herdada do vídeo anterior do repo, em volume baixo
-sob a fala. Para trocar, substitua o arquivo (ou aponte outro caminho em
-`WiQuestVideo.tsx`) — a curva de volume está em `musicVolume`.
+`public/wiquest/audio/leberch-corporate.mp3` (3:28; o vídeo usa os primeiros
+51 s). A faixa vem masterizada em RMS -14 dB, bem mais quente que a fala
+(RMS -23,5 dB), por isso o ganho é baixo: 0,05 no corpo do vídeo — 17 dB
+abaixo da voz — subindo para 0,2 na cartela final e fechando com 1 s de
+fade. A curva está em `musicVolume`, em `WiQuestVideo.tsx`.
 
 ## Render
 

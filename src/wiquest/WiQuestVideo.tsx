@@ -33,19 +33,27 @@ const CUTAWAYS = {
   dashboard: Dashboard,
 };
 
-/** Cama musical baixa por baixo da fala, subindo só na cartela final. */
+/**
+ * Cama musical. A faixa vem masterizada em RMS -14 dB, bem mais quente que a
+ * fala (RMS -23,5 dB), então o ganho é baixo: 0,05 deixa a música 17 dB abaixo
+ * da voz durante o corpo do vídeo; na cartela final ela sobe para 0,2 — 5 dB
+ * abaixo do nível da fala — para o fecho não cair de energia quando a voz sai.
+ */
 const musicVolume = (frame: number) =>
   interpolate(
     frame,
-    [0, 14, END_START - 6, END_START + 12, TOTAL_FRAMES - 20, TOTAL_FRAMES],
-    [0, 0.1, 0.1, 0.26, 0.26, 0],
+    [0, 14, END_START - 6, END_START + 14, TOTAL_FRAMES - 30, TOTAL_FRAMES],
+    [0, 0.05, 0.05, 0.2, 0.2, 0],
     { extrapolateLeft: "clamp", extrapolateRight: "clamp" },
   );
 
 export const WiQuestVideo: React.FC = () => {
   return (
     <AbsoluteFill style={{ fontFamily, background: "#04141c" }}>
-      <Audio src={staticFile("audio/theme.mp3")} volume={musicVolume} />
+      <Audio
+        src={staticFile("wiquest/audio/leberch-corporate.mp3")}
+        volume={musicVolume}
+      />
 
       {placedShots.map((shot) => (
         <Sequence
