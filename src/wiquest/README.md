@@ -58,7 +58,11 @@ Os takes também chegaram com 3,5 dB de diferença de volume de fala entre si;
 Três inserts em tela cheia entram por cima da imagem enquanto o áudio da Mari
 continua rodando:
 
-1. `PhoneSurvey` — a pergunta dentro da tela de conexão do Wi-Fi.
+1. `BrandDemo` — a demo oficial do WiQuest ("Use a sua marca."), fornecida
+   pelo cliente (`public/wiquest/videos/wiquest-demo.mp4`). A peça tem 23,4 s e
+   percorre cinco cores de marca; o insert usa a janela de 1,5 s a 7,3 s, que
+   pega a tela rosa já montada e a virada para o azul, onde a pergunta
+   aparece — duas marcas diferentes sem precisar acelerar a animação.
 2. `SpeedCompare` — resposta agora × pesquisa por e-mail três dias depois.
 3. `Dashboard` — o feedback caindo no painel junto com frequência de visita e
    tempo de permanência. Os números do painel são ilustrativos e a peça diz

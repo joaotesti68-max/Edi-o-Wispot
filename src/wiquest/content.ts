@@ -184,18 +184,19 @@ export const captions: Caption[] = [
 
 /** Inserts em tela cheia. O áudio do take continua rodando por baixo. */
 export type Cutaway = {
-  kind: "phone" | "speed" | "dashboard";
+  kind: "demo" | "speed" | "dashboard";
   from: number;
   durationInFrames: number;
 };
 
 export const cutaways: Cutaway[] = [
-  // "Ela coloca a pergunta dentro do próprio acesso ao Wi-Fi..." — segura até o
-  // corte de bloco, para a volta à Mari coincidir com a troca de take.
+  // "Ela coloca a pergunta dentro do próprio acesso ao Wi-Fi..." — entra 10
+  // frames antes do corte de take (escondendo a emenda) e segura até o fim do
+  // bloco, para a volta à Mari coincidir com a troca de bloco.
   {
-    kind: "phone",
-    from: shotStart(0, 2) + 18,
-    durationInFrames: shotLength(0, 2) - 18,
+    kind: "demo",
+    from: shotStart(0, 2) - 10,
+    durationInFrames: shotLength(0, 2) + 10,
   },
   // "...e não três dias depois por e-mail."
   { kind: "speed", from: shotStart(1, 2) + 12, durationInFrames: sec(3.6) },

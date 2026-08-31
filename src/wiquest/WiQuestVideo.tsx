@@ -23,12 +23,12 @@ import { Shot } from "./Shot";
 import { Chrome, NameCard } from "./Chrome";
 import { CaptionCard } from "./Captions";
 import { EndCard } from "./EndCard";
-import { PhoneSurvey } from "./cutaways/PhoneSurvey";
+import { BrandDemo } from "./cutaways/BrandDemo";
 import { SpeedCompare } from "./cutaways/SpeedCompare";
 import { Dashboard } from "./cutaways/Dashboard";
 
 const CUTAWAYS = {
-  phone: PhoneSurvey,
+  demo: BrandDemo,
   speed: SpeedCompare,
   dashboard: Dashboard,
 };
