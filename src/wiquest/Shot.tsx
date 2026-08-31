@@ -14,11 +14,12 @@ const AUDIO_FADE = 1;
  * Um take já cortado. Os cortes de silêncio deixam saltos de imagem, então
  * takes vizinhos alternam entre enquadramento cheio e um leve punch-in — o
  * corte passa a ler como intenção de edição, não como falha.
+ *
+ * Todo corte é seco, inclusive na troca de bloco: um fade de entrada faria o
+ * take nascer do fundo escuro, o que vira um flash preto quando o bloco vem
+ * logo depois de um insert em tela cheia.
  */
-export const Shot: React.FC<{ shot: PlacedShot; isBlockOpener: boolean }> = ({
-  shot,
-  isBlockOpener,
-}) => {
+export const Shot: React.FC<{ shot: PlacedShot }> = ({ shot }) => {
   const frame = useCurrentFrame();
   const { durationInFrames } = shot;
 
@@ -27,14 +28,6 @@ export const Shot: React.FC<{ shot: PlacedShot; isBlockOpener: boolean }> = ({
     extrapolateRight: "clamp",
   });
   const scale = base + drift;
-
-  // Abertura de bloco entra com um respiro; cortes internos são secos.
-  const openIn = isBlockOpener
-    ? interpolate(frame, [0, 5], [0, 1], {
-        extrapolateLeft: "clamp",
-        extrapolateRight: "clamp",
-      })
-    : 1;
 
   const volume = (f: number) =>
     shot.gain *
@@ -47,12 +40,7 @@ export const Shot: React.FC<{ shot: PlacedShot; isBlockOpener: boolean }> = ({
 
   return (
     <AbsoluteFill style={{ background: "#04141c" }}>
-      <AbsoluteFill
-        style={{
-          transform: `scale(${scale * (isBlockOpener ? interpolate(openIn, [0, 1], [1.03, 1]) : 1)})`,
-          opacity: openIn,
-        }}
-      >
+      <AbsoluteFill style={{ transform: `scale(${scale})` }}>
         <OffthreadVideo
           src={staticFile(shot.video)}
           trimBefore={shot.trimBefore}

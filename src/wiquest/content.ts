@@ -187,6 +187,12 @@ export type Cutaway = {
   kind: "demo" | "speed" | "dashboard";
   from: number;
   durationInFrames: number;
+  /**
+   * Insert que termina exatamente num corte de take sai seco: se ele fizesse
+   * fade, os últimos frames revelariam o take por baixo e o corte viria logo
+   * depois — dois cortes em cima um do outro.
+   */
+  hardOut?: boolean;
 };
 
 export const cutaways: Cutaway[] = [
@@ -197,6 +203,7 @@ export const cutaways: Cutaway[] = [
     kind: "demo",
     from: shotStart(0, 2) - 10,
     durationInFrames: shotLength(0, 2) + 10,
+    hardOut: true,
   },
   // "...e não três dias depois por e-mail."
   { kind: "speed", from: shotStart(1, 2) + 12, durationInFrames: sec(3.6) },
@@ -206,6 +213,7 @@ export const cutaways: Cutaway[] = [
     kind: "dashboard",
     from: shotStart(2, 0) + 105,
     durationInFrames: shotStart(2, 2) - (shotStart(2, 0) + 105),
+    hardOut: true,
   },
 ];
 

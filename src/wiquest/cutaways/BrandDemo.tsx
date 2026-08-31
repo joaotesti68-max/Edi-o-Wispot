@@ -23,12 +23,10 @@ export const BrandDemo: React.FC = () => {
   const frame = useCurrentFrame();
   const { durationInFrames } = useVideoConfig();
 
-  const opacity = interpolate(
-    frame,
-    [0, 6, durationInFrames - 8, durationInFrames],
-    [0, 1, 1, 0],
-    { extrapolateLeft: "clamp", extrapolateRight: "clamp" },
-  );
+  const opacity = interpolate(frame, [0, 6], [0, 1], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
 
   return (
     <AbsoluteFill style={{ opacity, background: "#eef1f4" }}>

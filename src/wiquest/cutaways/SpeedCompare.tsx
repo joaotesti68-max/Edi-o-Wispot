@@ -12,7 +12,7 @@ import { BoltIcon, BrandBackdrop, CheckIcon, CloseIcon, MailIcon } from "../ui";
 /** Insert: agora, com a experiência fresca — e não três dias depois por e-mail. */
 export const SpeedCompare: React.FC = () => {
   const frame = useCurrentFrame();
-  const { fps, durationInFrames } = useVideoConfig();
+  const { fps } = useVideoConfig();
 
   const now = spring({
     frame: frame - 4,
@@ -30,18 +30,8 @@ export const SpeedCompare: React.FC = () => {
     config: { damping: 11, mass: 0.6 },
   });
 
-  const exit = interpolate(
-    frame,
-    [durationInFrames - 8, durationInFrames],
-    [1, 0],
-    {
-      extrapolateLeft: "clamp",
-      extrapolateRight: "clamp",
-    },
-  );
-
   return (
-    <AbsoluteFill style={{ opacity: exit }}>
+    <AbsoluteFill>
       <BrandBackdrop deep />
 
       <AbsoluteFill

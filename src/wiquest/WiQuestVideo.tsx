@@ -6,6 +6,8 @@ import {
   Sequence,
   interpolate,
   staticFile,
+  useCurrentFrame,
+  useVideoConfig,
 } from "remotion";
 import { fontFamily } from "../loadFont";
 import {
@@ -26,6 +28,27 @@ import { EndCard } from "./EndCard";
 import { BrandDemo } from "./cutaways/BrandDemo";
 import { SpeedCompare } from "./cutaways/SpeedCompare";
 import { Dashboard } from "./cutaways/Dashboard";
+
+/**
+ * Saída dos inserts. Quando o insert termina em cima de um corte de take, ele
+ * sai seco: um fade ali revelaria o take por baixo por alguns frames e o corte
+ * viria logo em seguida, lendo como dois cortes seguidos.
+ */
+const CutawayLayer: React.FC<{
+  hardOut?: boolean;
+  children: React.ReactNode;
+}> = ({ hardOut, children }) => {
+  const frame = useCurrentFrame();
+  const { durationInFrames } = useVideoConfig();
+  const opacity = hardOut
+    ? 1
+    : interpolate(frame, [durationInFrames - 8, durationInFrames], [1, 0], {
+        extrapolateLeft: "clamp",
+        extrapolateRight: "clamp",
+      });
+
+  return <AbsoluteFill style={{ opacity }}>{children}</AbsoluteFill>;
+};
 
 const CUTAWAYS = {
   demo: BrandDemo,
@@ -61,7 +84,7 @@ export const WiQuestVideo: React.FC = () => {
           from={shot.from}
           durationInFrames={shot.durationInFrames}
         >
-          <Shot shot={shot} isBlockOpener={shot.shotIndex === 0} />
+          <Shot shot={shot} />
         </Sequence>
       ))}
 
@@ -87,7 +110,9 @@ export const WiQuestVideo: React.FC = () => {
             from={cutaway.from}
             durationInFrames={cutaway.durationInFrames}
           >
-            <Component />
+            <CutawayLayer hardOut={cutaway.hardOut}>
+              <Component />
+            </CutawayLayer>
           </Sequence>
         );
       })}

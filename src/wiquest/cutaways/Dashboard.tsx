@@ -101,7 +101,7 @@ const Tile: React.FC<{
 /** Insert: o feedback caindo no painel junto com os dados que a rede já captura. */
 export const Dashboard: React.FC = () => {
   const frame = useCurrentFrame();
-  const { fps, durationInFrames } = useVideoConfig();
+  const { fps } = useVideoConfig();
 
   const at = (delay: number, damping = 18) =>
     spring({ frame: frame - delay, fps, config: { damping, mass: 0.8 } });
@@ -119,18 +119,8 @@ export const Dashboard: React.FC = () => {
   });
   const flow = at(126);
 
-  const exit = interpolate(
-    frame,
-    [durationInFrames - 9, durationInFrames],
-    [1, 0],
-    {
-      extrapolateLeft: "clamp",
-      extrapolateRight: "clamp",
-    },
-  );
-
   return (
-    <AbsoluteFill style={{ opacity: exit }}>
+    <AbsoluteFill>
       <BrandBackdrop deep />
 
       <div
