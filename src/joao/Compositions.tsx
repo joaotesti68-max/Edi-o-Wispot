@@ -1,11 +1,19 @@
 import React from "react";
 import { Composition } from "remotion";
-import { RawCut } from "./RawCut";
-import { JOAO_FPS, JOAO_HEIGHT, JOAO_WIDTH, clipDuration, clips } from "./takes";
+import { FullRawCut, RawCut } from "./RawCut";
+import { JOAO_FPS, JOAO_HEIGHT, JOAO_WIDTH, clipDuration, clips, totalDuration } from "./takes";
 
 export const JoaoCompositions: React.FC = () => {
   return (
     <>
+      <Composition
+        id="Joao-00-completo"
+        component={FullRawCut}
+        durationInFrames={totalDuration}
+        fps={JOAO_FPS}
+        width={JOAO_WIDTH}
+        height={JOAO_HEIGHT}
+      />
       {clips.map((clip, i) => (
         <Composition
           key={clip.id}
