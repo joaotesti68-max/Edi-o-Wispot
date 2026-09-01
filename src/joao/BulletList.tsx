@@ -20,7 +20,9 @@ const Row: React.FC<{ label: string; start: number }> = ({ label, start }) => {
     <div
       style={{
         display: "flex",
-        alignItems: "center",
+        // Alinhado ao topo, não ao centro: num rótulo que quebra em duas
+        // linhas o marcador ficaria no meio das duas.
+        alignItems: "flex-start",
         gap: 16,
         minHeight: 48,
         opacity,
@@ -31,6 +33,7 @@ const Row: React.FC<{ label: string; start: number }> = ({ label, start }) => {
         style={{
           width: 12,
           height: 12,
+          marginTop: 18,
           borderRadius: 999,
           flexShrink: 0,
           background: brand.colors.primaryLight,

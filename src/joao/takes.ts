@@ -50,10 +50,11 @@ export type ScriptClip = {
   script: string;
   takes: Take[];
   /**
-   * Frase do roteiro que ainda não existe em nenhum bruto recebido. O bloco
-   * renderiza sem ela; é o que falta gravar.
+   * Frase do roteiro que não foi gravada. Decidido seguir sem: fica
+   * registrado aqui pra quem comparar o vídeo com o roteiro entender a
+   * diferença.
    */
-  missing?: string;
+  notRecorded?: string;
 };
 
 const ABERTURA_1 = "videos/joao/raw-abertura-1.mp4";
@@ -197,13 +198,17 @@ export const clips: ScriptClip[] = [
     section: "Fechamento",
     headline: "Comece a adequação pela base certa",
     icon: "chat",
+    // O trecho "desde a construção da PSI até a aplicação dessas diretrizes"
+    // não foi gravado; entra escrito, enquanto ele fala "apoiamos os
+    // cartórios", pra mensagem não se perder.
+    bullets: [{ label: "Da construção da PSI à aplicação", takeIndex: 0, delay: 18 }],
     script:
       "Na Pro Advanced, apoiamos o cartório desde a construção da PSI até a aplicação dessas " +
       "diretrizes na operação. Fale com a nossa equipe e comece a adequação pela base certa.",
-    // Ele para em "apoiamos os cartórios" e o bruto acaba ali — esse pedaço do
-    // meio não existe em nenhum arquivo. Emendando direto no "fale com a nossa
-    // equipe" a frase fecha, só fica mais curta que o roteiro.
-    missing: "desde a construção da PSI até a aplicação dessas diretrizes na operação",
+    // Ele para em "apoiamos os cartórios" e o bruto acaba ali. Emendando
+    // direto no "fale com a nossa equipe" a frase fecha sozinha, e o que ele
+    // deixou de falar entra na arte do bloco.
+    notRecorded: "desde a construção da PSI até a aplicação dessas diretrizes na operação",
     takes: [
       // 0,32s – 2,85s — "Aqui na Pro Advanced já apoiamos os cartórios",
       // no lugar de "Na Pro Advanced, apoiamos o cartório"
