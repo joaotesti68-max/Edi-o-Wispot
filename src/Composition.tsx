@@ -6,7 +6,15 @@ import { VideoBlock } from "./VideoBlock";
 import { EndCard } from "./EndCard";
 import { ProgressBar } from "./ProgressBar";
 import { fontFamily } from "./loadFont";
-import { FPS, OUTRO_FRAMES, TRANSITION_FRAMES, blocks, totalDurationInFrames } from "./content";
+import {
+  FPS,
+  OUTRO_FRAMES,
+  TRANSITION_FRAMES,
+  blockRanges,
+  blocks,
+  outroRange,
+  totalDurationInFrames,
+} from "./content";
 
 export const ProAdvancedVideo: React.FC = () => {
   return (
@@ -37,7 +45,7 @@ export const ProAdvancedVideo: React.FC = () => {
         </TransitionSeries.Sequence>
       </TransitionSeries>
 
-      <ProgressBar />
+      <ProgressBar ranges={blockRanges} outroStart={outroRange.start} />
     </AbsoluteFill>
   );
 };

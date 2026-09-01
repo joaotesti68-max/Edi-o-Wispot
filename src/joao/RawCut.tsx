@@ -27,7 +27,7 @@ const TakeClip: React.FC<{ take: Take }> = ({ take }) => {
   );
 };
 
-const TakeSeries: React.FC<{ takes: Take[] }> = ({ takes }) => {
+export const TakeSeries: React.FC<{ takes: Take[] }> = ({ takes }) => {
   return (
     <Series>
       {takes.map((take, i) => (

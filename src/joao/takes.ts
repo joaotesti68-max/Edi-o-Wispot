@@ -9,6 +9,8 @@
 // 24 fps constante, igual à composição, então `from`/`to` são segundo × 24.
 // `to` é exclusivo.
 
+import type { IconKey } from "../content";
+
 export const JOAO_FPS = 24;
 export const JOAO_WIDTH = 1080;
 export const JOAO_HEIGHT = 1920;
@@ -25,10 +27,25 @@ export type Take = {
   to: number;
 };
 
+/** Item de lista que entra em sincronia com o que ele está falando. */
+export type Bullet = {
+  label: string;
+  /** A lista acompanha a fala: o item entra junto com essa take. */
+  takeIndex: number;
+  /** Frames depois do início da take, quando uma take traz dois itens. */
+  delay?: number;
+};
+
 export type ScriptClip = {
   id: string;
   /** Bloco do roteiro a que esse trecho pertence. */
   section: "Abertura" | "Desenvolvimento" | "Fechamento";
+  /** Chamada que fica na tela durante o bloco. */
+  headline: string;
+  icon: IconKey;
+  bullets?: Bullet[];
+  /** Só no primeiro bloco. */
+  nameCard?: string;
   /** Texto que esse bloco precisa entregar. */
   script: string;
   takes: Take[];
@@ -55,6 +72,10 @@ export const clips: ScriptClip[] = [
   {
     id: "abertura",
     section: "Abertura",
+    headline: "O primeiro passo não é o firewall. É a PSI.",
+    icon: "shield",
+    // TODO: sobrenome do João — a Isabella entra como "Isabella Marques".
+    nameCard: "João",
     script:
       "Na adequação de um cartório, o primeiro passo não é o firewall nem o backup. " +
       "É a Política de Segurança da Informação, a PSI.",
@@ -78,6 +99,16 @@ export const clips: ScriptClip[] = [
   {
     id: "regras",
     section: "Desenvolvimento",
+    headline: "A PSI define as regras",
+    icon: "shield",
+    bullets: [
+      { label: "Quem acessa cada informação", takeIndex: 0 },
+      { label: "Como os dados são protegidos", takeIndex: 1 },
+      { label: "Como os backups funcionam", takeIndex: 2 },
+      // Essa take traz dois itens; ele chega no "como a equipe deve agir" em
+      // 83,2s, 46 frames depois do início dela.
+      { label: "Como a equipe age num incidente", takeIndex: 2, delay: 46 },
+    ],
     script:
       "É a PSI que define as regras: quem pode acessar cada informação, como os dados devem ser " +
       "protegidos, como os backups devem funcionar e como a equipe deve agir diante de um incidente.",
@@ -103,6 +134,8 @@ export const clips: ScriptClip[] = [
   {
     id: "base",
     section: "Desenvolvimento",
+    headline: "Sem diretriz, cada solução funciona isolada",
+    icon: "alert",
     script:
       "Ela é a base para todas as outras decisões de segurança. Sem essa diretriz, o cartório pode " +
       "até investir em tecnologia, mas cada solução acaba funcionando de forma isolada.",
@@ -133,6 +166,13 @@ export const clips: ScriptClip[] = [
   {
     id: "generico",
     section: "Desenvolvimento",
+    headline: "Nada de documento genérico",
+    icon: "server",
+    bullets: [
+      { label: "Os sistemas utilizados", takeIndex: 1 },
+      { label: "Os riscos da operação", takeIndex: 2 },
+      { label: "A rotina real do cartório", takeIndex: 3 },
+    ],
     script:
       "E a PSI não deve ser um documento genérico, feito apenas para cumprir uma exigência. " +
       "Ela precisa considerar os sistemas utilizados, os riscos da operação e a rotina real do cartório.",
@@ -155,6 +195,8 @@ export const clips: ScriptClip[] = [
   {
     id: "fechamento",
     section: "Fechamento",
+    headline: "Comece a adequação pela base certa",
+    icon: "chat",
     script:
       "Na Pro Advanced, apoiamos o cartório desde a construção da PSI até a aplicação dessas " +
       "diretrizes na operação. Fale com a nossa equipe e comece a adequação pela base certa.",
@@ -188,4 +230,30 @@ export const takeDuration = (take: Take) => take.to - take.from;
 export const clipDuration = (clip: ScriptClip) =>
   clip.takes.reduce((sum, take) => sum + takeDuration(take), 0);
 
-export const totalDuration = clips.reduce((sum, clip) => sum + clipDuration(clip), 0);
+/** Frame em que uma take começa, contado do início do bloco. */
+export const takeStart = (clip: ScriptClip, takeIndex: number) =>
+  clip.takes.slice(0, takeIndex).reduce((sum, take) => sum + takeDuration(take), 0);
+
+export const bulletStart = (clip: ScriptClip, bullet: Bullet) =>
+  takeStart(clip, bullet.takeIndex) + (bullet.delay ?? 0);
+
+export const OUTRO_FRAMES = 72;
+export const OUTRO_TRANSITION_FRAMES = 10;
+
+/** Faixa de frames de cada bloco na composição inteira (cortes secos entre eles). */
+export const blockRanges = clips.map((clip, i) => {
+  const start = clips.slice(0, i).reduce((sum, c) => sum + clipDuration(c), 0);
+  return { start, end: start + clipDuration(clip) };
+});
+
+export const blocksDuration = clips.reduce((sum, clip) => sum + clipDuration(clip), 0);
+
+export const outroRange = {
+  start: blocksDuration - OUTRO_TRANSITION_FRAMES,
+  end: blocksDuration - OUTRO_TRANSITION_FRAMES + OUTRO_FRAMES,
+};
+
+/** Só os cortes, sem o end card — é o que o `Joao-00-completo` renderiza. */
+export const totalDuration = blocksDuration;
+
+export const finalDuration = outroRange.end;
