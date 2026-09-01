@@ -36,6 +36,16 @@ export type Bullet = {
   delay?: number;
 };
 
+/** Aproximação na imagem, ancorada no rosto dele. */
+export type Punch = {
+  takeIndex: number;
+  delay?: number;
+  /** Quanto aproxima. Acima de ~1.2 o bruto, que é 576x1024, começa a borrar. */
+  scale?: number;
+  /** Frames segurando o zoom antes de voltar. */
+  hold?: number;
+};
+
 export type ScriptClip = {
   id: string;
   /** Bloco do roteiro a que esse trecho pertence. */
@@ -44,6 +54,8 @@ export type ScriptClip = {
   headline: string;
   icon: IconKey;
   bullets?: Bullet[];
+  /** Aproxima a imagem nele, pra dar ênfase num ponto do bloco. */
+  punch?: Punch;
   /** Só no primeiro bloco. */
   nameCard?: string;
   /** Texto que esse bloco precisa entregar. */
@@ -75,8 +87,9 @@ export const clips: ScriptClip[] = [
     section: "Abertura",
     headline: "O primeiro passo não é o firewall. É a PSI.",
     icon: "shield",
-    // TODO: sobrenome do João — a Isabella entra como "Isabella Marques".
-    nameCard: "João",
+    nameCard: "João Dourado",
+    // Fecha nele em cima do "É a Política de Segurança da Informação".
+    punch: { takeIndex: 1, delay: 4, scale: 1.18, hold: 54 },
     script:
       "Na adequação de um cartório, o primeiro passo não é o firewall nem o backup. " +
       "É a Política de Segurança da Informação, a PSI.",
@@ -155,12 +168,15 @@ export const clips: ScriptClip[] = [
         from: 49,
         to: 164,
       },
-      // 11,88s – 16,06s (a segunda take, em 17,22s, também serve se essa não agradar)
+      // 17,20s – 21,60s. A primeira take dessa frase, em 11,88s, tinha uma
+      // outra voz falando até 11,74s — só 0,12s antes do corte, e ainda em
+      // decaimento quando ele começa. Essa aqui tem um segundo de silêncio
+      // limpo antes (-80 dB), então a emenda entra sem nada atrás.
       {
         source: DIRETRIZ,
         text: "mas cada solução acaba funcionando de forma isolada",
-        from: 285,
-        to: 385,
+        from: 413,
+        to: 518,
       },
     ],
   },
@@ -198,6 +214,8 @@ export const clips: ScriptClip[] = [
     section: "Fechamento",
     headline: "Comece a adequação pela base certa",
     icon: "chat",
+    // Fecha nele no "fale com a nossa equipe" e segura até o end card.
+    punch: { takeIndex: 1, delay: 2, scale: 1.16, hold: 999 },
     // O trecho "desde a construção da PSI até a aplicação dessas diretrizes"
     // não foi gravado; entra escrito, enquanto ele fala "apoiamos os
     // cartórios", pra mensagem não se perder.
@@ -238,6 +256,9 @@ export const clipDuration = (clip: ScriptClip) =>
 /** Frame em que uma take começa, contado do início do bloco. */
 export const takeStart = (clip: ScriptClip, takeIndex: number) =>
   clip.takes.slice(0, takeIndex).reduce((sum, take) => sum + takeDuration(take), 0);
+
+export const punchStart = (clip: ScriptClip, punch: Punch) =>
+  takeStart(clip, punch.takeIndex) + (punch.delay ?? 0);
 
 export const bulletStart = (clip: ScriptClip, bullet: Bullet) =>
   takeStart(clip, bullet.takeIndex) + (bullet.delay ?? 0);

@@ -19,20 +19,21 @@ import {
 
 /**
  * Trilha baixa o suficiente pra não brigar com a fala, entrando e saindo em
- * fade. A composição da Isabella usa 0.42, mas ali a música sustenta cortes
- * mais longos; aqui é fala direta do começo ao fim.
+ * fade. A faixa está masterizada alta (-9,5 LUFS), bem acima da fala dos
+ * brutos, então o ganho aqui é baixo — ela sobe só no end card, onde não tem
+ * ninguém falando.
  */
 const MusicBed: React.FC = () => {
   const frame = useCurrentFrame();
 
   return (
     <Audio
-      src={staticFile("audio/theme.mp3")}
+      src={staticFile("audio/pulse.mp3")}
       volume={() =>
         interpolate(
           frame,
           [0, 36, blocksDuration - 24, blocksDuration, finalDuration - 18, finalDuration],
-          [0, 0.16, 0.16, 0.3, 0.3, 0],
+          [0, 0.1, 0.1, 0.26, 0.26, 0],
           { extrapolateLeft: "clamp", extrapolateRight: "clamp" },
         )
       }

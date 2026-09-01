@@ -18,7 +18,9 @@ export const PsiBadge: React.FC<{ start: number }> = ({ start }) => {
     <div
       style={{
         position: "absolute",
-        top: 430,
+        // Acima da cabeça dele: o bloco aproxima a imagem no mesmo momento em
+        // que esse card entra, e mais embaixo ele cairia sobre o rosto.
+        top: 196,
         left: 56,
         display: "flex",
         alignItems: "center",
