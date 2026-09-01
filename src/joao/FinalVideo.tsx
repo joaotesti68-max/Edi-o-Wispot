@@ -33,7 +33,7 @@ const MusicBed: React.FC = () => {
         interpolate(
           frame,
           [0, 36, blocksDuration - 24, blocksDuration, finalDuration - 18, finalDuration],
-          [0, 0.1, 0.1, 0.26, 0.26, 0],
+          [0, 0.06, 0.06, 0.18, 0.18, 0],
           { extrapolateLeft: "clamp", extrapolateRight: "clamp" },
         )
       }

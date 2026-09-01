@@ -28,7 +28,8 @@
     "build": "remotion bundle",
     "upgrade": "remotion upgrade",
     "lint": "eslint src && tsc",
-    "master": "scripts/master.sh out/JoaoPSI.mp4 out/JoaoPSI-master.mp4"
+    "master": "scripts/master.sh out/JoaoPSI.mp4 out/JoaoPSI-master.mp4",
+    "render": "remotion render JoaoPSI out/JoaoPSI.mp4 --image-format=png --crf=16 --color-space=bt709"
   },
   "sideEffects": [
     "*.css"

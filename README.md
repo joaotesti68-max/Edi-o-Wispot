@@ -54,9 +54,14 @@ registra frase de roteiro que não existe em nenhum bruto.
 ### Entrega
 
 ```console
-npx remotion render JoaoPSI out/JoaoPSI.mp4
+npm run render
 npm run master
 ```
+
+O `render` passa `--image-format=png`: o padrão do projeto é JPEG, que entra
+como intermediário entre o navegador e o encoder e suja os degradês e as
+bordas de texto antes mesmo do h264. Com PNG e `--crf=16` o arquivo sai
+*menor* que com JPEG, porque o encoder não gasta bits carregando artefato.
 
 O render sai com o nível de áudio dos brutos, uns 9 dB abaixo do que as redes
 sociais esperam. O `npm run master` normaliza pra -14 LUFS; é o arquivo que
