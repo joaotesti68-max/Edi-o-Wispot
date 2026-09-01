@@ -46,7 +46,10 @@ const BASE = "videos/joao/raw-base.mp4";
 const DIRETRIZ = "videos/joao/raw-diretriz.mp4";
 const GENERICO = "videos/joao/raw-generico.mp4";
 const CONSIDERAR = "videos/joao/raw-considerar.mp4";
-const FECHAMENTO_2 = "videos/joao/raw-fechamento-2.mp4";
+const FECHAMENTO_1 = "videos/joao/raw-fechamento-1.mp4";
+const FECHAMENTO_2 = "videos/joao/raw-fechamento-2b.mp4";
+// Primeira take do "fale com a nossa equipe", equivalente à que está no corte.
+export const FECHAMENTO_2_ALT = "videos/joao/raw-fechamento-2.mp4";
 
 export const clips: ScriptClip[] = [
   {
@@ -155,17 +158,26 @@ export const clips: ScriptClip[] = [
     script:
       "Na Pro Advanced, apoiamos o cartório desde a construção da PSI até a aplicação dessas " +
       "diretrizes na operação. Fale com a nossa equipe e comece a adequação pela base certa.",
-    missing:
-      "Na Pro Advanced, apoiamos o cartório desde a construção da PSI até a aplicação dessas " +
-      "diretrizes na operação.",
+    // Ele para em "apoiamos os cartórios" e o bruto acaba ali — esse pedaço do
+    // meio não existe em nenhum arquivo. Emendando direto no "fale com a nossa
+    // equipe" a frase fecha, só fica mais curta que o roteiro.
+    missing: "desde a construção da PSI até a aplicação dessas diretrizes na operação",
     takes: [
-      // 0,30s – 2,90s — ele termina em "comece a adequação já", não em
-      // "comece a adequação pela base certa" como está no roteiro
+      // 0,32s – 2,85s — "Aqui na Pro Advanced já apoiamos os cartórios",
+      // no lugar de "Na Pro Advanced, apoiamos o cartório"
+      {
+        source: FECHAMENTO_1,
+        text: "Aqui na Pro Advanced já apoiamos os cartórios",
+        from: 8,
+        to: 68,
+      },
+      // 1,14s – 3,21s — nas duas takes ele termina em "comece a adequação já",
+      // e não em "comece a adequação pela base certa" como está no roteiro
       {
         source: FECHAMENTO_2,
         text: "Fale com a nossa equipe e comece a adequação já",
-        from: 7,
-        to: 70,
+        from: 27,
+        to: 77,
       },
     ],
   },
