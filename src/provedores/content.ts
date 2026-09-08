@@ -98,8 +98,8 @@ export const blocks: Block[] = [
   },
   {
     id: "passo-4",
-    video: "videos/provedores/IMG_8436.mp4",
-    durationInFrames: 162,
+    video: "videos/provedores/IMG_8430.mp4",
+    durationInFrames: 173,
     chip: "Passo 04 · Engajamento",
     headline: [
       { t: "Campanhas segmentadas para " },
@@ -111,8 +111,8 @@ export const blocks: Block[] = [
   },
   {
     id: "passo-5",
-    video: "videos/provedores/IMG_8437.mp4",
-    durationInFrames: 127,
+    video: "videos/provedores/IMG_8436.mp4",
+    durationInFrames: 162,
     chip: "Passo 05 · Relatórios",
     headline: [
       { t: "O que cada ação " },
@@ -120,6 +120,19 @@ export const blocks: Block[] = [
     ],
     activeSteps: [5],
     zoom: 1.0,
+    cuts: [],
+  },
+  {
+    id: "fechamento",
+    video: "videos/provedores/IMG_8437.mp4",
+    durationInFrames: 127,
+    chip: "Cinco passos",
+    headline: [
+      { t: "Receita extra sobre a estrutura que " },
+      { t: "você já opera", bold: true, underline: true },
+    ],
+    activeSteps: [1, 2, 3, 4, 5],
+    zoom: 1.07,
     cuts: [25],
   },
 ];
