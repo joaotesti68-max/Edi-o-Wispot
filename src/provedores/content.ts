@@ -25,7 +25,7 @@ export const STEPS = [
 ];
 
 export const OUTRO_FRAMES = 90;
-export const TRANSITION_FRAMES = 6;
+export const TRANSITION_FRAMES = 8;
 
 /**
  * Os arquivos mantêm o nome de câmera de propósito: a associação
@@ -36,7 +36,7 @@ export const blocks: Block[] = [
   {
     id: "abertura",
     video: "videos/provedores/IMG_8414.mp4",
-    durationInFrames: 155,
+    durationInFrames: 154,
     chip: "Isabella Marques · Wispot",
     headline: [
       { t: "Quanto trabalho dá pra " },
@@ -50,7 +50,7 @@ export const blocks: Block[] = [
   {
     id: "ponte",
     video: "videos/provedores/IMG_8415.mp4",
-    durationInFrames: 76,
+    durationInFrames: 70,
     chip: "O caminho",
     headline: [{ t: "São " }, { t: "cinco passos", bold: true, underline: true }],
     activeSteps: [],
@@ -60,7 +60,7 @@ export const blocks: Block[] = [
   {
     id: "passo-1",
     video: "videos/provedores/IMG_8417.mp4",
-    durationInFrames: 171,
+    durationInFrames: 159,
     chip: "Passo 01 · Instalação",
     headline: [
       { t: "Sobre o equipamento que " },
@@ -73,7 +73,7 @@ export const blocks: Block[] = [
   {
     id: "passo-2",
     video: "videos/provedores/IMG_8423.mp4",
-    durationInFrames: 201,
+    durationInFrames: 192,
     chip: "Passo 02 · Configuração da rede",
     headline: [
       { t: "Portal de acesso, permissões e " },
@@ -86,7 +86,7 @@ export const blocks: Block[] = [
   {
     id: "passo-3",
     video: "videos/provedores/IMG_8425.mp4",
-    durationInFrames: 201,
+    durationInFrames: 187,
     chip: "Passo 03 · Captura de dados",
     headline: [
       { t: "Cada conexão registra " },
@@ -99,7 +99,7 @@ export const blocks: Block[] = [
   {
     id: "passo-4",
     video: "videos/provedores/IMG_8430.mp4",
-    durationInFrames: 173,
+    durationInFrames: 169,
     chip: "Passo 04 · Engajamento",
     headline: [
       { t: "Campanhas segmentadas para " },
@@ -112,7 +112,7 @@ export const blocks: Block[] = [
   {
     id: "passo-5",
     video: "videos/provedores/IMG_8436.mp4",
-    durationInFrames: 162,
+    durationInFrames: 155,
     chip: "Passo 05 · Relatórios",
     headline: [
       { t: "O que cada ação " },
@@ -125,7 +125,7 @@ export const blocks: Block[] = [
   {
     id: "fechamento",
     video: "videos/provedores/IMG_8437.mp4",
-    durationInFrames: 127,
+    durationInFrames: 112,
     chip: "Cinco passos",
     headline: [
       { t: "Receita extra sobre a estrutura que " },
@@ -137,13 +137,14 @@ export const blocks: Block[] = [
   },
 ];
 
-// Espelha como o TransitionSeries encadeia as sequências, para a trilha de
-// passos saber a faixa de frames de cada bloco sem repetir a conta.
-const sequenceDurations = [...blocks.map((b) => b.durationInFrames), OUTRO_FRAMES];
-
-const starts: number[] = [0];
-for (let i = 1; i < sequenceDurations.length; i++) {
-  starts.push(starts[i - 1] + sequenceDurations[i - 1] - TRANSITION_FRAMES);
+// Os blocos entram em corte seco — dissolver dois planos quase idênticos em
+// escalas diferentes produzia fantasma de dupla exposição. Só a passagem para
+// o card final atravessa, e é a única que consome frames das duas pontas.
+const starts: number[] = [];
+let acc = 0;
+for (const b of blocks) {
+  starts.push(acc);
+  acc += b.durationInFrames;
 }
 
 export const blockRanges = blocks.map((b, i) => ({
@@ -152,10 +153,8 @@ export const blockRanges = blocks.map((b, i) => ({
 }));
 
 export const outroRange = {
-  start: starts[starts.length - 1],
-  end: starts[starts.length - 1] + OUTRO_FRAMES,
+  start: acc - TRANSITION_FRAMES,
+  end: acc - TRANSITION_FRAMES + OUTRO_FRAMES,
 };
 
-export const totalDurationInFrames =
-  sequenceDurations.reduce((sum, d) => sum + d, 0) -
-  TRANSITION_FRAMES * (sequenceDurations.length - 1);
+export const totalDurationInFrames = acc + OUTRO_FRAMES - TRANSITION_FRAMES;

@@ -1,7 +1,6 @@
 import {
   AbsoluteFill,
   Easing,
-  Img,
   OffthreadVideo,
   interpolate,
   staticFile,
@@ -33,7 +32,6 @@ export const ClipBlock: React.FC<{ block: Block }> = ({ block }) => {
   });
   const scale = block.zoom + (passedCuts % 2 === 1 ? CUT_ZOOM : 0) + drift;
 
-  const logoOpacity = interpolate(frame, [0, 14], [0, 1], ease);
   const chipOpacity = interpolate(frame, [4, 18], [0, 1], ease);
   const chipShift = interpolate(frame, [4, 18], [16, 0], ease);
   const headlineOpacity = interpolate(frame, [10, 26], [0, 1], ease);
@@ -51,18 +49,6 @@ export const ClipBlock: React.FC<{ block: Block }> = ({ block }) => {
       </AbsoluteFill>
 
       <AbsoluteFill style={{ background: wispot.scrim }} />
-
-      <Img
-        src={staticFile(wispot.logo.white)}
-        style={{
-          position: "absolute",
-          top: 58,
-          left: "50%",
-          width: 210,
-          transform: "translateX(-50%)",
-          opacity: logoOpacity,
-        }}
-      />
 
       <div
         style={{
