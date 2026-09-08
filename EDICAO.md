@@ -81,7 +81,19 @@ melhor sobreposição (F1 0,87 contra 0,80 sem ajuste).
 
 ## Trilha
 
-`public/audio/theme.mp3` com volume variável (`musicVolume` em
-`src/content.ts`): abre nos cards e no encerramento, onde ninguém fala, e recua
-para um leito por baixo da voz da Mari — cerca de 16 dB abaixo dela. As rampas
-caem dentro das transições. Para trocar a música, basta substituir o arquivo.
+`public/audio/theme.mp3` — faixa "Alex Morgan – Funky Corporate Startup Promo",
+importada com duas passadas em crossfade de 2s (o original tem 29,6s e o vídeo
+51,8s) e normalizada em **-20 dB RMS**. É essa normalização que deixa os níveis
+em `src/content.ts` legíveis direto em dB e resistentes a uma troca de faixa:
+
+```console
+ffmpeg -i <faixa>.mp3 -i <faixa>.mp3 \
+  -filter_complex "[0][1]acrossfade=d=2:c1=tri:c2=tri" -t 53 loop.wav
+# mede o RMS, depois aplica o ganho que falta para -20 dB
+ffmpeg -i loop.wav -af "volume=<ganho>dB" -c:a libmp3lame -b:a 192k theme.mp3
+```
+
+O volume varia ao longo do vídeo (`musicVolume` em `src/content.ts`): -40 dB por
+baixo da fala e -30 dB nos cards e no encerramento, onde ninguém fala. As rampas
+caem dentro das transições. Sob a voz da Mari, que fica em torno de -20 dB, o
+leito de -40 dB soa bem discreto — abaixo até do ruído de sala da gravação.

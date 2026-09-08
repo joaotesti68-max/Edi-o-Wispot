@@ -107,8 +107,14 @@ export const totalDurationInFrames =
  * um leito discreto por baixo da Mari. Sem isso ela ou some no vídeo inteiro ou
  * briga com a voz.
  */
-const MUSIC_DUCKED = 0.16;
-const MUSIC_OPEN = 0.45;
+// A faixa em public/audio é normalizada em -20 dB RMS na importação, então os
+// níveis abaixo podem ser lidos direto em dB e sobrevivem a uma troca de música.
+const trackRmsDb = -20;
+const atDb = (db: number) => Math.round(10 ** ((db - trackRmsDb) / 20) * 1000) / 1000;
+
+// Bem baixa por baixo da fala; sobe um pouco onde ninguém fala, sem disputar.
+const MUSIC_DUCKED = atDb(-40);
+const MUSIC_OPEN = atDb(-30);
 const MUSIC_RAMP = 8;
 const MUSIC_FADE_OUT = 22;
 
