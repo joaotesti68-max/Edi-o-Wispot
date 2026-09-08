@@ -1,19 +1,19 @@
 export const FPS = 24;
 
-/**
- * Os arquivos guardam o nome original da câmera de propósito: a associação
- * "qual take diz qual fala" é a única coisa que muda com frequência, e assim
- * corrigir a ordem é editar `video` aqui, sem reprocessar mídia.
- */
+/** Trecho de headline: `bold` destaca, `underline` marca com o traço ciano. */
+export type Part = { t: string; bold?: boolean; underline?: boolean };
+
 export type Block = {
   id: string;
   video: string;
   durationInFrames: number;
-  kicker: string;
-  headline: string;
-  /** Passos acesos na trilha superior enquanto o bloco está no ar. */
+  chip: string;
+  headline: Part[];
   activeSteps: number[];
-  nameCard?: string;
+  /** Escala inicial do enquadramento — alterna para os takes não se repetirem. */
+  zoom: number;
+  /** Frames onde o corte de silêncio emendou o take; o zoom troca ali para disfarçar. */
+  cuts: number[];
 };
 
 export const STEPS = [
@@ -24,58 +24,93 @@ export const STEPS = [
   "Relatórios",
 ];
 
-export const OUTRO_FRAMES = 84;
+export const OUTRO_FRAMES = 90;
 export const TRANSITION_FRAMES = 6;
 
+/**
+ * Os arquivos mantêm o nome de câmera de propósito: a associação
+ * "qual take diz qual fala" é o que mais muda, e assim corrigir a ordem é
+ * editar `video` aqui, sem reprocessar mídia.
+ */
 export const blocks: Block[] = [
   {
     id: "abertura",
     video: "videos/provedores/IMG_8414.mp4",
-    durationInFrames: 164,
-    kicker: "Provedores",
-    headline: "Quanto trabalho dá pra colocar de pé?",
+    durationInFrames: 155,
+    chip: "Isabella Marques · Wispot",
+    headline: [
+      { t: "Quanto trabalho dá pra " },
+      { t: "colocar de pé", bold: true, underline: true },
+      { t: "?" },
+    ],
     activeSteps: [],
-    nameCard: "Isabella Marques",
+    zoom: 1.0,
+    cuts: [],
   },
   {
     id: "passo-1",
     video: "videos/provedores/IMG_8423.mp4",
     durationInFrames: 201,
-    kicker: "Passo 01 · Instalação",
-    headline: "Sobre o equipamento que já está na operação",
+    chip: "Passo 01 · Instalação",
+    headline: [
+      { t: "Sobre o equipamento que " },
+      { t: "já está na operação", bold: true, underline: true },
+    ],
     activeSteps: [1],
+    zoom: 1.07,
+    cuts: [],
   },
   {
     id: "passo-2",
     video: "videos/provedores/IMG_8417.mp4",
     durationInFrames: 171,
-    kicker: "Passo 02 · Configuração da rede",
-    headline: "Portal de acesso, permissões e políticas de uso",
+    chip: "Passo 02 · Configuração da rede",
+    headline: [
+      { t: "Portal de acesso, permissões e " },
+      { t: "políticas de uso", bold: true },
+    ],
     activeSteps: [2],
+    zoom: 1.0,
+    cuts: [],
   },
   {
     id: "passo-3",
     video: "videos/provedores/IMG_8436.mp4",
     durationInFrames: 162,
-    kicker: "Passo 03 · Captura de dados",
-    headline: "Cada conexão registra quem usa a sua rede",
+    chip: "Passo 03 · Captura de dados",
+    headline: [
+      { t: "Cada conexão registra " },
+      { t: "quem usa a sua rede", bold: true, underline: true },
+    ],
     activeSteps: [3],
+    zoom: 1.07,
+    cuts: [],
   },
   {
     id: "passos-4-5",
     video: "videos/provedores/IMG_8437.mp4",
-    durationInFrames: 146,
-    kicker: "Passos 04 e 05 · Engajamento e relatórios",
-    headline: "Campanhas segmentadas e resultado medido",
+    durationInFrames: 127,
+    chip: "Passos 04 e 05 · Engajamento e relatórios",
+    headline: [
+      { t: "Campanhas segmentadas e " },
+      { t: "resultado medido", bold: true, underline: true },
+    ],
     activeSteps: [4, 5],
+    zoom: 1.0,
+    cuts: [25],
   },
   {
     id: "fechamento",
     video: "videos/provedores/IMG_8415.mp4",
     durationInFrames: 76,
-    kicker: "Cinco passos",
-    headline: "Receita extra sobre a estrutura que você já opera",
+    chip: "Cinco passos",
+    headline: [
+      { t: "Receita extra sobre a estrutura que " },
+      { t: "você já opera", bold: true, underline: true },
+    ],
     activeSteps: [1, 2, 3, 4, 5],
+    zoom: 1.07,
+    cuts: [],
   },
 ];
 

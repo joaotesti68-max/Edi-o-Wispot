@@ -10,7 +10,7 @@ import { FPS, OUTRO_FRAMES, TRANSITION_FRAMES, blocks, totalDurationInFrames } f
 
 export const ProvedoresVideo: React.FC = () => {
   return (
-    <AbsoluteFill style={{ fontFamily, background: "#070A0D" }}>
+    <AbsoluteFill style={{ fontFamily, background: "#001824" }}>
       {/* Bem abaixo da narração: aqui a voz dela é o conteúdo, não a trilha. */}
       <Audio src={staticFile("audio/theme.mp3")} volume={0.16} />
 

@@ -1,7 +1,6 @@
 import { AbsoluteFill, Easing, Img, interpolate, staticFile, useCurrentFrame } from "remotion";
-import { brand } from "../brand";
-import { theme } from "./theme";
-import { STEPS } from "./content";
+import { fontFamily } from "../loadFont";
+import { wispot } from "./theme";
 
 const ease = {
   easing: Easing.out(Easing.cubic),
@@ -9,93 +8,113 @@ const ease = {
   extrapolateRight: "clamp",
 } as const;
 
+/** Eco do sinal do logotipo, no mesmo papel das ondas de fundo das peças sociais. */
+const Ondas: React.FC<{ opacity: number }> = ({ opacity }) => (
+  <AbsoluteFill style={{ opacity }}>
+    <svg width="1080" height="1920" viewBox="0 0 1080 1920">
+      {[300, 480, 660, 840, 1020].map((r) => (
+        <circle
+          key={r}
+          cx="540"
+          cy="1760"
+          r={r}
+          fill="none"
+          stroke="#FFFFFF"
+          strokeWidth="3"
+          strokeOpacity="0.14"
+        />
+      ))}
+    </svg>
+  </AbsoluteFill>
+);
+
 export const EndCard: React.FC = () => {
   const frame = useCurrentFrame();
 
-  const logoOpacity = interpolate(frame, [2, 18], [0, 1], ease);
-  const logoShift = interpolate(frame, [2, 18], [14, 0], ease);
-  const ctaOpacity = interpolate(frame, [14, 30], [0, 1], ease);
-  const siteOpacity = interpolate(frame, [26, 42], [0, 1], ease);
+  const ondas = interpolate(frame, [0, 30], [0, 1], ease);
+  const logoOpacity = interpolate(frame, [2, 20], [0, 1], ease);
+  const logoShift = interpolate(frame, [2, 20], [16, 0], ease);
+  const ctaOpacity = interpolate(frame, [16, 34], [0, 1], ease);
+  const ctaShift = interpolate(frame, [16, 34], [18, 0], ease);
+  const pillOpacity = interpolate(frame, [30, 48], [0, 1], ease);
+  const pillScale = interpolate(frame, [30, 48], [0.94, 1], ease);
 
   return (
     <AbsoluteFill
-      style={{
-        background: theme.ink,
-        alignItems: "center",
-        justifyContent: "center",
-      }}
+      style={{ background: wispot.cyan, alignItems: "center", justifyContent: "center" }}
     >
-      <AbsoluteFill
-        style={{
-          backgroundImage:
-            "radial-gradient(circle at 50% 34%, rgba(54,150,205,0.20) 0%, rgba(7,10,13,0) 58%)",
-        }}
-      />
+      <Ondas opacity={ondas} />
 
       <div
         style={{
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          gap: 46,
-          padding: "0 80px",
+          gap: 52,
+          padding: "0 84px",
         }}
       >
         <Img
-          src={staticFile(brand.logo.white)}
-          style={{ width: 480, opacity: logoOpacity, transform: `translateY(${logoShift}px)` }}
+          src={staticFile(wispot.logo.white)}
+          style={{ width: 470, opacity: logoOpacity, transform: `translateY(${logoShift}px)` }}
         />
 
-        <div style={{ display: "flex", gap: 10, opacity: ctaOpacity }}>
-          {STEPS.map((label, i) => (
-            <div key={label} style={{ display: "flex", alignItems: "center", gap: 10 }}>
-              <div
-                style={{
-                  fontFamily: brand.fontFamily,
-                  fontWeight: 700,
-                  fontSize: 22,
-                  letterSpacing: 1.4,
-                  color: theme.accentBright,
-                }}
-              >
-                {String(i + 1).padStart(2, "0")}
-              </div>
-              {i < STEPS.length - 1 ? (
-                <div style={{ width: 18, height: 2, background: theme.rule }} />
-              ) : null}
-            </div>
-          ))}
-        </div>
-
         <div
           style={{
-            fontFamily: brand.fontFamily,
-            fontWeight: 800,
-            fontSize: 46,
-            lineHeight: 1.2,
-            color: theme.white,
+            fontFamily,
+            fontWeight: 400,
+            fontSize: 48,
+            lineHeight: 1.26,
+            color: wispot.white,
             textAlign: "center",
-            letterSpacing: -0.4,
+            letterSpacing: -0.3,
             opacity: ctaOpacity,
+            transform: `translateY(${ctaShift}px)`,
           }}
         >
-          Vamos conversar sobre o que dá pra agregar?
+          Cinco passos sobre a estrutura que você já opera.
+          <br />
+          <span style={{ fontWeight: 800 }}>Vamos conversar?</span>
         </div>
 
         <div
           style={{
-            opacity: siteOpacity,
-            fontFamily: brand.fontFamily,
-            fontWeight: 700,
-            fontSize: 30,
-            letterSpacing: 0.4,
-            color: theme.white,
-            border: `2px solid ${theme.accent}`,
-            borderRadius: 999,
-            padding: "15px 42px",
+            display: "flex",
+            alignItems: "center",
+            gap: 18,
+            opacity: pillOpacity,
+            transform: `scale(${pillScale})`,
           }}
         >
-          {brand.site}
+          <div
+            style={{
+              fontFamily,
+              fontWeight: 700,
+              fontSize: 30,
+              color: wispot.navy,
+              background: wispot.white,
+              borderRadius: 999,
+              padding: "17px 44px",
+            }}
+          >
+            Fale com a gente
+          </div>
+          <div
+            style={{
+              width: 68,
+              height: 68,
+              borderRadius: 999,
+              background: wispot.white,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke={wispot.navy} strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="4" y1="12" x2="19" y2="12" />
+              <polyline points="13,6 19,12 13,18" />
+            </svg>
+          </div>
         </div>
       </div>
     </AbsoluteFill>

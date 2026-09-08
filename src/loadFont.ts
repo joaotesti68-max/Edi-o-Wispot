@@ -3,7 +3,9 @@ import { loadFont } from "@remotion/fonts";
 
 export const fontFamily = "Montserrat";
 
-const weights = ["700", "800"] as const;
+// 400/600 entraram para o texto de peso misto que a Wispot usa nas peças
+// sociais: parte da frase em regular, o trecho que importa em bold.
+const weights = ["400", "600", "700", "800"] as const;
 const subsets = ["latin", "latin-ext"] as const;
 
 for (const weight of weights) {

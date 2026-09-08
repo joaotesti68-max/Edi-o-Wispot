@@ -1,17 +1,27 @@
-import { brand } from "../brand";
-
 /**
- * Sóbrio por escolha: o vídeo fala com dono de provedor, então a paleta é mais
- * fechada que a do institucional e o azul da marca aparece só como acento.
+ * Paleta oficial da Wispot, amostrada das peças sociais da marca
+ * (WISPOT_SOCIAL_*) e do logotipo: ciano como cor de ação, petróleo como
+ * base escura, branco para o texto.
  */
-export const theme = {
-  ink: "#070A0D",
-  inkSoft: "#10161C",
-  accent: brand.colors.primary,
-  accentBright: brand.colors.primaryLight,
-  white: brand.colors.white,
-  muted: "rgba(255,255,255,0.62)",
-  rule: "rgba(255,255,255,0.18)",
+export const wispot = {
+  cyan: "#00AAE3",
+  cyanDeep: "#0090C4",
+  navy: "#003F5B",
+  navyDeep: "#00293B",
+  ink: "#001824",
+  white: "#FFFFFF",
+  mist: "#F2FBFD",
+  muted: "rgba(255,255,255,0.66)",
+  rule: "rgba(255,255,255,0.24)",
+  logo: {
+    white: "brand/wispot/logo-branco.png",
+    color: "brand/wispot/logo-cor.png",
+  },
+  /**
+   * Escurece a crista e a base. O texto sobe acima dos ~250px que Reels e
+   * TikTok cobrem com a própria interface, então o degradê de baixo começa
+   * mais alto do que o de um vídeo feito só para tela cheia.
+   */
   scrim:
-    "linear-gradient(to bottom, rgba(4,6,9,0.55) 0%, rgba(4,6,9,0) 26%, rgba(4,6,9,0) 44%, rgba(4,6,9,0.78) 76%, rgba(3,5,7,0.94) 100%)",
+    "linear-gradient(to bottom, rgba(0,24,36,0.74) 0%, rgba(0,24,36,0.22) 18%, rgba(0,24,36,0) 34%, rgba(0,24,36,0.30) 52%, rgba(0,24,36,0.74) 74%, rgba(0,20,30,0.92) 100%)",
 };
