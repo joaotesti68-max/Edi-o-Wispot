@@ -13,6 +13,18 @@ export type Clip = {
   durationInFrames: number;
 };
 
+/**
+ * A full-screen card standing in for a line of the script that was never
+ * recorded, so the narration reads continuously instead of jumping.
+ */
+export type Card = {
+  line: string;
+  icon: IconKey;
+  durationInFrames: number;
+};
+
+export type Segment = ({ kind: "clip" } & Clip) | ({ kind: "card" } & Card);
+
 /** A chip that lands at frame `at`, counted from the start of its block. */
 export type Callout = {
   label: string;
@@ -21,9 +33,9 @@ export type Callout = {
 
 export type Block = {
   id: string;
-  /** Single clip (legacy) or a run of hard cuts sharing one headline. */
+  /** Single clip (legacy) or a run of segments sharing one headline. */
   video?: string;
-  clips?: Clip[];
+  segments?: Segment[];
   durationInFrames: number;
   headline: string;
   icon: IconKey;

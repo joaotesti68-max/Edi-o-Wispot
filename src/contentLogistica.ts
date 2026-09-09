@@ -1,101 +1,132 @@
-import { CLIP_TRANSITION_FRAMES, buildTimeline, type Block } from "./types";
+import { CLIP_TRANSITION_FRAMES, buildTimeline, type Block, type IconKey, type Segment } from "./types";
 
 export const FPS = 30;
 export const OUTRO_FRAMES = 90;
 /** Between blocks — a directional slide, long enough to read as a beat. */
 export const TRANSITION_FRAMES = 12;
 
-const clip = (name: string, seconds: number) => ({
+const clip = (name: string, seconds: number): Segment => ({
+  kind: "clip",
   src: `videos/logistica/${name}.mp4`,
   durationInFrames: Math.floor(seconds * FPS),
 });
 
-/** Clips inside a block overlap by CLIP_TRANSITION_FRAMES, like TransitionSeries lays them out. */
+const card = (line: string, icon: IconKey, seconds: number): Segment => ({
+  kind: "card",
+  line,
+  icon,
+  durationInFrames: Math.round(seconds * FPS),
+});
+
+/** Start frame of each segment inside its block, accounting for the overlap. */
+const startsOf = (segments: Segment[]) => {
+  const starts = [0];
+  for (let i = 1; i < segments.length; i++) {
+    starts.push(starts[i - 1] + segments[i - 1].durationInFrames - CLIP_TRANSITION_FRAMES);
+  }
+  return starts;
+};
+
 const block = (b: Omit<Block, "durationInFrames">): Block => {
-  const clips = b.clips ?? [];
+  const segments = b.segments ?? [];
   return {
     ...b,
     durationInFrames:
-      clips.reduce((sum, c) => sum + c.durationInFrames, 0) -
-      CLIP_TRANSITION_FRAMES * Math.max(0, clips.length - 1),
+      segments.reduce((sum, s) => sum + s.durationInFrames, 0) -
+      CLIP_TRANSITION_FRAMES * Math.max(0, segments.length - 1),
   };
 };
 
 /**
  * Roteiro "Logística" (04/09, 14h), montado na ordem do roteiro.
  *
- * Cada fragmento foi conferido por transcrição antes de entrar: só a fala
- * correta do João, sem as tentativas erradas nem a conversa de bastidor.
- * Ficaram de fora "Vamos lá" (8206), "de novo / já esqueci / memória fraca"
- * e a tentativa incompleta (8213), as duas primeiras tentativas do
- * fechamento (8215) e a voz fora do lapela no fim da abertura (8191).
+ * Cada fragmento foi conferido por transcrição: só a fala correta do João,
+ * sem as tentativas erradas nem a conversa de bastidor. Dois trechos do
+ * roteiro não chegaram a ser gravados e entram como card de tela cheia, para
+ * a narração não saltar — ver os cards abaixo.
  */
+
+// "Um sistema de gestão indisponível, o rastreamento fora do ar, [ou um ataque
+//  bloqueando o acesso aos dados,] podem afetar o estoque, entregas, clientes
+//  e toda a operação."
+const d1Segments: Segment[] = [
+  clip("02_d1a", 1.952),
+  clip("03_d1b", 1.72),
+  card("ou um ataque bloqueando o acesso aos dados", "shield", 2.2),
+  clip("04_d1c", 1.515),
+  clip("05_d1d", 2.52),
+];
+const d1 = startsOf(d1Segments);
+
+// "É por isso que infraestrutura e segurança precisam caminhar juntos. Na Pro
+//  Advanced, nós atuamos com cibersegurança, monitoramento 24 horas, backup,
+//  data center e infraestrutura de TI."
+const d2Segments: Segment[] = [
+  clip("06_d2a", 4.266),
+  clip("07_d2b", 3.333),
+  clip("08_d2c", 2.466),
+  clip("09_d2d", 2.708),
+];
+const d2 = startsOf(d2Segments);
+
+// "[Na prática, isso significa proteger os dados,] identificar ameaças e falhas
+//  com mais rapidez e ter uma estrutura preparada para recuperar a operação."
+const d3Segments: Segment[] = [
+  card("Na prática, isso significa proteger os dados", "shield", 2.2),
+  clip("10_d3a", 2.833),
+  clip("11_d3b", 4.034),
+];
+const d3 = startsOf(d3Segments);
+
 export const blocks: Block[] = [
   block({
     id: "abertura",
     // "Na logística, não é preciso um caminhão parar para a operação inteira ficar comprometida."
-    clips: [clip("01_abertura", 4.661)],
+    segments: [clip("01_abertura", 4.661)],
     headline: "Não é só o caminhão que para a operação",
     icon: "truck",
     nameCard: "João",
   }),
   block({
     id: "desenvolvimento-1",
-    // "Um sistema de gestão indisponível, o rastreamento fora do ar,
-    //  podem afetar o estoque, entregas, clientes e toda a operação."
-    clips: [
-      clip("02_d1a", 1.952),
-      clip("03_d1b", 1.532),
-      clip("04_d1c", 1.515),
-      clip("05_d1d", 2.52),
-    ],
+    segments: d1Segments,
     headline: "Sistema fora do ar afeta estoque, entregas e clientes",
     icon: "alert",
-    // land on the word he is saying
+    // each chip lands on the word he is saying
     callouts: [
-      { label: "Estoque", at: 125 },
-      { label: "Entregas", at: 142 },
-      { label: "Clientes", at: 160 },
+      { label: "Estoque", at: d1[3] + 30 },
+      { label: "Entregas", at: d1[4] + 6 },
+      { label: "Clientes", at: d1[4] + 24 },
     ],
   }),
   block({
     id: "desenvolvimento-2",
-    // "É por isso que infraestrutura e segurança precisam caminhar juntos.
-    //  Na Pro Advanced, nós atuamos com cibersegurança, monitoramento 24 horas,
-    //  backup, data center e infraestrutura de TI."
-    clips: [
-      clip("06_d2a", 4.266),
-      clip("07_d2b", 3.333),
-      clip("08_d2c", 2.466),
-      clip("09_d2d", 2.708),
-    ],
+    segments: d2Segments,
     headline: "Infraestrutura e segurança precisam caminhar juntas",
     icon: "shield",
     callouts: [
-      { label: "Cibersegurança", at: 196 },
-      { label: "Monitoramento 24h", at: 226 },
-      { label: "Backup", at: 274 },
-      { label: "Data center", at: 297 },
-      { label: "Infraestrutura de TI", at: 333 },
+      { label: "Cibersegurança", at: d2[1] + 72 },
+      { label: "Monitoramento 24h", at: d2[2] + 6 },
+      { label: "Backup", at: d2[2] + 54 },
+      { label: "Data center", at: d2[3] + 6 },
+      { label: "Infraestrutura de TI", at: d2[3] + 42 },
     ],
   }),
   block({
     id: "desenvolvimento-3",
-    // "Identificar ameaças e falhas com mais rapidez e ter uma estrutura
-    //  preparada para recuperar a operação."
-    clips: [clip("10_d3a", 2.833), clip("11_d3b", 4.034)],
+    segments: d3Segments,
     headline: "Identificar mais rápido, recuperar a operação",
     icon: "radar",
     callouts: [
-      { label: "Detectar mais rápido", at: 30 },
-      { label: "Recuperar a operação", at: 131 },
+      { label: "Detectar mais rápido", at: d3[1] + 30 },
+      { label: "Recuperar a operação", at: d3[2] + 50 },
     ],
   }),
   block({
     id: "fechamento",
     // "Na logística, tecnologia parada também significa operação parada.
     //  Fale conosco e proteja a estrutura que mantém o seu negócio funcionando."
-    clips: [clip("12_f1", 3.4), clip("13_f2", 4.193)],
+    segments: [clip("12_f1", 3.4), clip("13_f2", 4.193)],
     headline: "Tecnologia parada também é operação parada",
     icon: "chat",
   }),
