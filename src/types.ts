@@ -17,19 +17,22 @@ export type Clip = {
   durationInFrames: number;
 };
 
-/** An animated icon that lands at frame `at`, counted from the start of its block. */
-export type IconTile = {
+/**
+ * A node of a full-screen system overlay. `at` counts from the start of its
+ * overlay; `x`/`y` are fractions of the frame.
+ */
+export type SystemNode = {
   label: string;
   icon: IconKey;
   at: number;
+  x: number;
+  y: number;
 };
 
-/** An animation that plays over the footage without cutting away from it. */
-export type Overlay = {
-  kind: "attack";
-  at: number;
-  durationInFrames: number;
-};
+/** An animation that fills the frame over the footage, without cutting away. */
+export type Overlay =
+  | { kind: "attack"; at: number; durationInFrames: number }
+  | { kind: "system"; at: number; durationInFrames: number; nodes: SystemNode[] };
 
 export type Block = {
   id: string;
@@ -40,7 +43,6 @@ export type Block = {
   headline: string;
   icon: IconKey;
   nameCard?: string;
-  tiles?: IconTile[];
   overlays?: Overlay[];
 };
 

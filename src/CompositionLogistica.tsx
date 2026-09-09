@@ -26,8 +26,8 @@ const SLIDE_DIRECTIONS = ["from-right", "from-bottom", "from-left", "from-bottom
 export const ProAdvancedLogistica: React.FC = () => {
   return (
     <AbsoluteFill style={{ fontFamily }}>
-      {/* Ducked well under the voice — this block carries a spoken script. */}
-      <Audio src={staticFile("audio/theme.mp3")} volume={0.12} />
+      {/* Already normalised to -26 LUFS on disk; this sits it well under his voice. */}
+      <Audio src={staticFile("audio/theme-logistica.mp3")} volume={0.5} />
 
       <TransitionSeries>
         {blocks.map((block, i) => (

@@ -28,8 +28,8 @@ import {
   TruckIcon,
 } from "./Icons";
 import { CLIP_TRANSITION_FRAMES, type Block, type Clip, type IconKey } from "./types";
-import { IconStrip } from "./IconStrip";
 import { AttackOverlay } from "./AttackOverlay";
+import { SystemOverlay } from "./SystemOverlay";
 
 const ICONS: Record<IconKey, React.FC<{ size?: number; color?: string; strokeWidth?: number }>> = {
   alert: AlertIcon,
@@ -166,11 +166,13 @@ export const VideoBlock: React.FC<{ block: Block }> = ({ block }) => {
           </div>
         ) : null}
 
-        {block.tiles ? <IconStrip items={block.tiles} /> : null}
-
         {block.overlays?.map((o) => (
           <Sequence key={o.at} from={o.at} durationInFrames={o.durationInFrames}>
-            <AttackOverlay durationInFrames={o.durationInFrames} />
+            {o.kind === "attack" ? (
+              <AttackOverlay durationInFrames={o.durationInFrames} />
+            ) : (
+              <SystemOverlay nodes={o.nodes} durationInFrames={o.durationInFrames} />
+            )}
           </Sequence>
         ))}
 

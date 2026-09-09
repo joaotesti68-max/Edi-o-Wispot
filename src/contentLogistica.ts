@@ -1,4 +1,11 @@
-import { CLIP_TRANSITION_FRAMES, buildTimeline, clipStarts, type Block, type Clip } from "./types";
+import {
+  CLIP_TRANSITION_FRAMES,
+  buildTimeline,
+  clipStarts,
+  type Block,
+  type Clip,
+  type SystemNode,
+} from "./types";
 
 export const FPS = 30;
 export const OUTRO_FRAMES = 90;
@@ -12,12 +19,18 @@ const clip = (name: string, seconds: number): Clip => ({
 
 const block = (b: Omit<Block, "durationInFrames">): Block => {
   const clips = b.clips ?? [];
-  return {
-    ...b,
-    durationInFrames:
-      clips.reduce((sum, c) => sum + c.durationInFrames, 0) -
-      CLIP_TRANSITION_FRAMES * Math.max(0, clips.length - 1),
-  };
+  const durationInFrames =
+    clips.reduce((sum, c) => sum + c.durationInFrames, 0) -
+    CLIP_TRANSITION_FRAMES * Math.max(0, clips.length - 1);
+
+  // An overlay running past its block gets clipped mid-animation and never
+  // plays its exit, so hold it to what is left of the block.
+  const overlays = b.overlays?.map((o) => ({
+    ...o,
+    durationInFrames: Math.min(o.durationInFrames, durationInFrames - o.at),
+  }));
+
+  return { ...b, overlays, durationInFrames };
 };
 
 /**
@@ -56,6 +69,28 @@ const d2 = clipStarts(d2Clips);
 const d3Clips = [clip("10_d3a", 2.74), clip("11_d3b", 2.833), clip("12_d3c", 4.034)];
 const d3 = clipStarts(d3Clips);
 
+/**
+ * Node positions flank his face rather than sitting on it, so a full-screen
+ * moment still reads as him talking with the system drawn around him.
+ */
+const TRIO: [number, number][] = [
+  [0.26, 0.36],
+  [0.74, 0.44],
+  [0.44, 0.66],
+];
+const FIVE: [number, number][] = [
+  [0.26, 0.33],
+  [0.74, 0.33],
+  [0.24, 0.53],
+  [0.72, 0.53],
+  [0.48, 0.71],
+];
+
+const place = (
+  spots: [number, number][],
+  items: { label: string; icon: SystemNode["icon"]; at: number }[],
+): SystemNode[] => items.map((it, i) => ({ ...it, x: spots[i][0], y: spots[i][1] }));
+
 export const blocks: Block[] = [
   block({
     id: "abertura",
@@ -70,12 +105,19 @@ export const blocks: Block[] = [
     clips: d1Clips,
     headline: "Sistema fora do ar afeta estoque, entregas e clientes",
     icon: "alert",
-    overlays: [{ kind: "attack", at: d1[1] + 26, durationInFrames: 54 }],
-    // each tile lands on the word he is saying
-    tiles: [
-      { label: "Estoque", icon: "box", at: d1[2] + 32 },
-      { label: "Entregas", icon: "truck", at: d1[3] + 8 },
-      { label: "Clientes", icon: "people", at: d1[3] + 26 },
+    overlays: [
+      { kind: "attack", at: d1[1] + 24, durationInFrames: 54 },
+      {
+        kind: "system",
+        at: d1[2] + 32,
+        durationInFrames: 82,
+        // `at` counts from the start of the overlay, landing on the word
+        nodes: place(TRIO, [
+          { label: "Estoque", icon: "box", at: 4 },
+          { label: "Entregas", icon: "truck", at: 22 },
+          { label: "Clientes", icon: "people", at: 40 },
+        ]),
+      },
     ],
   }),
   block({
@@ -83,12 +125,19 @@ export const blocks: Block[] = [
     clips: d2Clips,
     headline: "Infraestrutura e segurança precisam caminhar juntas",
     icon: "shield",
-    tiles: [
-      { label: "Cibersegurança", icon: "shield", at: d2[1] + 72 },
-      { label: "Monitoramento 24h", icon: "radar", at: d2[2] + 6 },
-      { label: "Backup", icon: "restore", at: d2[2] + 54 },
-      { label: "Data center", icon: "server", at: d2[3] + 6 },
-      { label: "Infra de TI", icon: "network", at: d2[3] + 42 },
+    overlays: [
+      {
+        kind: "system",
+        at: d2[1] + 56,
+        durationInFrames: 315,
+        nodes: place(FIVE, [
+          { label: "Cibersegurança", icon: "shield", at: 16 },
+          { label: "Monitoramento 24h", icon: "radar", at: 46 },
+          { label: "Backup", icon: "restore", at: 94 },
+          { label: "Data center", icon: "server", at: 117 },
+          { label: "Infra de TI", icon: "network", at: 153 },
+        ]),
+      },
     ],
   }),
   block({
@@ -96,10 +145,17 @@ export const blocks: Block[] = [
     clips: d3Clips,
     headline: "Proteger, identificar e recuperar",
     icon: "radar",
-    tiles: [
-      { label: "Proteger os dados", icon: "lock", at: d3[0] + 34 },
-      { label: "Detectar ameaças", icon: "radar", at: d3[1] + 30 },
-      { label: "Recuperar a operação", icon: "restore", at: d3[2] + 50 },
+    overlays: [
+      {
+        kind: "system",
+        at: d3[0] + 20,
+        durationInFrames: 255,
+        nodes: place(TRIO, [
+          { label: "Proteger os dados", icon: "lock", at: 14 },
+          { label: "Detectar ameaças", icon: "radar", at: 88 },
+          { label: "Recuperar a operação", icon: "restore", at: 188 },
+        ]),
+      },
     ],
   }),
   block({
