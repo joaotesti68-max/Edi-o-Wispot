@@ -1,14 +1,16 @@
+import React from "react";
 import {
   AbsoluteFill,
   Img,
   OffthreadVideo,
-  Series,
   interpolate,
   spring,
   staticFile,
   useCurrentFrame,
   useVideoConfig,
 } from "remotion";
+import { TransitionSeries, linearTiming } from "@remotion/transitions";
+import { fade } from "@remotion/transitions/fade";
 import { brand } from "./brand";
 import {
   AlertIcon,
@@ -20,7 +22,32 @@ import {
   TrendingUpIcon,
   TruckIcon,
 } from "./Icons";
-import type { Block, IconKey } from "./types";
+import { CLIP_TRANSITION_FRAMES, type Block, type Clip, type IconKey } from "./types";
+
+/**
+ * Every fragment is the same seated framing, so a straight cut between two of
+ * them reads as a glitch. Alternating a tighter punched-in shot with the wide
+ * one makes each cut look like a second camera instead.
+ */
+const ClipShot: React.FC<{ clip: Clip; index: number }> = ({ clip, index }) => {
+  const frame = useCurrentFrame();
+  const tight = index % 2 === 1;
+  const from = tight ? 1.12 : 1.0;
+  const drift = interpolate(frame, [0, clip.durationInFrames], [0, tight ? -0.035 : 0.045], {
+    extrapolateRight: "clamp",
+  });
+  const scale = from + drift;
+  const shiftX = tight ? -1.6 : 0;
+
+  return (
+    <AbsoluteFill style={{ transform: `scale(${scale}) translateX(${shiftX}%)` }}>
+      <OffthreadVideo
+        src={staticFile(clip.src)}
+        style={{ width: "100%", height: "100%", objectFit: "cover" }}
+      />
+    </AbsoluteFill>
+  );
+};
 
 const ICONS: Record<IconKey, React.FC<{ size?: number; color?: string; strokeWidth?: number }>> = {
   alert: AlertIcon,
@@ -41,10 +68,6 @@ const ICONS: Record<IconKey, React.FC<{ size?: number; color?: string; strokeWid
 export const VideoBlock: React.FC<{ block: Block }> = ({ block }) => {
   const frame = useCurrentFrame();
   const { fps, durationInFrames } = useVideoConfig();
-
-  const kenBurns = interpolate(frame, [0, durationInFrames], [1, 1.06], {
-    extrapolateRight: "clamp",
-  });
 
   const iconIn = spring({ frame: frame - 4, fps, config: { damping: 14, mass: 0.6 } });
 
@@ -75,25 +98,25 @@ export const VideoBlock: React.FC<{ block: Block }> = ({ block }) => {
 
   return (
     <AbsoluteFill style={{ background: "#000" }}>
-      <AbsoluteFill style={{ transform: `scale(${kenBurns})` }}>
-        {clips.length === 1 ? (
-          <OffthreadVideo
-            src={staticFile(clips[0].src)}
-            style={{ width: "100%", height: "100%", objectFit: "cover" }}
-          />
-        ) : (
-          <Series>
-            {clips.map((clip) => (
-              <Series.Sequence key={clip.src} durationInFrames={clip.durationInFrames}>
-                <OffthreadVideo
-                  src={staticFile(clip.src)}
-                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
+      {clips.length === 1 ? (
+        <ClipShot clip={clips[0]} index={0} />
+      ) : (
+        <TransitionSeries>
+          {clips.map((c, i) => (
+            <React.Fragment key={c.src}>
+              {i === 0 ? null : (
+                <TransitionSeries.Transition
+                  presentation={fade()}
+                  timing={linearTiming({ durationInFrames: CLIP_TRANSITION_FRAMES })}
                 />
-              </Series.Sequence>
-            ))}
-          </Series>
-        )}
-      </AbsoluteFill>
+              )}
+              <TransitionSeries.Sequence durationInFrames={c.durationInFrames}>
+                <ClipShot clip={c} index={i} />
+              </TransitionSeries.Sequence>
+            </React.Fragment>
+          ))}
+        </TransitionSeries>
+      )}
 
       <AbsoluteFill
         style={{

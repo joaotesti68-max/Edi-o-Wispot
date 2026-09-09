@@ -1,7 +1,8 @@
 import React from "react";
 import { AbsoluteFill, Audio, Composition, staticFile } from "remotion";
-import { TransitionSeries, linearTiming } from "@remotion/transitions";
+import { TransitionSeries, linearTiming, springTiming } from "@remotion/transitions";
 import { fade } from "@remotion/transitions/fade";
+import { slide } from "@remotion/transitions/slide";
 import { VideoBlock } from "./VideoBlock";
 import { EndCard } from "./EndCard";
 import { ProgressBar } from "./ProgressBar";
@@ -16,6 +17,12 @@ import {
   totalDurationInFrames,
 } from "./contentLogistica";
 
+/**
+ * He delivered the script in short fragments, so the edit leans on movement to
+ * carry it: a directional push between blocks instead of a dissolve.
+ */
+const SLIDE_DIRECTIONS = ["from-right", "from-bottom", "from-left", "from-bottom"] as const;
+
 export const ProAdvancedLogistica: React.FC = () => {
   return (
     <AbsoluteFill style={{ fontFamily }}>
@@ -27,8 +34,13 @@ export const ProAdvancedLogistica: React.FC = () => {
           <React.Fragment key={block.id}>
             {i === 0 ? null : (
               <TransitionSeries.Transition
-                presentation={fade()}
-                timing={linearTiming({ durationInFrames: TRANSITION_FRAMES })}
+                presentation={slide({
+                  direction: SLIDE_DIRECTIONS[(i - 1) % SLIDE_DIRECTIONS.length],
+                })}
+                timing={springTiming({
+                  config: { damping: 200 },
+                  durationInFrames: TRANSITION_FRAMES,
+                })}
               />
             )}
             <TransitionSeries.Sequence durationInFrames={block.durationInFrames}>

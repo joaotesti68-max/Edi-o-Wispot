@@ -26,6 +26,9 @@ export type Block = {
 
 export type Range = { start: number; end: number };
 
+/** Overlap between fragments inside a block — enough to soften a jump cut. */
+export const CLIP_TRANSITION_FRAMES = 4;
+
 /**
  * Mirrors how @remotion/transitions/TransitionSeries lays out overlapping
  * sequences, so a progress bar can know each block's on-screen frame range
