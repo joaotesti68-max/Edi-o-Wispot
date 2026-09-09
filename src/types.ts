@@ -13,6 +13,12 @@ export type Clip = {
   durationInFrames: number;
 };
 
+/** A chip that lands at frame `at`, counted from the start of its block. */
+export type Callout = {
+  label: string;
+  at: number;
+};
+
 export type Block = {
   id: string;
   /** Single clip (legacy) or a run of hard cuts sharing one headline. */
@@ -22,6 +28,7 @@ export type Block = {
   headline: string;
   icon: IconKey;
   nameCard?: string;
+  callouts?: Callout[];
 };
 
 export type Range = { start: number; end: number };

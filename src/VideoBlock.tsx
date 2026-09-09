@@ -23,6 +23,7 @@ import {
   TruckIcon,
 } from "./Icons";
 import { CLIP_TRANSITION_FRAMES, type Block, type Clip, type IconKey } from "./types";
+import { Callouts } from "./Callouts";
 
 /**
  * Every fragment is the same seated framing, so a straight cut between two of
@@ -168,6 +169,8 @@ export const VideoBlock: React.FC<{ block: Block }> = ({ block }) => {
           </div>
         </div>
       ) : null}
+
+      {block.callouts ? <Callouts items={block.callouts} /> : null}
 
       <div
         style={{

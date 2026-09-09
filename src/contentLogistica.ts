@@ -34,7 +34,7 @@ export const blocks: Block[] = [
   block({
     id: "abertura",
     // "Na logística, não é preciso um caminhão parar para a operação inteira ficar comprometida."
-    clips: [clip("01_abertura", 5.733)],
+    clips: [clip("01_abertura", 4.661)],
     headline: "Não é só o caminhão que para a operação",
     icon: "truck",
     nameCard: "João",
@@ -44,13 +44,19 @@ export const blocks: Block[] = [
     // "Um sistema de gestão indisponível, o rastreamento fora do ar,
     //  podem afetar o estoque, entregas, clientes e toda a operação."
     clips: [
-      clip("02_d1a", 2.833),
-      clip("03_d1b", 2.366),
-      clip("04_d1c", 2.366),
-      clip("05_d1d", 3.633),
+      clip("02_d1a", 1.952),
+      clip("03_d1b", 1.532),
+      clip("04_d1c", 1.515),
+      clip("05_d1d", 2.52),
     ],
     headline: "Sistema fora do ar afeta estoque, entregas e clientes",
     icon: "alert",
+    // land on the word he is saying
+    callouts: [
+      { label: "Estoque", at: 125 },
+      { label: "Entregas", at: 142 },
+      { label: "Clientes", at: 160 },
+    ],
   }),
   block({
     id: "desenvolvimento-2",
@@ -58,27 +64,38 @@ export const blocks: Block[] = [
     //  Na Pro Advanced, nós atuamos com cibersegurança, monitoramento 24 horas,
     //  backup, data center e infraestrutura de TI."
     clips: [
-      clip("06_d2a", 5.166),
-      clip("07_d2b", 4.166),
-      clip("08_d2c", 3.466),
-      clip("09_d2d", 3.6),
+      clip("06_d2a", 4.266),
+      clip("07_d2b", 3.333),
+      clip("08_d2c", 2.466),
+      clip("09_d2d", 2.708),
     ],
     headline: "Infraestrutura e segurança precisam caminhar juntas",
     icon: "shield",
+    callouts: [
+      { label: "Cibersegurança", at: 196 },
+      { label: "Monitoramento 24h", at: 226 },
+      { label: "Backup", at: 274 },
+      { label: "Data center", at: 297 },
+      { label: "Infraestrutura de TI", at: 333 },
+    ],
   }),
   block({
     id: "desenvolvimento-3",
     // "Identificar ameaças e falhas com mais rapidez e ter uma estrutura
     //  preparada para recuperar a operação."
-    clips: [clip("10_d3a", 3.8), clip("11_d3b", 5.533)],
+    clips: [clip("10_d3a", 2.833), clip("11_d3b", 4.034)],
     headline: "Identificar mais rápido, recuperar a operação",
     icon: "radar",
+    callouts: [
+      { label: "Detectar mais rápido", at: 30 },
+      { label: "Recuperar a operação", at: 131 },
+    ],
   }),
   block({
     id: "fechamento",
     // "Na logística, tecnologia parada também significa operação parada.
     //  Fale conosco e proteja a estrutura que mantém o seu negócio funcionando."
-    clips: [clip("12_f1", 4.733), clip("13_f2", 5.5)],
+    clips: [clip("12_f1", 3.4), clip("13_f2", 4.193)],
     headline: "Tecnologia parada também é operação parada",
     icon: "chat",
   }),
