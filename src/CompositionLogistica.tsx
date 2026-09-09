@@ -14,12 +14,13 @@ import {
   blocks,
   outroRange,
   totalDurationInFrames,
-} from "./content";
+} from "./contentLogistica";
 
-export const ProAdvancedVideo: React.FC = () => {
+export const ProAdvancedLogistica: React.FC = () => {
   return (
     <AbsoluteFill style={{ fontFamily }}>
-      <Audio src={staticFile("audio/theme.mp3")} volume={0.42} />
+      {/* Ducked well under the voice — this block carries a spoken script. */}
+      <Audio src={staticFile("audio/theme.mp3")} volume={0.12} />
 
       <TransitionSeries>
         {blocks.map((block, i) => (
@@ -50,11 +51,11 @@ export const ProAdvancedVideo: React.FC = () => {
   );
 };
 
-export const MyComposition = () => {
+export const LogisticaComposition = () => {
   return (
     <Composition
-      id="ProAdvanced"
-      component={ProAdvancedVideo}
+      id="ProAdvancedLogistica"
+      component={ProAdvancedLogistica}
       durationInFrames={totalDurationInFrames}
       fps={FPS}
       width={1080}

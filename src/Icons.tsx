@@ -47,3 +47,29 @@ export const ChatIcon: React.FC<IconProps> = ({ size = 40, color = "#fff", strok
     <line x1="7" y1="12.3" x2="14" y2="12.3" />
   </svg>
 );
+
+export const TruckIcon: React.FC<IconProps> = ({ size = 40, color = "#fff", strokeWidth = 2 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" stroke={color} {...base(strokeWidth)}>
+    <path d="M2.5 6.5 H14 V16 H2.5 Z" />
+    <path d="M14 9.5 H17.6 L21.5 13 V16 H14 Z" />
+    <circle cx="7" cy="18" r="2" />
+    <circle cx="17.5" cy="18" r="2" />
+  </svg>
+);
+
+export const RadarIcon: React.FC<IconProps> = ({ size = 40, color = "#fff", strokeWidth = 2 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" stroke={color} {...base(strokeWidth)}>
+    <circle cx="12" cy="12" r="9" />
+    <circle cx="12" cy="12" r="4.6" />
+    <line x1="12" y1="12" x2="18.4" y2="7.4" />
+    <circle cx="12" cy="12" r="1" fill={color} stroke="none" />
+  </svg>
+);
+
+export const RestoreIcon: React.FC<IconProps> = ({ size = 40, color = "#fff", strokeWidth = 2 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" stroke={color} {...base(strokeWidth)}>
+    <path d="M3.8 12 A8.2 8.2 0 1 1 6.6 18.1" />
+    <polyline points="3.2,7.2 3.8,12 8.6,11.4" />
+    <polyline points="12,7.8 12,12.4 15.4,14.2" />
+  </svg>
+);

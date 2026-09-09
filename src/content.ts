@@ -1,15 +1,8 @@
+import { buildTimeline, type Block } from "./types";
+
 export const FPS = 24;
 
-export type IconKey = "alert" | "server" | "shield" | "trending" | "chat";
-
-export type Block = {
-  id: string;
-  video: string;
-  durationInFrames: number;
-  headline: string;
-  icon: IconKey;
-  nameCard?: string;
-};
+export type { Block, IconKey } from "./types";
 
 export const OUTRO_FRAMES = 72;
 export const TRANSITION_FRAMES = 8;
@@ -60,26 +53,12 @@ export const blocks: Block[] = [
   },
 ];
 
-// Mirrors how @remotion/transitions/TransitionSeries lays out overlapping
-// sequences, so the progress bar can know each block's on-screen frame range
-// without duplicating the transition math.
-const sequenceDurations = [...blocks.map((b) => b.durationInFrames), OUTRO_FRAMES];
-const transitionCount = sequenceDurations.length - 1;
+const timeline = buildTimeline(
+  blocks.map((b) => b.durationInFrames),
+  OUTRO_FRAMES,
+  TRANSITION_FRAMES,
+);
 
-const starts: number[] = [0];
-for (let i = 1; i < sequenceDurations.length; i++) {
-  starts.push(starts[i - 1] + sequenceDurations[i - 1] - TRANSITION_FRAMES);
-}
-
-export const blockRanges = blocks.map((b, i) => ({
-  start: starts[i],
-  end: starts[i] + b.durationInFrames,
-}));
-
-export const outroRange = {
-  start: starts[starts.length - 1],
-  end: starts[starts.length - 1] + OUTRO_FRAMES,
-};
-
-export const totalDurationInFrames =
-  sequenceDurations.reduce((sum, d) => sum + d, 0) - TRANSITION_FRAMES * transitionCount;
+export const blockRanges = timeline.blockRanges;
+export const outroRange = timeline.outroRange;
+export const totalDurationInFrames = timeline.totalDurationInFrames;

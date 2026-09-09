@@ -2,6 +2,7 @@ import {
   AbsoluteFill,
   Img,
   OffthreadVideo,
+  Series,
   interpolate,
   spring,
   staticFile,
@@ -9,8 +10,17 @@ import {
   useVideoConfig,
 } from "remotion";
 import { brand } from "./brand";
-import { AlertIcon, ChatIcon, ServerIcon, ShieldCheckIcon, TrendingUpIcon } from "./Icons";
-import type { Block, IconKey } from "./content";
+import {
+  AlertIcon,
+  ChatIcon,
+  RadarIcon,
+  RestoreIcon,
+  ServerIcon,
+  ShieldCheckIcon,
+  TrendingUpIcon,
+  TruckIcon,
+} from "./Icons";
+import type { Block, IconKey } from "./types";
 
 const ICONS: Record<IconKey, React.FC<{ size?: number; color?: string; strokeWidth?: number }>> = {
   alert: AlertIcon,
@@ -18,8 +28,16 @@ const ICONS: Record<IconKey, React.FC<{ size?: number; color?: string; strokeWid
   shield: ShieldCheckIcon,
   trending: TrendingUpIcon,
   chat: ChatIcon,
+  truck: TruckIcon,
+  radar: RadarIcon,
+  restore: RestoreIcon,
 };
 
+/**
+ * A block is one line of the script. It plays either a single clip or a run of
+ * clips as hard cuts, while the headline, icon and name card stay put across
+ * the whole block.
+ */
 export const VideoBlock: React.FC<{ block: Block }> = ({ block }) => {
   const frame = useCurrentFrame();
   const { fps, durationInFrames } = useVideoConfig();
@@ -43,21 +61,38 @@ export const VideoBlock: React.FC<{ block: Block }> = ({ block }) => {
   });
 
   const nameCardIn = spring({ frame: frame - 10, fps, config: { damping: 16, mass: 0.7 } });
-  const nameCardOpacity = interpolate(frame, [10, 20, 78, 92], [0, 1, 1, 0], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-  });
+  const nameCardOpacity = interpolate(
+    frame,
+    [0.4 * fps, 0.85 * fps, 3.2 * fps, 3.8 * fps],
+    [0, 1, 1, 0],
+    { extrapolateLeft: "clamp", extrapolateRight: "clamp" },
+  );
   const nameCardShift = interpolate(nameCardIn, [0, 1], [-18, 0]);
 
   const Icon = ICONS[block.icon];
 
+  const clips = block.clips ?? (block.video ? [{ src: block.video, durationInFrames }] : []);
+
   return (
     <AbsoluteFill style={{ background: "#000" }}>
       <AbsoluteFill style={{ transform: `scale(${kenBurns})` }}>
-        <OffthreadVideo
-          src={staticFile(block.video)}
-          style={{ width: "100%", height: "100%", objectFit: "cover" }}
-        />
+        {clips.length === 1 ? (
+          <OffthreadVideo
+            src={staticFile(clips[0].src)}
+            style={{ width: "100%", height: "100%", objectFit: "cover" }}
+          />
+        ) : (
+          <Series>
+            {clips.map((clip) => (
+              <Series.Sequence key={clip.src} durationInFrames={clip.durationInFrames}>
+                <OffthreadVideo
+                  src={staticFile(clip.src)}
+                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                />
+              </Series.Sequence>
+            ))}
+          </Series>
+        )}
       </AbsoluteFill>
 
       <AbsoluteFill
@@ -94,7 +129,9 @@ export const VideoBlock: React.FC<{ block: Block }> = ({ block }) => {
             padding: "12px 22px 12px 16px",
           }}
         >
-          <div style={{ width: 4, height: 26, background: brand.colors.primaryLight, borderRadius: 2 }} />
+          <div
+            style={{ width: 4, height: 26, background: brand.colors.primaryLight, borderRadius: 2 }}
+          />
           <div
             style={{
               fontFamily: brand.fontFamily,
@@ -143,7 +180,9 @@ export const VideoBlock: React.FC<{ block: Block }> = ({ block }) => {
           >
             <Icon size={28} color={brand.colors.white} strokeWidth={2.2} />
           </div>
-          <div style={{ width: 40, height: 4, background: brand.colors.primaryLight, borderRadius: 2 }} />
+          <div
+            style={{ width: 40, height: 4, background: brand.colors.primaryLight, borderRadius: 2 }}
+          />
         </div>
 
         <div
