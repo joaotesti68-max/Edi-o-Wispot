@@ -15,6 +15,14 @@ export type IconKey =
 export type Clip = {
   src: string;
   durationInFrames: number;
+  /**
+   * Ease into this one instead of cutting: it keeps the framing of the clip
+   * before it, over a longer dissolve. For a splice landing on a word, where a
+   * straight cut plus a change of framing reads as a mistake. Kept short — the
+   * overlap runs both clips at once, so a long one eats the pause between the
+   * two lines as well as ghosting his hands.
+   */
+  soft?: boolean;
 };
 
 /**
@@ -31,6 +39,7 @@ export type SystemNode = {
 
 /** An animation that fills the frame over the footage, without cutting away. */
 export type Overlay =
+  | { kind: "route"; at: number; durationInFrames: number }
   | { kind: "attack"; at: number; durationInFrames: number }
   | { kind: "system"; at: number; durationInFrames: number; nodes: SystemNode[] };
 
@@ -50,14 +59,28 @@ export type Range = { start: number; end: number };
 
 /** Overlap between fragments inside a block — enough to soften a jump cut. */
 export const CLIP_TRANSITION_FRAMES = 4;
+export const SOFT_CLIP_TRANSITION_FRAMES = 7;
+
+export const transitionBefore = (clip: Clip) =>
+  clip.soft ? SOFT_CLIP_TRANSITION_FRAMES : CLIP_TRANSITION_FRAMES;
 
 /** Start frame of each clip inside its block, accounting for that overlap. */
 export const clipStarts = (clips: Clip[]) => {
   const starts = [0];
   for (let i = 1; i < clips.length; i++) {
-    starts.push(starts[i - 1] + clips[i - 1].durationInFrames - CLIP_TRANSITION_FRAMES);
+    starts.push(starts[i - 1] + clips[i - 1].durationInFrames - transitionBefore(clips[i]));
   }
   return starts;
+};
+
+/**
+ * Which fragments play punched in. Alternating hides a jump cut between two
+ * identical framings, but a soft splice wants the framing held instead.
+ */
+export const framingOf = (clips: Clip[]) => {
+  const tight = [false];
+  for (let i = 1; i < clips.length; i++) tight.push(clips[i].soft ? tight[i - 1] : !tight[i - 1]);
+  return tight;
 };
 
 /**

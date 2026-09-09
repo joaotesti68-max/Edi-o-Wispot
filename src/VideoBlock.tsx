@@ -27,8 +27,9 @@ import {
   TrendingUpIcon,
   TruckIcon,
 } from "./Icons";
-import { CLIP_TRANSITION_FRAMES, type Block, type Clip, type IconKey } from "./types";
+import { framingOf, transitionBefore, type Block, type Clip, type IconKey } from "./types";
 import { AttackOverlay } from "./AttackOverlay";
+import { RouteOverlay } from "./RouteOverlay";
 import { SystemOverlay } from "./SystemOverlay";
 
 const ICONS: Record<IconKey, React.FC<{ size?: number; color?: string; strokeWidth?: number }>> = {
@@ -51,9 +52,8 @@ const ICONS: Record<IconKey, React.FC<{ size?: number; color?: string; strokeWid
  * them reads as a glitch. Alternating a tighter punched-in shot with the wide
  * one makes each cut look like a second camera instead.
  */
-const ClipShot: React.FC<{ clip: Clip; index: number }> = ({ clip, index }) => {
+const ClipShot: React.FC<{ clip: Clip; tight: boolean }> = ({ clip, tight }) => {
   const frame = useCurrentFrame();
-  const tight = index % 2 === 1;
   const from = tight ? 1.12 : 1.0;
   const drift = interpolate(frame, [0, clip.durationInFrames], [0, tight ? -0.035 : 0.045], {
     extrapolateRight: "clamp",
@@ -83,6 +83,7 @@ export const VideoBlock: React.FC<{ block: Block }> = ({ block }) => {
   const clips: Clip[] =
     block.clips ??
     (block.video ? [{ src: block.video, durationInFrames: block.durationInFrames }] : []);
+  const tight = framingOf(clips);
 
   const iconIn = spring({ frame: frame - 4, fps, config: { damping: 14, mass: 0.6 } });
   const headlineIn = spring({ frame: frame - 8, fps, config: { damping: 16, mass: 0.7 } });
@@ -101,7 +102,7 @@ export const VideoBlock: React.FC<{ block: Block }> = ({ block }) => {
   return (
     <AbsoluteFill style={{ background: "#000" }}>
       {clips.length === 1 ? (
-        <ClipShot clip={clips[0]} index={0} />
+        <ClipShot clip={clips[0]} tight={false} />
       ) : (
         <TransitionSeries>
           {clips.map((clip, i) => (
@@ -109,11 +110,11 @@ export const VideoBlock: React.FC<{ block: Block }> = ({ block }) => {
               {i === 0 ? null : (
                 <TransitionSeries.Transition
                   presentation={fade()}
-                  timing={linearTiming({ durationInFrames: CLIP_TRANSITION_FRAMES })}
+                  timing={linearTiming({ durationInFrames: transitionBefore(clip) })}
                 />
               )}
               <TransitionSeries.Sequence durationInFrames={clip.durationInFrames}>
-                <ClipShot clip={clip} index={i} />
+                <ClipShot clip={clip} tight={tight[i]} />
               </TransitionSeries.Sequence>
             </React.Fragment>
           ))}
@@ -168,7 +169,9 @@ export const VideoBlock: React.FC<{ block: Block }> = ({ block }) => {
 
         {block.overlays?.map((o) => (
           <Sequence key={o.at} from={o.at} durationInFrames={o.durationInFrames}>
-            {o.kind === "attack" ? (
+            {o.kind === "route" ? (
+              <RouteOverlay durationInFrames={o.durationInFrames} />
+            ) : o.kind === "attack" ? (
               <AttackOverlay durationInFrames={o.durationInFrames} />
             ) : (
               <SystemOverlay nodes={o.nodes} durationInFrames={o.durationInFrames} />

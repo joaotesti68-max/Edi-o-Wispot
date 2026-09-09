@@ -1,7 +1,7 @@
 import {
-  CLIP_TRANSITION_FRAMES,
   buildTimeline,
   clipStarts,
+  transitionBefore,
   type Block,
   type Clip,
   type SystemNode,
@@ -12,16 +12,17 @@ export const OUTRO_FRAMES = 90;
 /** Between blocks — a directional slide, long enough to read as a beat. */
 export const TRANSITION_FRAMES = 12;
 
-const clip = (name: string, seconds: number): Clip => ({
+const clip = (name: string, seconds: number, soft = false): Clip => ({
   src: `videos/logistica/${name}.mp4`,
   durationInFrames: Math.floor(seconds * FPS),
+  soft,
 });
 
 const block = (b: Omit<Block, "durationInFrames">): Block => {
   const clips = b.clips ?? [];
   const durationInFrames =
     clips.reduce((sum, c) => sum + c.durationInFrames, 0) -
-    CLIP_TRANSITION_FRAMES * Math.max(0, clips.length - 1);
+    clips.slice(1).reduce((sum, c) => sum + transitionBefore(c), 0);
 
   // An overlay running past its block gets clipped mid-animation and never
   // plays its exit, so hold it to what is left of the block.
@@ -99,6 +100,7 @@ export const blocks: Block[] = [
     headline: "Não é só o caminhão que para a operação",
     icon: "truck",
     nameCard: "João Dourado",
+    overlays: [{ kind: "route", at: 10, durationInFrames: 129 }],
   }),
   block({
     id: "desenvolvimento-1",
@@ -162,7 +164,8 @@ export const blocks: Block[] = [
     id: "fechamento",
     // "Na logística, tecnologia parada também significa operação parada.
     //  Fale conosco e proteja a estrutura que mantém o seu negócio funcionando."
-    clips: [clip("13_f1", 3.4), clip("14_f2", 4.193)],
+    // the splice lands right on "parada", and the source has no air after it
+    clips: [clip("13_f1", 3.4), clip("14_f2", 4.5, true)],
     headline: "Tecnologia parada também é operação parada",
     icon: "chat",
   }),
