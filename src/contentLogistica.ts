@@ -98,7 +98,7 @@ export const blocks: Block[] = [
     clips: [clip("01_abertura", 4.661)],
     headline: "Não é só o caminhão que para a operação",
     icon: "truck",
-    nameCard: "João",
+    nameCard: "João Dourado",
   }),
   block({
     id: "desenvolvimento-1",
