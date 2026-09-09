@@ -3,6 +3,7 @@ import {
   AbsoluteFill,
   Img,
   OffthreadVideo,
+  Sequence,
   interpolate,
   spring,
   staticFile,
@@ -14,7 +15,11 @@ import { fade } from "@remotion/transitions/fade";
 import { brand } from "./brand";
 import {
   AlertIcon,
+  BoxIcon,
   ChatIcon,
+  LockIcon,
+  NetworkIcon,
+  PeopleIcon,
   RadarIcon,
   RestoreIcon,
   ServerIcon,
@@ -22,9 +27,9 @@ import {
   TrendingUpIcon,
   TruckIcon,
 } from "./Icons";
-import { CLIP_TRANSITION_FRAMES, type Block, type IconKey, type Segment } from "./types";
-import { Callouts } from "./Callouts";
-import { TextCard } from "./TextCard";
+import { CLIP_TRANSITION_FRAMES, type Block, type Clip, type IconKey } from "./types";
+import { IconStrip } from "./IconStrip";
+import { AttackOverlay } from "./AttackOverlay";
 
 const ICONS: Record<IconKey, React.FC<{ size?: number; color?: string; strokeWidth?: number }>> = {
   alert: AlertIcon,
@@ -35,6 +40,10 @@ const ICONS: Record<IconKey, React.FC<{ size?: number; color?: string; strokeWid
   truck: TruckIcon,
   radar: RadarIcon,
   restore: RestoreIcon,
+  box: BoxIcon,
+  people: PeopleIcon,
+  network: NetworkIcon,
+  lock: LockIcon,
 };
 
 /**
@@ -42,15 +51,11 @@ const ICONS: Record<IconKey, React.FC<{ size?: number; color?: string; strokeWid
  * them reads as a glitch. Alternating a tighter punched-in shot with the wide
  * one makes each cut look like a second camera instead.
  */
-const ClipShot: React.FC<{ src: string; durationInFrames: number; index: number }> = ({
-  src,
-  durationInFrames,
-  index,
-}) => {
+const ClipShot: React.FC<{ clip: Clip; index: number }> = ({ clip, index }) => {
   const frame = useCurrentFrame();
   const tight = index % 2 === 1;
   const from = tight ? 1.12 : 1.0;
-  const drift = interpolate(frame, [0, durationInFrames], [0, tight ? -0.035 : 0.045], {
+  const drift = interpolate(frame, [0, clip.durationInFrames], [0, tight ? -0.035 : 0.045], {
     extrapolateRight: "clamp",
   });
 
@@ -59,43 +64,25 @@ const ClipShot: React.FC<{ src: string; durationInFrames: number; index: number 
       style={{ transform: `scale(${from + drift}) translateX(${tight ? -1.6 : 0}%)` }}
     >
       <OffthreadVideo
-        src={staticFile(src)}
+        src={staticFile(clip.src)}
         style={{ width: "100%", height: "100%", objectFit: "cover" }}
       />
     </AbsoluteFill>
   );
 };
 
-/** Start frame of each segment, accounting for the transition overlap. */
-const segmentStarts = (segments: Segment[]) => {
-  const starts = [0];
-  for (let i = 1; i < segments.length; i++) {
-    starts.push(starts[i - 1] + segments[i - 1].durationInFrames - CLIP_TRANSITION_FRAMES);
-  }
-  return starts;
-};
-
 /**
- * A block is one line of the script. It plays a run of segments — his takes,
- * plus the occasional full-screen card — while the headline, icon, name card
- * and callouts stay put across the whole block.
+ * A block is one line of the script. It plays a run of his takes as hard
+ * cuts, while the headline, icon, name card, animated tiles and any overlay
+ * ride on top of the whole block.
  */
 export const VideoBlock: React.FC<{ block: Block }> = ({ block }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  const segments: Segment[] =
-    block.segments ??
-    (block.video
-      ? [{ kind: "clip", src: block.video, durationInFrames: block.durationInFrames }]
-      : []);
-
-  // A card owns the whole frame, so the block chrome steps aside while one is up.
-  const starts = segmentStarts(segments);
-  const cardUp = segments.some(
-    (s, i) => s.kind === "card" && frame >= starts[i] && frame < starts[i] + s.durationInFrames,
-  );
-  const chrome = interpolate(Number(cardUp), [0, 1], [1, 0]);
+  const clips: Clip[] =
+    block.clips ??
+    (block.video ? [{ src: block.video, durationInFrames: block.durationInFrames }] : []);
 
   const iconIn = spring({ frame: frame - 4, fps, config: { damping: 14, mass: 0.6 } });
   const headlineIn = spring({ frame: frame - 8, fps, config: { damping: 16, mass: 0.7 } });
@@ -111,36 +98,29 @@ export const VideoBlock: React.FC<{ block: Block }> = ({ block }) => {
 
   const Icon = ICONS[block.icon];
 
-  const renderSegment = (segment: Segment, i: number) =>
-    segment.kind === "card" ? (
-      <TextCard line={segment.line} icon={segment.icon} />
-    ) : (
-      <ClipShot src={segment.src} durationInFrames={segment.durationInFrames} index={i} />
-    );
-
   return (
     <AbsoluteFill style={{ background: "#000" }}>
-      {segments.length === 1 ? (
-        renderSegment(segments[0], 0)
+      {clips.length === 1 ? (
+        <ClipShot clip={clips[0]} index={0} />
       ) : (
         <TransitionSeries>
-          {segments.map((segment, i) => (
-            <React.Fragment key={i}>
+          {clips.map((clip, i) => (
+            <React.Fragment key={clip.src}>
               {i === 0 ? null : (
                 <TransitionSeries.Transition
                   presentation={fade()}
                   timing={linearTiming({ durationInFrames: CLIP_TRANSITION_FRAMES })}
                 />
               )}
-              <TransitionSeries.Sequence durationInFrames={segment.durationInFrames}>
-                {renderSegment(segment, i)}
+              <TransitionSeries.Sequence durationInFrames={clip.durationInFrames}>
+                <ClipShot clip={clip} index={i} />
               </TransitionSeries.Sequence>
             </React.Fragment>
           ))}
         </TransitionSeries>
       )}
 
-      <AbsoluteFill style={{ opacity: chrome }}>
+      <AbsoluteFill>
         <AbsoluteFill
           style={{
             background:
@@ -186,7 +166,13 @@ export const VideoBlock: React.FC<{ block: Block }> = ({ block }) => {
           </div>
         ) : null}
 
-        {block.callouts ? <Callouts items={block.callouts} /> : null}
+        {block.tiles ? <IconStrip items={block.tiles} /> : null}
+
+        {block.overlays?.map((o) => (
+          <Sequence key={o.at} from={o.at} durationInFrames={o.durationInFrames}>
+            <AttackOverlay durationInFrames={o.durationInFrames} />
+          </Sequence>
+        ))}
 
         <div
           style={{

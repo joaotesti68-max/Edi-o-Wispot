@@ -73,3 +73,39 @@ export const RestoreIcon: React.FC<IconProps> = ({ size = 40, color = "#fff", st
     <polyline points="12,7.8 12,12.4 15.4,14.2" />
   </svg>
 );
+
+export const BoxIcon: React.FC<IconProps> = ({ size = 40, color = "#fff", strokeWidth = 2 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" stroke={color} {...base(strokeWidth)}>
+    <path d="M12 2.8 L20.5 7 V17 L12 21.2 L3.5 17 V7 Z" />
+    <polyline points="3.5,7 12,11.2 20.5,7" />
+    <line x1="12" y1="11.2" x2="12" y2="21.2" />
+  </svg>
+);
+
+export const PeopleIcon: React.FC<IconProps> = ({ size = 40, color = "#fff", strokeWidth = 2 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" stroke={color} {...base(strokeWidth)}>
+    <circle cx="9" cy="8" r="3.2" />
+    <path d="M3 19.5 C3 15.9 5.7 14 9 14 C12.3 14 15 15.9 15 19.5" />
+    <path d="M16.2 5.4 A3.2 3.2 0 0 1 16.2 11.4" />
+    <path d="M17.4 14.3 C19.8 14.9 21.4 16.6 21.4 19.5" />
+  </svg>
+);
+
+export const NetworkIcon: React.FC<IconProps> = ({ size = 40, color = "#fff", strokeWidth = 2 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" stroke={color} {...base(strokeWidth)}>
+    <circle cx="12" cy="4.6" r="2.2" />
+    <circle cx="4.8" cy="18.4" r="2.2" />
+    <circle cx="19.2" cy="18.4" r="2.2" />
+    <line x1="12" y1="6.8" x2="12" y2="12" />
+    <path d="M12 12 L6.2 16.6" />
+    <path d="M12 12 L17.8 16.6" />
+  </svg>
+);
+
+export const LockIcon: React.FC<IconProps> = ({ size = 40, color = "#fff", strokeWidth = 2 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" stroke={color} {...base(strokeWidth)}>
+    <rect x="4.5" y="10.5" width="15" height="10" rx="2.2" />
+    <path d="M8 10.5 V7.6 A4 4 0 0 1 16 7.6 V10.5" />
+    <line x1="12" y1="14.2" x2="12" y2="16.8" />
+  </svg>
+);

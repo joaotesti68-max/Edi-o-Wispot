@@ -6,47 +6,57 @@ export type IconKey =
   | "chat"
   | "truck"
   | "radar"
-  | "restore";
+  | "restore"
+  | "box"
+  | "people"
+  | "network"
+  | "lock";
 
 export type Clip = {
   src: string;
   durationInFrames: number;
 };
 
-/**
- * A full-screen card standing in for a line of the script that was never
- * recorded, so the narration reads continuously instead of jumping.
- */
-export type Card = {
-  line: string;
+/** An animated icon that lands at frame `at`, counted from the start of its block. */
+export type IconTile = {
+  label: string;
   icon: IconKey;
-  durationInFrames: number;
+  at: number;
 };
 
-export type Segment = ({ kind: "clip" } & Clip) | ({ kind: "card" } & Card);
-
-/** A chip that lands at frame `at`, counted from the start of its block. */
-export type Callout = {
-  label: string;
+/** An animation that plays over the footage without cutting away from it. */
+export type Overlay = {
+  kind: "attack";
   at: number;
+  durationInFrames: number;
 };
 
 export type Block = {
   id: string;
-  /** Single clip (legacy) or a run of segments sharing one headline. */
+  /** Single clip (legacy) or a run of hard cuts sharing one headline. */
   video?: string;
-  segments?: Segment[];
+  clips?: Clip[];
   durationInFrames: number;
   headline: string;
   icon: IconKey;
   nameCard?: string;
-  callouts?: Callout[];
+  tiles?: IconTile[];
+  overlays?: Overlay[];
 };
 
 export type Range = { start: number; end: number };
 
 /** Overlap between fragments inside a block — enough to soften a jump cut. */
 export const CLIP_TRANSITION_FRAMES = 4;
+
+/** Start frame of each clip inside its block, accounting for that overlap. */
+export const clipStarts = (clips: Clip[]) => {
+  const starts = [0];
+  for (let i = 1; i < clips.length; i++) {
+    starts.push(starts[i - 1] + clips[i - 1].durationInFrames - CLIP_TRANSITION_FRAMES);
+  }
+  return starts;
+};
 
 /**
  * Mirrors how @remotion/transitions/TransitionSeries lays out overlapping
