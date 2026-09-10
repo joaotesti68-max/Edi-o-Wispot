@@ -115,142 +115,132 @@ export const Instalacao: React.FC = () => {
   );
 };
 
-const LINHAS = [
-  { rotulo: "Tempo de permanência", valor: "18 min" },
-  { rotulo: "Frequência de visita", valor: "3ª vez" },
-  { rotulo: "Preferências de navegação", valor: "vídeo, notícias" },
+const PRODUTOS = [
+  "brand/produtos/wiquest.png",
+  "brand/produtos/wimap.png",
+  "brand/produtos/sending.png",
+  "brand/produtos/myguest.png",
+  "brand/produtos/hora-premiada.png",
 ];
 
-/** Passo 03: o que cada conexão registra. */
-export const Captura: React.FC = () => {
+/** Passo 03: a tela real do Analytics, com aproximação lenta para dar leitura. */
+export const Analytics: React.FC = () => {
   const frame = useCurrentFrame();
-  const conexoes = Math.round(interpolate(frame, [8, 60], [0, 1284], ease));
+  const surge = entra(frame, 0);
+  const desliza = interpolate(frame, [10, 108], [0, -34], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
+  const desce = interpolate(frame, [10, 108], [-4, -17], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
 
   return (
     <Cena>
-      <Cartao opacity={entra(frame, 0)} shift={interpolate(entra(frame, 0), [0, 1], [22, 0])}>
-        <Titulo>A cada conexão</Titulo>
-
-        <div style={{ display: "flex", alignItems: "baseline", gap: 16 }}>
-          <div style={{ fontFamily, fontWeight: 800, fontSize: 92, color: wispot.cyan, lineHeight: 1 }}>
-            {conexoes.toLocaleString("pt-BR")}
-          </div>
-          <div style={{ fontFamily, fontWeight: 600, fontSize: 30, color: wispot.muted }}>
-            conexões hoje
-          </div>
-        </div>
-
-        <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
-          {LINHAS.map((l, i) => {
-            const e = entra(frame, 18 + i * 12);
-            return (
-              <div
-                key={l.rotulo}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  background: "rgba(0,24,36,0.5)",
-                  borderRadius: 18,
-                  padding: "22px 26px",
-                  opacity: e,
-                  transform: `translateX(${interpolate(e, [0, 1], [-26, 0])}px)`,
-                }}
-              >
-                <div style={{ fontFamily, fontWeight: 600, fontSize: 30, color: wispot.white }}>
-                  {l.rotulo}
-                </div>
-                <div style={{ fontFamily, fontWeight: 800, fontSize: 30, color: wispot.cyan }}>
-                  {l.valor}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </Cartao>
-    </Cena>
-  );
-};
-
-/** Passo 04: a campanha que sai para quem está conectado. */
-export const Engajamento: React.FC = () => {
-  const frame = useCurrentFrame();
-  const e1 = entra(frame, 4);
-  const e2 = entra(frame, 22);
-  const e3 = entra(frame, 44);
-
-  return (
-    <Cena>
-      <Cartao opacity={entra(frame, 0)} shift={interpolate(entra(frame, 0), [0, 1], [22, 0])}>
-        <Titulo>Engajamento</Titulo>
-
-        <div style={{ display: "flex", gap: 14, opacity: e1 }}>
-          {["Clientes recorrentes", "Conectados hoje"].map((t) => (
-            <div
-              key={t}
-              style={{
-                background: "rgba(0,170,227,0.18)",
-                border: "1.5px solid rgba(0,170,227,0.6)",
-                borderRadius: 999,
-                padding: "12px 24px",
-                fontFamily,
-                fontWeight: 600,
-                fontSize: 26,
-                color: wispot.white,
-              }}
-            >
-              {t}
-            </div>
-          ))}
+      <div style={{ width: "100%", opacity: surge, transform: `translateY(${interpolate(surge, [0, 1], [26, 0])}px)` }}>
+        <div style={{ fontFamily, fontWeight: 800, fontSize: 46, color: wispot.white, marginBottom: 26 }}>
+          A cada conexão
         </div>
 
         <div
           style={{
-            background: wispot.white,
-            borderRadius: 24,
-            padding: "30px 30px",
-            display: "flex",
-            gap: 20,
-            alignItems: "flex-start",
-            opacity: e2,
-            transform: `translateY(${interpolate(e2, [0, 1], [26, 0])}px)`,
+            borderRadius: 26,
+            overflow: "hidden",
+            border: "2px solid rgba(0,170,227,0.45)",
+            background: "#FFFFFF",
           }}
         >
           <div
             style={{
-              width: 62,
-              height: 62,
-              borderRadius: 16,
-              background: wispot.cyan,
               display: "flex",
               alignItems: "center",
-              justifyContent: "center",
-              flexShrink: 0,
+              gap: 10,
+              padding: "18px 22px",
+              background: wispot.navy,
             }}
           >
-            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M3 5.5h18v13H7.5L3 22z" />
-            </svg>
-          </div>
-          <div>
-            <div style={{ fontFamily, fontWeight: 800, fontSize: 30, color: wispot.navy }}>
-              Que bom te ver de novo
+            {["#FF5F57", "#FEBC2E", "#28C840"].map((c) => (
+              <div key={c} style={{ width: 14, height: 14, borderRadius: 999, background: c }} />
+            ))}
+            <div
+              style={{
+                marginLeft: 14,
+                fontFamily,
+                fontWeight: 600,
+                fontSize: 22,
+                color: "rgba(255,255,255,0.85)",
+              }}
+            >
+              Wispot · Analytics
             </div>
-            <div style={{ fontFamily, fontWeight: 500, fontSize: 27, color: "rgba(0,41,59,0.72)", marginTop: 6 }}>
-              Sua próxima visita tem uma condição especial.
-            </div>
           </div>
+
+          <div style={{ overflow: "hidden", height: 800 }}>
+            <Img
+              src={staticFile("mockups/analytics.png")}
+              style={{
+                width: "200%",
+                // O preflight do Tailwind limita imagem a 100% da caixa; sem
+                // soltar isso a captura não passa de miniatura ilegível.
+                maxWidth: "none",
+                display: "block",
+                transform: `translate(${desliza}%, ${desce}%)`,
+              }}
+            />
+          </div>
+        </div>
+      </div>
+    </Cena>
+  );
+};
+
+/** Passo 04: o portfólio subindo, um produto por vez. */
+export const Ecossistema: React.FC = () => {
+  const frame = useCurrentFrame();
+
+  return (
+    <Cena>
+      <div style={{ width: 660, display: "flex", flexDirection: "column", gap: 20 }}>
+        <div
+          style={{
+            fontFamily,
+            fontWeight: 800,
+            fontSize: 46,
+            color: wispot.white,
+            marginBottom: 8,
+            opacity: entra(frame, 0),
+          }}
+        >
+          Campanhas para quem está conectado
         </div>
 
-        <div style={{ display: "flex", alignItems: "center", gap: 14, opacity: e3 }}>
-          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke={wispot.cyan} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-            <polyline points="4,12.5 9.5,18 20,6.5" />
-          </svg>
-          <div style={{ fontFamily, fontWeight: 700, fontSize: 30, color: wispot.white }}>
-            Enviada para o segmento
-          </div>
-        </div>
-      </Cartao>
+        {PRODUTOS.map((src, i) => {
+          const inicio = 6 + i * 7;
+          const sobe = interpolate(frame, [inicio, inicio + 20], [0, 1], ease);
+          // Depois de assentar, segue flutuando de leve para a pilha não travar.
+          const flutua = Math.sin((frame - inicio) / 22) * 5 * sobe;
+          return (
+            <div
+              key={src}
+              style={{
+                background: "#FFFFFF",
+                borderRadius: 22,
+                padding: "22px 46px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                height: 152,
+                opacity: sobe,
+                transform: `translateY(${interpolate(sobe, [0, 1], [190, 0]) + flutua}px)`,
+                boxShadow: "0 18px 40px rgba(0,12,20,0.35)",
+              }}
+            >
+              <Img src={staticFile(src)} style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain" }} />
+            </div>
+          );
+        })}
+      </div>
     </Cena>
   );
 };

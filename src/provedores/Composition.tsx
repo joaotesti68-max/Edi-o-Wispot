@@ -13,7 +13,7 @@ export const ProvedoresVideo: React.FC = () => {
   return (
     <AbsoluteFill style={{ fontFamily, background: "#001824" }}>
       {/* Bem abaixo da narração: aqui a voz dela é o conteúdo, não a trilha. */}
-      <Audio src={staticFile("audio/trilha.mp3")} volume={0.05} />
+      <Audio src={staticFile("audio/trilha.mp3")} volume={0.032} />
 
       <TransitionSeries>
         {blocks.map((block) => (

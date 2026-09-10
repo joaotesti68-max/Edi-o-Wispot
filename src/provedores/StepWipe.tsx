@@ -6,6 +6,9 @@ import { blockRanges, blocks } from "./content";
 /** Metade da janela da passagem: o corte cai no quadro em que o painel cobre tudo. */
 const METADE = 6;
 
+/** Índice do primeiro bloco que ainda entra com cartela. */
+const PRIMEIRA_COM_CARTELA = 4;
+
 const ease = Easing.inOut(Easing.cubic);
 
 /**
@@ -18,8 +21,11 @@ export const StepWipe: React.FC = () => {
   const frame = useCurrentFrame();
 
   const corte = blockRanges
-    .map((r, i) => ({ frame: r.start, bloco: blocks[i] }))
-    .filter((c) => c.frame > 0)
+    .map((r, i) => ({ frame: r.start, bloco: blocks[i], indice: i }))
+    // A abertura, a ponte e o primeiro passo emendam sem cartela: ali a
+    // passagem interrompia o começo em vez de costurá-lo. Nesses cortes quem
+    // separa os takes é a diferença de enquadramento.
+    .filter((c) => c.indice >= PRIMEIRA_COM_CARTELA)
     .find((c) => Math.abs(frame - c.frame) <= METADE);
 
   if (!corte) return null;

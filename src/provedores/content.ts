@@ -13,8 +13,8 @@ export type Broll = {
 } & (
   | { kind: "video"; src: string }
   | { kind: "instalacao" }
-  | { kind: "captura" }
-  | { kind: "engajamento" }
+  | { kind: "analytics" }
+  | { kind: "ecossistema" }
   | { kind: "relatorio" }
 );
 
@@ -55,11 +55,7 @@ export const blocks: Block[] = [
     video: "videos/provedores/IMG_8414.mp4",
     durationInFrames: 154,
     chip: "Isabella Marques · Wispot",
-    headline: [
-      { t: "Quanto trabalho dá pra " },
-      { t: "colocar de pé", bold: true, underline: true },
-      { t: "?" },
-    ],
+    headline: [],
     activeSteps: [],
     zoom: 1.0,
     cuts: [],
@@ -71,7 +67,7 @@ export const blocks: Block[] = [
     chip: "O caminho",
     headline: [{ t: "São " }, { t: "cinco passos", bold: true, underline: true }],
     activeSteps: [],
-    zoom: 1.12,
+    zoom: 1.18,
     cuts: [],
   },
   {
@@ -98,13 +94,13 @@ export const blocks: Block[] = [
       { t: "políticas de uso", bold: true },
     ],
     activeSteps: [2],
-    zoom: 1.12,
+    zoom: 1.15,
     cuts: [],
     broll: {
       kind: "video",
       src: "videos/provedores/broll-portal.mp4",
-      at: 66,
-      durationInFrames: 84,
+      at: 62,
+      durationInFrames: 100,
     },
   },
   {
@@ -119,7 +115,7 @@ export const blocks: Block[] = [
     activeSteps: [3],
     zoom: 1.0,
     cuts: [],
-    broll: { kind: "captura", at: 58, durationInFrames: 92 },
+    broll: { kind: "analytics", at: 52, durationInFrames: 110 },
   },
   {
     id: "passo-4",
@@ -133,7 +129,7 @@ export const blocks: Block[] = [
     activeSteps: [4],
     zoom: 1.12,
     cuts: [],
-    broll: { kind: "engajamento", at: 52, durationInFrames: 90 },
+    broll: { kind: "ecossistema", at: 44, durationInFrames: 104 },
   },
   {
     id: "passo-5",
