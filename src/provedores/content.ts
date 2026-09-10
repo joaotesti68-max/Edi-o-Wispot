@@ -15,7 +15,6 @@ export type Broll = {
   | { kind: "instalacao" }
   | { kind: "analytics" }
   | { kind: "ecossistema" }
-  | { kind: "relatorio" }
 );
 
 export type Block = {
@@ -143,7 +142,6 @@ export const blocks: Block[] = [
     activeSteps: [5],
     zoom: 1.0,
     cuts: [],
-    broll: { kind: "relatorio", at: 45, durationInFrames: 85 },
   },
   {
     id: "fechamento",

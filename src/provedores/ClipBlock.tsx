@@ -11,7 +11,6 @@ import {
 import { fontFamily } from "../loadFont";
 import { wispot } from "./theme";
 import { Analytics, Ecossistema, Instalacao } from "./Mockups";
-import { ReportCard } from "./ReportCard";
 import type { Block } from "./content";
 
 const ease = {
@@ -206,10 +205,8 @@ const Cobertura: React.FC<{ broll: NonNullable<Block["broll"]> }> = ({ broll }) 
         <Instalacao />
       ) : broll.kind === "analytics" ? (
         <Analytics />
-      ) : broll.kind === "ecossistema" ? (
-        <Ecossistema />
       ) : (
-        <ReportCard />
+        <Ecossistema />
       )}
     </AbsoluteFill>
   );
