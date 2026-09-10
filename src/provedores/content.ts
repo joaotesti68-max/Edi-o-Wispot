@@ -10,7 +10,13 @@ export type Accent = { t: string; at: number };
 export type Broll = {
   at: number;
   durationInFrames: number;
-} & ({ kind: "video"; src: string } | { kind: "relatorio" });
+} & (
+  | { kind: "video"; src: string }
+  | { kind: "instalacao" }
+  | { kind: "captura" }
+  | { kind: "engajamento" }
+  | { kind: "relatorio" }
+);
 
 export type Block = {
   id: string;
@@ -80,10 +86,7 @@ export const blocks: Block[] = [
     activeSteps: [1],
     zoom: 1.0,
     cuts: [],
-    accents: [
-      { t: "Sem parada longa", at: 62 },
-      { t: "Sem trocar infraestrutura", at: 86 },
-    ],
+    broll: { kind: "instalacao", at: 52, durationInFrames: 82 },
   },
   {
     id: "passo-2",
@@ -116,11 +119,7 @@ export const blocks: Block[] = [
     activeSteps: [3],
     zoom: 1.0,
     cuts: [],
-    accents: [
-      { t: "Tempo de permanência", at: 52 },
-      { t: "Frequência de visita", at: 78 },
-      { t: "Preferências de navegação", at: 104 },
-    ],
+    broll: { kind: "captura", at: 58, durationInFrames: 92 },
   },
   {
     id: "passo-4",
@@ -134,10 +133,7 @@ export const blocks: Block[] = [
     activeSteps: [4],
     zoom: 1.12,
     cuts: [],
-    accents: [
-      { t: "Campanhas segmentadas", at: 54 },
-      { t: "Para quem já está conectado", at: 82 },
-    ],
+    broll: { kind: "engajamento", at: 52, durationInFrames: 90 },
   },
   {
     id: "passo-5",
@@ -156,7 +152,7 @@ export const blocks: Block[] = [
   {
     id: "fechamento",
     video: "videos/provedores/IMG_8437.mp4",
-    durationInFrames: 112,
+    durationInFrames: 95,
     chip: "Cinco passos",
     headline: [
       { t: "Receita extra sobre a estrutura que " },

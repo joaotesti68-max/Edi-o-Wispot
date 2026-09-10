@@ -10,6 +10,7 @@ import {
 } from "remotion";
 import { fontFamily } from "../loadFont";
 import { wispot } from "./theme";
+import { Captura, Engajamento, Instalacao } from "./Mockups";
 import { ReportCard } from "./ReportCard";
 import type { Block } from "./content";
 
@@ -201,6 +202,12 @@ const Cobertura: React.FC<{ broll: NonNullable<Block["broll"]> }> = ({ broll }) 
           muted
           style={{ width: "100%", height: "100%", objectFit: "cover" }}
         />
+      ) : broll.kind === "instalacao" ? (
+        <Instalacao />
+      ) : broll.kind === "captura" ? (
+        <Captura />
+      ) : broll.kind === "engajamento" ? (
+        <Engajamento />
       ) : (
         <ReportCard />
       )}
