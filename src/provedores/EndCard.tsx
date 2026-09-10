@@ -97,7 +97,7 @@ export const EndCard: React.FC = () => {
               padding: "17px 44px",
             }}
           >
-            Fale com a gente
+            Fale conosco
           </div>
           <div
             style={{
