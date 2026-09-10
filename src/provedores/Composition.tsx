@@ -4,6 +4,7 @@ import { fade } from "@remotion/transitions/fade";
 import { ClipBlock } from "./ClipBlock";
 import { EndCard } from "./EndCard";
 import { StepRail } from "./StepRail";
+import { StepWipe } from "./StepWipe";
 import { Watermark } from "./Watermark";
 import { fontFamily } from "../loadFont";
 import { FPS, OUTRO_FRAMES, TRANSITION_FRAMES, blocks, totalDurationInFrames } from "./content";
@@ -12,7 +13,7 @@ export const ProvedoresVideo: React.FC = () => {
   return (
     <AbsoluteFill style={{ fontFamily, background: "#001824" }}>
       {/* Bem abaixo da narração: aqui a voz dela é o conteúdo, não a trilha. */}
-      <Audio src={staticFile("audio/theme.mp3")} volume={0.16} />
+      <Audio src={staticFile("audio/trilha.mp3")} volume={0.05} />
 
       <TransitionSeries>
         {blocks.map((block) => (
@@ -35,6 +36,8 @@ export const ProvedoresVideo: React.FC = () => {
 
       <Watermark />
       <StepRail />
+      {/* Por último: a passagem cobre inclusive a marca e a régua. */}
+      <StepWipe />
     </AbsoluteFill>
   );
 };

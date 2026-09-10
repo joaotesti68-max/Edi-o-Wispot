@@ -2,6 +2,7 @@ import {
   AbsoluteFill,
   Easing,
   OffthreadVideo,
+  Sequence,
   interpolate,
   staticFile,
   useCurrentFrame,
@@ -9,6 +10,7 @@ import {
 } from "remotion";
 import { fontFamily } from "../loadFont";
 import { wispot } from "./theme";
+import { ReportCard } from "./ReportCard";
 import type { Block } from "./content";
 
 const ease = {
@@ -34,6 +36,20 @@ export const ClipBlock: React.FC<{ block: Block }> = ({ block }) => {
 
   const chipOpacity = interpolate(frame, [4, 18], [0, 1], ease);
   const chipShift = interpolate(frame, [4, 18], [16, 0], ease);
+  // Enquanto a cobertura está no ar ela é o assunto: o texto sai da frente.
+  const cobertura = block.broll
+    ? interpolate(
+        frame,
+        [
+          block.broll.at,
+          block.broll.at + 5,
+          block.broll.at + block.broll.durationInFrames - 5,
+          block.broll.at + block.broll.durationInFrames,
+        ],
+        [0, 1, 1, 0],
+        { extrapolateLeft: "clamp", extrapolateRight: "clamp" },
+      )
+    : 0;
   const headlineOpacity = interpolate(frame, [10, 26], [0, 1], ease);
   const headlineShift = interpolate(frame, [10, 26], [20, 0], ease);
 
@@ -49,6 +65,60 @@ export const ClipBlock: React.FC<{ block: Block }> = ({ block }) => {
       </AbsoluteFill>
 
       <AbsoluteFill style={{ background: wispot.scrim }} />
+
+
+      {block.accents ? (
+        <div
+          style={{
+            position: "absolute",
+            top: 252,
+            left: 60,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-start",
+            gap: 14,
+          }}
+        >
+          {block.accents.map((a) => {
+            const entra = interpolate(frame, [a.at, a.at + 12], [0, 1], ease);
+            return (
+              <div
+                key={a.t}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 14,
+                  background: "rgba(0,24,36,0.62)",
+                  border: `1.5px solid rgba(0,170,227,0.55)`,
+                  borderRadius: 999,
+                  padding: "12px 26px",
+                  opacity: entra,
+                  transform: `translateX(${interpolate(entra, [0, 1], [-22, 0])}px)`,
+                }}
+              >
+                <div style={{ width: 10, height: 10, borderRadius: 999, background: wispot.cyan }} />
+                <div
+                  style={{
+                    fontFamily,
+                    fontWeight: 600,
+                    fontSize: 27,
+                    color: wispot.white,
+                    letterSpacing: 0.2,
+                  }}
+                >
+                  {a.t}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      ) : null}
+
+      {block.broll ? (
+        <Sequence from={block.broll.at} durationInFrames={block.broll.durationInFrames} layout="none">
+          <Cobertura broll={block.broll} />
+        </Sequence>
+      ) : null}
 
       <div
         style={{
@@ -72,7 +142,7 @@ export const ClipBlock: React.FC<{ block: Block }> = ({ block }) => {
             fontSize: 26,
             letterSpacing: 0.3,
             color: wispot.white,
-            opacity: chipOpacity,
+            opacity: chipOpacity * (1 - cobertura),
             transform: `translateY(${chipShift}px)`,
           }}
         >
@@ -88,7 +158,7 @@ export const ClipBlock: React.FC<{ block: Block }> = ({ block }) => {
             color: wispot.white,
             letterSpacing: -0.4,
             textShadow: "0 4px 26px rgba(0,12,20,0.5)",
-            opacity: headlineOpacity,
+            opacity: headlineOpacity * (1 - cobertura),
             transform: `translateY(${headlineShift}px)`,
           }}
         >
@@ -110,6 +180,30 @@ export const ClipBlock: React.FC<{ block: Block }> = ({ block }) => {
           ))}
         </div>
       </div>
+    </AbsoluteFill>
+  );
+};
+
+/** Entra e sai depressa: a fala não para, então a imagem não pode demorar. */
+const Cobertura: React.FC<{ broll: NonNullable<Block["broll"]> }> = ({ broll }) => {
+  const frame = useCurrentFrame();
+  const { durationInFrames } = useVideoConfig();
+  const opacity = Math.min(
+    interpolate(frame, [0, 5], [0, 1], ease),
+    interpolate(frame, [durationInFrames - 5, durationInFrames], [1, 0], ease),
+  );
+
+  return (
+    <AbsoluteFill style={{ opacity }}>
+      {broll.kind === "video" ? (
+        <OffthreadVideo
+          src={staticFile(broll.src)}
+          muted
+          style={{ width: "100%", height: "100%", objectFit: "cover" }}
+        />
+      ) : (
+        <ReportCard />
+      )}
     </AbsoluteFill>
   );
 };

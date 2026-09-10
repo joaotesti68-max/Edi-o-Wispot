@@ -3,6 +3,15 @@ export const FPS = 24;
 /** Trecho de headline: `bold` destaca, `underline` marca com o traço ciano. */
 export type Part = { t: string; bold?: boolean; underline?: boolean };
 
+/** Selo curto que entra sobre a imagem, reforçando o que ela acabou de dizer. */
+export type Accent = { t: string; at: number };
+
+/** Cobertura que cobre a apresentadora enquanto a fala dela continua. */
+export type Broll = {
+  at: number;
+  durationInFrames: number;
+} & ({ kind: "video"; src: string } | { kind: "relatorio" });
+
 export type Block = {
   id: string;
   video: string;
@@ -14,6 +23,8 @@ export type Block = {
   zoom: number;
   /** Frames onde o corte de silêncio emendou o take; o zoom troca ali para disfarçar. */
   cuts: number[];
+  accents?: Accent[];
+  broll?: Broll;
 };
 
 export const STEPS = [
@@ -54,7 +65,7 @@ export const blocks: Block[] = [
     chip: "O caminho",
     headline: [{ t: "São " }, { t: "cinco passos", bold: true, underline: true }],
     activeSteps: [],
-    zoom: 1.07,
+    zoom: 1.12,
     cuts: [],
   },
   {
@@ -69,6 +80,10 @@ export const blocks: Block[] = [
     activeSteps: [1],
     zoom: 1.0,
     cuts: [],
+    accents: [
+      { t: "Sem parada longa", at: 62 },
+      { t: "Sem trocar infraestrutura", at: 86 },
+    ],
   },
   {
     id: "passo-2",
@@ -80,8 +95,14 @@ export const blocks: Block[] = [
       { t: "políticas de uso", bold: true },
     ],
     activeSteps: [2],
-    zoom: 1.07,
+    zoom: 1.12,
     cuts: [],
+    broll: {
+      kind: "video",
+      src: "videos/provedores/broll-portal.mp4",
+      at: 66,
+      durationInFrames: 84,
+    },
   },
   {
     id: "passo-3",
@@ -95,6 +116,11 @@ export const blocks: Block[] = [
     activeSteps: [3],
     zoom: 1.0,
     cuts: [],
+    accents: [
+      { t: "Tempo de permanência", at: 52 },
+      { t: "Frequência de visita", at: 78 },
+      { t: "Preferências de navegação", at: 104 },
+    ],
   },
   {
     id: "passo-4",
@@ -106,8 +132,12 @@ export const blocks: Block[] = [
       { t: "quem está conectado", bold: true, underline: true },
     ],
     activeSteps: [4],
-    zoom: 1.07,
+    zoom: 1.12,
     cuts: [],
+    accents: [
+      { t: "Campanhas segmentadas", at: 54 },
+      { t: "Para quem já está conectado", at: 82 },
+    ],
   },
   {
     id: "passo-5",
@@ -121,6 +151,7 @@ export const blocks: Block[] = [
     activeSteps: [5],
     zoom: 1.0,
     cuts: [],
+    broll: { kind: "relatorio", at: 45, durationInFrames: 85 },
   },
   {
     id: "fechamento",
@@ -132,7 +163,7 @@ export const blocks: Block[] = [
       { t: "você já opera", bold: true, underline: true },
     ],
     activeSteps: [1, 2, 3, 4, 5],
-    zoom: 1.07,
+    zoom: 1.12,
     cuts: [25],
   },
 ];
