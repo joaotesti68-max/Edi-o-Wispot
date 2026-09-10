@@ -54,7 +54,8 @@ export const ProAdvancedLogistica: React.FC = () => {
           timing={linearTiming({ durationInFrames: TRANSITION_FRAMES })}
         />
         <TransitionSeries.Sequence durationInFrames={OUTRO_FRAMES}>
-          <EndCard />
+          {/* matches how he closes the script, "fale conosco" */}
+          <EndCard cta="Fale conosco" />
         </TransitionSeries.Sequence>
       </TransitionSeries>
 

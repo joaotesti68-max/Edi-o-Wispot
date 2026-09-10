@@ -1,7 +1,7 @@
 import { AbsoluteFill, Img, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
 import { brand } from "./brand";
 
-export const EndCard: React.FC = () => {
+export const EndCard: React.FC<{ cta?: string }> = ({ cta = "Fale com a gente agora" }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
@@ -46,7 +46,7 @@ export const EndCard: React.FC = () => {
             transform: `translateY(${ctaShift}px)`,
           }}
         >
-          Fale com a gente agora
+          {cta}
         </div>
 
         <div
