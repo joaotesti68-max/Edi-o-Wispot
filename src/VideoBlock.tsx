@@ -122,12 +122,15 @@ export const VideoBlock: React.FC<{ block: Block }> = ({ block }) => {
       )}
 
       <AbsoluteFill>
-        <AbsoluteFill
-          style={{
-            background:
-              "linear-gradient(to bottom, rgba(0,0,0,0) 55%, rgba(10,14,18,0.72) 82%, rgba(6,9,12,0.88) 100%)",
-          }}
-        />
+        {/* only there to keep the headline legible — without one it is a dark band */}
+        {block.headline ? (
+          <AbsoluteFill
+            style={{
+              background:
+                "linear-gradient(to bottom, rgba(0,0,0,0) 55%, rgba(10,14,18,0.72) 82%, rgba(6,9,12,0.88) 100%)",
+            }}
+          />
+        ) : null}
 
         <Img
           src={staticFile(brand.logo.iconWhite)}
@@ -179,61 +182,68 @@ export const VideoBlock: React.FC<{ block: Block }> = ({ block }) => {
           </Sequence>
         ))}
 
-        <div
-          style={{
-            position: "absolute",
-            left: 56,
-            right: 56,
-            bottom: 120,
-            display: "flex",
-            flexDirection: "column",
-            gap: 20,
-          }}
-        >
+        {block.headline ? (
           <div
             style={{
+              position: "absolute",
+              left: 56,
+              right: 56,
+              bottom: 120,
               display: "flex",
-              alignItems: "center",
-              gap: 14,
-              opacity: interpolate(iconIn, [0, 1], [0, 1]),
-              transform: `scale(${interpolate(iconIn, [0, 1], [0.6, 1])})`,
+              flexDirection: "column",
+              gap: 20,
             }}
           >
             <div
               style={{
-                width: 58,
-                height: 58,
-                borderRadius: 16,
-                background: "rgba(54,150,205,0.32)",
-                border: `1.5px solid ${brand.colors.primaryLight}`,
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "center",
+                gap: 14,
+                opacity: interpolate(iconIn, [0, 1], [0, 1]),
+                transform: `scale(${interpolate(iconIn, [0, 1], [0.6, 1])})`,
               }}
             >
-              <Icon size={28} color={brand.colors.white} strokeWidth={2.2} />
+              <div
+                style={{
+                  width: 58,
+                  height: 58,
+                  borderRadius: 16,
+                  background: "rgba(54,150,205,0.32)",
+                  border: `1.5px solid ${brand.colors.primaryLight}`,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Icon size={28} color={brand.colors.white} strokeWidth={2.2} />
+              </div>
+              <div
+                style={{
+                  width: 40,
+                  height: 4,
+                  background: brand.colors.primaryLight,
+                  borderRadius: 2,
+                }}
+              />
             </div>
-            <div
-              style={{ width: 40, height: 4, background: brand.colors.primaryLight, borderRadius: 2 }}
-            />
-          </div>
 
-          <div
-            style={{
-              fontFamily: brand.fontFamily,
-              fontWeight: 800,
-              fontSize: 58,
-              lineHeight: 1.12,
-              color: brand.colors.white,
-              letterSpacing: -0.5,
-              textShadow: "0 4px 24px rgba(0,0,0,0.35)",
-              opacity: interpolate(headlineIn, [0, 1], [0, 1]),
-              transform: `translateY(${interpolate(headlineIn, [0, 1], [26, 0])}px)`,
-            }}
-          >
-            {block.headline}
+            <div
+              style={{
+                fontFamily: brand.fontFamily,
+                fontWeight: 800,
+                fontSize: 58,
+                lineHeight: 1.12,
+                color: brand.colors.white,
+                letterSpacing: -0.5,
+                textShadow: "0 4px 24px rgba(0,0,0,0.35)",
+                opacity: interpolate(headlineIn, [0, 1], [0, 1]),
+                transform: `translateY(${interpolate(headlineIn, [0, 1], [26, 0])}px)`,
+              }}
+            >
+              {block.headline}
+            </div>
           </div>
-        </div>
+        ) : null}
       </AbsoluteFill>
     </AbsoluteFill>
   );

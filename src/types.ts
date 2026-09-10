@@ -18,9 +18,9 @@ export type Clip = {
   /**
    * Ease into this one instead of cutting: it keeps the framing of the clip
    * before it, over a longer dissolve. For a splice landing on a word, where a
-   * straight cut plus a change of framing reads as a mistake. Kept short — the
-   * overlap runs both clips at once, so a long one eats the pause between the
-   * two lines as well as ghosting his hands.
+   * straight cut plus a change of framing reads as a mistake. The overlap is
+   * taken off the END of the previous clip, so that clip needs picture to
+   * spare after its last word or the dissolve lands on the word itself.
    */
   soft?: boolean;
 };
@@ -49,7 +49,8 @@ export type Block = {
   video?: string;
   clips?: Clip[];
   durationInFrames: number;
-  headline: string;
+  /** Omitted where the animation carries the block on its own. */
+  headline?: string;
   icon: IconKey;
   nameCard?: string;
   overlays?: Overlay[];
@@ -59,7 +60,7 @@ export type Range = { start: number; end: number };
 
 /** Overlap between fragments inside a block — enough to soften a jump cut. */
 export const CLIP_TRANSITION_FRAMES = 4;
-export const SOFT_CLIP_TRANSITION_FRAMES = 7;
+export const SOFT_CLIP_TRANSITION_FRAMES = 12;
 
 export const transitionBefore = (clip: Clip) =>
   clip.soft ? SOFT_CLIP_TRANSITION_FRAMES : CLIP_TRANSITION_FRAMES;

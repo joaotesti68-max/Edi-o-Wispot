@@ -97,7 +97,7 @@ export const blocks: Block[] = [
     id: "abertura",
     // "Na logística, não é preciso um caminhão parar para a operação inteira ficar comprometida."
     clips: [clip("01_abertura", 4.661)],
-    headline: "Não é só o caminhão que para a operação",
+    // no headline: the route animation carries the opening on its own
     icon: "truck",
     nameCard: "João Dourado",
     overlays: [{ kind: "route", at: 10, durationInFrames: 129 }],
@@ -165,7 +165,7 @@ export const blocks: Block[] = [
     // "Na logística, tecnologia parada também significa operação parada.
     //  Fale conosco e proteja a estrutura que mantém o seu negócio funcionando."
     // the splice lands right on "parada", and the source has no air after it
-    clips: [clip("13_f1", 3.4), clip("14_f2", 4.5, true)],
+    clips: [clip("13_f1", 4.205), clip("14_f2", 4.5, true)],
     headline: "Tecnologia parada também é operação parada",
     icon: "chat",
   }),

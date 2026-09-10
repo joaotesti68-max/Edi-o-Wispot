@@ -78,7 +78,7 @@ export const RouteOverlay: React.FC<{ durationInFrames: number }> = ({ durationI
       <AbsoluteFill
         style={{
           background:
-            "linear-gradient(180deg, rgba(4,10,16,0.14) 0%, rgba(4,10,16,0.42) 46%, rgba(4,10,16,0.78) 100%)",
+            "linear-gradient(180deg, rgba(4,10,16,0.12) 0%, rgba(4,10,16,0.34) 48%, rgba(4,10,16,0.5) 100%)",
         }}
       />
       <Mesh opacity={0.42} />
