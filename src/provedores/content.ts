@@ -99,8 +99,8 @@ export const blocks: Block[] = [
     broll: {
       kind: "video",
       src: "videos/provedores/broll-portal.mp4",
-      at: 62,
-      durationInFrames: 100,
+      at: 58,
+      durationInFrames: 96,
     },
   },
   {
@@ -115,7 +115,7 @@ export const blocks: Block[] = [
     activeSteps: [3],
     zoom: 1.0,
     cuts: [],
-    broll: { kind: "analytics", at: 52, durationInFrames: 110 },
+    broll: { kind: "analytics", at: 46, durationInFrames: 132 },
   },
   {
     id: "passo-4",

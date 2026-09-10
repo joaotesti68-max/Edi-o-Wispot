@@ -1,4 +1,12 @@
-import { AbsoluteFill, Easing, Img, interpolate, staticFile, useCurrentFrame } from "remotion";
+import {
+  AbsoluteFill,
+  Easing,
+  Img,
+  OffthreadVideo,
+  interpolate,
+  staticFile,
+  useCurrentFrame,
+} from "remotion";
 import { fontFamily } from "../loadFont";
 import { wispot } from "./theme";
 
@@ -127,11 +135,13 @@ const PRODUTOS = [
 export const Analytics: React.FC = () => {
   const frame = useCurrentFrame();
   const surge = entra(frame, 0);
-  const desliza = interpolate(frame, [10, 108], [0, -34], {
+  // O painel é largo e a tela é vertical: em vez de encolher tudo para caber,
+  // ele entra grande e desliza enquanto os gráficos se desenham.
+  const desliza = interpolate(frame, [12, 120], [0, -28], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
-  const desce = interpolate(frame, [10, 108], [-4, -17], {
+  const desce = interpolate(frame, [12, 120], [-2, -12], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
@@ -177,12 +187,13 @@ export const Analytics: React.FC = () => {
           </div>
 
           <div style={{ overflow: "hidden", height: 800 }}>
-            <Img
-              src={staticFile("mockups/analytics.png")}
+            <OffthreadVideo
+              src={staticFile("mockups/analytics.mp4")}
+              muted
               style={{
-                width: "200%",
-                // O preflight do Tailwind limita imagem a 100% da caixa; sem
-                // soltar isso a captura não passa de miniatura ilegível.
+                width: "175%",
+                // O preflight do Tailwind limita mídia à caixa; sem soltar isso
+                // o painel não passa de miniatura ilegível.
                 maxWidth: "none",
                 display: "block",
                 transform: `translate(${desliza}%, ${desce}%)`,
