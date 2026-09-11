@@ -39,29 +39,13 @@ export const voiceOvers = [
 export const blocks: Block[] = [
   {
     id: "dashboard",
+    // Take contínuo, sem corte interno: como não sabemos o texto da locução,
+    // qualquer corte dentro do take arriscaria descasar a fala do movimento
+    // do mouse. Dos 46s, cerca de 20s têm movimento (16s-40s do bruto) e o
+    // resto é tela parada — é tudo o que a gravação tem.
     video: "videos/ep1-dashboard.mp4",
-    durationInFrames: 528, // 17,60s
+    durationInFrames: 1380, // 46,00s
     caption: "Dashboard — visão geral de acessos",
-  },
-  {
-    id: "graficos",
-    video: "videos/ep1-graficos.mp4",
-    durationInFrames: 573, // 19,10s
-    caption: "Dispositivo, idioma, autenticação e browser",
-  },
-  {
-    id: "hotspots",
-    video: "videos/ep1-hotspots.mp4",
-    durationInFrames: 201, // 6,70s
-    caption: "Hotspots — status de cada ponto",
-  },
-  {
-    id: "visitantes",
-    video: "videos/ep1-visitantes.mp4",
-    durationInFrames: 78, // 2,60s
-    caption: "Base de visitantes",
-    // Cartões com nome, idade e foto de pessoas reais.
-    blur: [{ top: 9, left: 12, width: 77, height: 91 }],
   },
 ];
 
