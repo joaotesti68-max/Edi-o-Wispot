@@ -90,9 +90,6 @@ const HS_ROLAGEM_B: BlurRegion[] = [
 const VIS_CARTOES: BlurRegion = { top: 8, left: 11, width: 68, height: 100 };
 /** Painel Grupos, à direita, com entradas "[AD PROADV]". */
 const VIS_GRUPOS: BlurRegion = { top: -8, left: 78, width: 22, height: 116, solid: TARJA };
-/** Coluna de foto e nome da lista de usuários internos. */
-const USUARIOS: BlurRegion = { top: -8, left: 15, width: 28, height: 116, solid: TARJA };
-
 const comFaixa = (rs: BlurRegion[], from: number, to: number) =>
   rs.map((r) => ({ ...r, from, to }));
 
@@ -125,59 +122,34 @@ export const episodes: Episode[] = [
     series: "Pílulas Wispot",
     title: "Um passeio pelo painel da Wispot",
     openingFrames: OPENING,
-    // A locução tem 76,6s e a gravação 104,3s de tela útil. As cinco telas são
-    // encolhidas todas no mesmo fator (0,734), tirando só tempo congelado de
-    // dentro de cada uma. Assim a ordem e a proporção entre as telas ficam de
-    // pé, que é o que mantém a fala casada com a imagem.
+    // Take contínuo, em velocidade natural, sem nenhum corte.
     //
-    // O que sustenta a escolha do fator: a primeira troca de tela cai em 7,9s
-    // e a primeira pausa da locução está em 7,85s; a segunda troca em 29,3s e
-    // a segunda pausa em 28,0s.
+    // As tentativas anteriores encaixavam as 105,6s de gravação dentro dos
+    // 76,6s de locução, o que faz a imagem correr 1,4x mais rápido que a fala
+    // e chegar adiantada. Em velocidade natural isso não acontece: a gravação
+    // simplesmente segue por mais 29s depois que ela para de falar, e esse
+    // final (a tela de Usuários) fica de fora.
     //
-    // Tentar resolver com um corte só, tirando a tela de Hotspots inteira,
-    // adiantou a imagem em relação à fala do meio do vídeo em diante — a
-    // locução fala dessa tela.
+    // A janela começa em INICIO_NO_BRUTO, partindo de que as duas gravações
+    // foram iniciadas juntas: 1,4s é o mesmo ponto em que o cue de voz
+    // masculina foi cortado do áudio. Se a imagem ainda estiver adiantada em
+    // N segundos, é só reduzir esse número em N e recortar o clipe de novo —
+    // a sincronia inteira depende só dele.
     blocks: [
       {
-        id: "campanhas",
-        video: "videos/ep2-p1.mp4",
-        durationInFrames: 276, // 9,20s — bruto 2,8-12,0
-        caption: "Campanhas",
-        blur: comFaixa(HS_ROLAGEM_A, 225, 276),
-      },
-      {
-        id: "hotspots",
-        video: "videos/ep2-p2.mp4",
-        durationInFrames: 603, // 20,10s — bruto 19,8-39,9
-        caption: "Hotspots",
-        blur: [...comFaixa(HS_ROLAGEM_A, 0, 345), ...comFaixa(HS_ROLAGEM_B, 300, 603)],
-      },
-      {
-        id: "visitantes",
-        video: "videos/ep2-p3.mp4",
-        durationInFrames: 333, // 11,10s — bruto 44,1-55,2
-        caption: "Visitantes",
-        blur: comFaixa([VIS_CARTOES, VIS_GRUPOS], 0, 261),
-      },
-      {
-        id: "campanha",
-        video: "videos/ep2-p4.mp4",
-        durationInFrames: 111, // 3,70s — bruto 59,4-63,1
-        caption: "Campanha",
-      },
-      {
-        id: "campanha-publico",
-        video: "videos/ep2-p5.mp4",
-        durationInFrames: 474, // 15,80s — bruto 66,7-82,5
-        caption: "Campanha — mídias e público",
-        blur: comFaixa([USUARIOS], 435, 474),
-      },
-      {
-        id: "usuarios",
-        video: "videos/ep2-p6.mp4",
-        durationInFrames: 501, // 16,70s — bruto 88,8-105,5
-        caption: "Usuários e permissões",
-        blur: [...comFaixa([USUARIOS], 0, 72), ...comFaixa([USUARIOS], 327, 501)],
+        id: "painel",
+        video: "videos/ep2-continuo.mp4",
+        durationInFrames: 2298, // 76,60s — bruto 1,4-78,0
+        // Faixas em frames do clipe (bruto menos 1,4s), com folga nas bordas:
+        //   10,7-30,1  Hotspots, rolagem A
+        //   30,1-41,1  Hotspots, rolagem B
+        //   41,1-52,3  Visitantes
+        //   52,3-78,0  Campanha (limpo)
+        blur: [
+          ...comFaixa(HS_ROLAGEM_A, 264, 876),
+          ...comFaixa(HS_ROLAGEM_B, 846, 1206),
+          ...comFaixa([VIS_CARTOES, VIS_GRUPOS], 1176, 1542),
+        ],
       },
     ],
     voiceOvers: [{ src: "audio/ep2-vo-1.m4a", startFrame: OPENING, durationInFrames: 2298 }],
