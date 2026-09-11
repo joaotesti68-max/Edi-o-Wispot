@@ -117,8 +117,12 @@ export const ScreenBlock: React.FC<{ block: Block }> = ({ block }) => {
                 left: `${r.left}%`,
                 width: `${r.width}%`,
                 height: `${r.height}%`,
-                backdropFilter: "blur(14px)",
-                WebkitBackdropFilter: "blur(14px)",
+                ...(r.solid
+                  ? { background: r.solid }
+                  : {
+                      backdropFilter: "blur(26px)",
+                      WebkitBackdropFilter: "blur(26px)",
+                    }),
               }}
             />
           ))}

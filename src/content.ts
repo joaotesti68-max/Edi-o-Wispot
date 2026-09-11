@@ -9,6 +9,14 @@ export type BlurRegion = {
   /** Frames relativos ao início do bloco. Sem from/to, vale o bloco inteiro. */
   from?: number;
   to?: number;
+  /**
+   * Tarja opaca em vez de desfoque. O backdrop-filter do Chromium perde força
+   * perto da borda do contêiner recortado, e junto ao rodapé do card o texto
+   * continuava legível mesmo com raio de 26px — transbordar a região não
+   * resolve, porque o overflow:hidden recorta o elemento junto com o efeito.
+   * Para texto de marca, "quase ilegível" não serve, então tarja.
+   */
+  solid?: string;
 };
 
 export type Block = {
@@ -44,27 +52,49 @@ export const source = { width: 1092, height: 614, cropTop: 140, usableHeight: 43
 
 const OPENING = 90; // 3s
 
-// As regiões abaixo têm faixa de tempo porque o conteúdo muda de tela dentro
-// do mesmo bloco. Todas são folgadas nas bordas de propósito: uma sobra de
-// desfoque sobre a tela vizinha é inofensiva, uma falta expõe dado pessoal.
-// Foi exatamente isso que falhou na versão anterior — o bloco seguinte começava
-// antes da troca de tela e a lista de visitantes aparecia sem censura.
-//
-// Referências no bruto do episódio 2 (o segundo bloco começa em 39,6s):
-//   39,6-41,1  Hotspots      -> nomes dos pontos trazem "PRO ADV"
-//   41,1-52,3  Visitantes    -> cartões com nome/idade/foto + painel Grupos
-//                               com "[AD PROADV]"
-//   52,3-81,7  Campanha      -> limpo
-//   81,7-90,7  Usuários      -> coluna de nome e foto
-//   90,7-100,2 Novo usuário  -> formulário vazio, limpo
-//   100,2-fim  Usuários      -> coluna de nome e foto
-const BLUR_EP2: BlurRegion[] = [
-  { from: 0, to: 60, top: 6, left: 11, width: 86, height: 94 },
-  { from: 30, to: 396, top: 8, left: 11, width: 68, height: 92 },
-  { from: 30, to: 396, top: 0, left: 78, width: 22, height: 100 },
-  { from: 1248, to: 1548, top: 3, left: 14, width: 31, height: 97 },
-  { from: 1803, to: 1977, top: 3, left: 14, width: 31, height: 97 },
+// Regiões de censura, em % da área visível, com faixa de frames dentro do
+// bloco. Todas folgadas nas bordas de propósito: sobrar desfoque sobre a tela
+// vizinha é inofensivo, faltar expõe dado. Foi a falta disso que deixou a
+// lista de visitantes aparecer sem censura numa emenda.
+
+// Barras de título dos cards de hotspot, onde está escrito "PRO ADV", mais a
+// linha de "perfil de rede / tema de login", que também traz "PROADV". As
+// posições foram medidas detectando o azul da barra de título no quadro: a
+// tela de Hotspots tem dois estados de rolagem e os títulos ficam em alturas
+// bem diferentes em cada um. Borrar só essas faixas mantém legível o que
+// interessa (consumo, status, identificação).
+// Regiões que encostam numa borda do card transbordam de propósito: o
+// backdrop-filter do Chromium deixa uma faixa sem efeito junto ao limite do
+// overflow:hidden, e com o transbordo esse artefato cai fora da área visível.
+// Foi assim que "PROADV_VISITANTES (REU..." continuava legível no rodapé.
+/** Cinza-azulado neutro, para a tarja não competir com a interface. */
+const TARJA = "#8fa3ae";
+
+// Barras de título medidas no quadro (detecção do azul da barra): estado A em
+// 47,6-55,4% e 95,2-100%; estado B em 10,8-18,6% e 58,4-66,2%. As faixas de
+// "tema de login", que também trazem PROADV, ficam ~29 pontos abaixo de cada
+// título. Como tarja não perde força na borda, dá para cobrir só as linhas de
+// texto em vez de faixas largas.
+const HS_ROLAGEM_A: BlurRegion[] = [
+  { top: 46, left: 11, width: 86, height: 11, solid: TARJA },
+  { top: 76, left: 11, width: 86, height: 13, solid: TARJA },
+  { top: 94, left: 11, width: 86, height: 8, solid: TARJA },
 ];
+const HS_ROLAGEM_B: BlurRegion[] = [
+  { top: 9, left: 11, width: 86, height: 11, solid: TARJA },
+  { top: 39, left: 11, width: 86, height: 13, solid: TARJA },
+  { top: 56, left: 11, width: 86, height: 12, solid: TARJA },
+  { top: 86, left: 11, width: 86, height: 14, solid: TARJA },
+];
+/** Cartões de visitante: nome, idade e foto de 974 pessoas reais. */
+const VIS_CARTOES: BlurRegion = { top: 8, left: 11, width: 68, height: 100 };
+/** Painel Grupos, à direita, com entradas "[AD PROADV]". */
+const VIS_GRUPOS: BlurRegion = { top: -8, left: 78, width: 22, height: 116, solid: TARJA };
+/** Coluna de foto e nome da lista de usuários internos. */
+const USUARIOS: BlurRegion = { top: -8, left: 15, width: 28, height: 116, solid: TARJA };
+
+const comFaixa = (rs: BlurRegion[], from: number, to: number) =>
+  rs.map((r) => ({ ...r, from, to }));
 
 export const episodes: Episode[] = [
   {
@@ -93,26 +123,61 @@ export const episodes: Episode[] = [
     id: "WispotEp2",
     number: "02",
     series: "Pílulas Wispot",
-    title: "Um passeio pelo painel: campanhas, visitantes e usuários",
+    title: "Um passeio pelo painel da Wispot",
     openingFrames: OPENING,
-    // Uma emenda só. A locução (76,6s) é mais curta que a gravação (105,6s), e
-    // os 29s que sobram saem todos da tela de Hotspots (10,7-39,6s): é onde o
-    // nome de cada ponto traz "PRO ADV", então censurá-la exigiria borrar a
-    // tela inteira. Tirando esse trecho, o corte e a censura se resolvem
-    // juntos, e as duas pontas da gravação ficam preservadas.
+    // A locução tem 76,6s e a gravação 104,3s de tela útil. As cinco telas são
+    // encolhidas todas no mesmo fator (0,734), tirando só tempo congelado de
+    // dentro de cada uma. Assim a ordem e a proporção entre as telas ficam de
+    // pé, que é o que mantém a fala casada com a imagem.
+    //
+    // O que sustenta a escolha do fator: a primeira troca de tela cai em 7,9s
+    // e a primeira pausa da locução está em 7,85s; a segunda troca em 29,3s e
+    // a segunda pausa em 28,0s.
+    //
+    // Tentar resolver com um corte só, tirando a tela de Hotspots inteira,
+    // adiantou a imagem em relação à fala do meio do vídeo em diante — a
+    // locução fala dessa tela.
     blocks: [
       {
         id: "campanhas",
-        video: "videos/ep2-campanhas.mp4",
-        durationInFrames: 321, // 10,70s — bruto 0,0-10,7
+        video: "videos/ep2-p1.mp4",
+        durationInFrames: 276, // 9,20s — bruto 2,8-12,0
         caption: "Campanhas",
+        blur: comFaixa(HS_ROLAGEM_A, 225, 276),
       },
       {
-        id: "painel",
-        video: "videos/ep2-painel.mp4",
-        durationInFrames: 1977, // 65,90s — bruto 39,6-105,5
-        caption: "Visitantes, campanha e usuários",
-        blur: BLUR_EP2,
+        id: "hotspots",
+        video: "videos/ep2-p2.mp4",
+        durationInFrames: 603, // 20,10s — bruto 19,8-39,9
+        caption: "Hotspots",
+        blur: [...comFaixa(HS_ROLAGEM_A, 0, 345), ...comFaixa(HS_ROLAGEM_B, 300, 603)],
+      },
+      {
+        id: "visitantes",
+        video: "videos/ep2-p3.mp4",
+        durationInFrames: 333, // 11,10s — bruto 44,1-55,2
+        caption: "Visitantes",
+        blur: comFaixa([VIS_CARTOES, VIS_GRUPOS], 0, 261),
+      },
+      {
+        id: "campanha",
+        video: "videos/ep2-p4.mp4",
+        durationInFrames: 111, // 3,70s — bruto 59,4-63,1
+        caption: "Campanha",
+      },
+      {
+        id: "campanha-publico",
+        video: "videos/ep2-p5.mp4",
+        durationInFrames: 474, // 15,80s — bruto 66,7-82,5
+        caption: "Campanha — mídias e público",
+        blur: comFaixa([USUARIOS], 435, 474),
+      },
+      {
+        id: "usuarios",
+        video: "videos/ep2-p6.mp4",
+        durationInFrames: 501, // 16,70s — bruto 88,8-105,5
+        caption: "Usuários e permissões",
+        blur: [...comFaixa([USUARIOS], 0, 72), ...comFaixa([USUARIOS], 327, 501)],
       },
     ],
     voiceOvers: [{ src: "audio/ep2-vo-1.m4a", startFrame: OPENING, durationInFrames: 2298 }],
