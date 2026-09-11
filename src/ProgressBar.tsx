@@ -1,5 +1,5 @@
 import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
-import { blockRanges, outroRange } from "./content";
+import { outroRange, segmentRanges } from "./content";
 import { brand } from "./brand";
 
 export const ProgressBar: React.FC = () => {
@@ -19,7 +19,7 @@ export const ProgressBar: React.FC = () => {
       <div
         style={{
           position: "absolute",
-          top: 28,
+          top: 40,
           left: 56,
           right: 56,
           display: "flex",
@@ -27,7 +27,7 @@ export const ProgressBar: React.FC = () => {
           opacity,
         }}
       >
-        {blockRanges.map((range, i) => {
+        {segmentRanges.map((range, i) => {
           const fill = interpolate(frame, [range.start, range.end], [0, 1], {
             extrapolateLeft: "clamp",
             extrapolateRight: "clamp",
@@ -36,10 +36,11 @@ export const ProgressBar: React.FC = () => {
             <div
               key={i}
               style={{
-                flex: 1,
-                height: 5,
+                // Weighted so a long answer reads as a longer chapter than a card.
+                flex: range.end - range.start,
+                height: 6,
                 borderRadius: 3,
-                background: "rgba(255,255,255,0.32)",
+                background: "rgba(255,255,255,0.34)",
                 overflow: "hidden",
               }}
             >

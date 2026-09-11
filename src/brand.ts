@@ -1,18 +1,23 @@
+/**
+ * Manual de Identidade Wispot 2026 — cores institucionais e tipografia.
+ * Azul e cinza são as cores da marca; o degradê é o oficial do manual.
+ */
 export const brand = {
   colors: {
-    primary: "#3696cd",
-    primaryLight: "#20a3d6",
-    gray: "#676868",
+    blue: "#25a8e0",
+    blueDeep: "#0b91c1",
     white: "#ffffff",
-    ink: "#111417",
+    gray: "#514d4b",
   },
-  gradient: "linear-gradient(135deg, #1c3f57 0%, #3696cd 55%, #20a3d6 100%)",
+  // Degradê institucional #25a8e0 → #0b91c1.
+  gradient: "linear-gradient(155deg, #25a8e0 0%, #1c9ed6 45%, #0b91c1 100%)",
+  /** O manual pede prioridade para 100% e 80% da cor principal. */
+  alpha: (hex: string, value: number) => {
+    const n = parseInt(hex.slice(1), 16);
+    return `rgba(${(n >> 16) & 255}, ${(n >> 8) & 255}, ${n & 255}, ${value})`;
+  },
+  // Adineue Pro é a outra família institucional, mas é licenciada; o manual
+  // lista Montserrat com o mesmo peso de uso, e é a que temos empacotada.
   fontFamily: "Montserrat",
-  logo: {
-    white: "brand/logo-white.png",
-    color: "brand/logo-color.png",
-    iconWhite: "brand/icon-white.png",
-    iconColor: "brand/icon-color.png",
-  },
-  site: "proadvanced.com.br",
+  site: "wispot.com.br",
 };
