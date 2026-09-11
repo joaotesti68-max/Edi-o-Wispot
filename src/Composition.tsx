@@ -1,5 +1,5 @@
 import React from "react";
-import { AbsoluteFill, Audio, Composition, Sequence, staticFile } from "remotion";
+import { AbsoluteFill, Audio, Composition, Sequence, interpolate, staticFile } from "remotion";
 import { OpeningCard } from "./OpeningCard";
 import { ScreenBlock } from "./ScreenBlock";
 import { ProgressBar } from "./ProgressBar";
@@ -12,6 +12,25 @@ import {
   totalDurationInFrames,
   voiceOvers,
 } from "./content";
+
+/** O ffmpeg embutido no Remotion vem sem o filtro afade, então o corte seco
+ *  das pontas é suavizado aqui, no volume por frame. */
+const VoiceOver: React.FC<{ src: string; durationInFrames: number }> = ({
+  src,
+  durationInFrames,
+}) => (
+  <Audio
+    src={staticFile(src)}
+    volume={(f) =>
+      interpolate(
+        f,
+        [0, 3, durationInFrames - 4, durationInFrames - 1],
+        [0, 1, 1, 0],
+        { extrapolateLeft: "clamp", extrapolateRight: "clamp" },
+      )
+    }
+  />
+);
 
 export const WispotEpisode: React.FC = () => {
   return (
@@ -32,7 +51,7 @@ export const WispotEpisode: React.FC = () => {
 
       {voiceOvers.map((vo) => (
         <Sequence key={vo.src} from={vo.startFrame} durationInFrames={vo.durationInFrames}>
-          <Audio src={staticFile(vo.src)} />
+          <VoiceOver src={vo.src} durationInFrames={vo.durationInFrames} />
         </Sequence>
       ))}
 

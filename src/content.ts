@@ -19,16 +19,19 @@ export const episode = {
 
 // As duas locuções da Mari, na ordem. Cada uma entra em cima de um conjunto
 // de blocos cuja soma de duração cobre a faixa.
+// Locuções já recortadas: saíram os dois cues de voz masculina (0,40s no fim
+// da primeira, 0,30s no começo da segunda) e o silêncio de borda, e as duas
+// passaram por loudnorm em -14 LUFS, que é o alvo do YouTube.
 export const voiceOvers = [
-  { src: "audio/ep1-vo-1.m4a", startFrame: OPENING_FRAMES, durationInFrames: 627 },
-  { src: "audio/ep1-vo-2.m4a", startFrame: OPENING_FRAMES + 627, durationInFrames: 951 },
+  { src: "audio/ep1-vo-1.m4a", startFrame: OPENING_FRAMES, durationInFrames: 528 },
+  { src: "audio/ep1-vo-2.m4a", startFrame: OPENING_FRAMES + 528, durationInFrames: 852 },
 ];
 
 export const blocks: Block[] = [
   {
     id: "dashboard",
     video: "videos/ep1-dashboard.mp4",
-    durationInFrames: 627, // 20,90s
+    durationInFrames: 528, // 17,60s
     caption: "Dashboard — visão geral de acessos",
   },
   {
@@ -40,13 +43,13 @@ export const blocks: Block[] = [
   {
     id: "hotspots",
     video: "videos/ep1-hotspots.mp4",
-    durationInFrames: 285, // 9,50s
+    durationInFrames: 201, // 6,70s
     caption: "Hotspots — status de cada ponto",
   },
   {
     id: "visitantes",
     video: "videos/ep1-visitantes.mp4",
-    durationInFrames: 96, // 3,20s
+    durationInFrames: 78, // 2,60s
     caption: "Base de visitantes",
     // Cartões com nome, idade e foto de pessoas reais.
     blur: [{ top: 30, left: 11, width: 68, height: 70 }],
