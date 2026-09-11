@@ -8,7 +8,7 @@ import {
   useVideoConfig,
 } from "remotion";
 import { brand } from "./brand";
-import type { Block } from "./content";
+import { source, type Block } from "./content";
 import { Wordmark } from "./Wordmark";
 
 export const ScreenBlock: React.FC<{ block: Block }> = ({ block }) => {
@@ -76,7 +76,7 @@ export const ScreenBlock: React.FC<{ block: Block }> = ({ block }) => {
           style={{
             position: "relative",
             width: 1584,
-            aspectRatio: "1092 / 614",
+            aspectRatio: `${source.width} / ${source.usableHeight}`,
             borderRadius: 20,
             overflow: "hidden",
             background: "#ffffff",
@@ -88,7 +88,17 @@ export const ScreenBlock: React.FC<{ block: Block }> = ({ block }) => {
         >
           <OffthreadVideo
             src={staticFile(block.video)}
-            style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              // Empurra a faixa preta do rodapé para fora do card, que é mais
+              // baixo que o vídeo na mesma proporção.
+              height: `${(source.height / source.usableHeight) * 100}%`,
+              objectFit: "fill",
+              display: "block",
+            }}
           />
 
           {block.blur?.map((r, i) => (

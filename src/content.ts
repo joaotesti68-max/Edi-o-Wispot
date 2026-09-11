@@ -11,6 +11,12 @@ export type Block = {
 
 export const OPENING_FRAMES = 90; // 3s
 
+// O bruto tem 1092x614, mas as 39 linhas de baixo são uma faixa preta: a área
+// capturada pelo OBS era mais alta que a janela do navegador. O recorte é
+// feito no card (ver ScreenBlock), porque o ffmpeg que vem com o Remotion é
+// compilado sem o filtro `crop`.
+export const source = { width: 1092, height: 614, usableHeight: 575 };
+
 export const episode = {
   number: "01",
   series: "Pílulas Wispot",
@@ -52,7 +58,7 @@ export const blocks: Block[] = [
     durationInFrames: 78, // 2,60s
     caption: "Base de visitantes",
     // Cartões com nome, idade e foto de pessoas reais.
-    blur: [{ top: 30, left: 11, width: 68, height: 70 }],
+    blur: [{ top: 31, left: 12, width: 77, height: 69 }],
   },
 ];
 
