@@ -51,7 +51,7 @@ export const ScreenBlock: React.FC<{ block: Block }> = ({ block }) => {
           justifyContent: "space-between",
         }}
       >
-        <Wordmark height={38} variant="white" />
+        <Wordmark height={54} variant="white" />
         {block.caption ? (
           <div
             style={{
@@ -75,7 +75,7 @@ export const ScreenBlock: React.FC<{ block: Block }> = ({ block }) => {
         <div
           style={{
             position: "relative",
-            width: 1584,
+            width: 1680,
             aspectRatio: `${source.width} / ${source.usableHeight}`,
             borderRadius: 20,
             overflow: "hidden",
@@ -90,11 +90,14 @@ export const ScreenBlock: React.FC<{ block: Block }> = ({ block }) => {
             src={staticFile(block.video)}
             style={{
               position: "absolute",
-              top: 0,
+              // `top` em porcentagem resolve contra a altura do contêiner;
+              // `margin-top` resolveria contra a largura.
+              top: `-${(source.cropTop / source.usableHeight) * 100}%`,
               left: 0,
               width: "100%",
-              // Empurra a faixa preta do rodapé para fora do card, que é mais
-              // baixo que o vídeo na mesma proporção.
+              // O vídeo é maior que o card e sobe, deixando de fora a cromo do
+              // navegador e a barra da Pro Advanced em cima e a faixa preta
+              // embaixo.
               height: `${(source.height / source.usableHeight) * 100}%`,
               objectFit: "fill",
               display: "block",

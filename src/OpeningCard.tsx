@@ -35,7 +35,7 @@ export const OpeningCard: React.FC = () => {
             transform: `translateY(${interpolate(logoIn, [0, 1], [18, 0])}px)`,
           }}
         >
-          <Wordmark height={78} variant="white" />
+          <Wordmark height={150} variant="white" />
         </div>
 
         <div

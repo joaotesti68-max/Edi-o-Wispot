@@ -11,11 +11,14 @@ export type Block = {
 
 export const OPENING_FRAMES = 90; // 3s
 
-// O bruto tem 1092x614, mas as 39 linhas de baixo são uma faixa preta: a área
-// capturada pelo OBS era mais alta que a janela do navegador. O recorte é
-// feito no card (ver ScreenBlock), porque o ffmpeg que vem com o Remotion é
-// compilado sem o filtro `crop`.
-export const source = { width: 1092, height: 614, usableHeight: 575 };
+// O bruto tem 1092x614 e é recortado em cima e embaixo:
+//  - y 0-95   cromo do navegador (abas, URL, favoritos)
+//  - y 96-139 barra do painel, que traz a marca da Pro Advanced
+//  - y 575-613 faixa preta: a área capturada pelo OBS era mais alta que a
+//    janela do navegador
+// Sobra y 140-574. O recorte é feito no card (ver ScreenBlock), porque o
+// ffmpeg que vem com o Remotion é compilado sem o filtro `crop`.
+export const source = { width: 1092, height: 614, cropTop: 140, usableHeight: 435 };
 
 export const episode = {
   number: "01",
@@ -58,7 +61,7 @@ export const blocks: Block[] = [
     durationInFrames: 78, // 2,60s
     caption: "Base de visitantes",
     // Cartões com nome, idade e foto de pessoas reais.
-    blur: [{ top: 31, left: 12, width: 77, height: 69 }],
+    blur: [{ top: 9, left: 12, width: 77, height: 91 }],
   },
 ];
 
