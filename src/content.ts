@@ -1,6 +1,15 @@
 export const FPS = 30;
 
-export type BlurRegion = { top: number; left: number; width: number; height: number };
+export type BlurRegion = {
+  /** Tudo em % da área visível do screencast. */
+  top: number;
+  left: number;
+  width: number;
+  height: number;
+  /** Frames relativos ao início do bloco. Sem from/to, vale o bloco inteiro. */
+  from?: number;
+  to?: number;
+};
 
 export type Block = {
   id: string;
@@ -35,10 +44,27 @@ export const source = { width: 1092, height: 614, cropTop: 140, usableHeight: 43
 
 const OPENING = 90; // 3s
 
-/** Cobre os cartões de visitante (nome, idade, foto) em qualquer rolagem. */
-const BLUR_VISITANTES: BlurRegion = { top: 12, left: 12, width: 67, height: 88 };
-/** Cobre a coluna de avatar e nome da lista de usuários. */
-const BLUR_USUARIOS: BlurRegion = { top: 35, left: 13, width: 34, height: 65 };
+// As regiões abaixo têm faixa de tempo porque o conteúdo muda de tela dentro
+// do mesmo bloco. Todas são folgadas nas bordas de propósito: uma sobra de
+// desfoque sobre a tela vizinha é inofensiva, uma falta expõe dado pessoal.
+// Foi exatamente isso que falhou na versão anterior — o bloco seguinte começava
+// antes da troca de tela e a lista de visitantes aparecia sem censura.
+//
+// Referências no bruto do episódio 2 (o segundo bloco começa em 39,6s):
+//   39,6-41,1  Hotspots      -> nomes dos pontos trazem "PRO ADV"
+//   41,1-52,3  Visitantes    -> cartões com nome/idade/foto + painel Grupos
+//                               com "[AD PROADV]"
+//   52,3-81,7  Campanha      -> limpo
+//   81,7-90,7  Usuários      -> coluna de nome e foto
+//   90,7-100,2 Novo usuário  -> formulário vazio, limpo
+//   100,2-fim  Usuários      -> coluna de nome e foto
+const BLUR_EP2: BlurRegion[] = [
+  { from: 0, to: 60, top: 6, left: 11, width: 86, height: 94 },
+  { from: 30, to: 396, top: 8, left: 11, width: 68, height: 92 },
+  { from: 30, to: 396, top: 0, left: 78, width: 22, height: 100 },
+  { from: 1248, to: 1548, top: 3, left: 14, width: 31, height: 97 },
+  { from: 1803, to: 1977, top: 3, left: 14, width: 31, height: 97 },
+];
 
 export const episodes: Episode[] = [
   {
@@ -67,57 +93,26 @@ export const episodes: Episode[] = [
     id: "WispotEp2",
     number: "02",
     series: "Pílulas Wispot",
-    title: "Um passeio pelo painel: campanhas, hotspots e visitantes",
+    title: "Um passeio pelo painel: campanhas, visitantes e usuários",
     openingFrames: OPENING,
-    // A locução (76,6s) é mais curta que a gravação (105,6s), então aqui há
-    // corte interno. Todos os pontos de emenda caem dentro de trechos em que
-    // a tela está congelada, nos dois lados do corte, então a emenda não
-    // aparece.
+    // Uma emenda só. A locução (76,6s) é mais curta que a gravação (105,6s), e
+    // os 29s que sobram saem todos da tela de Hotspots (10,7-39,6s): é onde o
+    // nome de cada ponto traz "PRO ADV", então censurá-la exigiria borrar a
+    // tela inteira. Tirando esse trecho, o corte e a censura se resolvem
+    // juntos, e as duas pontas da gravação ficam preservadas.
     blocks: [
       {
         id: "campanhas",
         video: "videos/ep2-campanhas.mp4",
-        durationInFrames: 270, // 9,00s — bruto 5,0-14,0
+        durationInFrames: 321, // 10,70s — bruto 0,0-10,7
         caption: "Campanhas",
       },
       {
-        id: "hotspots",
-        video: "videos/ep2-hotspots.mp4",
-        durationInFrames: 177, // 5,90s — bruto 28,0-33,9
-        caption: "Hotspots",
-      },
-      {
-        id: "visitantes",
-        video: "videos/ep2-visitantes.mp4",
-        durationInFrames: 270, // 9,00s — bruto 40,5-49,5
-        caption: "Visitantes",
-        blur: [BLUR_VISITANTES],
-      },
-      {
-        id: "campanha",
-        video: "videos/ep2-campanha.mp4",
-        durationInFrames: 1056, // 35,20s — bruto 49,5-84,7
-        caption: "Campanha — mídias, hotspots e público",
-      },
-      {
-        id: "usuarios-a",
-        video: "videos/ep2-usuarios-a.mp4",
-        durationInFrames: 132, // 4,40s — bruto 87,0-91,4
-        caption: "Usuários e permissões",
-        blur: [BLUR_USUARIOS],
-      },
-      {
-        id: "usuarios-form",
-        video: "videos/ep2-usuarios-form.mp4",
-        durationInFrames: 285, // 9,50s — bruto 91,5-101,0
-        caption: "Usuários e permissões",
-      },
-      {
-        id: "usuarios-b",
-        video: "videos/ep2-usuarios-b.mp4",
-        durationInFrames: 108, // 3,60s — bruto 101,0-104,6
-        caption: "Usuários e permissões",
-        blur: [BLUR_USUARIOS],
+        id: "painel",
+        video: "videos/ep2-painel.mp4",
+        durationInFrames: 1977, // 65,90s — bruto 39,6-105,5
+        caption: "Visitantes, campanha e usuários",
+        blur: BLUR_EP2,
       },
     ],
     voiceOvers: [{ src: "audio/ep2-vo-1.m4a", startFrame: OPENING, durationInFrames: 2298 }],

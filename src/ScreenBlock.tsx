@@ -23,6 +23,10 @@ export const ScreenBlock: React.FC<{ block: Block }> = ({ block }) => {
 
   const captionIn = spring({ frame: frame - 10, fps, config: { damping: 18, mass: 0.8 } });
 
+  const visibleBlur = (block.blur ?? []).filter(
+    (r) => frame >= (r.from ?? 0) && frame < (r.to ?? Infinity),
+  );
+
   return (
     <AbsoluteFill style={{ background: brand.groundGradient }}>
       {/* brilho sutil atrás do card */}
@@ -104,7 +108,7 @@ export const ScreenBlock: React.FC<{ block: Block }> = ({ block }) => {
             }}
           />
 
-          {block.blur?.map((r, i) => (
+          {visibleBlur.map((r, i) => (
             <div
               key={i}
               style={{
