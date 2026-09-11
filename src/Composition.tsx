@@ -1,41 +1,40 @@
 import React from "react";
-import { AbsoluteFill, Audio, Composition, staticFile } from "remotion";
-import { TransitionSeries, linearTiming } from "@remotion/transitions";
-import { fade } from "@remotion/transitions/fade";
-import { VideoBlock } from "./VideoBlock";
-import { EndCard } from "./EndCard";
+import { AbsoluteFill, Audio, Composition, Sequence, staticFile } from "remotion";
+import { OpeningCard } from "./OpeningCard";
+import { ScreenBlock } from "./ScreenBlock";
 import { ProgressBar } from "./ProgressBar";
 import { fontFamily } from "./loadFont";
-import { FPS, OUTRO_FRAMES, TRANSITION_FRAMES, blocks, totalDurationInFrames } from "./content";
+import {
+  FPS,
+  OPENING_FRAMES,
+  blockRanges,
+  blocks,
+  totalDurationInFrames,
+  voiceOvers,
+} from "./content";
 
-export const ProAdvancedVideo: React.FC = () => {
+export const WispotEpisode: React.FC = () => {
   return (
-    <AbsoluteFill style={{ fontFamily }}>
-      <Audio src={staticFile("audio/theme.mp3")} volume={0.42} />
+    <AbsoluteFill style={{ fontFamily, background: "#062533" }}>
+      <Sequence durationInFrames={OPENING_FRAMES}>
+        <OpeningCard />
+      </Sequence>
 
-      <TransitionSeries>
-        {blocks.map((block, i) => (
-          <React.Fragment key={block.id}>
-            {i === 0 ? null : (
-              <TransitionSeries.Transition
-                presentation={fade()}
-                timing={linearTiming({ durationInFrames: TRANSITION_FRAMES })}
-              />
-            )}
-            <TransitionSeries.Sequence durationInFrames={block.durationInFrames}>
-              <VideoBlock block={block} />
-            </TransitionSeries.Sequence>
-          </React.Fragment>
-        ))}
+      {blocks.map((block, i) => (
+        <Sequence
+          key={block.id}
+          from={blockRanges[i].start}
+          durationInFrames={block.durationInFrames}
+        >
+          <ScreenBlock block={block} />
+        </Sequence>
+      ))}
 
-        <TransitionSeries.Transition
-          presentation={fade()}
-          timing={linearTiming({ durationInFrames: TRANSITION_FRAMES })}
-        />
-        <TransitionSeries.Sequence durationInFrames={OUTRO_FRAMES}>
-          <EndCard />
-        </TransitionSeries.Sequence>
-      </TransitionSeries>
+      {voiceOvers.map((vo) => (
+        <Sequence key={vo.src} from={vo.startFrame} durationInFrames={vo.durationInFrames}>
+          <Audio src={staticFile(vo.src)} />
+        </Sequence>
+      ))}
 
       <ProgressBar />
     </AbsoluteFill>
@@ -45,12 +44,12 @@ export const ProAdvancedVideo: React.FC = () => {
 export const MyComposition = () => {
   return (
     <Composition
-      id="ProAdvanced"
-      component={ProAdvancedVideo}
+      id="WispotEp1"
+      component={WispotEpisode}
       durationInFrames={totalDurationInFrames}
       fps={FPS}
-      width={1080}
-      height={1920}
+      width={1920}
+      height={1080}
     />
   );
 };

@@ -1,27 +1,22 @@
 import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
-import { blockRanges, outroRange } from "./content";
+import { OPENING_FRAMES, blockRanges } from "./content";
 import { brand } from "./brand";
 
 export const ProgressBar: React.FC = () => {
   const frame = useCurrentFrame();
-  const fadeIn = interpolate(frame, [0, 12], [0, 1], {
+  const opacity = interpolate(frame, [OPENING_FRAMES, OPENING_FRAMES + 12], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
-  const fadeOut = interpolate(frame, [outroRange.start - 10, outroRange.start + 4], [1, 0], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-  });
-  const opacity = Math.min(fadeIn, fadeOut);
 
   return (
     <AbsoluteFill style={{ pointerEvents: "none" }}>
       <div
         style={{
           position: "absolute",
-          top: 28,
-          left: 56,
-          right: 56,
+          bottom: 52,
+          left: 76,
+          right: 76,
           display: "flex",
           gap: 8,
           opacity,
@@ -36,10 +31,10 @@ export const ProgressBar: React.FC = () => {
             <div
               key={i}
               style={{
-                flex: 1,
+                flex: range.end - range.start,
                 height: 5,
                 borderRadius: 3,
-                background: "rgba(255,255,255,0.32)",
+                background: "rgba(255,255,255,0.26)",
                 overflow: "hidden",
               }}
             >
@@ -54,6 +49,21 @@ export const ProgressBar: React.FC = () => {
             </div>
           );
         })}
+      </div>
+      <div
+        style={{
+          position: "absolute",
+          bottom: 22,
+          right: 76,
+          fontFamily: brand.fontFamily,
+          fontWeight: 700,
+          fontSize: 17,
+          letterSpacing: 1.6,
+          color: "rgba(255,255,255,0.5)",
+          opacity,
+        }}
+      >
+        {brand.site}
       </div>
     </AbsoluteFill>
   );
