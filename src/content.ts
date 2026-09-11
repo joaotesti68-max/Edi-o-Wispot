@@ -88,6 +88,8 @@ const HS_ROLAGEM_B: BlurRegion[] = [
 ];
 /** Cartões de visitante: nome, idade e foto de 974 pessoas reais. */
 const VIS_CARTOES: BlurRegion = { top: 8, left: 11, width: 68, height: 100 };
+/** Coluna de foto e nome da lista de usuários internos. */
+const USUARIOS: BlurRegion = { top: -8, left: 15, width: 28, height: 116, solid: TARJA };
 /** Painel Grupos, à direita, com entradas "[AD PROADV]". */
 const VIS_GRUPOS: BlurRegion = { top: -8, left: 78, width: 22, height: 116, solid: TARJA };
 const comFaixa = (rs: BlurRegion[], from: number, to: number) =>
@@ -122,34 +124,59 @@ export const episodes: Episode[] = [
     series: "Pílulas Wispot",
     title: "Um passeio pelo painel da Wispot",
     openingFrames: OPENING,
-    // Take contínuo, em velocidade natural, sem nenhum corte.
+    // A sincronia vem de quatro pontos informados por quem ouviu a locução:
+    // ela passa a falar de Hotspots aos 10s, Visitantes aos 21s, Campanha aos
+    // 33s e Gerenciar aos 62s. Cruzando com o instante de cada tela na
+    // gravação, o ritmo fica:
     //
-    // As tentativas anteriores encaixavam as 105,6s de gravação dentro dos
-    // 76,6s de locução, o que faz a imagem correr 1,4x mais rápido que a fala
-    // e chegar adiantada. Em velocidade natural isso não acontece: a gravação
-    // simplesmente segue por mais 29s depois que ela para de falar, e esse
-    // final (a tela de Usuários) fica de fora.
+    //   Campanhas   fala  0-10s  <- bruto   0,0-10,7   1,07x
+    //   Hotspots    fala 10-21s  <- bruto  10,7-41,1   2,76x
+    //   Visitantes  fala 21-33s  <- bruto  41,1-52,3   0,93x
+    //   Campanha    fala 33-62s  <- bruto  52,3-81,7   1,01x
+    //   Gerenciar   fala 62-77s  <- bruto  81,7-105,5  1,63x
     //
-    // A janela começa em INICIO_NO_BRUTO, partindo de que as duas gravações
-    // foram iniciadas juntas: 1,4s é o mesmo ponto em que o cue de voz
-    // masculina foi cortado do áudio. Se a imagem ainda estiver adiantada em
-    // N segundos, é só reduzir esse número em N e recortar o clipe de novo —
-    // a sincronia inteira depende só dele.
+    // Três das cinco seções são quase 1:1 e só duas precisam encolher muito. É
+    // por isso que as duas tentativas anteriores falharam em sentidos opostos:
+    // comprimir tudo por igual acelerou as três que já estavam certas (imagem
+    // adiantada), e velocidade natural deixou as duas que precisavam encolher
+    // arrastando (imagem atrasada).
+    //
+    // Cada seção entra no seu próprio ritmo, tirando tempo congelado de dentro
+    // dela. As emendas caem em troca de tela, então leem como corte natural.
     blocks: [
       {
-        id: "painel",
-        video: "videos/ep2-continuo.mp4",
-        durationInFrames: 2298, // 76,60s — bruto 1,4-78,0
-        // Faixas em frames do clipe (bruto menos 1,4s), com folga nas bordas:
-        //   10,7-30,1  Hotspots, rolagem A
-        //   30,1-41,1  Hotspots, rolagem B
-        //   41,1-52,3  Visitantes
-        //   52,3-78,0  Campanha (limpo)
-        blur: [
-          ...comFaixa(HS_ROLAGEM_A, 264, 876),
-          ...comFaixa(HS_ROLAGEM_B, 846, 1206),
-          ...comFaixa([VIS_CARTOES, VIS_GRUPOS], 1176, 1542),
-        ],
+        id: "campanhas",
+        video: "videos/ep2-s1.mp4",
+        durationInFrames: 300, // 10,00s — bruto 0,7-10,7
+      },
+      {
+        id: "hotspots",
+        video: "videos/ep2-s2.mp4",
+        durationInFrames: 330, // 11,00s — bruto 29,3-40,3
+        blur: [...comFaixa(HS_ROLAGEM_A, 0, 39), ...comFaixa(HS_ROLAGEM_B, 42, 330)],
+      },
+      {
+        id: "visitantes",
+        video: "videos/ep2-s3.mp4",
+        durationInFrames: 360, // 12,00s — bruto 40,3-52,3
+        blur: [...comFaixa(HS_ROLAGEM_B, 0, 36), ...comFaixa([VIS_CARTOES, VIS_GRUPOS], 0, 360)],
+      },
+      {
+        id: "campanha",
+        video: "videos/ep2-s4.mp4",
+        durationInFrames: 879, // 29,30s — bruto 52,3-81,6
+      },
+      {
+        id: "gerenciar-lista",
+        video: "videos/ep2-s5.mp4",
+        durationInFrames: 114, // 3,80s — bruto 90,2-94,0
+        blur: comFaixa([USUARIOS], 0, 30),
+      },
+      {
+        id: "gerenciar-form",
+        video: "videos/ep2-s6.mp4",
+        durationInFrames: 315, // 10,50s — bruto 95,0-105,5
+        blur: comFaixa([USUARIOS], 141, 315),
       },
     ],
     voiceOvers: [{ src: "audio/ep2-vo-1.m4a", startFrame: OPENING, durationInFrames: 2298 }],
