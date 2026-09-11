@@ -1,10 +1,13 @@
 import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
-import { OPENING_FRAMES, blockRanges } from "./content";
+import type { Layout } from "./content";
 import { brand } from "./brand";
 
-export const ProgressBar: React.FC = () => {
+export const ProgressBar: React.FC<{
+  ranges: Layout["ranges"];
+  openingFrames: number;
+}> = ({ ranges, openingFrames }) => {
   const frame = useCurrentFrame();
-  const opacity = interpolate(frame, [OPENING_FRAMES, OPENING_FRAMES + 12], [0, 1], {
+  const opacity = interpolate(frame, [openingFrames, openingFrames + 12], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
@@ -22,7 +25,7 @@ export const ProgressBar: React.FC = () => {
           opacity,
         }}
       >
-        {blockRanges.map((range, i) => {
+        {ranges.map((range, i) => {
           const fill = interpolate(frame, [range.start, range.end], [0, 1], {
             extrapolateLeft: "clamp",
             extrapolateRight: "clamp",

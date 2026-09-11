@@ -1,9 +1,9 @@
 import { AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
 import { brand } from "./brand";
-import { episode } from "./content";
+import type { Episode } from "./content";
 import { Wordmark } from "./Wordmark";
 
-export const OpeningCard: React.FC = () => {
+export const OpeningCard: React.FC<{ episode: Episode }> = ({ episode }) => {
   const frame = useCurrentFrame();
   const { fps, durationInFrames } = useVideoConfig();
 
