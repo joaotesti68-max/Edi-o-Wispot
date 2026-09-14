@@ -15,6 +15,23 @@ export const ScreenBlock: React.FC<{ block: Block }> = ({ block }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
+  // Os trechos da Mari ocupam o quadro inteiro e emendam um no outro em corte
+  // seco: a entrada suave do cartão, aplicada a cada bloco, viraria um piscar
+  // a cada troca de trecho.
+  if (block.layout === "full") {
+    return (
+      <AbsoluteFill style={{ background: "#000" }}>
+        <OffthreadVideo
+          src={staticFile(block.video)}
+          style={{ width: "100%", height: "100%", objectFit: "cover" }}
+        />
+        <div style={{ position: "absolute", top: 46, left: 76 }}>
+          <Wordmark height={54} variant="white" />
+        </div>
+      </AbsoluteFill>
+    );
+  }
+
   // Entrada suave só nos primeiros frames; o resto fica estável para não
   // competir com a leitura da tela.
   const cardIn = spring({ frame, fps, config: { damping: 22, mass: 0.9 } });

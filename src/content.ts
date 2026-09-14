@@ -24,6 +24,12 @@ export type Block = {
   video: string;
   durationInFrames: number;
   caption?: string;
+  /**
+   * "card" (padrão) põe o screencast num cartão sobre o fundo de marca, que é
+   * o que evita esticar 1092px para 1920px. "full" ocupa o quadro inteiro e é
+   * para os trechos da Mari, que já são 16:9 e pedem enquadramento cheio.
+   */
+  layout?: "card" | "full";
   /** Regiões a desfocar, em % da área visível do screencast (dados pessoais). */
   blur?: BlurRegion[];
 };
@@ -103,6 +109,18 @@ export const episodes: Episode[] = [
     title: "O que o painel da Wispot te mostra sobre o seu Wi-Fi",
     openingFrames: OPENING,
     blocks: [
+      // Introdução: a Mari falando para a câmera, em cinco trechos na ordem
+      // indicada por quem gravou. Cada um traz o próprio áudio, já em -14 LUFS
+      // como a locução do tutorial, para a voz não mudar de nível na virada.
+      { id: "mari-1", video: "videos/ep1-mari-1.mp4", durationInFrames: 375, layout: "full" },
+      // Descarta os 12,2s iniciais: ela erra e recomeça. A pausa de 0,40s em
+      // 12,20s é a única do clipe, então é o único ponto de emenda possível.
+      { id: "mari-2", video: "videos/ep1-mari-2.mp4", durationInFrames: 264, layout: "full" },
+      { id: "mari-3", video: "videos/ep1-mari-3.mp4", durationInFrames: 493, layout: "full" },
+      // Termina em 16,45s do original: a fala dela acaba em 16,15s e logo
+      // depois, em 17,25s, vaza uma voz masculina a 119Hz.
+      { id: "mari-4", video: "videos/ep1-mari-4.mp4", durationInFrames: 471, layout: "full" },
+      { id: "mari-5", video: "videos/ep1-mari-5.mp4", durationInFrames: 135, layout: "full" },
       {
         id: "dashboard",
         // Take contínuo, sem corte interno: a locução e a gravação têm a mesma
@@ -113,9 +131,10 @@ export const episodes: Episode[] = [
         caption: "Dashboard — visão geral de acessos",
       },
     ],
+    // A locução do tutorial entra só depois da introdução.
     voiceOvers: [
-      { src: "audio/ep1-vo-1.m4a", startFrame: OPENING, durationInFrames: 528 },
-      { src: "audio/ep1-vo-2.m4a", startFrame: OPENING + 528, durationInFrames: 852 },
+      { src: "audio/ep1-vo-1.m4a", startFrame: OPENING + 1738, durationInFrames: 528 },
+      { src: "audio/ep1-vo-2.m4a", startFrame: OPENING + 1738 + 528, durationInFrames: 852 },
     ],
   },
   {
