@@ -44,7 +44,16 @@ export type Episode = {
   openingFrames: number;
   blocks: Block[];
   voiceOvers: VoiceOver[];
+  music?: { src: string; volume: number };
 };
+
+/**
+ * Trilha de fundo. O arquivo está normalizado em -14 LUFS, o mesmo nível das
+ * vozes, então o ganho abaixo é diretamente a distância em relação à fala:
+ * 0,08 põe a música 22 dB abaixo, por volta de -36 LUFS. Para mexer, 0,13 dá
+ * -18 dB (mais presente) e 0,05 dá -26 dB (quase imperceptível).
+ */
+const TRILHA = { src: "audio/trilha.m4a", volume: 0.08 };
 
 // As gravações dos dois episódios têm 1092x614 e são recortadas em cima e
 // embaixo:
@@ -143,6 +152,7 @@ export const episodes: Episode[] = [
       { src: "audio/ep1-vo-1.m4a", startFrame: OPENING + 1601, durationInFrames: 528 },
       { src: "audio/ep1-vo-2.m4a", startFrame: OPENING + 1601 + 528, durationInFrames: 852 },
     ],
+    music: TRILHA,
   },
   {
     id: "WispotEp2",
@@ -206,6 +216,7 @@ export const episodes: Episode[] = [
       },
     ],
     voiceOvers: [{ src: "audio/ep2-vo-1.m4a", startFrame: OPENING, durationInFrames: 2298 }],
+    music: TRILHA,
   },
 ];
 

@@ -26,8 +26,13 @@ const VoiceOver: React.FC<{ src: string; durationInFrames: number }> = ({
   />
 );
 
+/** Entrada e saída da trilha, em frames. */
+const TRILHA_ENTRADA = 45;
+const TRILHA_SAIDA = 60;
+
 export const WispotEpisode: React.FC<{ episode: Episode }> = ({ episode }) => {
-  const { ranges } = layout(episode);
+  const { ranges, totalDurationInFrames } = layout(episode);
+  const { music } = episode;
 
   return (
     <AbsoluteFill style={{ fontFamily, background: "#062533" }}>
@@ -63,6 +68,25 @@ export const WispotEpisode: React.FC<{ episode: Episode }> = ({ episode }) => {
           <VoiceOver src={vo.src} durationInFrames={vo.durationInFrames} />
         </Sequence>
       ))}
+
+      {music ? (
+        <Audio
+          src={staticFile(music.src)}
+          volume={(f) =>
+            interpolate(
+              f,
+              [
+                0,
+                TRILHA_ENTRADA,
+                totalDurationInFrames - TRILHA_SAIDA,
+                totalDurationInFrames,
+              ],
+              [0, music.volume, music.volume, 0],
+              { extrapolateLeft: "clamp", extrapolateRight: "clamp" },
+            )
+          }
+        />
+      ) : null}
 
       <ProgressBar ranges={ranges} openingFrames={episode.openingFrames} />
     </AbsoluteFill>
