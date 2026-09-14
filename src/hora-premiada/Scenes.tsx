@@ -1,6 +1,6 @@
 import React from "react";
 import { brand } from "./brand";
-import { blocks } from "./content";
+import { clipById } from "./content";
 import { Scene } from "./Scene";
 import { Chip, Cue, Eyebrow, Headline, IconBadge, OverlayStack } from "./Ui";
 import { AutoLoop, CouponCard, FeatureTitle, TimeWindow } from "./Graphics";
@@ -24,15 +24,13 @@ const badge = (Icon: React.FC<{ size?: number; color?: string; strokeWidth?: num
   </IconBadge>
 );
 
-const byId = Object.fromEntries(blocks.map((b) => [b.id, b]));
-
 /**
  * ABERTURA — "E se, das três às quatro da tarde, quem estivesse conectado na
  * sua loja recebesse um cupom?" One continuous take, so the three ideas of the
  * question build up on screen instead of replacing each other.
  */
 export const Abertura: React.FC = () => (
-  <Scene block={byId["abertura"]} nameCard="Vanessa">
+  <Scene clip={clipById["abertura"]} nameCard="Vanessa Furiato">
     <Cue at={1.2} dur={10.2}>
       <OverlayStack>
         <Chip icon={badge(ClockIcon)}>das 15h às 16h</Chip>
@@ -52,7 +50,7 @@ export const Abertura: React.FC = () => (
  * does: you set the window, it delivers to whoever is connected inside it.
  */
 export const Desenvolvimento1: React.FC = () => (
-  <Scene block={byId["desenvolvimento-1"]}>
+  <Scene clip={clipById["desenvolvimento-1"]}>
     <Cue at={0.4} dur={7.4}>
       <OverlayStack>
         <FeatureTitle />
@@ -82,7 +80,7 @@ export const Desenvolvimento1: React.FC = () => (
  * the seams between those beats.
  */
 export const Desenvolvimento2: React.FC = () => (
-  <Scene block={byId["desenvolvimento-2"]}>
+  <Scene clip={clipById["desenvolvimento-2"]}>
     <Cue at={0.2} dur={5.4}>
       <OverlayStack>
         <Eyebrow>Serve para</Eyebrow>
@@ -121,21 +119,29 @@ export const Desenvolvimento2: React.FC = () => (
   </Scene>
 );
 
-/** FECHAMENTO — feature name once more, then the offer. */
-export const Fechamento: React.FC = () => (
-  <Scene block={byId["fechamento"]}>
-    <Cue at={0.5} dur={8.7}>
+/** FECHAMENTO, first half — the lockup once more, then the promise. */
+export const FechamentoA: React.FC = () => (
+  <Scene clip={clipById["fechamento-a"]}>
+    <Cue at={0.4} dur={3.9}>
       <OverlayStack>
         <FeatureTitle />
       </OverlayStack>
     </Cue>
 
-    <Cue at={9.6} dur={5.7}>
+    <Cue at={4.8} dur={4.3}>
       <OverlayStack>
         <Headline size={58}>Gire seu horário mais parado em vendas.</Headline>
-        <Chip icon={badge(ChatIcon)} delay={sec(2.5)}>
-          Fale com a gente
-        </Chip>
+      </OverlayStack>
+    </Cue>
+  </Scene>
+);
+
+/** FECHAMENTO, second half — picks up after the fumbled line is cut out. */
+export const FechamentoB: React.FC = () => (
+  <Scene clip={clipById["fechamento-b"]}>
+    <Cue at={0.2} dur={3.4}>
+      <OverlayStack>
+        <Chip icon={badge(ChatIcon)}>Fale com a gente</Chip>
       </OverlayStack>
     </Cue>
   </Scene>

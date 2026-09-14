@@ -4,18 +4,31 @@ import { TransitionSeries, linearTiming } from "@remotion/transitions";
 import { fade } from "@remotion/transitions/fade";
 import { EndCard } from "./EndCard";
 import { ProgressBar } from "./ProgressBar";
-import { Abertura, Desenvolvimento1, Desenvolvimento2, Fechamento } from "./Scenes";
+import {
+  Abertura,
+  Desenvolvimento1,
+  Desenvolvimento2,
+  FechamentoA,
+  FechamentoB,
+} from "./Scenes";
 import { fontFamily } from "./fonts";
 import {
   FPS,
   OUTRO_FRAMES,
   TRANSITION_FRAMES,
-  blocks,
+  type ClipId,
+  clips,
   outroRange,
   totalDurationInFrames,
 } from "./content";
 
-const scenes = [Abertura, Desenvolvimento1, Desenvolvimento2, Fechamento];
+const scenes: Record<ClipId, React.FC> = {
+  abertura: Abertura,
+  "desenvolvimento-1": Desenvolvimento1,
+  "desenvolvimento-2": Desenvolvimento2,
+  "fechamento-a": FechamentoA,
+  "fechamento-b": FechamentoB,
+};
 
 const transition = (
   <TransitionSeries.Transition
@@ -25,30 +38,40 @@ const transition = (
 );
 
 /**
- * Bed stays well under the voice, then opens up once the speaker is out and the
+ * Bed sits well under the voice, then opens up once the speaker is out and the
  * end card is on screen.
  */
 const musicVolume = (frame: number) =>
   interpolate(
     frame,
-    [0, 20, outroRange.start - 20, outroRange.start + 10, totalDurationInFrames - 16, totalDurationInFrames],
-    [0, 0.12, 0.12, 0.3, 0.3, 0],
+    [
+      0,
+      24,
+      outroRange.start - 20,
+      outroRange.start + 10,
+      totalDurationInFrames - 18,
+      totalDurationInFrames,
+    ],
+    [0, 0.06, 0.06, 0.2, 0.2, 0],
     { extrapolateLeft: "clamp", extrapolateRight: "clamp" },
   );
 
 export const HoraPremiadaVideo: React.FC = () => (
   <AbsoluteFill style={{ fontFamily }}>
-    <Audio src={staticFile("audio/theme.mp3")} volume={musicVolume} loop />
+    <Audio src={staticFile("audio/motivation-corporate.mp3")} volume={musicVolume} />
 
     <TransitionSeries>
-      {scenes.map((SceneComponent, i) => (
-        <React.Fragment key={blocks[i].id}>
-          {i === 0 ? null : transition}
-          <TransitionSeries.Sequence durationInFrames={blocks[i].durationInFrames}>
-            <SceneComponent />
-          </TransitionSeries.Sequence>
-        </React.Fragment>
-      ))}
+      {clips.map((clip, i) => {
+        const SceneComponent = scenes[clip.id];
+        return (
+          <React.Fragment key={clip.id}>
+            {i === 0 || clip.hardCut ? null : transition}
+            <TransitionSeries.Sequence durationInFrames={clip.durationInFrames}>
+              <SceneComponent />
+            </TransitionSeries.Sequence>
+          </React.Fragment>
+        );
+      })}
 
       {transition}
       <TransitionSeries.Sequence durationInFrames={OUTRO_FRAMES}>

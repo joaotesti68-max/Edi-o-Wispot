@@ -7,16 +7,17 @@ import {
   useCurrentFrame,
   useVideoConfig,
 } from "remotion";
-import { brand } from "./brand";
+import { brand, horaPremiada } from "./brand";
 
 export const EndCard: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  const logoIn = spring({ frame, fps, config: { damping: 16, mass: 0.7 } });
-  const nameIn = spring({ frame: frame - 14, fps, config: { damping: 17 } });
-  const ctaIn = spring({ frame: frame - 26, fps, config: { damping: 17 } });
-  const siteIn = spring({ frame: frame - 38, fps, config: { damping: 17 } });
+  const featureIn = spring({ frame, fps, config: { damping: 16, mass: 0.7 } });
+  const ruleIn = spring({ frame: frame - 12, fps, config: { damping: 18 } });
+  const wispotIn = spring({ frame: frame - 20, fps, config: { damping: 17 } });
+  const ctaIn = spring({ frame: frame - 32, fps, config: { damping: 17 } });
+  const siteIn = spring({ frame: frame - 44, fps, config: { damping: 17 } });
 
   return (
     <AbsoluteFill
@@ -29,29 +30,34 @@ export const EndCard: React.FC = () => {
         }}
       />
 
-      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 52 }}>
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 46 }}>
         <Img
-          src={staticFile(brand.logo.white)}
+          src={staticFile(horaPremiada.logo.white)}
           style={{
-            width: 640,
-            opacity: logoIn,
-            transform: `scale(${interpolate(logoIn, [0, 1], [0.84, 1])})`,
+            width: 660,
+            opacity: featureIn,
+            transform: `scale(${interpolate(featureIn, [0, 1], [0.86, 1])})`,
           }}
         />
 
         <div
           style={{
-            fontFamily: brand.fontFamily,
-            fontWeight: 800,
-            fontSize: 58,
-            letterSpacing: -1,
-            color: brand.colors.white,
-            opacity: nameIn,
-            transform: `translateY(${interpolate(nameIn, [0, 1], [18, 0])}px)`,
+            width: 220,
+            height: 3,
+            borderRadius: 2,
+            background: "rgba(255,255,255,0.45)",
+            transform: `scaleX(${ruleIn})`,
           }}
-        >
-          Hora Premiada
-        </div>
+        />
+
+        <Img
+          src={staticFile(brand.logo.white)}
+          style={{
+            width: 400,
+            opacity: wispotIn,
+            transform: `translateY(${interpolate(wispotIn, [0, 1], [16, 0])}px)`,
+          }}
+        />
 
         <div
           style={{
@@ -69,7 +75,6 @@ export const EndCard: React.FC = () => {
 
         <div
           style={{
-            marginTop: 8,
             padding: "18px 46px",
             borderRadius: 999,
             background: brand.colors.white,

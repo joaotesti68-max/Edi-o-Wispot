@@ -1,6 +1,6 @@
 import React from "react";
-import { interpolate, useCurrentFrame } from "remotion";
-import { brand } from "./brand";
+import { Img, interpolate, staticFile, useCurrentFrame } from "remotion";
+import { brand, horaPremiada } from "./brand";
 import { useReveal, IconBadge } from "./Ui";
 import { ClockIcon, RepeatIcon, TicketIcon } from "./Icons";
 
@@ -180,8 +180,11 @@ export const CouponCard: React.FC<{ delay?: number }> = ({ delay = 0 }) => {
   );
 };
 
-/** Feature-name reveal with a gradient rule that wipes out from the left. */
-export const FeatureTitle: React.FC<{ delay?: number }> = ({ delay = 0 }) => {
+/** The Hora Premiada lockup, with a rule that wipes out from under it. */
+export const FeatureTitle: React.FC<{ delay?: number; width?: number }> = ({
+  delay = 0,
+  width = 540,
+}) => {
   const { opacity, translateY, progress } = useReveal(delay, 34);
   const rule = interpolate(progress, [0.35, 1], [0, 1], { extrapolateLeft: "clamp" });
 
@@ -195,30 +198,22 @@ export const FeatureTitle: React.FC<{ delay?: number }> = ({ delay = 0 }) => {
           letterSpacing: 3.4,
           textTransform: "uppercase",
           color: brand.blueAlpha(0.95),
-          marginBottom: 10,
+          marginBottom: 18,
         }}
       >
         Ferramenta Wispot
       </div>
-      <div
-        style={{
-          fontFamily: brand.fontFamily,
-          fontWeight: 800,
-          fontSize: 84,
-          lineHeight: 1,
-          letterSpacing: -2,
-          color: brand.colors.white,
-          textShadow: "0 6px 34px rgba(0,0,0,0.5)",
-        }}
-      >
-        Hora Premiada
-      </div>
+      <Img
+        src={staticFile(horaPremiada.logo.color)}
+        style={{ width, display: "block", filter: "drop-shadow(0 6px 26px rgba(0,0,0,0.5))" }}
+      />
       <div
         style={{
           height: 8,
           borderRadius: 4,
-          marginTop: 18,
-          background: brand.gradient,
+          marginTop: 26,
+          width,
+          background: horaPremiada.gradient,
           transform: `scaleX(${rule})`,
           transformOrigin: "left center",
         }}

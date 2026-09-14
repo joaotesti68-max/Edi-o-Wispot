@@ -22,3 +22,14 @@ export const brand = {
   },
   site: "wispot.com.br",
 } as const;
+
+/** The product has its own lockup, in its own green. */
+export const horaPremiada = {
+  green: "#8cc63e",
+  greenAlpha: (opacity: number) => `rgba(140, 198, 62, ${opacity})`,
+  gradient: "linear-gradient(140deg, #a3d65c 0%, #8cc63e 55%, #6faf2c 100%)",
+  logo: {
+    color: "brand/hora-premiada/logo-color.png",
+    white: "brand/hora-premiada/logo-white.png",
+  },
+} as const;

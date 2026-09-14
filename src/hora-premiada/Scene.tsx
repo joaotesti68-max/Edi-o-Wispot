@@ -10,7 +10,7 @@ import {
   useVideoConfig,
 } from "remotion";
 import { brand } from "./brand";
-import type { Block } from "./content";
+import type { Clip } from "./content";
 
 /** Persistent Wispot mark, kept clear of the speaker per the manual's clearance rule. */
 const Watermark: React.FC = () => {
@@ -67,14 +67,15 @@ const NameCard: React.FC<{ name: string }> = ({ name }) => {
 };
 
 export const Scene: React.FC<{
-  block: Block;
+  clip: Clip;
   nameCard?: string;
   children?: React.ReactNode;
-}> = ({ block, nameCard, children }) => {
+}> = ({ clip, nameCard, children }) => {
   const frame = useCurrentFrame();
   const { durationInFrames } = useVideoConfig();
 
-  const kenBurns = interpolate(frame, [0, durationInFrames], [1, 1.05], {
+  const base = clip.zoom ?? 1;
+  const kenBurns = interpolate(frame, [0, durationInFrames], [base, base * 1.05], {
     extrapolateRight: "clamp",
   });
 
@@ -82,7 +83,7 @@ export const Scene: React.FC<{
     <AbsoluteFill style={{ background: "#000" }}>
       <AbsoluteFill style={{ transform: `scale(${kenBurns})` }}>
         <OffthreadVideo
-          src={staticFile(block.video)}
+          src={staticFile(clip.video)}
           style={{ width: "100%", height: "100%", objectFit: "cover" }}
         />
       </AbsoluteFill>
