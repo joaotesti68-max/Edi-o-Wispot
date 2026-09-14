@@ -124,10 +124,10 @@ export const episodes: Episode[] = [
       // depois, em 17,25s, vaza uma voz masculina a 119Hz. A sobra de 0,30s
       // que o crossfade consome para de 16,75s, ainda antes do vazamento.
       { id: "mari-3", video: "videos/ep1-mari-3.mp4", durationInFrames: 471, layout: "full" },
+      // Último da introdução: como o bloco seguinte não é "full", não há
+      // crossfade de saída e a sobra de 0,30s do arquivo fica sem uso. A
+      // passagem para o tutorial é corte seco.
       { id: "mari-4", video: "videos/ep1-mari-4.mp4", durationInFrames: 491, layout: "full" },
-      // Sem sobra: o clipe acaba junto com a fala, então a passagem para o
-      // tutorial é corte seco.
-      { id: "mari-5", video: "videos/ep1-mari-5.mp4", durationInFrames: 134, layout: "full" },
       {
         id: "dashboard",
         // Take contínuo, sem corte interno: a locução e a gravação têm a mesma
@@ -140,8 +140,8 @@ export const episodes: Episode[] = [
     ],
     // A locução do tutorial entra só depois da introdução.
     voiceOvers: [
-      { src: "audio/ep1-vo-1.m4a", startFrame: OPENING + 1735, durationInFrames: 528 },
-      { src: "audio/ep1-vo-2.m4a", startFrame: OPENING + 1735 + 528, durationInFrames: 852 },
+      { src: "audio/ep1-vo-1.m4a", startFrame: OPENING + 1601, durationInFrames: 528 },
+      { src: "audio/ep1-vo-2.m4a", startFrame: OPENING + 1601 + 528, durationInFrames: 852 },
     ],
   },
   {
