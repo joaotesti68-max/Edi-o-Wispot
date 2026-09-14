@@ -39,6 +39,8 @@ export type VoiceOver = { src: string; startFrame: number; durationInFrames: num
 export type Episode = {
   id: string;
   number: string;
+  /** Rótulo da parte, quando o episódio é publicado dividido. */
+  part?: string;
   series: string;
   title: string;
   openingFrames: number;
@@ -111,20 +113,24 @@ const comFaixa = (rs: BlurRegion[], from: number, to: number) =>
   rs.map((r) => ({ ...r, from, to }));
 
 export const episodes: Episode[] = [
+  // O episódio 1 é publicado em duas partes: a Mari apresentando o assunto e,
+  // separado, o tutorial de tela. Cada parte tem a própria abertura e trilha.
   {
-    id: "WispotEp1",
+    id: "WispotEp1A",
     number: "01",
+    part: "Parte 1",
     series: "Pílulas Wispot",
     title: "O que o painel da Wispot te mostra sobre o seu Wi-Fi",
     openingFrames: OPENING,
+    // Introdução: a Mari falando para a câmera, em quatro trechos na ordem
+    // indicada por quem gravou. Cada um traz o próprio áudio, já em -14 LUFS
+    // como a locução do tutorial, para a voz não mudar de nível entre as
+    // partes.
+    //
+    // Os arquivos têm 0,30s de sobra depois do fim nominal: é o material que
+    // o trecho seguinte consome ao entrar por cima em crossfade. Sem essa
+    // sobra o clipe congelaria no último quadro durante a transição.
     blocks: [
-      // Introdução: a Mari falando para a câmera, em cinco trechos na ordem
-      // indicada por quem gravou. Cada um traz o próprio áudio, já em -14 LUFS
-      // como a locução do tutorial, para a voz não mudar de nível na virada.
-      //
-      // Os arquivos têm 0,30s de sobra depois do fim nominal: é o material que
-      // o trecho seguinte consome ao entrar por cima em crossfade. Sem essa
-      // sobra o clipe congelaria no último quadro durante a transição.
       { id: "mari-1", video: "videos/ep1-mari-1.mp4", durationInFrames: 375, layout: "full" },
       // Descarta os 12,2s iniciais: ela erra e recomeça. A pausa de 0,40s em
       // 12,20s é a única do clipe, então é o único ponto de emenda possível.
@@ -133,10 +139,21 @@ export const episodes: Episode[] = [
       // depois, em 17,25s, vaza uma voz masculina a 119Hz. A sobra de 0,30s
       // que o crossfade consome para de 16,75s, ainda antes do vazamento.
       { id: "mari-3", video: "videos/ep1-mari-3.mp4", durationInFrames: 471, layout: "full" },
-      // Último da introdução: como o bloco seguinte não é "full", não há
-      // crossfade de saída e a sobra de 0,30s do arquivo fica sem uso. A
-      // passagem para o tutorial é corte seco.
+      // Último da parte: sem bloco "full" depois, não há crossfade de saída.
       { id: "mari-4", video: "videos/ep1-mari-4.mp4", durationInFrames: 491, layout: "full" },
+    ],
+    // Os trechos trazem o próprio áudio, então não há locução separada.
+    voiceOvers: [],
+    music: TRILHA,
+  },
+  {
+    id: "WispotEp1B",
+    number: "01",
+    part: "Parte 2",
+    series: "Pílulas Wispot",
+    title: "Dashboard: a visão geral dos seus acessos",
+    openingFrames: OPENING,
+    blocks: [
       {
         id: "dashboard",
         // Take contínuo, sem corte interno: a locução e a gravação têm a mesma
@@ -147,10 +164,9 @@ export const episodes: Episode[] = [
         caption: "Dashboard — visão geral de acessos",
       },
     ],
-    // A locução do tutorial entra só depois da introdução.
     voiceOvers: [
-      { src: "audio/ep1-vo-1.m4a", startFrame: OPENING + 1601, durationInFrames: 528 },
-      { src: "audio/ep1-vo-2.m4a", startFrame: OPENING + 1601 + 528, durationInFrames: 852 },
+      { src: "audio/ep1-vo-1.m4a", startFrame: OPENING, durationInFrames: 528 },
+      { src: "audio/ep1-vo-2.m4a", startFrame: OPENING + 528, durationInFrames: 852 },
     ],
     music: TRILHA,
   },

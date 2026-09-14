@@ -67,6 +67,7 @@ export const OpeningCard: React.FC<{ episode: Episode }> = ({ episode }) => {
             }}
           >
             {episode.series} · #{episode.number}
+            {episode.part ? ` · ${episode.part}` : ""}
           </div>
           <div
             style={{
