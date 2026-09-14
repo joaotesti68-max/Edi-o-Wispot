@@ -1,6 +1,6 @@
 import React from "react";
 import { brand } from "./brand";
-import { clipById } from "./content";
+import { SPEED, clipById } from "./content";
 import { Scene } from "./Scene";
 import { Chip, Cue, Eyebrow, Headline, IconBadge, OverlayStack } from "./Ui";
 import { AutoLoop, CouponCard, FeatureTitle, TimeWindow } from "./Graphics";
@@ -16,7 +16,7 @@ import {
 } from "./Icons";
 
 const FPS = 30;
-const sec = (s: number) => Math.round(s * FPS);
+const sec = (s: number) => Math.round((s / SPEED) * FPS);
 
 const badge = (Icon: React.FC<{ size?: number; color?: string; strokeWidth?: number }>) => (
   <IconBadge>
@@ -63,7 +63,7 @@ export const Desenvolvimento1: React.FC = () => (
       </OverlayStack>
     </Cue>
 
-    <Cue at={13.3} dur={5.9}>
+    <Cue at={13.3} dur={5.8}>
       <OverlayStack>
         <TimeWindow />
         <Chip icon={badge(WifiIcon)} delay={sec(2.8)}>
@@ -128,7 +128,7 @@ export const FechamentoA: React.FC = () => (
       </OverlayStack>
     </Cue>
 
-    <Cue at={4.6} dur={3.53}>
+    <Cue at={4.6} dur={3.45}>
       <OverlayStack>
         <Headline size={58}>Gire seu horário mais parado em vendas.</Headline>
       </OverlayStack>
@@ -139,7 +139,7 @@ export const FechamentoA: React.FC = () => (
 /** FECHAMENTO, second half — picks up after the fumbled line is cut out. */
 export const FechamentoB: React.FC = () => (
   <Scene clip={clipById["fechamento-b"]}>
-    <Cue at={0.2} dur={3.4}>
+    <Cue at={0.2} dur={5.6}>
       <OverlayStack>
         <Chip icon={badge(ChatIcon)}>Fale com a gente</Chip>
       </OverlayStack>

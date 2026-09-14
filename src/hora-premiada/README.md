@@ -37,20 +37,27 @@ The four takes were rotated upright, trimmed and re-encoded into
 | Desenvolvimento 1 | `IMG_8281.mov` | 0.30 | 19.45 |
 | Desenvolvimento 2 + 3 | `IMG_8285.mov` | 0.00 | 20.74 |
 | Fechamento, first half | `IMG_8287.mov` | 3.25 | 11.35 |
-| Fechamento, second half | `IMG_8287.mov` | 15.00 | 18.55 |
+| Fechamento, second half | `IMG_8287.mov` | 12.60 | 18.55 |
 
 `IMG_8280` opens with two false starts (speech at 2.00–3.85 and 4.20–4.85); the
 take used is the continuous run from 5.35. `IMG_8285` begins at full speech level
 on frame 0, so the first word of "Serve para movimentar…" is missing from the
 source — nothing in the edit can recover it. `IMG_8281` ends on a stray line after the take (19.60–20.70), which is dropped.
-`IMG_8287` is fumbled from 11.45 to 14.80 — it starts half a second before the
-obvious pause at 12.80 — so it is cut in two around the whole stretch and the
-halves are joined with a straight cut plus a small punch-in, which reads as a
-change of framing rather than a jump.
+`IMG_8287` stumbles between 11.20 and 12.80, so it is cut in two around that
+stretch and the halves are joined with a straight cut plus a small punch-in,
+which reads as a change of framing rather than a jump.
 
 Clips are mapped to script blocks in numeric order. That ordering, and the cue
 times in `Scenes.tsx`, are placed against measured speech runs (listed in
 `content.ts`), not against a transcript.
+
+## Pace
+
+The footage runs at `SPEED` (1.1) via Remotion's `playbackRate`, which
+time-stretches the audio with `atempo` and leaves the pitch alone. Every cue
+time in `Scenes.tsx` and every speech run in `content.ts` is written in seconds
+of the recording; `Cue` divides by `SPEED`, so changing that one constant
+re-times the whole piece.
 
 ## Music
 

@@ -1,19 +1,23 @@
 import React, { createContext, useContext } from "react";
 import { Sequence, interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
 import { brand } from "./brand";
+import { SPEED } from "./content";
 
 const CueContext = createContext<number>(Number.POSITIVE_INFINITY);
 
-/** Shows its children between `at` and `at + dur`, both in seconds. */
+/**
+ * Shows its children between `at` and `at + dur`, both in seconds of the
+ * recording — the footage plays back at SPEED, so the timeline is shorter.
+ */
 export const Cue: React.FC<{ at: number; dur: number; children: React.ReactNode }> = ({
   at,
   dur,
   children,
 }) => {
   const { fps } = useVideoConfig();
-  const durationInFrames = Math.round(dur * fps);
+  const durationInFrames = Math.round((dur / SPEED) * fps);
   return (
-    <Sequence from={Math.round(at * fps)} durationInFrames={durationInFrames} layout="none">
+    <Sequence from={Math.round((at / SPEED) * fps)} durationInFrames={durationInFrames} layout="none">
       <CueContext.Provider value={durationInFrames}>{children}</CueContext.Provider>
     </Sequence>
   );

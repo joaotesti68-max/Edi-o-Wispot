@@ -9,9 +9,19 @@ export type ClipId =
   | "fechamento-a"
   | "fechamento-b";
 
+/**
+ * Vanessa reads deliberately, around 1.6 words a second, so the footage runs a
+ * little quicker than recorded. Remotion drives this through playbackRate, which
+ * time-stretches the audio with atempo and leaves the pitch alone.
+ */
+export const SPEED = 1.1;
+
 export type Clip = {
   id: ClipId;
   video: string;
+  /** Length of the file on disk. */
+  sourceFrames: number;
+  /** How long it occupies the timeline once sped up. */
   durationInFrames: number;
   /** Join straight to the previous clip instead of dissolving into it. */
   hardCut?: boolean;
@@ -19,25 +29,34 @@ export type Clip = {
   zoom?: number;
 };
 
+// Floor rather than round, so a sequence can never outlast its own footage and
+// freeze on the final frame.
+const sped = (sourceFrames: number) => Math.floor(sourceFrames / SPEED);
+
 export const TRANSITION_FRAMES = 6;
 export const OUTRO_FRAMES = 110;
 
-export const clips: Clip[] = [
-  { id: "abertura", video: "hora-premiada/abertura.mp4", durationInFrames: 350 },
-  { id: "desenvolvimento-1", video: "hora-premiada/desenvolvimento-1.mp4", durationInFrames: 576 },
-  { id: "desenvolvimento-2", video: "hora-premiada/desenvolvimento-2.mp4", durationInFrames: 622 },
-  { id: "fechamento-a", video: "hora-premiada/fechamento-a.mp4", durationInFrames: 244 },
-  // The fumbled middle of the take is cut out between these two halves. A
-  // dissolve would draw attention to the join, so it cuts straight and the
+const source: Omit<Clip, "durationInFrames">[] = [
+  { id: "abertura", video: "hora-premiada/abertura.mp4", sourceFrames: 350 },
+  { id: "desenvolvimento-1", video: "hora-premiada/desenvolvimento-1.mp4", sourceFrames: 576 },
+  { id: "desenvolvimento-2", video: "hora-premiada/desenvolvimento-2.mp4", sourceFrames: 622 },
+  { id: "fechamento-a", video: "hora-premiada/fechamento-a.mp4", sourceFrames: 244 },
+  // The stumble at 11.20-12.80 on the take is cut out between these two halves.
+  // A dissolve would draw attention to the join, so it cuts straight and the
   // slight punch-in sells it as a change of framing.
   {
     id: "fechamento-b",
     video: "hora-premiada/fechamento-b.mp4",
-    durationInFrames: 108,
+    sourceFrames: 179,
     hardCut: true,
     zoom: 1.1,
   },
 ];
+
+export const clips: Clip[] = source.map((c) => ({
+  ...c,
+  durationInFrames: sped(c.sourceFrames),
+}));
 
 export const clipById = Object.fromEntries(clips.map((c) => [c.id, c])) as Record<ClipId, Clip>;
 
@@ -49,7 +68,10 @@ export const clipById = Object.fromEntries(clips.map((c) => [c.id, c])) as Recor
 //   desenvolvimento-1  0.15 ->  6.80 | 7.15 -> 7.65 | 8.00 -> 12.95 | 13.30 -> 18.93
 //   desenvolvimento-2  0.00 ->  5.45 | 5.80 -> 11.95 | 12.50 -> 20.70
 //   fechamento-a       0.20 ->  7.95
-//   fechamento-b       0.20 ->  3.15
+//   fechamento-b       0.20 ->  2.18 | 2.60 -> 5.55
+//
+// Those are seconds of the recording, not of the finished timeline; `Cue` divides
+// by SPEED so the two stay in step.
 //
 // Cue times are placed by ear-free estimate within those runs: the phrase order
 // is known from the script, the exact word boundaries are not.

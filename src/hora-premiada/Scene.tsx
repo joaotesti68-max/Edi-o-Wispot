@@ -10,7 +10,7 @@ import {
   useVideoConfig,
 } from "remotion";
 import { brand } from "./brand";
-import type { Clip } from "./content";
+import { SPEED, type Clip } from "./content";
 
 /** Persistent Wispot mark, kept clear of the speaker per the manual's clearance rule. */
 const Watermark: React.FC = () => {
@@ -84,6 +84,7 @@ export const Scene: React.FC<{
       <AbsoluteFill style={{ transform: `scale(${kenBurns})` }}>
         <OffthreadVideo
           src={staticFile(clip.video)}
+          playbackRate={SPEED}
           style={{ width: "100%", height: "100%", objectFit: "cover" }}
         />
       </AbsoluteFill>
