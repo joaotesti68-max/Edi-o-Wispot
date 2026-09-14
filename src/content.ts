@@ -112,15 +112,22 @@ export const episodes: Episode[] = [
       // Introdução: a Mari falando para a câmera, em cinco trechos na ordem
       // indicada por quem gravou. Cada um traz o próprio áudio, já em -14 LUFS
       // como a locução do tutorial, para a voz não mudar de nível na virada.
+      //
+      // Os arquivos têm 0,30s de sobra depois do fim nominal: é o material que
+      // o trecho seguinte consome ao entrar por cima em crossfade. Sem essa
+      // sobra o clipe congelaria no último quadro durante a transição.
       { id: "mari-1", video: "videos/ep1-mari-1.mp4", durationInFrames: 375, layout: "full" },
       // Descarta os 12,2s iniciais: ela erra e recomeça. A pausa de 0,40s em
       // 12,20s é a única do clipe, então é o único ponto de emenda possível.
       { id: "mari-2", video: "videos/ep1-mari-2.mp4", durationInFrames: 264, layout: "full" },
-      { id: "mari-3", video: "videos/ep1-mari-3.mp4", durationInFrames: 493, layout: "full" },
       // Termina em 16,45s do original: a fala dela acaba em 16,15s e logo
-      // depois, em 17,25s, vaza uma voz masculina a 119Hz.
-      { id: "mari-4", video: "videos/ep1-mari-4.mp4", durationInFrames: 471, layout: "full" },
-      { id: "mari-5", video: "videos/ep1-mari-5.mp4", durationInFrames: 135, layout: "full" },
+      // depois, em 17,25s, vaza uma voz masculina a 119Hz. A sobra de 0,30s
+      // que o crossfade consome para de 16,75s, ainda antes do vazamento.
+      { id: "mari-3", video: "videos/ep1-mari-3.mp4", durationInFrames: 471, layout: "full" },
+      { id: "mari-4", video: "videos/ep1-mari-4.mp4", durationInFrames: 491, layout: "full" },
+      // Sem sobra: o clipe acaba junto com a fala, então a passagem para o
+      // tutorial é corte seco.
+      { id: "mari-5", video: "videos/ep1-mari-5.mp4", durationInFrames: 134, layout: "full" },
       {
         id: "dashboard",
         // Take contínuo, sem corte interno: a locução e a gravação têm a mesma
@@ -133,8 +140,8 @@ export const episodes: Episode[] = [
     ],
     // A locução do tutorial entra só depois da introdução.
     voiceOvers: [
-      { src: "audio/ep1-vo-1.m4a", startFrame: OPENING + 1738, durationInFrames: 528 },
-      { src: "audio/ep1-vo-2.m4a", startFrame: OPENING + 1738 + 528, durationInFrames: 852 },
+      { src: "audio/ep1-vo-1.m4a", startFrame: OPENING + 1735, durationInFrames: 528 },
+      { src: "audio/ep1-vo-2.m4a", startFrame: OPENING + 1735 + 528, durationInFrames: 852 },
     ],
   },
   {

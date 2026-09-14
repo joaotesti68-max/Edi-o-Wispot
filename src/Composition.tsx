@@ -6,6 +6,9 @@ import { ProgressBar } from "./ProgressBar";
 import { fontFamily } from "./loadFont";
 import { FPS, episodes, layout, type Episode } from "./content";
 
+/** Duração do crossfade entre os trechos da Mari. */
+const CROSSFADE = 9; // 0,3s
+
 /** O ffmpeg embutido no Remotion vem sem o filtro afade, então o corte seco
  *  das pontas é suavizado aqui, no volume por frame. */
 const VoiceOver: React.FC<{ src: string; durationInFrames: number }> = ({
@@ -32,11 +35,28 @@ export const WispotEpisode: React.FC<{ episode: Episode }> = ({ episode }) => {
         <OpeningCard episode={episode} />
       </Sequence>
 
-      {episode.blocks.map((block, i) => (
-        <Sequence key={block.id} from={ranges[i].start} durationInFrames={block.durationInFrames}>
-          <ScreenBlock block={block} />
-        </Sequence>
-      ))}
+      {episode.blocks.map((block, i) => {
+        const proximo = episode.blocks[i + 1];
+        // O trecho segue no ar por mais alguns frames enquanto o seguinte
+        // entra por cima em fade. Como o de cima é o que aparece depois na
+        // árvore, ele fica na frente naturalmente e não precisa de z-index.
+        const estende = proximo?.layout === "full" ? CROSSFADE : 0;
+        const entrada = i > 0 && block.layout === "full" ? CROSSFADE : 0;
+        return (
+          <Sequence
+            key={block.id}
+            from={ranges[i].start}
+            durationInFrames={block.durationInFrames + estende}
+          >
+            <ScreenBlock
+              block={block}
+              fadeInFrames={entrada}
+              fadeOutAt={estende ? block.durationInFrames : null}
+              crossfadeFrames={CROSSFADE}
+            />
+          </Sequence>
+        );
+      })}
 
       {episode.voiceOvers.map((vo) => (
         <Sequence key={vo.src} from={vo.startFrame} durationInFrames={vo.durationInFrames}>

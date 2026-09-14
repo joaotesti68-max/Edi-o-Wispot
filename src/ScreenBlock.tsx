@@ -11,7 +11,14 @@ import { brand } from "./brand";
 import { source, type Block } from "./content";
 import { Wordmark } from "./Wordmark";
 
-export const ScreenBlock: React.FC<{ block: Block }> = ({ block }) => {
+export const ScreenBlock: React.FC<{
+  block: Block;
+  /** Frames de fade na entrada, para o crossfade com o trecho anterior. */
+  fadeInFrames?: number;
+  /** Frame em que o áudio começa a sair, quando este trecho é o de baixo. */
+  fadeOutAt?: number | null;
+  crossfadeFrames?: number;
+}> = ({ block, fadeInFrames = 0, fadeOutAt = null, crossfadeFrames = 0 }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
@@ -19,10 +26,29 @@ export const ScreenBlock: React.FC<{ block: Block }> = ({ block }) => {
   // seco: a entrada suave do cartão, aplicada a cada bloco, viraria um piscar
   // a cada troca de trecho.
   if (block.layout === "full") {
+    const entrada = fadeInFrames
+      ? interpolate(frame, [0, fadeInFrames], [0, 1], { extrapolateRight: "clamp" })
+      : 1;
+
     return (
-      <AbsoluteFill style={{ background: "#000" }}>
+      <AbsoluteFill style={{ background: "#000", opacity: entrada }}>
         <OffthreadVideo
           src={staticFile(block.video)}
+          // A voz acompanha a imagem no crossfade: sem isso as duas falas se
+          // sobrepõem em volume cheio durante a transição.
+          volume={(f) => {
+            const sobe = fadeInFrames
+              ? interpolate(f, [0, fadeInFrames], [0, 1], { extrapolateRight: "clamp" })
+              : 1;
+            const desce =
+              fadeOutAt === null
+                ? 1
+                : interpolate(f, [fadeOutAt, fadeOutAt + crossfadeFrames], [1, 0], {
+                    extrapolateLeft: "clamp",
+                    extrapolateRight: "clamp",
+                  });
+            return Math.min(sobe, desce);
+          }}
           style={{ width: "100%", height: "100%", objectFit: "cover" }}
         />
         <div style={{ position: "absolute", top: 46, left: 76 }}>
