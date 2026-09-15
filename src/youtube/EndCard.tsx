@@ -1,4 +1,4 @@
-import { AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
+import { AbsoluteFill, Img, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
 import { fontFamily } from "../loadFont";
 import { PlayBadge } from "./PlayBadge";
 import { yt } from "./theme";
@@ -24,16 +24,28 @@ export const EndCard: React.FC = () => {
       />
       <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 16, background: yt.colors.blue }} />
 
+      <Img
+        src={staticFile(yt.logo.color)}
+        style={{
+          position: "absolute",
+          top: 150,
+          left: "50%",
+          width: 330,
+          transform: `translateX(-50%) translateY(${interpolate(badgeIn, [0, 1], [-24, 0])}px)`,
+          opacity: badgeIn,
+        }}
+      />
+
       <div
         style={{
           position: "absolute",
-          top: 372,
+          top: 430,
           left: 72,
           right: 72,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          gap: 54,
+          gap: 46,
         }}
       >
         <div style={{ opacity: badgeIn, transform: `scale(${interpolate(badgeIn, [0, 1], [0.6, 1]) * pulse})` }}>

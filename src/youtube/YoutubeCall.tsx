@@ -7,14 +7,14 @@ import { ClipBlock } from "./ClipBlock";
 import { Chrome } from "./Chrome";
 import { EndCard } from "./EndCard";
 import { OpeningTitle } from "./OpeningTitle";
-import { VideoCards } from "./VideoCards";
+import { ChannelScroll } from "./ChannelScroll";
 import { YoutubePop } from "./YoutubePop";
 import {
   END_CARD_FRAMES,
   FPS,
   TRANSITION_FRAMES,
-  VIDEO_CARDS_FRAMES,
-  VIDEO_CARDS_START,
+  CHANNEL_SCROLL_FRAMES,
+  CHANNEL_SCROLL_START,
   YOUTUBE_POP_FRAMES,
   YOUTUBE_POP_START,
   clips,
@@ -79,8 +79,8 @@ export const YoutubeCallVideo: React.FC = () => {
         <OpeningTitle />
       </Sequence>
 
-      <Sequence from={VIDEO_CARDS_START} durationInFrames={VIDEO_CARDS_FRAMES}>
-        <VideoCards />
+      <Sequence from={CHANNEL_SCROLL_START} durationInFrames={CHANNEL_SCROLL_FRAMES}>
+        <ChannelScroll />
       </Sequence>
 
       <Sequence from={YOUTUBE_POP_START} durationInFrames={YOUTUBE_POP_FRAMES}>

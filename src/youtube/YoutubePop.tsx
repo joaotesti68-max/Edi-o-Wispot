@@ -1,4 +1,4 @@
-import { AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
+import { AbsoluteFill, Img, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
 import { fontFamily } from "../loadFont";
 import { yt } from "./theme";
 
@@ -8,9 +8,9 @@ const CARD_LIFT = [16, 0, 16];
 /** One of the little video tiles that fan out under the logo. */
 const Thumb: React.FC<{ index: number; progress: number }> = ({ index, progress }) => {
   const shades = [
-    "linear-gradient(140deg, #0f3350 0%, #1aa0e0 100%)",
-    "linear-gradient(140deg, #123f63 0%, #5ec4f0 100%)",
-    "linear-gradient(140deg, #0b2840 0%, #1580b8 100%)",
+    "linear-gradient(140deg, #0b4f72 0%, #25a8e0 100%)",
+    "linear-gradient(140deg, #0b91c1 0%, #7fd0f2 100%)",
+    "linear-gradient(140deg, #093a56 0%, #0b91c1 100%)",
   ];
 
   return (
@@ -81,7 +81,12 @@ export const YoutubePop: React.FC = () => {
           style={{
             display: "flex",
             alignItems: "center",
-            gap: 18,
+            gap: 26,
+            padding: "22px 36px",
+            borderRadius: 999,
+            background: "rgba(5,13,22,0.62)",
+            border: "1px solid rgba(255,255,255,0.16)",
+            boxShadow: "0 22px 54px rgba(0,0,0,0.42)",
             opacity: logoIn,
             transform: `translateY(${interpolate(logoIn, [0, 1], [70, 0])}px) scale(${interpolate(
               logoIn,
@@ -90,40 +95,45 @@ export const YoutubePop: React.FC = () => {
             )})`,
           }}
         >
-          <div
-            style={{
-              width: 104,
-              height: 74,
-              borderRadius: 22,
-              background: yt.colors.play,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              boxShadow: "0 16px 44px rgba(255,59,48,0.42)",
-            }}
-          >
+          <Img src={staticFile(yt.logo.white)} style={{ width: 250 }} />
+
+          <div style={{ width: 2, height: 62, background: "rgba(255,255,255,0.28)" }} />
+
+          <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
             <div
               style={{
-                width: 0,
-                height: 0,
-                marginLeft: 6,
-                borderTop: "17px solid transparent",
-                borderBottom: "17px solid transparent",
-                borderLeft: `28px solid ${yt.colors.white}`,
+                width: 88,
+                height: 62,
+                borderRadius: 18,
+                background: yt.colors.play,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                boxShadow: "0 12px 34px rgba(255,59,48,0.42)",
               }}
-            />
-          </div>
-          <div
-            style={{
-              fontFamily,
-              fontWeight: 800,
-              fontSize: 62,
-              letterSpacing: -1.5,
-              color: yt.colors.white,
-              textShadow: "0 6px 26px rgba(0,0,0,0.5)",
-            }}
-          >
-            YouTube
+            >
+              <div
+                style={{
+                  width: 0,
+                  height: 0,
+                  marginLeft: 5,
+                  borderTop: "14px solid transparent",
+                  borderBottom: "14px solid transparent",
+                  borderLeft: `23px solid ${yt.colors.white}`,
+                }}
+              />
+            </div>
+            <div
+              style={{
+                fontFamily,
+                fontWeight: 800,
+                fontSize: 52,
+                letterSpacing: -1.2,
+                color: yt.colors.white,
+              }}
+            >
+              YouTube
+            </div>
           </div>
         </div>
 

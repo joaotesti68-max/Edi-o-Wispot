@@ -49,9 +49,9 @@ export const endCardStart = starts[starts.length - 1];
 export const YOUTUBE_POP_START = starts[3] + 10;
 export const YOUTUBE_POP_FRAMES = 96;
 
-/** Channel-style video rows over the second take. */
-export const VIDEO_CARDS_START = starts[1] + 30;
-export const VIDEO_CARDS_FRAMES = 132;
+/** The channel screen recording floated over the second take. */
+export const CHANNEL_SCROLL_START = starts[1] + 26;
+export const CHANNEL_SCROLL_FRAMES = 206;
 
 export const totalDurationInFrames =
   sequenceDurations.reduce((sum, d) => sum + d, 0) -
