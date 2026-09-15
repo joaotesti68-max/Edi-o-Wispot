@@ -113,12 +113,12 @@ const comFaixa = (rs: BlurRegion[], from: number, to: number) =>
   rs.map((r) => ({ ...r, from, to }));
 
 export const episodes: Episode[] = [
-  // O episódio 1 é publicado em duas partes: a Mari apresentando o assunto e,
-  // separado, o tutorial de tela. Cada parte tem a própria abertura e trilha.
+  // A Mari apresentando a série é o episódio de abertura, numerado 00. O
+  // tutorial de tela que vinha junto virou o episódio 01, separado.
   {
-    id: "WispotEp1A",
-    number: "01",
-    part: "Parte 1",
+    id: "WispotEp00",
+    number: "00",
+    part: "Introdução",
     series: "Pílulas Wispot",
     title: "O que o painel da Wispot te mostra sobre o seu Wi-Fi",
     openingFrames: OPENING,
@@ -147,9 +147,8 @@ export const episodes: Episode[] = [
     music: TRILHA,
   },
   {
-    id: "WispotEp1B",
+    id: "WispotEp01",
     number: "01",
-    part: "Parte 2",
     series: "Pílulas Wispot",
     title: "Dashboard: a visão geral dos seus acessos",
     openingFrames: OPENING,
@@ -171,7 +170,7 @@ export const episodes: Episode[] = [
     music: TRILHA,
   },
   {
-    id: "WispotEp2",
+    id: "WispotEp02",
     number: "02",
     series: "Pílulas Wispot",
     title: "Um passeio pelo painel da Wispot",
