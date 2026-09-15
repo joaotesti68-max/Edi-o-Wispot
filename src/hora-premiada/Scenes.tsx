@@ -122,13 +122,13 @@ export const Desenvolvimento2: React.FC = () => (
 /** FECHAMENTO, first half — the lockup once more, then the promise. */
 export const FechamentoA: React.FC = () => (
   <Scene clip={clipById["fechamento-a"]}>
-    <Cue at={0.4} dur={3.8}>
+    <Cue at={0.4} dur={3.3}>
       <OverlayStack>
         <FeatureTitle />
       </OverlayStack>
     </Cue>
 
-    <Cue at={4.6} dur={3.45}>
+    <Cue at={4.0} dur={2.8}>
       <OverlayStack>
         <Headline size={58}>Gire seu horário mais parado em vendas.</Headline>
       </OverlayStack>

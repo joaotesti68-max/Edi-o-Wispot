@@ -40,8 +40,8 @@ const source: Omit<Clip, "durationInFrames">[] = [
   { id: "abertura", video: "hora-premiada/abertura.mp4", sourceFrames: 350 },
   { id: "desenvolvimento-1", video: "hora-premiada/desenvolvimento-1.mp4", sourceFrames: 576 },
   { id: "desenvolvimento-2", video: "hora-premiada/desenvolvimento-2.mp4", sourceFrames: 622 },
-  { id: "fechamento-a", video: "hora-premiada/fechamento-a.mp4", sourceFrames: 244 },
-  // The stumble at 11.20-12.80 on the take is cut out between these two halves.
+  { id: "fechamento-a", video: "hora-premiada/fechamento-a.mp4", sourceFrames: 206 },
+  // The stumble at 9.90-12.80 on the take is cut out between these two halves.
   // A dissolve would draw attention to the join, so it cuts straight and the
   // slight punch-in sells it as a change of framing.
   {
@@ -67,7 +67,7 @@ export const clipById = Object.fromEntries(clips.map((c) => [c.id, c])) as Recor
 //   abertura           0.15 -> 11.45   (one continuous take)
 //   desenvolvimento-1  0.15 ->  6.80 | 7.15 -> 7.65 | 8.00 -> 12.95 | 13.30 -> 18.93
 //   desenvolvimento-2  0.00 ->  5.45 | 5.80 -> 11.95 | 12.50 -> 20.70
-//   fechamento-a       0.20 ->  7.95
+//   fechamento-a       0.20 ->  6.65
 //   fechamento-b       0.20 ->  2.18 | 2.60 -> 5.55
 //
 // Those are seconds of the recording, not of the finished timeline; `Cue` divides

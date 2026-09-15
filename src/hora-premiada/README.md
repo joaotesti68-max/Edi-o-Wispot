@@ -36,16 +36,17 @@ The four takes were rotated upright, trimmed and re-encoded into
 | Abertura | `IMG_8280.mov` | 5.20 | 16.85 |
 | Desenvolvimento 1 | `IMG_8281.mov` | 0.30 | 19.45 |
 | Desenvolvimento 2 + 3 | `IMG_8285.mov` | 0.00 | 20.74 |
-| Fechamento, first half | `IMG_8287.mov` | 3.25 | 11.35 |
+| Fechamento, first half | `IMG_8287.mov` | 3.25 | 10.07 |
 | Fechamento, second half | `IMG_8287.mov` | 12.60 | 18.55 |
 
 `IMG_8280` opens with two false starts (speech at 2.00–3.85 and 4.20–4.85); the
 take used is the continuous run from 5.35. `IMG_8285` begins at full speech level
 on frame 0, so the first word of "Serve para movimentar…" is missing from the
 source — nothing in the edit can recover it. `IMG_8281` ends on a stray line after the take (19.60–20.70), which is dropped.
-`IMG_8287` stumbles between 11.20 and 12.80, so it is cut in two around that
+`IMG_8287` stumbles between 9.90 and 12.80, so it is cut in two around that
 stretch and the halves are joined with a straight cut plus a small punch-in,
-which reads as a change of framing rather than a jump.
+which reads as a change of framing rather than a jump. The out point sits inside
+the 0.26 s pause at 9.90–10.16, the last clean gap before the fumble starts.
 
 Clips are mapped to script blocks in numeric order. That ordering, and the cue
 times in `Scenes.tsx`, are placed against measured speech runs (listed in
