@@ -1,5 +1,5 @@
 import { AbsoluteFill, OffthreadVideo, interpolate, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
-import type { Clip } from "./content";
+import { PLAYBACK_RATE, type Clip } from "./content";
 
 export const ClipBlock: React.FC<{ clip: Clip }> = ({ clip }) => {
   const frame = useCurrentFrame();
@@ -16,6 +16,7 @@ export const ClipBlock: React.FC<{ clip: Clip }> = ({ clip }) => {
           src={staticFile(clip.video)}
           trimBefore={clip.trimBefore}
           trimAfter={clip.trimAfter}
+          playbackRate={PLAYBACK_RATE}
           style={{ width: "100%", height: "100%", objectFit: "cover" }}
         />
       </AbsoluteFill>

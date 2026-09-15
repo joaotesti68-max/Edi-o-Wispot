@@ -7,10 +7,13 @@ import { ClipBlock } from "./ClipBlock";
 import { Chrome } from "./Chrome";
 import { EndCard } from "./EndCard";
 import { OpeningTitle } from "./OpeningTitle";
+import { YoutubePop } from "./YoutubePop";
 import {
   END_CARD_FRAMES,
   FPS,
   TRANSITION_FRAMES,
+  YOUTUBE_POP_FRAMES,
+  YOUTUBE_POP_START,
   clips,
   clipDurations,
   endCardStart,
@@ -26,7 +29,7 @@ const Soundtrack: React.FC = () => {
   const volume = interpolate(
     frame,
     [0, 10, 30, endCardStart - 6, endCardStart + 10, totalDurationInFrames - 14, totalDurationInFrames],
-    [0, 0.42, 0.13, 0.13, 0.42, 0.42, 0],
+    [0, 0.2, 0.05, 0.05, 0.24, 0.24, 0],
     { extrapolateLeft: "clamp", extrapolateRight: "clamp" },
   );
 
@@ -71,6 +74,10 @@ export const YoutubeCallVideo: React.FC = () => {
 
       <Sequence durationInFrames={OPENING_TITLE_FRAMES}>
         <OpeningTitle />
+      </Sequence>
+
+      <Sequence from={YOUTUBE_POP_START} durationInFrames={YOUTUBE_POP_FRAMES}>
+        <YoutubePop />
       </Sequence>
 
       <Chrome />
