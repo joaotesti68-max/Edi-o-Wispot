@@ -17,9 +17,9 @@ export const ChannelScroll: React.FC = () => {
       <div
         style={{
           position: "absolute",
-          left: 40,
-          right: 40,
-          bottom: 250,
+          left: 148,
+          right: 148,
+          bottom: 212,
           opacity: enter,
           transform: `translateY(${interpolate(enter, [0, 1], [150, 0])}px) scale(${interpolate(
             enter,
