@@ -17,7 +17,7 @@ export type Clip = {
 export const clips: Clip[] = [
   { id: "img-8288", video: "videos/youtube/img-8288.mp4", trimBefore: 42, trimAfter: 283 },
   { id: "img-8290", video: "videos/youtube/img-8290.mp4", trimBefore: 11, trimAfter: 360 },
-  { id: "img-8292", video: "videos/youtube/img-8292.mp4", trimBefore: 0, trimAfter: 742 },
+  { id: "img-8292", video: "videos/youtube/img-8292.mp4", trimBefore: 0, trimAfter: 712 },
   { id: "img-8295", video: "videos/youtube/img-8295.mp4", trimBefore: 5, trimAfter: 208 },
 ];
 

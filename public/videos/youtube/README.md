@@ -6,7 +6,7 @@ Todos os clipes desta pasta já estão no formato do projeto: `1080x1920`, `24fp
 | --- | --- | --- | --- |
 | `img-8288.mp4` | IMG_8288.MOV | 12,5 s | take único |
 | `img-8290.mp4` | IMG_8290.MOV | 16,4 s | take único |
-| `img-8292.mp4` | IMG_8292.MOV (49,1 s) | 31,0 s | miolo removido: `1,55–14,43 s` + `30–48,1 s` |
+| `img-8292.mp4` | IMG_8292.MOV (49,1 s) | 29,8 s | miolo removido: mantém `1,55–13,18 s` + `30–48,1 s` |
 | `img-8295.mp4` | IMG_8295.MOV | 8,8 s | take único |
 | `canal-wispot.mp4` | gravação de tela do canal | 8,6 s | sem áudio, entra como card no clipe 2 |
 
