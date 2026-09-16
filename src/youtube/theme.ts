@@ -15,6 +15,6 @@ export const yt = {
     color: "brand/wispot-color.png",
     iconWhite: "brand/wispot-icon-white.png",
   },
-  handle: "@wispotcaptiveportal",
-  channelUrl: "youtube.com/@wispotcaptiveportal",
+  handle: "@wispotoficial",
+  channelUrl: "youtube.com/@wispotoficial",
 };
