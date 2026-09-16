@@ -155,6 +155,30 @@ nos cards e no encerramento, onde ninguém fala, e recua para um leito por baixo
 da voz da Mari. Ao mexer na duração do vídeo, refaça a conta do corte de cabeça;
 ao trocar a faixa, refaça também a medição de BPM e fase.
 
+## Marca do WiQuest
+
+Na resposta sobre pesquisa de público, a marca do WiQuest sobe assim que ela diz
+"Com a WiQuest" e sai antes do fim da resposta, para não virar mobília. A janela
+está em `productMark`, no clipe, escrita em quadros da gravação como as legendas.
+
+Ela vai numa tarja branca, não solta sobre a imagem: o fundo do take é um vidro
+claro, onde o laranja da marca perderia contraste. A tarja repete o tratamento da
+faixa da pergunta, então lê como parte da mesma família e não como adesivo. Fica
+na faixa livre entre a faixa da pergunta e a cabeça dela.
+
+O arquivo enviado era um JPEG da marca achatada sobre branco, sem alfa. O alfa
+foi reconstruído a partir do canal azul, que é o de maior contraste entre o
+branco e o laranja (255 contra 33): para cada pixel, `alfa = (255 - B) / (255 -
+33)`, e o RGB é fixado na cor da marca. Isso preserva o antisserrilhado das
+bordas em vez de recortá-las no threshold, e não deixa halo branco sobre fundo
+colorido — conferido sobre o azul institucional. A cor saiu da mediana dos
+pixels mais saturados: **`#F26921`**.
+
+| Arquivo | Uso |
+| --- | --- |
+| `public/brand/wiquest-color.png` | a marca em laranja, para fundo claro |
+| `public/brand/wiquest-white.png` | mesma silhueta em branco, para fundo escuro |
+
 ## Marca
 
 Cores e tipografia saíram do *Manual de Marca - Wispot - 2026* (Drive), em

@@ -1,5 +1,6 @@
 import {
   AbsoluteFill,
+  Img,
   OffthreadVideo,
   interpolate,
   spring,
@@ -25,6 +26,7 @@ export const VideoBlock: React.FC<{ clip: Clip }> = ({ clip }) => {
       <Scrim />
 
       {clip.kicker ? <Kicker text={clip.kicker} /> : null}
+      {clip.productMark ? <ProductMark mark={clip.productMark} /> : null}
       {clip.ribbon ? <QuestionRibbon text={clip.ribbon} /> : null}
       {clip.nameCard ? <NameCard name={clip.nameCard.name} role={clip.nameCard.role} /> : null}
 
@@ -162,6 +164,60 @@ const QuestionRibbon: React.FC<{ text: string }> = ({ text }) => {
         >
           {text}
         </span>
+      </div>
+    </div>
+  );
+};
+
+/**
+ * Marca do produto sobre a resposta que fala dele. Vai numa tarja branca, e não
+ * solta sobre a imagem: o fundo do take é um vidro claro, onde o laranja da
+ * marca perderia contraste. A tarja repete o tratamento da faixa da pergunta,
+ * então lê como parte da mesma família e não como adesivo.
+ *
+ * Fica na faixa livre entre a faixa da pergunta e a cabeça dela.
+ */
+const ProductMark: React.FC<{ mark: NonNullable<Clip["productMark"]> }> = ({ mark }) => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const from = mark.from / SPEED;
+  const to = mark.to / SPEED;
+
+  const enter = spring({ frame: frame - from, fps, config: { damping: 200, mass: 0.8 } });
+  const exit = interpolate(frame, [to - 18, to], [0, 1], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
+  const opacity = Math.min(enter, 1 - exit);
+  if (opacity <= 0) return null;
+
+  const width = 400;
+
+  return (
+    <div
+      style={{
+        position: "absolute",
+        top: 420,
+        left: 0,
+        right: 0,
+        display: "flex",
+        justifyContent: "center",
+        opacity,
+        transform: `translateY(${(1 - enter) * -24 + exit * -16}px)`,
+      }}
+    >
+      <div
+        style={{
+          padding: "30px 46px",
+          borderRadius: 30,
+          background: brand.colors.white,
+          boxShadow: "0 18px 48px rgba(0,0,0,0.28)",
+        }}
+      >
+        <Img
+          src={staticFile(mark.src)}
+          style={{ width, height: width / mark.ratio, display: "block" }}
+        />
       </div>
     </div>
   );

@@ -47,6 +47,11 @@ export type Clip = {
   nameCard?: { name: string; role: string };
   /** Kicker shown over the opening take. */
   kicker?: string;
+  /**
+   * Marca do produto que sobe enquanto ela fala dele. A janela é em quadros da
+   * gravação, como as legendas, e é dividida por SPEED na hora de usar.
+   */
+  productMark?: { src: string; ratio: number; from: number; to: number };
 };
 
 export type Segment = QuestionCard | Clip;
@@ -111,6 +116,9 @@ export const segments: Segment[] = [
     sourceFrames: 362,
     durationInFrames: atSpeed(362),
     ribbon: "Como saber o que o público acha?",
+    // Sobe logo que ela diz "Com a WiQuest" e sai antes do fim da resposta,
+    // para a marca não virar mobília.
+    productMark: { src: "brand/wiquest-color.png", ratio: 1834 / 538, from: 8, to: 240 },
   },
   {
     kind: "clip",
