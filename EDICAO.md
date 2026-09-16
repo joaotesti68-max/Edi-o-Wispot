@@ -1,6 +1,6 @@
 # Perguntas e Respostas — setembro
 
-Vídeo vertical 1080×1920, 30 fps, ~78,4 s. Composição Remotion: `FeatureDaSemana`.
+Vídeo vertical 1080×1920, 30 fps, ~78,2 s. Composição Remotion: `FeatureDaSemana`.
 
 Quarto vídeo da série de perguntas e respostas, gravado com a Mari. Quatro
 perguntas: segmentos atendidos, receita para provedor, fabricantes suportados e
@@ -102,33 +102,35 @@ o reconhecedor.
 
 ## Trilha
 
-`public/audio/theme.mp3` — *Lite Saturation Motivation*, 110 BPM, instrumental,
-fornecida pelo cliente; a mesma das edições anteriores, já com o corte na grade
-do compasso e o nivelamento entre seções descritos na edição de agosto.
+`public/audio/theme.mp3` — *Nastelbom / Funky*, 115 BPM, instrumental, fornecida
+pelo cliente. Do arquivo original (79,1 s) saem os 78,4 s usados aqui.
 
-Aquele leito tinha 64,6 s e este vídeo tem 78,4 s. Como o arquivo original de
-93,9 s não está no repositório, a faixa foi esticada por dentro: sete compassos
-(15,27 s) da seção intermediária são repetidos, entrando e saindo em tempo forte.
+Ao contrário da faixa de agosto, esta não precisou de compressão: o arco dela já
+varia só 4,6 dB entre as seções, e boa parte disso é a própria cauda baixando no
+fim. O tratamento foi só nível e corte:
 
 ```console
-# emendas em 34,236 s (fim do trecho) e 49,508 s (fim da repetição)
-ffmpeg -i theme.wav -ss 0        -to 34.235727 part0.wav
-ffmpeg -i theme.wav -ss 18.963   -to 34.235727 part1.wav
-ffmpeg -i theme.wav -ss 34.235727                part2.wav
-ffmpeg -f concat -safe 0 -i concat.txt -c:a pcm_s24le theme-long.wav
-ffmpeg -i theme-long.wav -c:a libmp3lame -b:a 192k -ar 44100 public/audio/theme.mp3
+ffmpeg -t 78.40 -i <original>.mp3 \
+  -af "volume=-4.5dB,alimiter=limit=0.9:level=disabled,afade=t=in:st=0:d=0.6" \
+  -c:a libmp3lame -b:a 192k -ar 44100 public/audio/theme.mp3
 ```
 
-As emendas caem em tempo forte e não estalam: o salto de amostra é 0,081 e
-0,016, contra transientes de 0,34 a 0,87 na própria faixa. Com isso o tempo
-forte do último compasso cai no quadro 2336 — quinze quadros antes do fim —,
-como nas outras edições, e o `MUSIC_FADE_OUT` é curto para entrar só depois
-dele. Se o arquivo original aparecer, vale refazer o corte a partir dele: 93,9 s
-cobrem estes 78,4 s sem repetição.
+Os -4,5 dB põem a faixa em -16,4 dB RMS, o mesmo ponto em que o leito anterior
+ficava — é o que mantém válidas as constantes de `musicVolume` sem remexer nelas.
+
+**Corte com a grade do compasso.** A faixa é 115 BPM cravados, compasso de
+2,08696 s, com o primeiro tempo forte em 0,512 s. O tempo forte do compasso 38
+cai em 77,729 s, ou seja no quadro 2332. Como não dá para deslocar a cabeça sem
+perder o fim (a faixa só tem 0,76 s de sobra sobre o vídeo), quem se ajustou foi
+o vídeo: o card da pergunta 2 perdeu quatro quadros e o total ficou em 2347, o
+que põe o fim exatamente quinze quadros depois daquele tempo forte — a mesma
+folga das edições anteriores. O `MUSIC_FADE_OUT` é curto para entrar só depois
+dele.
 
 Por cima disso o volume ainda varia no `musicVolume` (`src/content.ts`): abre
 nos cards e no encerramento, onde ninguém fala, e recua para um leito por baixo
-da voz da Mari.
+da voz da Mari. Para trocar a música de novo, refaça a medição de BPM e fase —
+os números do compasso mudam com o andamento.
 
 ## Marca
 
@@ -151,8 +153,8 @@ npx remotion render FeatureDaSemana out/perguntas-respostas-setembro.mp4 \
 O `remotion.config.ts` já carrega os parâmetros de qualidade: quadros
 intermediários em PNG (o padrão é JPEG, que é uma geração de perda no meio do
 caminho, e ainda marca a saída como `yuvj420p`), CRF 13, preset `veryslow` e
-áudio em 320k. Sai um master de 2351 quadros, 86 MiB a 9,2 Mbps, com a mixagem
-em -16,6 LUFS integrado e pico real -1,2 dBTP.
+áudio em 320k. Sai um master de 2347 quadros, 86 MiB a 9,2 Mbps, com a mixagem
+em -16,4 LUFS integrado e pico real -0,9 dBTP.
 
 Para uma cópia menor sem perda visível, reencode em dois passes a partir do
 master — 3500k dá 35 MiB com SSIM 0,994 contra ele:

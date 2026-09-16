@@ -61,7 +61,7 @@ export const segments: Segment[] = [
     id: "pergunta-2",
     index: 2,
     question: "Como a Wispot pode gerar receita para um provedor de internet?",
-    durationInFrames: 96,
+    durationInFrames: 92,
   },
   {
     kind: "clip",
@@ -135,8 +135,10 @@ export const totalDurationInFrames =
  * um leito discreto por baixo da Mari. Sem isso ela ou some no vídeo inteiro ou
  * briga com a voz.
  *
- * O fade final é curto de propósito: a faixa foi montada para o tempo forte do
- * último compasso cair no quadro 2336, e o fade só entra depois dele.
+ * O fade final é curto de propósito: o tempo forte do último compasso da faixa
+ * cai no quadro 2332, e o fade só entra depois dele. O card da pergunta 2 tem
+ * quatro quadros a menos do que pedia o texto justamente para o vídeo fechar
+ * quinze quadros depois desse tempo forte, e não no meio do compasso.
  */
 const MUSIC_DUCKED = 0.09;
 const MUSIC_OPEN = 0.38;
