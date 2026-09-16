@@ -77,7 +77,7 @@ export const QuestionCard: React.FC<{ data: QuestionCardData }> = ({ data }) => 
         <h1
           style={{
             margin: 0,
-            fontSize: data.question.length > 44 ? 90 : 104,
+            fontSize: questionSize(data.question),
             lineHeight: 1.12,
             fontWeight: 800,
             color: brand.colors.white,
@@ -103,6 +103,17 @@ export const QuestionCard: React.FC<{ data: QuestionCardData }> = ({ data }) => 
       </div>
     </AbsoluteFill>
   );
+};
+
+/**
+ * As perguntas da série variam de 40 a 60 caracteres. Um corpo fixo ou estoura
+ * a caixa nas longas ou desperdiça a tela nas curtas, então o tamanho desce em
+ * degraus conforme o texto cresce.
+ */
+const questionSize = (question: string) => {
+  if (question.length > 56) return 82;
+  if (question.length > 44) return 90;
+  return 104;
 };
 
 /** Fecha os cantos para o branco do texto não competir com o azul aberto. */

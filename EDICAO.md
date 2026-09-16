@@ -1,32 +1,34 @@
-# Perguntas e Respostas — fechamento de agosto
+# Perguntas e Respostas — setembro
 
-Vídeo vertical 1080×1920, 30 fps, ~63,1 s. Composição Remotion: `FeatureDaSemana`.
+Vídeo vertical 1080×1920, 30 fps, ~78,4 s. Composição Remotion: `FeatureDaSemana`.
 
-Terceiro vídeo da série de perguntas e respostas, gravado com a Mari. Fecha o
-mês: a abertura anuncia a última rodada de agosto e o encerramento aponta para
-setembro.
+Quarto vídeo da série de perguntas e respostas, gravado com a Mari. Quatro
+perguntas: segmentos atendidos, receita para provedor, fabricantes suportados e
+pesquisa de público com o WiQuest.
 
 ## Cortes
 
-Cada take de pergunta e resposta começava com a pergunta feita fora de quadro,
-captada fraca pela lapela da Mari (6–10 dB abaixo da voz dela). Esses trechos
-foram removidos no corte — as perguntas agora aparecem como cards.
+Só o take da pergunta 1 trazia a pergunta feita fora de quadro, captada fraca
+pela lapela da Mari; os outros já abriam pela resposta. A pergunta foi removida
+no corte e todas as quatro entram como card, para a série manter o mesmo ritmo.
+O take da pergunta 3 começava por uma tentativa interrompida ("hoje a
+Wispot…", riso), que também saiu.
 
 Os `.mov` originais não ficam no repositório. Pontos usados para gerar
 `public/videos/`:
 
-| Origem     | Trecho cortado (pergunta) | Trecho mantido   | Saída            |
-| ---------- | ------------------------- | ---------------- | ---------------- |
-| `IMG_7683` | —                         | 1,00 → 6,20 s    | `abertura.mp4`   |
-| `IMG_7686` | 1,00 → 2,90 s             | 3,08 → 11,60 s   | `resposta-1.mp4` |
-| `IMG_7688` | 0,80 → 2,45 s             | 2,70 → 18,10 s   | `resposta-2.mp4` |
-| `IMG_7689` | 0,85 → 3,40 s             | 3,62 → 18,95 s   | `resposta-3.mp4` |
-| `IMG_7691` | —                         | 0,85 → 10,45 s   | `fechamento.mp4` |
+| Origem     | Trecho cortado          | Trecho mantido   | Saída            |
+| ---------- | ----------------------- | ---------------- | ---------------- |
+| `IMG_8494` | —                       | 0,79 → 6,92 s    | `abertura.mp4`   |
+| `IMG_8496` | 1,00 → 3,10 s (pergunta)| 3,62 → 17,62 s   | `resposta-1.mp4` |
+| `IMG_8497` | —                       | 0,29 → 18,80 s   | `resposta-2.mp4` |
+| `IMG_8500` | 1,30 → 3,75 s (take falho) | 4,60 → 16,78 s | `resposta-3.mp4` |
+| `IMG_8501` | —                       | 1,41 → 13,42 s   | `resposta-4.mp4` |
+| `IMG_8502` | —                       | 1,56 → 5,90 s    | `fechamento.mp4` |
 
-As fronteiras não foram estimadas no olho: em cada take o áudio foi varrido em
+As fronteiras não foram estimadas no olho: o áudio de cada take foi varrido em
 janelas curtas com o reconhecedor, e o corte ficou no primeiro instante em que a
-transcrição já abria pela resposta da Mari, dentro do vale de silêncio entre a
-pergunta e ela.
+transcrição já abria pela resposta da Mari, dentro do vale de silêncio anterior.
 
 Comando por clipe (rotação do iPhone já aplicada, áudio nivelado em -16 LUFS):
 
@@ -39,8 +41,7 @@ ffmpeg -ss <inicio> -to <fim> -i <origem>.mov \
 ```
 
 O CRF 14 aqui é o teto de qualidade do vídeo inteiro: o render final reencoda
-por cima destes arquivos, então o que se perde no corte não volta. Os cinco
-clipes somam 52 MB — é o custo de não estrangular a fonte.
+por cima destes arquivos, então o que se perde no corte não volta.
 
 ## Estrutura
 
@@ -49,113 +50,103 @@ segmento e a faixa de lembrete que aparece sobre as respostas.
 
 | # | Pergunta (card) | Resposta |
 | - | --------------- | -------- |
-| 1 | Dá pra integrar com o CRM que eu já uso? | `resposta-1.mp4` |
-| 2 | Depois que instala, quem atende? | `resposta-2.mp4` |
-| 3 | Tenho vários pontos de acesso. Consigo ver tudo junto? | `resposta-3.mp4` |
+| 1 | Para quais tipos de negócio a Wispot é indicada? | `resposta-1.mp4` |
+| 2 | Como a Wispot pode gerar receita para um provedor de internet? | `resposta-2.mp4` |
+| 3 | Quais equipamentos funcionam com a Wispot? | `resposta-3.mp4` |
+| 4 | Como saber o que o público acha do meu espaço? | `resposta-4.mp4` |
 
-Ressalva na pergunta 1: a sigla sai muito abafada no take (a pergunta é feita
-longe da lapela) e o reconhecedor devolve "série"/"serre" em toda tentativa,
-com ganho ou sem. "CRM" é a leitura que casa com o som e com a resposta dela,
-sobre os dados alimentarem as ferramentas que o time já usa — mas é uma leitura,
-não uma transcrição limpa. Se tiver sido outra palavra, é trocar em
-`src/content.ts`.
+### Onde a fala diverge do roteiro
 
-## Renderizar
+As legendas seguem o que a Mari falou, não o roteiro escrito. As diferenças que
+importam para quem for aprovar o vídeo:
 
-```console
-npx remotion render FeatureDaSemana out/perguntas-respostas-agosto.mp4
-```
+- **Pergunta 1.** O roteiro lista varejo, hotelaria, saúde, educação, cidades
+  inteligentes e provedores. Ela cita hotéis, grandes hospitais, redes de varejo
+  como farmácias e supermercados, cidades inteligentes e provedores — educação
+  não entra.
+- **Pergunta 2.** O roteiro fala em "composição tributária mais eficiente"; ela
+  diz que "contribui na questão tributária dos impostos". A ressalva sobre
+  regime da empresa e validação contábil e jurídica ela mantém.
+- **Pergunta 3.** O roteiro diz 21 fabricantes e lista Cisco, Aruba, Ubiquiti,
+  Huawei, Intelbras, MikroTik e TP-Link. Ela diz "mais de 20 fabricantes" e cita
+  Huawei, Cambium, Cisco, Aruba e MikroTik.
+- **Pergunta 4.** O roteiro menciona pesquisas "com o visual da sua marca"; ela
+  fala em aplicar a pesquisa dentro do estabelecimento e acompanhar as respostas
+  em tempo real no painel.
 
-O `remotion.config.ts` já carrega os parâmetros de qualidade: quadros
-intermediários em PNG (o padrão é JPEG, que é uma geração de perda no meio do
-caminho, e ainda marca a saída como `yuvj420p`), CRF 13, preset `veryslow` e
-áudio em 320k. Sai um master de ~56 MB a 6,8 Mbps.
+Três palavras são leitura, não transcrição limpa, e estão em `src/captions.ts`
+caso precisem de troca:
 
-Para uma cópia menor sem perda visível, reencode em dois passes a partir do
-master — 3500k dá ~28 MiB com SSIM 0,998 contra ele:
-
-```console
-ffmpeg -i out/perguntas-respostas-agosto.mp4 -c:v libx264 -preset veryslow \
-  -b:v 3500k -pass 1 -an -f null /dev/null
-ffmpeg -i out/perguntas-respostas-agosto.mp4 -c:v libx264 -preset veryslow \
-  -b:v 3500k -pass 2 -pix_fmt yuv420p -profile:v high -level 4.1 \
-  -movflags +faststart -c:a aac -b:a 256k -ar 48000 \
-  out/perguntas-respostas-agosto-hq.mp4
-```
-
-## Marca
-
-Cores e tipografia saíram do *Manual de Marca - Wispot - 2026* (Drive), em
-`src/brand.ts`:
-
-| | |
-| --- | --- |
-| Azul | `#25a8e0` |
-| Cinza | `#514d4b` |
-| Branco | `#ffffff` |
-| Degradê | `#25a8e0` → `#0b91c1` |
-
-Tipografia institucional: Adineue Pro e Montserrat. Adineue Pro é licenciada e
-não está empacotada — o vídeo usa Montserrat, que o manual lista com o mesmo
-peso de uso.
-
-A logomarca oficial saiu do `wispot_colorido.png` (Drive), recortada no alpha.
-O manual só autoriza duas versões, branca e `#25a8e0`, e é o que
-`src/WispotMark.tsx` expõe:
-
-| Arquivo | Uso |
-| --- | --- |
-| `wispot-white.png` | rodapé dos clipes e card final |
-| `wispot-color.png` | versão azul, sobre fundo claro |
-| `wispot-icon-*.png` | símbolo de Wi-Fi (arcos + ponto), ao lado de texto curto |
+- **"Cambium"** — o reconhecedor devolve "câmbio" em toda tentativa. É o
+  fabricante que casa com o som e com a lista.
+- **"A Wispot pode ser classificada"** — o modelo devolve "o spot… classificado".
+  A marca é tratada no feminino no resto do vídeo, e é assim que ficou.
+- **"entre em contato conosco"** — a vogal final sai átona demais para o modelo
+  decidir entre "entre" e "entra".
 
 ## Legendas
 
 `src/captions.ts` — texto e quadros de cada legenda, relativos ao clipe.
 
 O texto veio de transcrição do próprio áudio (Whisper small em português, via
-sherpa-onnx), **não** do roteiro: a Mari improvisa bastante, e o que ela fala
-difere do texto escrito. Corrija palavras nesse arquivo, não no roteiro.
+sherpa-onnx), **não** do roteiro. Corrija palavras nesse arquivo.
 
-O modelo não devolve timestamps, então cada fronteira foi procurada. Primeiro
-passe: para cada linha, janelas de 2,2 s a partir de vários instantes são
-reconhecidas e fica o instante cuja transcrição melhor abre com as palavras
-esperadas, com a busca semeada por uma estimativa silábica sobre o tempo de
-fala. Segundo passe: cada fronteira é pontuada pelos dois lados — a linha que
-fecha e a que abre — e encostada no vale de silêncio mais próximo, que é onde a
-troca passa despercebida. Isso substituiu o ajuste fixo de +3 quadros da versão
-anterior, que existia só para compensar a distribuição silábica.
+O modelo não devolve timestamps, então cada fronteira foi procurada. Uma
+estimativa silábica semeia os candidatos; cada candidato é pontuado pelos dois
+lados — a janela que termina ali tem de fechar com a linha que sai, e a que
+começa ali tem de abrir com a linha que entra — e o vencedor é encostado no vale
+de silêncio mais próximo. As fronteiras são resolvidas da esquerda para a
+direita, reestimando o que falta a cada acerto, senão uma linha que corre longa
+arrasta todas as seguintes. Depois disso cada fronteira foi conferida à mão com
+o reconhecedor.
 
 ## Trilha
 
 `public/audio/theme.mp3` — *Lite Saturation Motivation*, 110 BPM, instrumental,
-fornecida pelo cliente. Do arquivo original (93,9 s) saem os 64,6 s usados aqui.
+fornecida pelo cliente; a mesma das edições anteriores, já com o corte na grade
+do compasso e o nivelamento entre seções descritos na edição de agosto.
 
-Dois tratamentos antes de entrar:
-
-- **Corte com a grade do compasso.** O primeiro tempo forte da faixa cai em
-  2,181 s e o compasso dura 2,1818 s. Cortando 0,673 s da cabeça, o tempo forte
-  do compasso 28 cai no quadro 1878 — quinze quadros antes do fim. O vídeo
-  fecha em cima da batida em vez de cortar no meio de um compasso, e o fade
-  final (`MUSIC_FADE_OUT`) é curto justamente para entrar só depois dela.
-- **Nivelamento entre seções.** A faixa abre discreta, ganha os chimbais aos
-  19 s e estoura no refrão aos 36 s — uma variação de 12 dB. Sob a voz da Mari
-  isso significaria trilha inaudível no começo e brigando com ela no fim. Um
-  compressor lento fecha essa variação para 4,8 dB, preservando o arco:
+Aquele leito tinha 64,6 s e este vídeo tem 78,4 s. Como o arquivo original de
+93,9 s não está no repositório, a faixa foi esticada por dentro: sete compassos
+(15,27 s) da seção intermediária são repetidos, entrando e saindo em tempo forte.
 
 ```console
-ffmpeg -ss 0.673 -t 64.6 -i <original>.mp3 \
-  -af "acompressor=threshold=-26dB:ratio=3:attack=300:release=2500,volume=8dB,\
-       alimiter=limit=0.94:level=disabled,afade=t=in:st=0:d=0.6" \
-  -c:a libmp3lame -b:a 192k -ar 44100 public/audio/theme.mp3
+# emendas em 34,236 s (fim do trecho) e 49,508 s (fim da repetição)
+ffmpeg -i theme.wav -ss 0        -to 34.235727 part0.wav
+ffmpeg -i theme.wav -ss 18.963   -to 34.235727 part1.wav
+ffmpeg -i theme.wav -ss 34.235727                part2.wav
+ffmpeg -f concat -safe 0 -i concat.txt -c:a pcm_s24le theme-long.wav
+ffmpeg -i theme-long.wav -c:a libmp3lame -b:a 192k -ar 44100 public/audio/theme.mp3
 ```
 
-Resultado: -19,1 dB RMS na abertura, -14,3 dB no trecho final, pico -0,5 dBFS.
+As emendas caem em tempo forte e não estalam: o salto de amostra é 0,081 e
+0,016, contra transientes de 0,34 a 0,87 na própria faixa. Com isso o tempo
+forte do último compasso cai no quadro 2336 — quinze quadros antes do fim —,
+como nas outras edições, e o `MUSIC_FADE_OUT` é curto para entrar só depois
+dele. Se o arquivo original aparecer, vale refazer o corte a partir dele: 93,9 s
+cobrem estes 78,4 s sem repetição.
 
 Por cima disso o volume ainda varia no `musicVolume` (`src/content.ts`): abre
 nos cards e no encerramento, onde ninguém fala, e recua para um leito por baixo
-da voz da Mari — cerca de 17 dB abaixo dela. As rampas caem dentro das
-transições. Para trocar a música, refaça o corte acima com a faixa nova — os
-números do compasso mudam com o BPM.
+da voz da Mari.
 
-Mixagem final: -16,4 LUFS integrado, pico real -1,1 dBTP.
+## Marca
+
+Cores e tipografia saíram do *Manual de Marca - Wispot - 2026* (Drive), em
+`src/brand.ts` — azul `#25a8e0`, cinza `#514d4b`, degradê `#25a8e0` → `#0b91c1`.
+A logomarca em `src/WispotMark.tsx` só expõe as duas versões que o manual
+autoriza. Tipografia: Montserrat, que o manual lista ao lado da Adineue Pro
+(licenciada, não empacotada).
+
+## Renderizar
+
+O Chrome headless do Remotion não baixa neste ambiente (`remotion.media` fora da
+allowlist), então aponte para o Chromium já instalado:
+
+```console
+npx remotion render FeatureDaSemana out/perguntas-respostas-setembro.mp4 \
+  --browser-executable=/opt/pw-browsers/chromium_headless_shell-1194/chrome-linux/headless_shell
+```
+
+O `remotion.config.ts` já carrega os parâmetros de qualidade: quadros
+intermediários em PNG, CRF 13, preset `veryslow` e áudio em 320k.

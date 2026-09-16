@@ -5,10 +5,10 @@ export const HEIGHT = 1920;
 export const TRANSITION_FRAMES = 9;
 
 /**
- * The raw takes each opened with the question asked off-camera, picked up
- * faintly by Mari's lavalier. Those heads are trimmed out of the mp4s in
- * public/videos, so the questions live here as cards instead — the card is what
- * now carries the question that used to be spoken.
+ * Onde a pergunta foi feita fora de quadro, ela sai do take e vira card: a
+ * lapela da Mari pegava a voz de quem perguntava fraca demais para ir ao ar.
+ * Os takes que já abriam pela resposta continuam entrando por um card, para a
+ * série manter o mesmo ritmo de pergunta e resposta.
  */
 export type QuestionCard = {
   kind: "question";
@@ -38,7 +38,7 @@ export const segments: Segment[] = [
     kind: "clip",
     id: "abertura",
     video: "videos/abertura.mp4",
-    durationInFrames: 156,
+    durationInFrames: 184,
     kicker: "Perguntas e Respostas",
     nameCard: { name: "Mari", role: "Time Wispot" },
   },
@@ -46,49 +46,63 @@ export const segments: Segment[] = [
     kind: "question",
     id: "pergunta-1",
     index: 1,
-    question: "Dá pra integrar com o CRM que eu já uso?",
-    durationInFrames: 78,
+    question: "Para quais tipos de negócio a Wispot é indicada?",
+    durationInFrames: 82,
   },
   {
     kind: "clip",
     id: "resposta-1",
     video: "videos/resposta-1.mp4",
-    durationInFrames: 257,
-    ribbon: "Integra com o meu CRM?",
+    durationInFrames: 421,
+    ribbon: "Para quais negócios a Wispot serve?",
   },
   {
     kind: "question",
     id: "pergunta-2",
     index: 2,
-    question: "Depois que instala, quem atende?",
-    durationInFrames: 72,
+    question: "Como a Wispot pode gerar receita para um provedor de internet?",
+    durationInFrames: 96,
   },
   {
     kind: "clip",
     id: "resposta-2",
     video: "videos/resposta-2.mp4",
-    durationInFrames: 463,
-    ribbon: "Depois que instala, quem atende?",
+    durationInFrames: 553,
+    ribbon: "Como gerar receita com a Wispot?",
   },
   {
     kind: "question",
     id: "pergunta-3",
     index: 3,
-    question: "Tenho vários pontos de acesso. Consigo ver tudo junto?",
-    durationInFrames: 100,
+    question: "Quais equipamentos funcionam com a Wispot?",
+    durationInFrames: 76,
   },
   {
     kind: "clip",
     id: "resposta-3",
     video: "videos/resposta-3.mp4",
-    durationInFrames: 460,
-    ribbon: "Dá pra ver todas as unidades juntas?",
+    durationInFrames: 366,
+    ribbon: "Quais equipamentos funcionam?",
+  },
+  {
+    kind: "question",
+    id: "pergunta-4",
+    index: 4,
+    question: "Como saber o que o público acha do meu espaço?",
+    durationInFrames: 80,
+  },
+  {
+    kind: "clip",
+    id: "resposta-4",
+    video: "videos/resposta-4.mp4",
+    durationInFrames: 362,
+    ribbon: "Como saber o que o público acha?",
   },
   {
     kind: "clip",
     id: "fechamento",
     video: "videos/fechamento.mp4",
-    durationInFrames: 289,
+    durationInFrames: 131,
   },
 ];
 
@@ -121,8 +135,8 @@ export const totalDurationInFrames =
  * um leito discreto por baixo da Mari. Sem isso ela ou some no vídeo inteiro ou
  * briga com a voz.
  *
- * O fade final é curto de propósito: a faixa foi cortada para o tempo forte do
- * último compasso cair no quadro 1878, e o fade só entra depois dele.
+ * O fade final é curto de propósito: a faixa foi montada para o tempo forte do
+ * último compasso cair no quadro 2336, e o fade só entra depois dele.
  */
 const MUSIC_DUCKED = 0.09;
 const MUSIC_OPEN = 0.38;

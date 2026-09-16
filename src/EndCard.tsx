@@ -45,7 +45,7 @@ export const EndCard: React.FC = () => {
           textShadow: "0 4px 28px rgba(0,0,0,0.26)",
         }}
       >
-        A série continua em setembro.
+        Fale com a gente.
       </h2>
 
       <p
@@ -58,8 +58,8 @@ export const EndCard: React.FC = () => {
           opacity: line * 0.92,
         }}
       >
-        Segue a Wispot e manda a sua dúvida.
-        <br />A gente responde no próximo vídeo.
+        A gente mostra como a Wispot
+        <br />pode funcionar no seu negócio.
       </p>
 
       <div
