@@ -9,6 +9,7 @@ import {
 } from "remotion";
 import { brand } from "./brand";
 import { WifiIcon, WispotMark } from "./WispotMark";
+import { SPEED } from "./content";
 import type { Clip } from "./content";
 import { captions } from "./captions";
 
@@ -17,6 +18,7 @@ export const VideoBlock: React.FC<{ clip: Clip }> = ({ clip }) => {
     <AbsoluteFill style={{ background: brand.colors.gray }}>
       <OffthreadVideo
         src={staticFile(clip.video)}
+        playbackRate={SPEED}
         style={{ width: "100%", height: "100%", objectFit: "cover" }}
       />
 
@@ -207,10 +209,13 @@ const NameCard: React.FC<{ name: string; role: string }> = ({ name, role }) => {
 const Captions: React.FC<{ clipId: string }> = ({ clipId }) => {
   const frame = useCurrentFrame();
   const lines = captions[clipId] ?? [];
-  const current = lines.find((l) => frame >= l.from && frame < l.to);
+  // Os quadros em captions.ts foram medidos contra a gravação, que aqui roda
+  // acelerada — daí a conversão, em vez de reescrever o arquivo inteiro.
+  const sourceFrame = frame * SPEED;
+  const current = lines.find((l) => sourceFrame >= l.from && sourceFrame < l.to);
   if (!current) return null;
 
-  const age = frame - current.from;
+  const age = (sourceFrame - current.from) / SPEED;
   const pop = interpolate(age, [0, 5], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",

@@ -1,16 +1,22 @@
 # Perguntas e Respostas — setembro
 
-Vídeo vertical 1080×1920, 30 fps, ~78,2 s. Composição Remotion: `FeatureDaSemana`.
+Vídeo vertical 1080×1920, 30 fps, 52,0 s. Composição Remotion: `FeatureDaSemana`.
 
-Quarto vídeo da série de perguntas e respostas, gravado com a Mari. Quatro
-perguntas: segmentos atendidos, receita para provedor, fabricantes suportados e
-pesquisa de público com o WiQuest.
+Quarto vídeo da série de perguntas e respostas, gravado com a Mari. Três
+perguntas no ar: segmentos atendidos, fabricantes suportados e pesquisa de
+público com o WiQuest.
+
+A quarta gravada, sobre receita para provedor de internet, saiu desta edição a
+pedido do cliente e foi entregue solta. O take continua em
+`public/videos/resposta-2.mp4` com as legendas dele em `captions.ts`: recolocar
+os dois segmentos em `src/content.ts` traz a pergunta de volta, e só os `index`
+dos cards seguintes mudam.
 
 ## Cortes
 
 Só o take da pergunta 1 trazia a pergunta feita fora de quadro, captada fraca
 pela lapela da Mari; os outros já abriam pela resposta. A pergunta foi removida
-no corte e todas as quatro entram como card, para a série manter o mesmo ritmo.
+no corte e todas as perguntas entram como card, para a série manter o mesmo ritmo.
 O take da pergunta 3 começava por uma tentativa interrompida ("hoje a
 Wispot…", riso), que também saiu.
 
@@ -51,9 +57,28 @@ segmento e a faixa de lembrete que aparece sobre as respostas.
 | # | Pergunta (card) | Resposta |
 | - | --------------- | -------- |
 | 1 | Para quais tipos de negócio a Wispot é indicada? | `resposta-1.mp4` |
-| 2 | Como a Wispot pode gerar receita para um provedor de internet? | `resposta-2.mp4` |
-| 3 | Quais equipamentos funcionam com a Wispot? | `resposta-3.mp4` |
-| 4 | Como saber o que o público acha do meu espaço? | `resposta-4.mp4` |
+| 2 | Quais equipamentos funcionam com a Wispot? | `resposta-3.mp4` |
+| 3 | Como saber o que o público acha do meu espaço? | `resposta-4.mp4` |
+| — | Como a Wispot pode gerar receita para um provedor de internet? | `resposta-2.mp4`, fora desta edição |
+
+O número do card é o que o espectador lê, então ele acompanha a ordem no ar; os
+ids e os nomes de arquivo continuam presos ao take que os originou.
+
+### Ritmo
+
+A Mari fala num andamento confortável demais para o formato — cerca de 145
+palavras por minuto —, então os takes rodam a `SPEED` (1,12) pelo `playbackRate`
+do Remotion, que estica o áudio com atempo e deixa o tom onde está. Medido na
+abertura, a f0 dela sai em 195/189/216 Hz contra 195/191/216 Hz da fonte: a
+diferença está dentro do erro da medição, ou seja não há transposição.
+
+Os cards ficam de fora da conta: tempo de leitura não acelera junto com a fala.
+
+Tudo que foi medido contra a gravação continua escrito em quadros da fonte — o
+`sourceFrames` de cada clipe e os quadros em `captions.ts` —, e é dividido por
+`SPEED` na hora de usar. Mudar essa constante re-cronometra o vídeo inteiro. A
+duração de cada sequência usa piso, nunca teto, para uma sequência não durar
+mais que a footage dela.
 
 ### Onde a fala diverge do roteiro
 
@@ -64,9 +89,9 @@ importam para quem for aprovar o vídeo:
   inteligentes e provedores. Ela cita hotéis, grandes hospitais, redes de varejo
   como farmácias e supermercados, cidades inteligentes e provedores — educação
   não entra.
-- **Pergunta 2.** O roteiro fala em "composição tributária mais eficiente"; ela
-  diz que "contribui na questão tributária dos impostos". A ressalva sobre
-  regime da empresa e validação contábil e jurídica ela mantém.
+- **Pergunta 2 (fora desta edição).** O roteiro fala em "composição tributária
+  mais eficiente"; ela diz que "contribui na questão tributária dos impostos". A
+  ressalva sobre regime da empresa e validação contábil e jurídica ela mantém.
 - **Pergunta 3.** O roteiro diz 21 fabricantes e lista Cisco, Aruba, Ubiquiti,
   Huawei, Intelbras, MikroTik e TP-Link. Ela diz "mais de 20 fabricantes" e cita
   Huawei, Cambium, Cisco, Aruba e MikroTik.
@@ -103,34 +128,32 @@ o reconhecedor.
 ## Trilha
 
 `public/audio/theme.mp3` — *Nastelbom / Funky*, 115 BPM, instrumental, fornecida
-pelo cliente. Do arquivo original (79,1 s) saem os 78,4 s usados aqui.
+pelo cliente. Do arquivo original (79,1 s) saem os 52,2 s usados aqui.
 
-Ao contrário da faixa de agosto, esta não precisou de compressão: o arco dela já
-varia só 4,6 dB entre as seções, e boa parte disso é a própria cauda baixando no
-fim. O tratamento foi só nível e corte:
+Esta faixa não precisou de compressão: o arco dela já varia só 4,6 dB entre as
+seções, e boa parte disso é a própria cauda baixando no fim. O tratamento foi
+nível e corte:
 
 ```console
-ffmpeg -t 78.40 -i <original>.mp3 \
+ffmpeg -ss 1.1859 -t 52.15 -i <original>.mp3 \
   -af "volume=-4.5dB,alimiter=limit=0.9:level=disabled,afade=t=in:st=0:d=0.6" \
   -c:a libmp3lame -b:a 192k -ar 44100 public/audio/theme.mp3
 ```
 
 Os -4,5 dB põem a faixa em -16,4 dB RMS, o mesmo ponto em que o leito anterior
-ficava — é o que mantém válidas as constantes de `musicVolume` sem remexer nelas.
+da série ficava — é o que mantém válidas as constantes de `musicVolume` sem
+remexer nelas.
 
 **Corte com a grade do compasso.** A faixa é 115 BPM cravados, compasso de
-2,08696 s, com o primeiro tempo forte em 0,512 s. O tempo forte do compasso 38
-cai em 77,729 s, ou seja no quadro 2332. Como não dá para deslocar a cabeça sem
-perder o fim (a faixa só tem 0,76 s de sobra sobre o vídeo), quem se ajustou foi
-o vídeo: o card da pergunta 2 perdeu quatro quadros e o total ficou em 2347, o
-que põe o fim exatamente quinze quadros depois daquele tempo forte — a mesma
-folga das edições anteriores. O `MUSIC_FADE_OUT` é curto para entrar só depois
-dele.
+2,08696 s, com o primeiro tempo forte em 0,512 s. Cortando 1,1859 s da cabeça, o
+tempo forte do compasso 26 cai no quadro 1545 — quinze quadros antes do fim. O
+vídeo fecha em cima da batida em vez de cortar no meio de um compasso, e o
+`MUSIC_FADE_OUT` é curto justamente para entrar só depois dela.
 
 Por cima disso o volume ainda varia no `musicVolume` (`src/content.ts`): abre
 nos cards e no encerramento, onde ninguém fala, e recua para um leito por baixo
-da voz da Mari. Para trocar a música de novo, refaça a medição de BPM e fase —
-os números do compasso mudam com o andamento.
+da voz da Mari. Ao mexer na duração do vídeo, refaça a conta do corte de cabeça;
+ao trocar a faixa, refaça também a medição de BPM e fase.
 
 ## Marca
 
@@ -153,11 +176,11 @@ npx remotion render FeatureDaSemana out/perguntas-respostas-setembro.mp4 \
 O `remotion.config.ts` já carrega os parâmetros de qualidade: quadros
 intermediários em PNG (o padrão é JPEG, que é uma geração de perda no meio do
 caminho, e ainda marca a saída como `yuvj420p`), CRF 13, preset `veryslow` e
-áudio em 320k. Sai um master de 2347 quadros, 86 MiB a 9,2 Mbps, com a mixagem
-em -16,4 LUFS integrado e pico real -0,9 dBTP.
+áudio em 320k. Sai um master de 1560 quadros, 59 MiB a 9,2 Mbps, com a mixagem
+em -16,9 LUFS integrado e pico real -1,3 dBTP.
 
 Para uma cópia menor sem perda visível, reencode em dois passes a partir do
-master — 3500k dá 35 MiB com SSIM 0,994 contra ele:
+master — 3500k dá 23 MiB com SSIM 0,994 contra ele:
 
 ```console
 ffmpeg -i out/perguntas-respostas-setembro.mp4 -c:v libx264 -preset veryslow \

@@ -5,6 +5,22 @@ export const HEIGHT = 1920;
 export const TRANSITION_FRAMES = 9;
 
 /**
+ * A Mari fala num ritmo confortável demais para o formato, então os takes
+ * rodam acelerados pelo `playbackRate` do Remotion, que estica o áudio com
+ * atempo e deixa o tom onde está.
+ *
+ * Tudo que foi medido contra a gravação — a duração de cada take aqui e os
+ * quadros das legendas em `captions.ts` — continua escrito em quadros da
+ * fonte, e é dividido por SPEED na hora de usar. Mudar esta constante
+ * re-cronometra o vídeo inteiro. Os cards ficam de fora: tempo de leitura não
+ * acelera junto com a fala.
+ */
+export const SPEED = 1.12;
+
+/** Piso, nunca teto: uma sequência não pode durar mais que a footage dela. */
+export const atSpeed = (sourceFrames: number) => Math.floor(sourceFrames / SPEED);
+
+/**
  * Onde a pergunta foi feita fora de quadro, ela sai do take e vira card: a
  * lapela da Mari pegava a voz de quem perguntava fraca demais para ir ao ar.
  * Os takes que já abriam pela resposta continuam entrando por um card, para a
@@ -22,6 +38,8 @@ export type Clip = {
   kind: "clip";
   id: string;
   video: string;
+  /** Quadros do arquivo em `public/videos`, antes da aceleração. */
+  sourceFrames: number;
   durationInFrames: number;
   /** Small ribbon reminding late viewers which question is being answered. */
   ribbon?: string;
@@ -33,12 +51,19 @@ export type Clip = {
 
 export type Segment = QuestionCard | Clip;
 
+/**
+ * A pergunta sobre receita para provedor saiu desta edição. O take continua em
+ * `public/videos/resposta-2.mp4` e as legendas dele em `captions.ts`, então
+ * voltar com ele é recolocar os dois segmentos aqui — os `index` dos cards
+ * seguintes é que sobem ou descem, porque é o que o espectador lê.
+ */
 export const segments: Segment[] = [
   {
     kind: "clip",
     id: "abertura",
     video: "videos/abertura.mp4",
-    durationInFrames: 184,
+    sourceFrames: 184,
+    durationInFrames: atSpeed(184),
     kicker: "Perguntas e Respostas",
     nameCard: { name: "Mari", role: "Time Wispot" },
   },
@@ -53,27 +78,14 @@ export const segments: Segment[] = [
     kind: "clip",
     id: "resposta-1",
     video: "videos/resposta-1.mp4",
-    durationInFrames: 421,
+    sourceFrames: 421,
+    durationInFrames: atSpeed(421),
     ribbon: "Para quais negócios a Wispot serve?",
   },
   {
     kind: "question",
-    id: "pergunta-2",
-    index: 2,
-    question: "Como a Wispot pode gerar receita para um provedor de internet?",
-    durationInFrames: 92,
-  },
-  {
-    kind: "clip",
-    id: "resposta-2",
-    video: "videos/resposta-2.mp4",
-    durationInFrames: 553,
-    ribbon: "Como gerar receita com a Wispot?",
-  },
-  {
-    kind: "question",
     id: "pergunta-3",
-    index: 3,
+    index: 2,
     question: "Quais equipamentos funcionam com a Wispot?",
     durationInFrames: 76,
   },
@@ -81,13 +93,14 @@ export const segments: Segment[] = [
     kind: "clip",
     id: "resposta-3",
     video: "videos/resposta-3.mp4",
-    durationInFrames: 366,
+    sourceFrames: 366,
+    durationInFrames: atSpeed(366),
     ribbon: "Quais equipamentos funcionam?",
   },
   {
     kind: "question",
     id: "pergunta-4",
-    index: 4,
+    index: 3,
     question: "Como saber o que o público acha do meu espaço?",
     durationInFrames: 80,
   },
@@ -95,14 +108,16 @@ export const segments: Segment[] = [
     kind: "clip",
     id: "resposta-4",
     video: "videos/resposta-4.mp4",
-    durationInFrames: 362,
+    sourceFrames: 362,
+    durationInFrames: atSpeed(362),
     ribbon: "Como saber o que o público acha?",
   },
   {
     kind: "clip",
     id: "fechamento",
     video: "videos/fechamento.mp4",
-    durationInFrames: 131,
+    sourceFrames: 131,
+    durationInFrames: atSpeed(131),
   },
 ];
 
@@ -136,9 +151,8 @@ export const totalDurationInFrames =
  * briga com a voz.
  *
  * O fade final é curto de propósito: o tempo forte do último compasso da faixa
- * cai no quadro 2332, e o fade só entra depois dele. O card da pergunta 2 tem
- * quatro quadros a menos do que pedia o texto justamente para o vídeo fechar
- * quinze quadros depois desse tempo forte, e não no meio do compasso.
+ * cai no quadro 1545, quinze quadros antes do fim, e o fade só entra depois
+ * dele.
  */
 const MUSIC_DUCKED = 0.09;
 const MUSIC_OPEN = 0.38;
