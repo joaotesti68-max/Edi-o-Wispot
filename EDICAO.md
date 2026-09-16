@@ -149,4 +149,19 @@ npx remotion render FeatureDaSemana out/perguntas-respostas-setembro.mp4 \
 ```
 
 O `remotion.config.ts` já carrega os parâmetros de qualidade: quadros
-intermediários em PNG, CRF 13, preset `veryslow` e áudio em 320k.
+intermediários em PNG (o padrão é JPEG, que é uma geração de perda no meio do
+caminho, e ainda marca a saída como `yuvj420p`), CRF 13, preset `veryslow` e
+áudio em 320k. Sai um master de 2351 quadros, 86 MiB a 9,2 Mbps, com a mixagem
+em -16,6 LUFS integrado e pico real -1,2 dBTP.
+
+Para uma cópia menor sem perda visível, reencode em dois passes a partir do
+master — 3500k dá 35 MiB com SSIM 0,994 contra ele:
+
+```console
+ffmpeg -i out/perguntas-respostas-setembro.mp4 -c:v libx264 -preset veryslow \
+  -b:v 3500k -pass 1 -an -f null /dev/null
+ffmpeg -i out/perguntas-respostas-setembro.mp4 -c:v libx264 -preset veryslow \
+  -b:v 3500k -pass 2 -pix_fmt yuv420p -profile:v high -level 4.1 \
+  -movflags +faststart -c:a aac -b:a 256k -ar 48000 \
+  out/perguntas-respostas-setembro-hq.mp4
+```
