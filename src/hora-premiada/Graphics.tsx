@@ -1,8 +1,14 @@
 import React from "react";
-import { Img, interpolate, staticFile, useCurrentFrame } from "remotion";
+import { Img, OffthreadVideo, interpolate, staticFile, useCurrentFrame } from "remotion";
 import { brand, horaPremiada } from "./brand";
 import { useReveal, IconBadge } from "./Ui";
 import { ClockIcon, RepeatIcon, TicketIcon } from "./Icons";
+
+const CARD = {
+  background: "rgba(255,255,255,0.96)",
+  borderRadius: 34,
+  boxShadow: "0 16px 44px rgba(4,26,38,0.34)",
+} as const;
 
 /**
  * A slice of the trading day with the promo window lit up — the literal shape
@@ -22,24 +28,21 @@ export const TimeWindow: React.FC<{ delay?: number }> = ({ delay = 0 }) => {
   return (
     <div
       style={{
+        ...CARD,
         width: "100%",
         opacity,
         transform: `translateY(${translateY}px)`,
-        background: "rgba(12,19,22,0.62)",
-        border: `1.5px solid ${brand.blueAlpha(0.45)}`,
-        backdropFilter: "blur(10px)",
-        borderRadius: 28,
-        padding: "26px 30px 20px",
+        padding: "28px 32px 22px",
       }}
     >
       <div
         style={{
           fontFamily: brand.fontFamily,
           fontWeight: 700,
-          fontSize: 28,
+          fontSize: 27,
           letterSpacing: 2.6,
           textTransform: "uppercase",
-          color: brand.blueAlpha(0.95),
+          color: brand.colors.blue,
           marginBottom: 20,
         }}
       >
@@ -50,8 +53,8 @@ export const TimeWindow: React.FC<{ delay?: number }> = ({ delay = 0 }) => {
         style={{
           position: "relative",
           height: 62,
-          borderRadius: 16,
-          background: "rgba(255,255,255,0.12)",
+          borderRadius: 999,
+          background: brand.blueAlpha(0.16),
           overflow: "hidden",
         }}
       >
@@ -62,8 +65,9 @@ export const TimeWindow: React.FC<{ delay?: number }> = ({ delay = 0 }) => {
             width: `${windowWidth * fill}%`,
             top: 0,
             bottom: 0,
+            borderRadius: 999,
             background: brand.gradient,
-            boxShadow: `0 0 ${34 * pulse}px ${brand.blueAlpha(0.85 * pulse)}`,
+            boxShadow: `0 0 ${30 * pulse}px ${brand.blueAlpha(0.7 * pulse)}`,
           }}
         />
       </div>
@@ -79,9 +83,9 @@ export const TimeWindow: React.FC<{ delay?: number }> = ({ delay = 0 }) => {
               left: `${((h - 12) / span) * 100}%`,
               transform: `translateX(${i === 0 ? "0%" : i === hours.length - 1 ? "-100%" : "-50%"})`,
               fontFamily: brand.fontFamily,
-              fontWeight: 600,
+              fontWeight: h === 16 ? 700 : 600,
               fontSize: 24,
-              color: h === 16 ? brand.colors.white : "rgba(255,255,255,0.55)",
+              color: h === 16 ? brand.colors.blue : brand.colors.gray,
             }}
           >
             {h}h
@@ -93,8 +97,8 @@ export const TimeWindow: React.FC<{ delay?: number }> = ({ delay = 0 }) => {
         style={{
           display: "flex",
           alignItems: "center",
-          gap: 14,
-          marginTop: 18,
+          gap: 12,
+          marginTop: 16,
           opacity: interpolate(progress, [0.6, 1], [0, 1], { extrapolateLeft: "clamp" }),
         }}
       >
@@ -102,9 +106,10 @@ export const TimeWindow: React.FC<{ delay?: number }> = ({ delay = 0 }) => {
         <div
           style={{
             fontFamily: brand.fontFamily,
-            fontWeight: 700,
+            fontWeight: 800,
             fontSize: 34,
-            color: brand.colors.white,
+            letterSpacing: -0.4,
+            color: brand.colors.ink,
           }}
         >
           15h — 16h
@@ -126,16 +131,16 @@ export const CouponCard: React.FC<{ delay?: number }> = ({ delay = 0 }) => {
         display: "flex",
         alignItems: "stretch",
         background: brand.colors.white,
-        borderRadius: 24,
+        borderRadius: 30,
         overflow: "hidden",
         opacity,
         transform: `translateY(${lift}px) rotate(${tilt}deg)`,
-        boxShadow: "0 24px 60px rgba(0,0,0,0.45)",
+        boxShadow: "0 22px 56px rgba(4,26,38,0.42)",
       }}
     >
       <div
         style={{
-          width: 108,
+          width: 110,
           background: brand.gradient,
           display: "flex",
           alignItems: "center",
@@ -146,8 +151,8 @@ export const CouponCard: React.FC<{ delay?: number }> = ({ delay = 0 }) => {
       </div>
       <div
         style={{
-          borderLeft: `4px dashed ${brand.blueAlpha(0.45)}`,
-          padding: "20px 38px 22px 30px",
+          borderLeft: `4px dashed ${brand.blueAlpha(0.4)}`,
+          padding: "20px 40px 22px 30px",
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
@@ -159,7 +164,7 @@ export const CouponCard: React.FC<{ delay?: number }> = ({ delay = 0 }) => {
             fontFamily: brand.fontFamily,
             fontWeight: 800,
             fontSize: 46,
-            letterSpacing: 1,
+            letterSpacing: 0.5,
             color: brand.colors.blue,
           }}
         >
@@ -190,27 +195,30 @@ export const FeatureTitle: React.FC<{ delay?: number; width?: number }> = ({
 
   return (
     <div style={{ opacity, transform: `translateY(${translateY}px)` }}>
-      <div
-        style={{
-          fontFamily: brand.fontFamily,
-          fontWeight: 700,
-          fontSize: 26,
-          letterSpacing: 3.4,
-          textTransform: "uppercase",
-          color: brand.blueAlpha(0.95),
-          marginBottom: 18,
-        }}
-      >
-        Ferramenta Wispot
+      <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 18 }}>
+        <div style={{ width: 34, height: 6, borderRadius: 999, background: brand.colors.blue }} />
+        <div
+          style={{
+            fontFamily: brand.fontFamily,
+            fontWeight: 700,
+            fontSize: 26,
+            letterSpacing: 3.2,
+            textTransform: "uppercase",
+            color: brand.colors.white,
+            textShadow: "0 3px 16px rgba(0,0,0,0.5)",
+          }}
+        >
+          Ferramenta Wispot
+        </div>
       </div>
       <Img
         src={staticFile(horaPremiada.logo.color)}
-        style={{ width, display: "block", filter: "drop-shadow(0 6px 26px rgba(0,0,0,0.5))" }}
+        style={{ width, display: "block", filter: "drop-shadow(0 6px 26px rgba(4,26,38,0.55))" }}
       />
       <div
         style={{
           height: 8,
-          borderRadius: 4,
+          borderRadius: 999,
           marginTop: 26,
           width,
           background: horaPremiada.gradient,
@@ -233,13 +241,13 @@ export const AutoLoop: React.FC<{ delay?: number }> = ({ delay = 0 }) => {
       style={{
         display: "flex",
         alignItems: "center",
-        gap: 26,
+        gap: 24,
         opacity,
         transform: `translateY(${translateY}px)`,
       }}
     >
       <div style={{ transform: `rotate(${spin * Math.min(progress * 1.4, 1)}deg)` }}>
-        <IconBadge size={82} tone="solid">
+        <IconBadge size={84}>
           <RepeatIcon size={42} color={brand.colors.white} strokeWidth={2.2} />
         </IconBadge>
       </div>
@@ -252,7 +260,7 @@ export const AutoLoop: React.FC<{ delay?: number }> = ({ delay = 0 }) => {
             lineHeight: 1.08,
             letterSpacing: -0.8,
             color: brand.colors.white,
-            textShadow: "0 5px 26px rgba(0,0,0,0.45)",
+            textShadow: "0 5px 26px rgba(4,26,38,0.55)",
           }}
         >
           Configura uma vez.
@@ -265,12 +273,48 @@ export const AutoLoop: React.FC<{ delay?: number }> = ({ delay = 0 }) => {
             lineHeight: 1.08,
             letterSpacing: -0.8,
             color: brand.colors.blue,
-            textShadow: "0 5px 26px rgba(0,0,0,0.45)",
+            textShadow: "0 5px 26px rgba(4,26,38,0.55)",
           }}
         >
           Roda sozinha.
         </div>
       </div>
+    </div>
+  );
+};
+
+/**
+ * Screen capture of the platform, framed as a card floating over the shot.
+ * `rate` is tuned per clip so the recording lands on its finished state just
+ * before the cue ends, and then holds there.
+ */
+export const PlatformInset: React.FC<{
+  src: string;
+  rate: number;
+  delay?: number;
+}> = ({ src, rate, delay = 0 }) => {
+  const { opacity, translateY, scale } = useReveal(delay, 30);
+
+  return (
+    <div
+      style={{
+        width: "100%",
+        aspectRatio: "16 / 9",
+        borderRadius: 30,
+        overflow: "hidden",
+        background: brand.colors.white,
+        border: `5px solid ${brand.colors.white}`,
+        boxShadow: `0 20px 54px rgba(4,26,38,0.46), 0 0 0 1.5px ${brand.blueAlpha(0.45)}`,
+        opacity,
+        transform: `translateY(${translateY}px) scale(${scale})`,
+      }}
+    >
+      <OffthreadVideo
+        src={staticFile(src)}
+        playbackRate={rate}
+        muted
+        style={{ width: "100%", height: "100%", objectFit: "cover" }}
+      />
     </div>
   );
 };

@@ -3,14 +3,13 @@ import { brand } from "./brand";
 import { SPEED, clipById } from "./content";
 import { Scene } from "./Scene";
 import { Chip, Cue, Eyebrow, Headline, IconBadge, OverlayStack } from "./Ui";
-import { AutoLoop, CouponCard, FeatureTitle, TimeWindow } from "./Graphics";
+import { AutoLoop, CouponCard, FeatureTitle, PlatformInset, TimeWindow } from "./Graphics";
 import {
   BoxIcon,
   ChatIcon,
   ClockIcon,
   CrossIcon,
   HeartIcon,
-  SparkIcon,
   TrendingUpIcon,
   WifiIcon,
 } from "./Icons";
@@ -20,7 +19,13 @@ const sec = (s: number) => Math.round((s / SPEED) * FPS);
 
 const badge = (Icon: React.FC<{ size?: number; color?: string; strokeWidth?: number }>) => (
   <IconBadge>
-    <Icon size={32} color={brand.colors.white} strokeWidth={2.2} />
+    <Icon size={30} color={brand.colors.white} strokeWidth={2.3} />
+  </IconBadge>
+);
+
+const outlineBadge = (Icon: React.FC<{ size?: number; color?: string; strokeWidth?: number }>) => (
+  <IconBadge tone="outline">
+    <Icon size={30} color={brand.colors.white} strokeWidth={2.1} />
   </IconBadge>
 );
 
@@ -46,20 +51,21 @@ export const Abertura: React.FC = () => (
 );
 
 /**
- * DESENVOLVIMENTO 1 — names the tool, then shows the two things the platform
- * does: you set the window, it delivers to whoever is connected inside it.
+ * DESENVOLVIMENTO 1 — names the tool, shows the coupon being built in the
+ * platform, then the window logic that decides who receives it.
  */
 export const Desenvolvimento1: React.FC = () => (
   <Scene clip={clipById["desenvolvimento-1"]}>
-    <Cue at={0.4} dur={7.4}>
+    <Cue at={0.4} dur={6.9}>
       <OverlayStack>
         <FeatureTitle />
       </OverlayStack>
     </Cue>
 
-    <Cue at={8.0} dur={5.2}>
+    <Cue at={7.9} dur={5.2}>
       <OverlayStack>
-        <Chip icon={badge(SparkIcon)}>Promoções automatizadas</Chip>
+        <Eyebrow>Monte o cupom</Eyebrow>
+        <PlatformInset src="hora-premiada/anim-cupom.mp4" rate={0.92} delay={sec(0.3)} />
       </OverlayStack>
     </Cue>
 
@@ -76,8 +82,8 @@ export const Desenvolvimento1: React.FC = () => (
 
 /**
  * DESENVOLVIMENTO 2 — three uses, then the three things it spares the team,
- * then the automation payoff. The clip's own pauses at ~5.5 s and ~12.2 s are
- * the seams between those beats.
+ * then the automation payoff, proved by the campaign screen. The clip's own
+ * pauses at ~5.5 s and ~12.2 s are the seams between those beats.
  */
 export const Desenvolvimento2: React.FC = () => (
   <Scene clip={clipById["desenvolvimento-2"]}>
@@ -96,24 +102,28 @@ export const Desenvolvimento2: React.FC = () => (
 
     <Cue at={5.9} dur={6.3}>
       <OverlayStack>
-        <Chip icon={badge(CrossIcon)} muted>
+        <Chip icon={outlineBadge(CrossIcon)} muted>
           sem promotor
         </Chip>
-        <Chip icon={badge(CrossIcon)} delay={sec(1.3)} muted>
+        <Chip icon={outlineBadge(CrossIcon)} delay={sec(1.3)} muted>
           sem panfleto
         </Chip>
-        <Chip icon={badge(CrossIcon)} delay={sec(2.6)} muted>
+        <Chip icon={outlineBadge(CrossIcon)} delay={sec(2.6)} muted>
           sem esforço da equipe
         </Chip>
       </OverlayStack>
     </Cue>
 
-    <Cue at={12.6} dur={8.1}>
+    <Cue at={12.6} dur={3.3}>
       <OverlayStack>
         <AutoLoop />
-        <Chip icon={badge(ClockIcon)} delay={sec(3.0)}>
-          no momento certo
-        </Chip>
+      </OverlayStack>
+    </Cue>
+
+    <Cue at={16.1} dur={4.6}>
+      <OverlayStack>
+        <Eyebrow>Crie a campanha</Eyebrow>
+        <PlatformInset src="hora-premiada/anim-campanha.mp4" rate={1.06} delay={sec(0.3)} />
       </OverlayStack>
     </Cue>
   </Scene>

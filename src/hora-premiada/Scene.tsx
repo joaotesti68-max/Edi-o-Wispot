@@ -43,14 +43,14 @@ const NameCard: React.FC<{ name: string }> = ({ name }) => {
         alignItems: "center",
         gap: 14,
         padding: "14px 26px 14px 18px",
-        borderRadius: 16,
-        background: "rgba(12,19,22,0.6)",
+        borderRadius: 999,
+        background: "rgba(5,26,38,0.62)",
         backdropFilter: "blur(10px)",
         opacity,
         transform: `translateX(${interpolate(entry, [0, 1], [-22, 0])}px)`,
       }}
     >
-      <div style={{ width: 5, height: 30, borderRadius: 3, background: brand.colors.blue }} />
+      <div style={{ width: 6, height: 30, borderRadius: 999, background: brand.colors.blue }} />
       <div
         style={{
           fontFamily: brand.fontFamily,
@@ -93,7 +93,7 @@ export const Scene: React.FC<{
       <AbsoluteFill
         style={{
           background:
-            "linear-gradient(to bottom, rgba(6,12,15,0.55) 0%, rgba(6,12,15,0) 22%, rgba(6,12,15,0) 44%, rgba(6,12,15,0.72) 76%, rgba(4,8,10,0.92) 100%)",
+            "linear-gradient(to bottom, rgba(5,26,38,0.55) 0%, rgba(5,26,38,0) 22%, rgba(5,26,38,0) 42%, rgba(5,26,38,0.74) 74%, rgba(3,18,27,0.93) 100%)",
         }}
       />
 

@@ -52,6 +52,30 @@ Clips are mapped to script blocks in numeric order. That ordering, and the cue
 times in `Scenes.tsx`, are placed against measured speech runs (listed in
 `content.ts`), not against a transcript.
 
+## Overlay style
+
+The overlay system is built off the Wispot mark rather than a generic tech look:
+every corner is a full radius or close to it, icon badges are circles filled with
+the institutional gradient, and statements ride white pills with ink text instead
+of dark glass. Negatives ("sem promotor") invert that — translucent white, struck
+through in blue. Cards (the time strip, the coupon, the platform insets) are white
+on a scrim tinted with the brand blue rather than neutral black, and the progress
+bar fills with the gradient.
+
+## Platform animations
+
+Two supplied screen recordings of the product run as insets, framed as white cards
+over the shot:
+
+| Inset | Source | Segment | Shown in |
+| --- | --- | --- | --- |
+| Monte o cupom | `Hora_Premiada_editar_cupom.mp4` | 13.6–17.6 | Desenvolvimento 1, 7.9–13.1 |
+| Crie a campanha | `Hora_Premiada_criar_campanha.mp4` | 13.0–17.0 | Desenvolvimento 2, 16.1–20.7 |
+
+Each uses the tail of its recording, where the finished coupon and the finished
+campaign screen are on screen. `rate` on `PlatformInset` is set so the clip lands
+on that final state a beat before the cue ends and then holds there.
+
 ## Pace
 
 The footage runs at `SPEED` (1.1) via Remotion's `playbackRate`, which

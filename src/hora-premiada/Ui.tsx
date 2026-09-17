@@ -17,7 +17,11 @@ export const Cue: React.FC<{ at: number; dur: number; children: React.ReactNode 
   const { fps } = useVideoConfig();
   const durationInFrames = Math.round((dur / SPEED) * fps);
   return (
-    <Sequence from={Math.round((at / SPEED) * fps)} durationInFrames={durationInFrames} layout="none">
+    <Sequence
+      from={Math.round((at / SPEED) * fps)}
+      durationInFrames={durationInFrames}
+      layout="none"
+    >
       <CueContext.Provider value={durationInFrames}>{children}</CueContext.Provider>
     </Sequence>
   );
@@ -49,19 +53,23 @@ export const useReveal = (delayInFrames = 0, shift = 30) => {
   };
 };
 
+/**
+ * Round badge. The Wispot mark is built from circles and soft terminals, so
+ * nothing in the overlay system uses a square corner.
+ */
 export const IconBadge: React.FC<{
   children: React.ReactNode;
   size?: number;
-  tone?: "glass" | "solid";
-}> = ({ children, size = 64, tone = "glass" }) => (
+  tone?: "brand" | "outline";
+}> = ({ children, size = 62, tone = "brand" }) => (
   <div
     style={{
       width: size,
       height: size,
       flexShrink: 0,
-      borderRadius: size * 0.3,
-      background: tone === "solid" ? brand.gradient : brand.blueAlpha(0.28),
-      border: tone === "solid" ? "none" : `1.5px solid ${brand.blueAlpha(0.8)}`,
+      borderRadius: 999,
+      background: tone === "brand" ? brand.gradient : "transparent",
+      border: tone === "brand" ? "none" : "1.5px solid rgba(255,255,255,0.55)",
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
@@ -71,7 +79,7 @@ export const IconBadge: React.FC<{
   </div>
 );
 
-/** Glass pill used for every short on-screen statement. */
+/** Every short statement rides one of these pills. */
 export const Chip: React.FC<{
   icon?: React.ReactNode;
   children: React.ReactNode;
@@ -84,12 +92,12 @@ export const Chip: React.FC<{
       style={{
         display: "flex",
         alignItems: "center",
-        gap: 20,
-        padding: icon ? "16px 34px 16px 16px" : "20px 34px",
-        borderRadius: 26,
-        background: "rgba(12,19,22,0.62)",
-        border: `1.5px solid ${muted ? "rgba(255,255,255,0.18)" : brand.blueAlpha(0.6)}`,
-        backdropFilter: "blur(10px)",
+        gap: 18,
+        padding: icon ? "13px 36px 13px 13px" : "20px 36px",
+        borderRadius: 999,
+        background: muted ? "rgba(255,255,255,0.16)" : "rgba(255,255,255,0.96)",
+        border: muted ? "1.5px solid rgba(255,255,255,0.4)" : "none",
+        boxShadow: muted ? "none" : "0 12px 34px rgba(4,26,38,0.32)",
         opacity,
         transform: `translateY(${translateY}px)`,
       }}
@@ -98,13 +106,13 @@ export const Chip: React.FC<{
       <div
         style={{
           fontFamily: brand.fontFamily,
-          fontWeight: 600,
+          fontWeight: muted ? 600 : 700,
           fontSize: 38,
           lineHeight: 1.2,
-          color: muted ? "rgba(255,255,255,0.72)" : brand.colors.white,
-          letterSpacing: -0.2,
+          color: muted ? "rgba(255,255,255,0.88)" : brand.colors.ink,
+          letterSpacing: -0.3,
           textDecoration: muted ? "line-through" : "none",
-          textDecorationColor: brand.blueAlpha(0.9),
+          textDecorationColor: brand.colors.blue,
           textDecorationThickness: 3,
         }}
       >
@@ -114,7 +122,7 @@ export const Chip: React.FC<{
   );
 };
 
-/** Small uppercase label that sits above a headline. */
+/** Small uppercase label that sits above a headline or a card. */
 export const Eyebrow: React.FC<{ children: React.ReactNode; delay?: number }> = ({
   children,
   delay = 0,
@@ -130,15 +138,16 @@ export const Eyebrow: React.FC<{ children: React.ReactNode; delay?: number }> = 
         transform: `translateY(${translateY}px)`,
       }}
     >
-      <div style={{ width: 42, height: 4, borderRadius: 2, background: brand.colors.blue }} />
+      <div style={{ width: 34, height: 6, borderRadius: 999, background: brand.colors.blue }} />
       <div
         style={{
           fontFamily: brand.fontFamily,
           fontWeight: 700,
           fontSize: 26,
-          letterSpacing: 3.4,
+          letterSpacing: 3.2,
           textTransform: "uppercase",
           color: brand.colors.white,
+          textShadow: "0 3px 16px rgba(0,0,0,0.5)",
         }}
       >
         {children}
@@ -162,7 +171,7 @@ export const Headline: React.FC<{ children: React.ReactNode; delay?: number; siz
         lineHeight: 1.1,
         letterSpacing: -1,
         color: brand.colors.white,
-        textShadow: "0 6px 30px rgba(0,0,0,0.45)",
+        textShadow: "0 6px 30px rgba(4,26,38,0.55)",
         opacity,
         transform: `translateY(${translateY}px)`,
       }}

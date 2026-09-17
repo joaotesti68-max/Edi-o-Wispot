@@ -36,9 +36,9 @@ export const ProgressBar: React.FC = () => {
               key={i}
               style={{
                 flex: 1,
-                height: 6,
-                borderRadius: 3,
-                background: "rgba(255,255,255,0.3)",
+                height: 7,
+                borderRadius: 999,
+                background: "rgba(255,255,255,0.38)",
                 overflow: "hidden",
               }}
             >
@@ -46,8 +46,8 @@ export const ProgressBar: React.FC = () => {
                 style={{
                   width: `${fill * 100}%`,
                   height: "100%",
-                  borderRadius: 3,
-                  background: brand.colors.white,
+                  borderRadius: 999,
+                  background: brand.gradient,
                 }}
               />
             </div>
