@@ -3,7 +3,7 @@ import { brand } from "./brand";
 import { SPEED, clipById } from "./content";
 import { Scene } from "./Scene";
 import { Chip, Cue, Eyebrow, IconBadge, OverlayStack } from "./Ui";
-import { CouponCard, FeatureTitle, PlatformInset, TimeWindow } from "./Graphics";
+import { FeatureTitle, PlatformInset, TimeWindow, VoucherCard } from "./Graphics";
 import { BoxIcon, CrossIcon, HeartIcon, RepeatIcon, TrendingUpIcon, WifiIcon } from "./Icons";
 
 const FPS = 30;
@@ -32,8 +32,8 @@ const outlineBadge = (Icon: React.FC<{ size?: number; color?: string; strokeWidt
 export const Abertura: React.FC = () => (
   <Scene clip={clipById["abertura"]} nameCard="Vanessa Furiato">
     <Cue at={4.2} dur={7.2}>
-      <OverlayStack>
-        <CouponCard size={1.35} />
+      <OverlayStack align="center">
+        <VoucherCard />
       </OverlayStack>
     </Cue>
   </Scene>

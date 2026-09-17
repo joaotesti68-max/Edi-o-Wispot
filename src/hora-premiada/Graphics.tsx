@@ -2,7 +2,7 @@ import React from "react";
 import { Img, OffthreadVideo, interpolate, staticFile, useCurrentFrame } from "remotion";
 import { brand, horaPremiada } from "./brand";
 import { useReveal } from "./Ui";
-import { ClockIcon, TicketIcon } from "./Icons";
+import { ClockIcon } from "./Icons";
 
 const CARD = {
   background: "rgba(255,255,255,0.96)",
@@ -119,71 +119,33 @@ export const TimeWindow: React.FC<{ delay?: number }> = ({ delay = 0 }) => {
   );
 };
 
-/** The reward itself, landing with a small overshoot like a card being dealt. */
-export const CouponCard: React.FC<{ delay?: number; size?: number }> = ({
+/**
+ * The supplied voucher animation. It reveals itself out of black, so the entry
+ * here is only a rise — the artwork does the rest.
+ */
+export const VoucherCard: React.FC<{ delay?: number; height?: number }> = ({
   delay = 0,
-  size = 1,
+  height = 600,
 }) => {
-  const { opacity, progress } = useReveal(delay, 0);
-  const lift = interpolate(progress, [0, 1], [70, 0]);
-  const tilt = interpolate(progress, [0, 1], [-8, -2.5]);
+  const { opacity, translateY } = useReveal(delay, 46);
 
   return (
     <div
       style={{
-        display: "flex",
-        alignItems: "stretch",
-        background: brand.colors.white,
-        borderRadius: 30 * size,
+        height,
+        width: Math.round((height * 380) / 636),
+        borderRadius: 20,
         overflow: "hidden",
         opacity,
-        transform: `translateY(${lift}px) rotate(${tilt}deg)`,
-        boxShadow: "0 22px 56px rgba(4,26,38,0.42)",
+        transform: `translateY(${translateY}px)`,
+        boxShadow: `0 24px 62px rgba(4,26,38,0.58), 0 0 0 1.5px ${brand.blueAlpha(0.5)}`,
       }}
     >
-      <div
-        style={{
-          width: 110 * size,
-          background: brand.gradient,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <TicketIcon size={52 * size} color={brand.colors.white} strokeWidth={2} />
-      </div>
-      <div
-        style={{
-          borderLeft: `4px dashed ${brand.blueAlpha(0.4)}`,
-          padding: `${20 * size}px ${40 * size}px ${22 * size}px ${30 * size}px`,
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          gap: 4,
-        }}
-      >
-        <div
-          style={{
-            fontFamily: brand.fontFamily,
-            fontWeight: 800,
-            fontSize: 46 * size,
-            letterSpacing: 0.5,
-            color: brand.colors.blue,
-          }}
-        >
-          CUPOM
-        </div>
-        <div
-          style={{
-            fontFamily: brand.fontFamily,
-            fontWeight: 600,
-            fontSize: 26 * size,
-            color: brand.colors.gray,
-          }}
-        >
-          entregue na conexão
-        </div>
-      </div>
+      <OffthreadVideo
+        src={staticFile("hora-premiada/voucher.mp4")}
+        muted
+        style={{ width: "100%", height: "100%", objectFit: "cover" }}
+      />
     </div>
   );
 };

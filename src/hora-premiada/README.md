@@ -62,6 +62,15 @@ through in blue. Cards (the time strip, the coupon, the platform insets) are whi
 on a scrim tinted with the brand blue rather than neutral black, and the progress
 bar fills with the gradient.
 
+## Voucher
+
+`public/hora-premiada/voucher.mp4` is the supplied `voucher_johnny_rockets.gif`
+converted to H.264 at its native 380x636 — 6 s, opaque, no alpha. It carries the
+abertura on its own, entering at 4.2 s once she has named the hour and holding to
+the end of the question. It reveals itself out of black, so `VoucherCard` only
+adds a rise on entry. It is the same voucher that the coupon editor builds in
+desenvolvimento 1, which ties the two shots together.
+
 ## Platform animations
 
 Two supplied screen recordings of the product run as insets, framed as white cards
