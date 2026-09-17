@@ -1,6 +1,5 @@
 import {
   AbsoluteFill,
-  Img,
   OffthreadVideo,
   interpolate,
   spring,
@@ -10,7 +9,6 @@ import {
 } from "remotion";
 import { brand } from "./brand";
 import { WifiIcon, WispotMark } from "./WispotMark";
-import { SPEED } from "./content";
 import type { Clip } from "./content";
 import { captions } from "./captions";
 
@@ -19,20 +17,20 @@ export const VideoBlock: React.FC<{ clip: Clip }> = ({ clip }) => {
     <AbsoluteFill style={{ background: brand.colors.gray }}>
       <OffthreadVideo
         src={staticFile(clip.video)}
-        playbackRate={SPEED}
         style={{ width: "100%", height: "100%", objectFit: "cover" }}
       />
 
       <Scrim />
 
       {clip.kicker ? <Kicker text={clip.kicker} /> : null}
-      {clip.productMark ? <ProductMark mark={clip.productMark} /> : null}
-      {clip.ribbon ? <QuestionRibbon text={clip.ribbon} /> : null}
-      {clip.nameCard ? <NameCard name={clip.nameCard.name} role={clip.nameCard.role} /> : null}
+      {clip.chips ? <Chips items={clip.chips} /> : null}
+      {clip.brandMark ? <BrandMark window={clip.brandMark} /> : null}
 
       <Captions clipId={clip.id} />
 
-      <Watermark />
+      {/* A marca d'água sai do bloco em que a logomarca sobe inteira: duas
+          assinaturas ao mesmo tempo é uma a mais. */}
+      {clip.brandMark ? null : <Watermark />}
     </AbsoluteFill>
   );
 };
@@ -51,13 +49,12 @@ const Scrim: React.FC = () => (
   />
 );
 
+/** Tema do vídeo, na abertura. Recolhe antes do corte para o primeiro bloco. */
 const Kicker: React.FC<{ text: string }> = ({ text }) => {
   const frame = useCurrentFrame();
   const { fps, durationInFrames } = useVideoConfig();
-  const enter = spring({ frame: frame - 6, fps, config: { damping: 200, mass: 0.6 } });
-  // Tied to the clip length so the label retires before the cut, however long
-  // the opening take happens to be.
-  const exit = interpolate(frame, [durationInFrames - 46, durationInFrames - 28], [0, 1], {
+  const enter = spring({ frame: frame - 5, fps, config: { damping: 200, mass: 0.6 } });
+  const exit = interpolate(frame, [durationInFrames - 40, durationInFrames - 24], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
@@ -102,14 +99,14 @@ const Kicker: React.FC<{ text: string }> = ({ text }) => {
 };
 
 /**
- * Lembrete compacto da pergunta, para quem cai no meio da resposta. Recolhe
- * assim que a resposta engata.
+ * Enumeração que se acumula na faixa livre acima da cabeça dela. Os itens
+ * entram um a um e ficam de pé até o fim do bloco: a lista inteira no ar é o
+ * ponto, e o item do meio dura menos de um segundo na fala.
  */
-const QuestionRibbon: React.FC<{ text: string }> = ({ text }) => {
+const Chips: React.FC<{ items: NonNullable<Clip["chips"]> }> = ({ items }) => {
   const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
-  const enter = spring({ frame: frame - 2, fps, config: { damping: 200, mass: 0.6 } });
-  const exit = interpolate(frame, [132, 150], [0, 1], {
+  const { fps, durationInFrames } = useVideoConfig();
+  const exit = interpolate(frame, [durationInFrames - 28, durationInFrames - 12], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
@@ -118,86 +115,78 @@ const QuestionRibbon: React.FC<{ text: string }> = ({ text }) => {
     <div
       style={{
         position: "absolute",
-        top: 104,
+        top: 152,
         left: 56,
         right: 56,
         display: "flex",
-        justifyContent: "center",
-        opacity: Math.min(enter, 1 - exit),
-        transform: `translateY(${(1 - enter) * -30}px)`,
+        flexDirection: "column",
+        alignItems: "flex-start",
+        gap: 16,
+        opacity: 1 - exit,
       }}
     >
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: 18,
-          padding: "18px 32px",
-          borderRadius: 28,
-          background: brand.colors.white,
-        }}
-      >
-        <span
-          style={{
-            flexShrink: 0,
-            width: 46,
-            height: 46,
-            borderRadius: "50%",
-            background: brand.colors.blue,
-            color: brand.colors.white,
-            fontSize: 30,
-            fontWeight: 800,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          ?
-        </span>
-        <span
-          style={{
-            fontSize: 36,
-            fontWeight: 700,
-            color: brand.colors.gray,
-            lineHeight: 1.2,
-          }}
-        >
-          {text}
-        </span>
-      </div>
+      {items.map((item) => {
+        const enter = spring({
+          frame: frame - item.at,
+          fps,
+          config: { damping: 200, mass: 0.6 },
+        });
+        if (enter <= 0) return null;
+
+        return (
+          <div
+            key={item.text}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 18,
+              padding: "14px 30px",
+              borderRadius: 22,
+              background: brand.colors.white,
+              opacity: enter,
+              transform: `translateX(${(1 - enter) * -34}px)`,
+            }}
+          >
+            <span
+              style={{
+                width: 16,
+                height: 16,
+                borderRadius: 999,
+                background: brand.colors.blue,
+                flexShrink: 0,
+              }}
+            />
+            <span style={{ fontSize: 38, fontWeight: 700, color: brand.colors.gray }}>
+              {item.text}
+            </span>
+          </div>
+        );
+      })}
     </div>
   );
 };
 
 /**
- * Marca do produto sobre a resposta que fala dele. Vai numa tarja branca, e não
- * solta sobre a imagem: o fundo do take é um vidro claro, onde o laranja da
- * marca perderia contraste. A tarja repete o tratamento da faixa da pergunta,
- * então lê como parte da mesma família e não como adesivo.
- *
- * Fica na faixa livre entre a faixa da pergunta e a cabeça dela.
+ * A logomarca sobe no bloco em que ela diz o nome da empresa. Vai numa tarja
+ * branca, e não solta sobre a imagem: o azul da marca sobre a vegetação do
+ * fundo perderia contraste.
  */
-const ProductMark: React.FC<{ mark: NonNullable<Clip["productMark"]> }> = ({ mark }) => {
+const BrandMark: React.FC<{ window: NonNullable<Clip["brandMark"]> }> = ({ window }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-  const from = mark.from / SPEED;
-  const to = mark.to / SPEED;
-
-  const enter = spring({ frame: frame - from, fps, config: { damping: 200, mass: 0.8 } });
-  const exit = interpolate(frame, [to - 18, to], [0, 1], {
+  const enter = spring({ frame: frame - window.from, fps, config: { damping: 200, mass: 0.8 } });
+  const exit = interpolate(frame, [window.to - 16, window.to], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
   const opacity = Math.min(enter, 1 - exit);
   if (opacity <= 0) return null;
 
-  const width = 400;
-
   return (
     <div
       style={{
         position: "absolute",
-        top: 420,
+        top: 190,
         left: 0,
         right: 0,
         display: "flex",
@@ -208,71 +197,29 @@ const ProductMark: React.FC<{ mark: NonNullable<Clip["productMark"]> }> = ({ mar
     >
       <div
         style={{
-          padding: "30px 46px",
+          padding: "36px 62px",
           borderRadius: 30,
           background: brand.colors.white,
           boxShadow: "0 18px 48px rgba(0,0,0,0.28)",
         }}
       >
-        <Img
-          src={staticFile(mark.src)}
-          style={{ width, height: width / mark.ratio, display: "block" }}
-        />
-      </div>
-    </div>
-  );
-};
-
-const NameCard: React.FC<{ name: string; role: string }> = ({ name, role }) => {
-  const frame = useCurrentFrame();
-  const { fps, durationInFrames } = useVideoConfig();
-  const enter = spring({ frame: frame - 26, fps, config: { damping: 200, mass: 0.7 } });
-  const exit = interpolate(frame, [durationInFrames - 34, durationInFrames - 16], [0, 1], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-  });
-
-  return (
-    <div
-      style={{
-        position: "absolute",
-        left: 64,
-        bottom: 372,
-        opacity: Math.min(enter, 1 - exit),
-        transform: `translateX(${(1 - enter) * -40}px)`,
-        display: "flex",
-        alignItems: "center",
-        gap: 22,
-      }}
-    >
-      <div style={{ width: 8, height: 92, borderRadius: 999, background: brand.colors.blue }} />
-      <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-        <span style={{ fontSize: 58, fontWeight: 800, color: brand.colors.white, lineHeight: 1 }}>
-          {name}
-        </span>
-        <span style={{ fontSize: 32, fontWeight: 700, color: brand.colors.white, opacity: 0.82, lineHeight: 1 }}>
-          {role}
-        </span>
+        <WispotMark height={104} variant="color" />
       </div>
     </div>
   );
 };
 
 /**
- * Legendas queimadas. Ficam acima da marca d'água e abaixo do lower third,
- * numa faixa reservada só para elas.
+ * Legendas queimadas. Ficam numa faixa reservada só para elas, acima da marca
+ * d'água.
  */
 const Captions: React.FC<{ clipId: string }> = ({ clipId }) => {
   const frame = useCurrentFrame();
   const lines = captions[clipId] ?? [];
-  // Os quadros em captions.ts foram medidos contra a gravação, que aqui roda
-  // acelerada — daí a conversão, em vez de reescrever o arquivo inteiro.
-  const sourceFrame = frame * SPEED;
-  const current = lines.find((l) => sourceFrame >= l.from && sourceFrame < l.to);
+  const current = lines.find((l) => frame >= l.from && frame < l.to);
   if (!current) return null;
 
-  const age = (sourceFrame - current.from) / SPEED;
-  const pop = interpolate(age, [0, 5], [0, 1], {
+  const pop = interpolate(frame - current.from, [0, 4], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });

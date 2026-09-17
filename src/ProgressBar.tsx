@@ -1,5 +1,5 @@
 import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
-import { outroRange, segmentRanges } from "./content";
+import { clipRanges, outroRange } from "./content";
 import { brand } from "./brand";
 
 export const ProgressBar: React.FC = () => {
@@ -27,7 +27,7 @@ export const ProgressBar: React.FC = () => {
           opacity,
         }}
       >
-        {segmentRanges.map((range, i) => {
+        {clipRanges.map((range, i) => {
           const fill = interpolate(frame, [range.start, range.end], [0, 1], {
             extrapolateLeft: "clamp",
             extrapolateRight: "clamp",
@@ -36,7 +36,8 @@ export const ProgressBar: React.FC = () => {
             <div
               key={i}
               style={{
-                // Weighted so a long answer reads as a longer chapter than a card.
+                // Ponderado pela duração: um bloco longo lê como um capítulo
+                // maior, e não como mais um traço igual aos outros.
                 flex: range.end - range.start,
                 height: 6,
                 borderRadius: 3,

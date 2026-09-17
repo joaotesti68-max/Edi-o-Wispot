@@ -1,64 +1,63 @@
 /**
- * Legendas transcritas do áudio (Whisper small, pt, via sherpa-onnx) e alinhadas
- * ao clipe já cortado.
+ * Legendas transcritas do áudio (Whisper small, pt, via sherpa-onnx) e
+ * alinhadas ao clipe já cortado. Os quadros são relativos ao clipe, a 24 fps.
  *
- * O texto é o que a Mari efetivamente falou, que difere do roteiro escrito; é
- * aqui que se corrige qualquer palavra. Os quadros são relativos ao clipe.
+ * O texto é o que ela efetivamente falou, que difere do roteiro escrito em
+ * alguns pontos — as diferenças que importam para quem aprova estão no
+ * `EDICAO.md`. É aqui que se corrige qualquer palavra.
  *
  * O modelo não devolve timestamps, então cada fronteira foi procurada: uma
  * estimativa silábica semeia os candidatos, cada candidato é pontuado pelos
  * dois lados — a janela que termina ali tem de fechar com a linha que sai, e a
- * que começa ali tem de abrir com a linha que entra — e o vencedor é encostado
- * no vale de silêncio mais próximo, que é onde a troca passa despercebida.
- * As fronteiras foram conferidas uma a uma depois disso.
+ * que começa ali tem de abrir com a linha que entra — e o empate fica perto da
+ * estimativa. Depois disso cada janela foi conferida uma a uma contra o
+ * reconhecedor.
+ *
+ * Duas palavras são leitura, não transcrição limpa:
+ *
+ * - **"Wispot"** — o reconhecedor devolve "Esport" em toda tentativa, como
+ *   devolvia "o spot" na série anterior.
+ * - **"Com Wi-Fi inteligente"** — sai como "e se for inteligente" na janela
+ *   curta e como "Com UEFA inteligente" na janela longa; o que está lá é
+ *   "Wi-Fi".
  */
 export type Caption = { text: string; from: number; to: number };
 
 export const captions: Record<string, Caption[]> = {
-  "abertura": [
-    { text: "Olá, pessoal! Aqui é a Mari de novo.", from: 1, to: 58 },
-    { text: "Então vamos para mais um vídeo", from: 58, to: 113 },
-    { text: "respondendo perguntas sobre a Wispot.", from: 113, to: 179 },
+  abertura: [
+    { text: "Se você acha que o Wi-Fi serve", from: 4, to: 41 },
+    { text: "apenas para conectar pessoas à internet,", from: 41, to: 97 },
+    { text: "você pode estar usando", from: 97, to: 124 },
+    { text: "somente uma parte do que ele pode oferecer.", from: 124, to: 179 },
   ],
-  "resposta-1": [
-    { text: "A Wispot é indicada para empresas", from: 1, to: 51 },
-    { text: "que possuem algum espaço físico.", from: 51, to: 103 },
-    { text: "Então hotéis, grandes hospitais,", from: 103, to: 191 },
-    { text: "redes de varejo como farmácias,", from: 191, to: 261 },
-    { text: "supermercados, cidades inteligentes", from: 261, to: 351 },
-    { text: "e até para provedores de internet.", from: 351, to: 416 },
+  "parte-1": [
+    { text: "Enquanto seus clientes se conectam,", from: 2, to: 42 },
+    { text: "existe uma oportunidade acontecendo ali.", from: 42, to: 111 },
+    { text: "Com Wi-Fi inteligente, você consegue entender", from: 111, to: 171 },
+    { text: "quem está se conectando,", from: 171, to: 209 },
+    { text: "com que frequência", from: 209, to: 230 },
+    { text: "e como esse público se comporta.", from: 230, to: 280 },
   ],
-  "resposta-2": [
-    { text: "A Wispot pode ser classificada", from: 1, to: 48 },
-    { text: "como serviço de valor adicionado.", from: 48, to: 121 },
-    { text: "Então, além de gerar uma fonte de receita", from: 121, to: 205 },
-    { text: "a mais para o provedor de internet,", from: 205, to: 266 },
-    { text: "também contribui na questão tributária dos impostos,", from: 266, to: 366 },
-    { text: "sempre de acordo com o segmento da empresa", from: 366, to: 445 },
-    { text: "e também dentro das conformidades", from: 445, to: 500 },
-    { text: "jurídicas e contábeis.", from: 500, to: 551 },
+  "parte-2": [
+    { text: "E não para nos dados.", from: 0, to: 29 },
+    { text: "A conexão pode virar uma pesquisa,", from: 29, to: 88 },
+    { text: "uma comunicação, relacionamento", from: 88, to: 144 },
+    { text: "e novas oportunidades de receita", from: 144, to: 195 },
+    { text: "para o seu negócio.", from: 195, to: 217 },
   ],
-  "resposta-3": [
-    { text: "Hoje a Wispot trabalha", from: 1, to: 27 },
-    { text: "com mais de 20 fabricantes.", from: 27, to: 82 },
-    { text: "Dentre eles temos Huawei, Cambium,", from: 82, to: 129 },
-    { text: "Cisco, Aruba, MikroTik.", from: 129, to: 229 },
-    { text: "E assim a Wispot consegue se adaptar", from: 229, to: 307 },
-    { text: "a várias estruturas de rede.", from: 307, to: 362 },
+  "parte-3": [
+    { text: "É isso que a Wispot faz.", from: 2, to: 37 },
+    { text: "Transforma redes Wi-Fi", from: 37, to: 76 },
+    { text: "em uma ferramenta de captação", from: 76, to: 122 },
+    { text: "de dados e relacionamento.", from: 122, to: 159 },
   ],
-  "resposta-4": [
-    // "Com a WiQuest," sozinho ficaria meio segundo no ar — curto demais para
-    // ler —, então abre junto com a linha seguinte.
-    { text: "Com a WiQuest, a ferramenta de pesquisas da Wispot,", from: 1, to: 82 },
-    { text: "você consegue aplicar pesquisas", from: 82, to: 153 },
-    { text: "com o cliente final", from: 153, to: 197 },
-    { text: "dentro do seu estabelecimento,", from: 197, to: 260 },
-    { text: "recebendo essas respostas em tempo real", from: 260, to: 319 },
-    { text: "dentro do painel.", from: 319, to: 355 },
-  ],
-  "fechamento": [
-    { text: "Para entender como a Wispot funciona", from: 1, to: 49 },
-    { text: "para o seu negócio,", from: 49, to: 86 },
-    { text: "entre em contato conosco.", from: 86, to: 128 },
+  encerramento: [
+    { text: "Porque as pessoas já estão", from: 3, to: 31 },
+    { text: "se conectando ao seu Wi-Fi.", from: 31, to: 77 },
+    { text: "Por que a sua empresa", from: 77, to: 102 },
+    { text: "não deveria aproveitar melhor essa conexão?", from: 102, to: 178 },
+    // Fora do roteiro: ela emenda o convite no fim do take, e ele leva direto
+    // ao card final.
+    { text: "Para mais informações, fale conosco.", from: 178, to: 226 },
   ],
 };

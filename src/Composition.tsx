@@ -3,7 +3,6 @@ import { AbsoluteFill, Audio, Composition, interpolate, staticFile } from "remot
 import { TransitionSeries, linearTiming } from "@remotion/transitions";
 import { fade } from "@remotion/transitions/fade";
 import { VideoBlock } from "./VideoBlock";
-import { QuestionCard } from "./QuestionCard";
 import { EndCard } from "./EndCard";
 import { ProgressBar } from "./ProgressBar";
 import { fontFamily } from "./loadFont";
@@ -13,12 +12,12 @@ import {
   OUTRO_FRAMES,
   TRANSITION_FRAMES,
   WIDTH,
+  clips,
   musicVolume,
-  segments,
   totalDurationInFrames,
 } from "./content";
 
-export const FeatureDaSemana: React.FC = () => {
+export const WifiInteligente: React.FC = () => {
   return (
     <AbsoluteFill style={{ fontFamily }}>
       <Audio
@@ -36,20 +35,16 @@ export const FeatureDaSemana: React.FC = () => {
       />
 
       <TransitionSeries>
-        {segments.map((segment, i) => (
-          <React.Fragment key={segment.id}>
+        {clips.map((clip, i) => (
+          <React.Fragment key={clip.id}>
             {i === 0 ? null : (
               <TransitionSeries.Transition
                 presentation={fade()}
                 timing={linearTiming({ durationInFrames: TRANSITION_FRAMES })}
               />
             )}
-            <TransitionSeries.Sequence durationInFrames={segment.durationInFrames}>
-              {segment.kind === "question" ? (
-                <QuestionCard data={segment} />
-              ) : (
-                <VideoBlock clip={segment} />
-              )}
+            <TransitionSeries.Sequence durationInFrames={clip.durationInFrames}>
+              <VideoBlock clip={clip} />
             </TransitionSeries.Sequence>
           </React.Fragment>
         ))}
@@ -71,8 +66,8 @@ export const FeatureDaSemana: React.FC = () => {
 export const MyComposition = () => {
   return (
     <Composition
-      id="FeatureDaSemana"
-      component={FeatureDaSemana}
+      id="WifiInteligente"
+      component={WifiInteligente}
       durationInFrames={totalDurationInFrames}
       fps={FPS}
       width={WIDTH}

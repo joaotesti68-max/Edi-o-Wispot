@@ -1,113 +1,113 @@
-# Perguntas e Respostas — setembro
+# Wi-Fi inteligente — institucional
 
-Vídeo vertical 1080×1920, 30 fps, 52,0 s. Composição Remotion: `FeatureDaSemana`.
+Vídeo vertical 1080×1920, 24 fps, 48,0 s. Composição Remotion: `WifiInteligente`.
 
-Quarto vídeo da série de perguntas e respostas, gravado com a Mari. Três
-perguntas no ar: segmentos atendidos, fabricantes suportados e pesquisa de
-público com o WiQuest.
+Peça institucional sobre o tema *Wi-Fi inteligente como ferramenta de dados e
+relacionamento*, sobre roteiro do cliente, em cinco blocos: abertura, três
+partes e encerramento. Diferente da série de perguntas e respostas, não há card
+mudo no meio — ela fala do primeiro ao último bloco, e o vídeo é cortado só na
+fala.
 
-A quarta gravada, sobre receita para provedor de internet, saiu desta edição a
-pedido do cliente e foi entregue solta. O take continua em
-`public/videos/resposta-2.mp4` com as legendas dele em `captions.ts`: recolocar
-os dois segmentos em `src/content.ts` traz a pergunta de volta, e só os `index`
-dos cards seguintes mudam.
+## Material bruto
+
+Os `.mov` originais não ficam no repositório. Eles chegaram pela release
+[`Brutomemo`](https://github.com/joaotesti68-max/Edi-o-Wispot/releases/tag/Brutomemo),
+que é o caminho que funciona para arquivo grande: o upload pelo navegador do
+GitHub trava em 25 MB por arquivo, o anexo de release vai até 2 GB, e o
+ambiente de edição alcança a release por HTTP. O Google Drive não serve aqui —
+a saída para `drive.google.com` é bloqueada pela política de rede da sessão.
+
+Cinco takes, 4K HEVC 24 fps em retrato, na ordem da gravação.
 
 ## Cortes
 
-Só o take da pergunta 1 trazia a pergunta feita fora de quadro, captada fraca
-pela lapela da Mari; os outros já abriam pela resposta. A pergunta foi removida
-no corte e todas as perguntas entram como card, para a série manter o mesmo ritmo.
-O take da pergunta 3 começava por uma tentativa interrompida ("hoje a
-Wispot…", riso), que também saiu.
+| Origem     | Trecho cortado               | Trecho mantido    | Saída               |
+| ---------- | ---------------------------- | ----------------- | ------------------- |
+| `IMG_8889` | —                            | 1,70 → 9,62 s     | `abertura.mp4`      |
+| `IMG_8892` | —                            | 1,10 → 13,22 s    | `parte-1.mp4`       |
+| `IMG_8893` | —                            | 0 → 9,50 s        | `parte-2.mp4`       |
+| `IMG_8896` | —                            | 0,10 → 7,18 s     | `parte-3.mp4`       |
+| `IMG_8898` | 0 → 4,02 s (take falho)      | 4,02 → 13,94 s    | `encerramento.mp4`  |
 
-Os `.mov` originais não ficam no repositório. Pontos usados para gerar
-`public/videos/`:
-
-| Origem     | Trecho cortado          | Trecho mantido   | Saída            |
-| ---------- | ----------------------- | ---------------- | ---------------- |
-| `IMG_8494` | —                       | 0,79 → 6,92 s    | `abertura.mp4`   |
-| `IMG_8496` | 1,00 → 3,10 s (pergunta)| 3,62 → 17,62 s   | `resposta-1.mp4` |
-| `IMG_8497` | —                       | 0,29 → 18,80 s   | `resposta-2.mp4` |
-| `IMG_8500` | 1,30 → 3,75 s (take falho) | 4,60 → 16,78 s | `resposta-3.mp4` |
-| `IMG_8501` | —                       | 1,41 → 13,42 s   | `resposta-4.mp4` |
-| `IMG_8502` | —                       | 1,56 → 5,90 s    | `fechamento.mp4` |
+Só o take do encerramento trazia sujeira: uma tentativa interrompida por volta
+de 2,4 s e a respiração antes da tomada boa, as duas fora do corte. O
+`IMG_8893` começa com a fala já em curso — não há cabeça de silêncio nele, e é
+por isso que a legenda do bloco abre no quadro 0.
 
 As fronteiras não foram estimadas no olho: o áudio de cada take foi varrido em
-janelas curtas com o reconhecedor, e o corte ficou no primeiro instante em que a
-transcrição já abria pela resposta da Mari, dentro do vale de silêncio anterior.
+janelas curtas com o reconhecedor, e o corte ficou no vale de silêncio anterior
+à primeira palavra, conferido depois palavra a palavra.
+
+**O rabo de cada clipe é mais longo que a fala.** A transição entre blocos dura
+8 quadros e sobrepõe as duas sequências, áudio incluído: com o corte encostado
+na última palavra, o bloco seguinte começava a falar por cima do anterior em
+dois dos cinco cortes. Cada clipe termina com cerca de 0,3 s de silêncio da
+própria gravação, e a sobreposição cai toda dentro dele — sobram de 4 a 7
+quadros de respiro entre o fim de uma fala e o começo da seguinte.
 
 Comando por clipe (rotação do iPhone já aplicada, áudio nivelado em -16 LUFS):
 
 ```console
 ffmpeg -ss <inicio> -to <fim> -i <origem>.mov \
   -vf "scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,setsar=1" \
-  -c:v libx264 -preset veryslow -crf 14 -pix_fmt yuv420p -r 30 \
+  -c:v libx264 -preset veryslow -crf 14 -pix_fmt yuv420p -r 24 \
   -af "loudnorm=I=-16:TP=-1.5:LRA=11,afade=t=in:st=0:d=0.10" \
   -c:a aac -b:a 256k -ar 48000 -ac 2 -movflags +faststart <saida>.mp4
 ```
 
 O CRF 14 aqui é o teto de qualidade do vídeo inteiro: o render final reencoda
-por cima destes arquivos, então o que se perde no corte não volta.
+por cima destes arquivos, então o que se perde no corte não volta. Os dois
+takes gravados a 23,976 fps (`IMG_8892` e `IMG_8898`) saem a 24 como os outros;
+0,1% de diferença de cadência não produz repetição de quadro perceptível.
 
 ## Estrutura
 
-O roteiro fica em `src/content.ts` — texto das perguntas, duração de cada
-segmento e a faixa de lembrete que aparece sobre as respostas.
+O roteiro fica em `src/content.ts` — duração de cada bloco e os elementos que
+sobem sobre ele.
 
-| # | Pergunta (card) | Resposta |
-| - | --------------- | -------- |
-| 1 | Para quais tipos de negócio a Wispot é indicada? | `resposta-1.mp4` |
-| 2 | Quais equipamentos funcionam com a Wispot? | `resposta-3.mp4` |
-| 3 | Como saber o que o público acha do meu espaço? | `resposta-4.mp4` |
-| — | Como a Wispot pode gerar receita para um provedor de internet? | `resposta-2.mp4`, fora desta edição |
+| # | Bloco          | Clipe               | Elemento por cima          |
+| - | -------------- | ------------------- | -------------------------- |
+| 1 | Abertura       | `abertura.mp4`      | tarja "Wi-Fi inteligente"  |
+| 2 | Parte 1        | `parte-1.mp4`       | três itens que se acumulam |
+| 3 | Parte 2        | `parte-2.mp4`       | — |
+| 4 | Parte 3        | `parte-3.mp4`       | logomarca |
+| 5 | Encerramento   | `encerramento.mp4`  | — |
+| — | Card final     | `EndCard.tsx`       | — |
 
-O número do card é o que o espectador lê, então ele acompanha a ordem no ar; os
-ids e os nomes de arquivo continuam presos ao take que os originou.
+Um elemento por bloco, e nenhum repetido. A parte 2 fica limpa de propósito: é
+o trecho mais denso de fala do vídeo, e a legenda já carrega a enumeração.
 
-### Ritmo
+Os itens da parte 1 se acumulam em vez de se substituírem porque "com que
+frequência" dura 21 quadros na fala — sozinho na tela, não daria tempo de ler.
+As deixas deles (`at`) são as fronteiras das legendas correspondentes, então
+cada item entra junto com a palavra que o nomeia.
 
-A Mari fala num andamento confortável demais para o formato — cerca de 145
-palavras por minuto —, então os takes rodam a `SPEED` (1,12) pelo `playbackRate`
-do Remotion, que estica o áudio com atempo e deixa o tom onde está. Medido na
-abertura, a f0 dela sai em 195/189/216 Hz contra 195/191/216 Hz da fonte: a
-diferença está dentro do erro da medição, ou seja não há transposição.
-
-Os cards ficam de fora da conta: tempo de leitura não acelera junto com a fala.
-
-Tudo que foi medido contra a gravação continua escrito em quadros da fonte — o
-`sourceFrames` de cada clipe e os quadros em `captions.ts` —, e é dividido por
-`SPEED` na hora de usar. Mudar essa constante re-cronometra o vídeo inteiro. A
-duração de cada sequência usa piso, nunca teto, para uma sequência não durar
-mais que a footage dela.
+A logomarca da parte 3 sobe quando ela diz o nome da empresa e sai antes do
+corte. Nesse bloco a marca d'água do rodapé é suprimida: duas assinaturas ao
+mesmo tempo é uma a mais.
 
 ### Onde a fala diverge do roteiro
 
-As legendas seguem o que a Mari falou, não o roteiro escrito. As diferenças que
-importam para quem for aprovar o vídeo:
+As legendas seguem o que ela falou, não o roteiro escrito. As diferenças que
+importam para quem for aprovar:
 
-- **Pergunta 1.** O roteiro lista varejo, hotelaria, saúde, educação, cidades
-  inteligentes e provedores. Ela cita hotéis, grandes hospitais, redes de varejo
-  como farmácias e supermercados, cidades inteligentes e provedores — educação
-  não entra.
-- **Pergunta 2 (fora desta edição).** O roteiro fala em "composição tributária
-  mais eficiente"; ela diz que "contribui na questão tributária dos impostos". A
-  ressalva sobre regime da empresa e validação contábil e jurídica ela mantém.
-- **Pergunta 3.** O roteiro diz 21 fabricantes e lista Cisco, Aruba, Ubiquiti,
-  Huawei, Intelbras, MikroTik e TP-Link. Ela diz "mais de 20 fabricantes" e cita
-  Huawei, Cambium, Cisco, Aruba e MikroTik.
-- **Pergunta 4.** O roteiro menciona pesquisas "com o visual da sua marca"; ela
-  fala em aplicar a pesquisa dentro do estabelecimento e acompanhar as respostas
-  em tempo real no painel.
-
-Três palavras são leitura, não transcrição limpa, e estão em `src/captions.ts`
-caso precisem de troca:
-
-- **"Cambium"** — o reconhecedor devolve "câmbio" em toda tentativa. É o
-  fabricante que casa com o som e com a lista.
-- **"A Wispot pode ser classificada"** — o modelo devolve "o spot… classificado".
-  A marca é tratada no feminino no resto do vídeo, e é assim que ficou.
-- **"entre em contato conosco"** — a vogal final sai átona demais para o modelo
-  decidir entre "entre" e "entra".
+- **Abertura.** O roteiro diz "você está usando só uma parte do que ele pode
+  fazer"; ela diz "você pode estar usando somente uma parte do que ele pode
+  oferecer".
+- **Parte 1.** O roteiro lista "quem se conecta, quando, com que frequência e
+  como esse público se comporta". O **quando** não entra na fala — e, por isso,
+  também não entra nos itens na tela.
+- **Parte 2.** O roteiro fala em "pesquisa, comunicação, relacionamento"; ela
+  diz "uma pesquisa, uma comunicação, relacionamento". O sentido é o mesmo.
+- **Parte 3.** O roteiro diz "Transformamos redes Wi-Fi em uma ferramenta
+  inteligente de dados e relacionamento"; ela diz "Transforma redes Wi-Fi em
+  uma ferramenta **de captação** de dados e relacionamento". São duas
+  diferenças na frase-chave da peça: a pessoa do verbo e o adjetivo.
+- **Encerramento.** O roteiro abre com "Porque se as pessoas já estão se
+  conectando"; ela diz "Porque as pessoas já estão se conectando". E emenda, já
+  fora do roteiro, **"Para mais informações, fale conosco."** — a linha ficou na
+  edição, porque leva direto ao card final. Tirá-la é encurtar a última legenda
+  e o clipe em `content.ts`.
 
 ## Legendas
 
@@ -119,73 +119,43 @@ sherpa-onnx), **não** do roteiro. Corrija palavras nesse arquivo.
 O modelo não devolve timestamps, então cada fronteira foi procurada. Uma
 estimativa silábica semeia os candidatos; cada candidato é pontuado pelos dois
 lados — a janela que termina ali tem de fechar com a linha que sai, e a que
-começa ali tem de abrir com a linha que entra — e o vencedor é encostado no vale
-de silêncio mais próximo. As fronteiras são resolvidas da esquerda para a
-direita, reestimando o que falta a cada acerto, senão uma linha que corre longa
-arrasta todas as seguintes. Depois disso cada fronteira foi conferida à mão com
-o reconhecedor.
+começa ali tem de abrir com a linha que entra — e o empate fica perto da
+estimativa. Depois disso, cada janela foi conferida contra o reconhecedor uma a
+uma.
+
+Duas palavras são leitura, não transcrição limpa, e estão escritas à mão:
+
+- **"Wispot"** — o reconhecedor devolve "Esport" em toda tentativa, como
+  devolvia "o spot" na série anterior.
+- **"Com Wi-Fi inteligente"** — sai como "e se for inteligente" na janela curta
+  e como "Com UEFA inteligente" na janela longa. O que está lá é "Wi-Fi".
 
 ## Trilha
 
-`public/audio/theme.mp3` — *Nastelbom / Funky*, 115 BPM, instrumental, fornecida
-pelo cliente. Do arquivo original (79,1 s) saem os 52,2 s usados aqui.
-
-Esta faixa não precisou de compressão: o arco dela já varia só 4,6 dB entre as
-seções, e boa parte disso é a própria cauda baixando no fim. O tratamento foi
-nível e corte:
+`public/audio/theme.mp3` — *Nastelbom / Funky*, 115 BPM, instrumental, a mesma
+faixa da série anterior, reenviada pelo cliente. Do arquivo original (79,1 s)
+saem os 48,1 s usados aqui.
 
 ```console
-ffmpeg -ss 1.1859 -t 52.15 -i <original>.mp3 \
+ffmpeg -ss 1.0953 -t 48.10 -i <original>.mp3 \
   -af "volume=-4.5dB,alimiter=limit=0.9:level=disabled,afade=t=in:st=0:d=0.6" \
   -c:a libmp3lame -b:a 192k -ar 44100 public/audio/theme.mp3
 ```
 
-Os -4,5 dB põem a faixa em -16,4 dB RMS, o mesmo ponto em que o leito anterior
-da série ficava — é o que mantém válidas as constantes de `musicVolume` sem
-remexer nelas.
+Os -4,5 dB põem a faixa em -16,4 dB RMS, o mesmo ponto do leito anterior da
+série — é o que mantém válidas as constantes de `musicVolume` sem remexer
+nelas.
 
 **Corte com a grade do compasso.** A faixa é 115 BPM cravados, compasso de
-2,08696 s, com o primeiro tempo forte em 0,512 s. Cortando 1,1859 s da cabeça, o
-tempo forte do compasso 26 cai no quadro 1545 — quinze quadros antes do fim. O
-vídeo fecha em cima da batida em vez de cortar no meio de um compasso, e o
-`MUSIC_FADE_OUT` é curto justamente para entrar só depois dela.
+2,08696 s, com o primeiro tempo forte em 0,512 s (medido de novo neste arquivo:
+114,7 BPM e fase 0,510 s, dentro do erro da medição). Cortando 1,0953 s da
+cabeça, o tempo forte do compasso 23 cai no quadro 1138 — quinze quadros antes
+do fim. O vídeo fecha em cima da batida em vez de cortar no meio de um
+compasso, e o `MUSIC_FADE_OUT` é curto justamente para entrar só depois dela.
 
-Por cima disso o volume ainda varia no `musicVolume` (`src/content.ts`): abre
-nos cards e no encerramento, onde ninguém fala, e recua para um leito por baixo
-da voz da Mari. Ao mexer na duração do vídeo, refaça a conta do corte de cabeça;
-ao trocar a faixa, refaça também a medição de BPM e fase.
-
-## Marca do WiQuest
-
-Na resposta sobre pesquisa de público, a marca do WiQuest sobe assim que ela diz
-"Com a WiQuest" e sai antes do fim da resposta, para não virar mobília. A janela
-está em `productMark`, no clipe, escrita em quadros da gravação como as legendas.
-
-Ela vai numa tarja branca, não solta sobre a imagem: o fundo do take é um vidro
-claro, onde o laranja da marca perderia contraste. A tarja repete o tratamento da
-faixa da pergunta, então lê como parte da mesma família e não como adesivo. Fica
-na faixa livre entre a faixa da pergunta e a cabeça dela.
-
-O arquivo enviado era um JPEG da marca achatada sobre branco, sem alfa. O alfa
-foi reconstruído a partir do canal azul, que é o de maior contraste entre o
-branco e o laranja (255 contra 33): para cada pixel, `alfa = (255 - B) / (255 -
-33)`, e o RGB é fixado na cor da marca. Isso preserva o antisserrilhado das
-bordas em vez de recortá-las no threshold, e não deixa halo branco sobre fundo
-colorido — conferido sobre o azul institucional. A cor saiu da mediana dos
-pixels mais saturados: **`#F26921`**.
-
-| Arquivo | Uso |
-| --- | --- |
-| `public/brand/wiquest-color.png` | a marca em laranja, para fundo claro |
-| `public/brand/wiquest-white.png` | mesma silhueta em branco, para fundo escuro |
-
-## Marca
-
-Cores e tipografia saíram do *Manual de Marca - Wispot - 2026* (Drive), em
-`src/brand.ts` — azul `#25a8e0`, cinza `#514d4b`, degradê `#25a8e0` → `#0b91c1`.
-A logomarca em `src/WispotMark.tsx` só expõe as duas versões que o manual
-autoriza. Tipografia: Montserrat, que o manual lista ao lado da Adineue Pro
-(licenciada, não empacotada).
+Como ninguém fica em silêncio no meio do vídeo, a trilha fica num leito baixo do
+começo ao fim e só abre no card final, onde não há fala. Ao mexer na duração do
+vídeo, refaça a conta do corte de cabeça.
 
 ## Renderizar
 
@@ -193,24 +163,26 @@ O Chrome headless do Remotion não baixa neste ambiente (`remotion.media` fora d
 allowlist), então aponte para o Chromium já instalado:
 
 ```console
-npx remotion render FeatureDaSemana out/perguntas-respostas-setembro.mp4 \
+npx remotion render WifiInteligente out/wifi-inteligente.mp4 \
   --browser-executable=/opt/pw-browsers/chromium_headless_shell-1194/chrome-linux/headless_shell
 ```
 
 O `remotion.config.ts` já carrega os parâmetros de qualidade: quadros
 intermediários em PNG (o padrão é JPEG, que é uma geração de perda no meio do
 caminho, e ainda marca a saída como `yuvj420p`), CRF 13, preset `veryslow` e
-áudio em 320k. Sai um master de 1560 quadros, 59 MiB a 9,2 Mbps, com a mixagem
-em -16,9 LUFS integrado e pico real -1,3 dBTP.
+áudio em 320k.
+Sai um master de 1153 quadros, 68 MiB a 11,8 Mbps, com a mixagem em -16,2 LUFS
+integrado e pico real -1,1 dBTP.
 
-Para uma cópia menor sem perda visível, reencode em dois passes a partir do
-master — 3500k dá 23 MiB com SSIM 0,994 contra ele:
+O arquivo entregue é uma cópia menor, reencodada em dois passes a partir do
+master — 3500k dá 22 MiB com SSIM 0,990 contra ele, e é o que está em
+`delivery/wifi-inteligente.mp4`:
 
 ```console
-ffmpeg -i out/perguntas-respostas-setembro.mp4 -c:v libx264 -preset veryslow \
+ffmpeg -i out/wifi-inteligente.mp4 -c:v libx264 -preset veryslow \
   -b:v 3500k -pass 1 -an -f null /dev/null
-ffmpeg -i out/perguntas-respostas-setembro.mp4 -c:v libx264 -preset veryslow \
+ffmpeg -i out/wifi-inteligente.mp4 -c:v libx264 -preset veryslow \
   -b:v 3500k -pass 2 -pix_fmt yuv420p -profile:v high -level 4.1 \
   -movflags +faststart -c:a aac -b:a 256k -ar 48000 \
-  out/perguntas-respostas-setembro-hq.mp4
+  delivery/wifi-inteligente.mp4
 ```

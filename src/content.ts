@@ -1,148 +1,91 @@
-export const FPS = 30;
+export const FPS = 24;
 export const WIDTH = 1080;
 export const HEIGHT = 1920;
 
-export const TRANSITION_FRAMES = 9;
+export const TRANSITION_FRAMES = 8;
 
 /**
- * A Mari fala num ritmo confortável demais para o formato, então os takes
- * rodam acelerados pelo `playbackRate` do Remotion, que estica o áudio com
- * atempo e deixa o tom onde está.
- *
- * Tudo que foi medido contra a gravação — a duração de cada take aqui e os
- * quadros das legendas em `captions.ts` — continua escrito em quadros da
- * fonte, e é dividido por SPEED na hora de usar. Mudar esta constante
- * re-cronometra o vídeo inteiro. Os cards ficam de fora: tempo de leitura não
- * acelera junto com a fala.
+ * Os takes entram na velocidade de gravação. A série anterior acelerava a fala
+ * em 12% porque a narração vinha num andamento confortável demais para o
+ * formato; aqui ela já sai em ~195 palavras por minuto, e esticar mais
+ * atropelaria as pausas que separam as partes do roteiro.
  */
-export const SPEED = 1.12;
-
-/** Piso, nunca teto: uma sequência não pode durar mais que a footage dela. */
-export const atSpeed = (sourceFrames: number) => Math.floor(sourceFrames / SPEED);
-
-/**
- * Onde a pergunta foi feita fora de quadro, ela sai do take e vira card: a
- * lapela da Mari pegava a voz de quem perguntava fraca demais para ir ao ar.
- * Os takes que já abriam pela resposta continuam entrando por um card, para a
- * série manter o mesmo ritmo de pergunta e resposta.
- */
-export type QuestionCard = {
-  kind: "question";
-  id: string;
-  index: number;
-  question: string;
-  durationInFrames: number;
-};
 
 export type Clip = {
-  kind: "clip";
   id: string;
   video: string;
-  /** Quadros do arquivo em `public/videos`, antes da aceleração. */
-  sourceFrames: number;
+  /** Quadros do arquivo em `public/videos`, a 24 fps. */
   durationInFrames: number;
-  /** Small ribbon reminding late viewers which question is being answered. */
-  ribbon?: string;
-  /** Speaker lower third, shown once near the top of the video. */
-  nameCard?: { name: string; role: string };
-  /** Kicker shown over the opening take. */
+  /** Tarja de tema, só na abertura. */
   kicker?: string;
   /**
-   * Marca do produto que sobe enquanto ela fala dele. A janela é em quadros da
-   * gravação, como as legendas, e é dividida por SPEED na hora de usar.
+   * Itens que se acumulam enquanto ela enumera. `at` é o quadro do clipe em
+   * que cada um entra, tirado da fronteira da legenda correspondente.
    */
-  productMark?: { src: string; ratio: number; from: number; to: number };
+  chips?: { text: string; at: number }[];
+  /** Janela em que a logomarca sobe, em quadros do clipe. */
+  brandMark?: { from: number; to: number };
 };
 
-export type Segment = QuestionCard | Clip;
-
 /**
- * A pergunta sobre receita para provedor saiu desta edição. O take continua em
- * `public/videos/resposta-2.mp4` e as legendas dele em `captions.ts`, então
- * voltar com ele é recolocar os dois segmentos aqui — os `index` dos cards
- * seguintes é que sobem ou descem, porque é o que o espectador lê.
+ * Cinco takes, um por bloco do roteiro. A ordem é a da gravação: os arquivos
+ * IMG_8889, 8892, 8893, 8896 e 8898 saíram do celular nessa sequência.
  */
-export const segments: Segment[] = [
+export const clips: Clip[] = [
   {
-    kind: "clip",
     id: "abertura",
     video: "videos/abertura.mp4",
-    sourceFrames: 184,
-    durationInFrames: atSpeed(184),
-    kicker: "Perguntas e Respostas",
-    nameCard: { name: "Mari", role: "Time Wispot" },
+    durationInFrames: 191,
+    kicker: "Wi-Fi inteligente",
   },
   {
-    kind: "question",
-    id: "pergunta-1",
-    index: 1,
-    question: "Para quais tipos de negócio a Wispot é indicada?",
-    durationInFrames: 82,
+    id: "parte-1",
+    video: "videos/parte-1.mp4",
+    durationInFrames: 292,
+    // Ela lista três coisas que o Wi-Fi inteligente enxerga. Os itens ficam de
+    // pé depois de entrar: "com que frequência" dura menos de um segundo na
+    // fala, e sozinho na tela não daria tempo de ler.
+    chips: [
+      { text: "quem se conecta", at: 171 },
+      { text: "com que frequência", at: 209 },
+      { text: "como o público se comporta", at: 230 },
+    ],
   },
   {
-    kind: "clip",
-    id: "resposta-1",
-    video: "videos/resposta-1.mp4",
-    sourceFrames: 421,
-    durationInFrames: atSpeed(421),
-    ribbon: "Para quais negócios a Wispot serve?",
+    id: "parte-2",
+    video: "videos/parte-2.mp4",
+    durationInFrames: 228,
+    // Sem elemento por cima: é o bloco mais denso de fala do vídeo, e a
+    // legenda já carrega a enumeração.
   },
   {
-    kind: "question",
-    id: "pergunta-3",
-    index: 2,
-    question: "Quais equipamentos funcionam com a Wispot?",
-    durationInFrames: 76,
+    id: "parte-3",
+    video: "videos/parte-3.mp4",
+    durationInFrames: 171,
+    // A marca sobe quando ela diz o nome dela e sai antes do corte.
+    brandMark: { from: 22, to: 128 },
   },
   {
-    kind: "clip",
-    id: "resposta-3",
-    video: "videos/resposta-3.mp4",
-    sourceFrames: 366,
-    durationInFrames: atSpeed(366),
-    ribbon: "Quais equipamentos funcionam?",
-  },
-  {
-    kind: "question",
-    id: "pergunta-4",
-    index: 3,
-    question: "Como saber o que o público acha do meu espaço?",
-    durationInFrames: 80,
-  },
-  {
-    kind: "clip",
-    id: "resposta-4",
-    video: "videos/resposta-4.mp4",
-    sourceFrames: 362,
-    durationInFrames: atSpeed(362),
-    ribbon: "Como saber o que o público acha?",
-    // Sobe logo que ela diz "Com a WiQuest" e sai antes do fim da resposta,
-    // para a marca não virar mobília.
-    productMark: { src: "brand/wiquest-color.png", ratio: 1834 / 538, from: 8, to: 240 },
-  },
-  {
-    kind: "clip",
-    id: "fechamento",
-    video: "videos/fechamento.mp4",
-    sourceFrames: 131,
-    durationInFrames: atSpeed(131),
+    id: "encerramento",
+    video: "videos/encerramento.mp4",
+    durationInFrames: 239,
   },
 ];
 
-export const OUTRO_FRAMES = 90;
+export const OUTRO_FRAMES = 72;
 
-// Mirrors how TransitionSeries overlaps its sequences, so the progress bar can
-// map a frame back to its segment without redoing the transition math.
-const durations = [...segments.map((s) => s.durationInFrames), OUTRO_FRAMES];
+// Espelha como o TransitionSeries sobrepõe as sequências, para a barra de
+// progresso mapear um quadro de volta ao bloco sem refazer a conta.
+const durations = [...clips.map((c) => c.durationInFrames), OUTRO_FRAMES];
 
 const starts: number[] = [0];
 for (let i = 1; i < durations.length; i++) {
   starts.push(starts[i - 1] + durations[i - 1] - TRANSITION_FRAMES);
 }
 
-export const segmentRanges = segments.map((s, i) => ({
+export const clipRanges = clips.map((c, i) => ({
   start: starts[i],
-  end: starts[i] + s.durationInFrames,
+  end: starts[i] + c.durationInFrames,
 }));
 
 export const outroRange = {
@@ -154,31 +97,22 @@ export const totalDurationInFrames =
   durations.reduce((sum, d) => sum + d, 0) - TRANSITION_FRAMES * (durations.length - 1);
 
 /**
- * A trilha se abre nos cards e no encerramento, onde ninguém fala, e recua para
- * um leito discreto por baixo da Mari. Sem isso ela ou some no vídeo inteiro ou
- * briga com a voz.
+ * Diferente da série de perguntas e respostas, aqui não há card mudo no meio:
+ * ela fala do primeiro ao último bloco. A trilha então fica num leito baixo o
+ * vídeo inteiro e só abre no encerramento, onde ninguém fala.
  *
- * O fade final é curto de propósito: o tempo forte do último compasso da faixa
- * cai no quadro 1545, quinze quadros antes do fim, e o fade só entra depois
- * dele.
+ * O fade final é curto de propósito. A faixa é 115 BPM cravados, compasso de
+ * 2,08696 s, com o primeiro tempo forte em 0,512 s; cortando 1,0953 s da cabeça,
+ * o tempo forte do compasso 23 cai no quadro 1138 — quinze quadros antes do
+ * fim. O vídeo fecha em cima da batida, e o fade entra depois dela.
  */
 const MUSIC_DUCKED = 0.09;
 const MUSIC_OPEN = 0.38;
 const MUSIC_RAMP = 8;
 const MUSIC_FADE_OUT = 12;
 
-const musicKeyframes: { frame: number; volume: number }[] = [];
-[...segments.map((s) => s.kind === "question"), true].forEach((isOpen, i) => {
-  const range = i < segments.length ? segmentRanges[i] : outroRange;
-  const volume = isOpen ? MUSIC_OPEN : MUSIC_DUCKED;
-  // Os platôs param antes das bordas para as rampas caírem dentro das
-  // transições, onde a mudança de volume passa despercebida.
-  musicKeyframes.push({ frame: i === 0 ? 0 : range.start + MUSIC_RAMP, volume });
-  musicKeyframes.push({ frame: range.end - MUSIC_RAMP, volume });
-});
-
 export const musicVolume = {
-  frames: musicKeyframes.map((k) => k.frame),
-  volumes: musicKeyframes.map((k) => k.volume),
+  frames: [0, outroRange.start - MUSIC_RAMP, outroRange.start + MUSIC_RAMP, totalDurationInFrames],
+  volumes: [MUSIC_DUCKED, MUSIC_DUCKED, MUSIC_OPEN, MUSIC_OPEN],
   fadeOutFrom: totalDurationInFrames - MUSIC_FADE_OUT,
 };
