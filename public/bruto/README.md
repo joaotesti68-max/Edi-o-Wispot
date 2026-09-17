@@ -4,6 +4,13 @@ Suba aqui as gravações e qualquer arquivo de apoio do próximo vídeo
 (roteiro, trilha, artes). Nada desta pasta entra no vídeo direto: os
 trechos usados viram clipes cortados em `public/videos/`.
 
+## Onde subir
+
+Gravação inteira, sem cortar: a pasta **Wispot - vídeo novo (bruto)** no
+Google Drive do cliente —
+<https://drive.google.com/drive/folders/1r1-SVHWDN7x1f57RphJ8h8JnhkHJvMsn>.
+Não tem teto de tamanho e os originais não incham o repositório.
+
 ## Como subir pelo GitHub
 
 Na página desta pasta, botão **Add file → Upload files**, arrasta tudo e
@@ -12,9 +19,8 @@ confirma o commit **nesta branch** (`claude/wispot-remotion-video-t9ogjn`).
 Limites do upload pelo navegador: **25 MB por arquivo**, 100 arquivos por
 vez. Pelo Git (`git push`) o teto sobe para 100 MB por arquivo.
 
-Take de iPhone em 4K costuma passar dos 25 MB — nesse caso é mais rápido
-jogar no Google Drive e me mandar o link/nome da pasta, que eu leio de lá
-e trago só os cortes para o repositório.
+Take de iPhone em 4K costuma passar dos 25 MB — aí vai pelo Drive acima.
+O upload pelo GitHub serve para o que é pequeno: roteiro, artes, trilha.
 
 ## O que ajuda junto com os arquivos
 
