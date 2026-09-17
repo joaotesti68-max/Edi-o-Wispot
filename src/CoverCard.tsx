@@ -1,4 +1,12 @@
-import { AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
+import {
+  AbsoluteFill,
+  OffthreadVideo,
+  interpolate,
+  spring,
+  staticFile,
+  useCurrentFrame,
+  useVideoConfig,
+} from "remotion";
 import { brand } from "./brand";
 import { WifiIcon } from "./WispotMark";
 import type { Clip } from "./content";
@@ -9,38 +17,27 @@ import type { Clip } from "./content";
  * continua correndo por baixo, e a legenda segue por cima, então o bloco não
  * perde nada além da imagem.
  *
- * O motivo não é enfeite: ele ilustra o que ela está dizendo. Primeiro os
- * aparelhos se conectando ao ponto de Wi-Fi, um a um, enquanto ela fala de
- * clientes que se conectam; depois eles recuam e entra a lista do que a rede
- * passa a enxergar.
+ * O bloco tem duas fases, e a virada é o que ela está dizendo. Enquanto fala
+ * dos clientes que se conectam, quem está no ar é a imagem de apoio: alguém
+ * usando o celular no Wi-Fi de um estabelecimento. Quando ela passa para o que
+ * a rede entende desse público, a imagem se dissolve no degradê da marca e
+ * entra a lista.
  */
 
-const CENTER_X = 540;
-const CENTER_Y = 620;
-
-/** Onde cada aparelho aparece em volta do ponto, e em que quadro ele entra. */
-const DEVICES = [
-  { angle: -104, radius: 330, at: 14 },
-  { angle: -32, radius: 300, at: 30 },
-  { angle: 40, radius: 345, at: 46 },
-  { angle: 106, radius: 296, at: 62 },
-  { angle: 160, radius: 338, at: 78 },
-  { angle: -168, radius: 292, at: 94 },
-  { angle: 74, radius: 214, at: 110 },
-  { angle: -66, radius: 222, at: 126 },
-];
+/** Quantos quadros a imagem de apoio leva para se dissolver no degradê. */
+const VIDEO_FADE = 26;
 
 export const CoverCard: React.FC<{ cover: NonNullable<Clip["cover"]> }> = ({ cover }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  // Quando a lista entra, o motivo recua para segundo plano em vez de sumir:
-  // o ponto de Wi-Fi continua sendo o assunto da frase.
-  const firstItem = cover.items[0]?.at ?? Infinity;
-  const recede = interpolate(frame, [firstItem - 14, firstItem + 6], [0, 1], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-  });
+  const video = cover.video;
+  const videoOut = video
+    ? interpolate(frame, [video.until - VIDEO_FADE, video.until], [0, 1], {
+        extrapolateLeft: "clamp",
+        extrapolateRight: "clamp",
+      })
+    : 1;
 
   return (
     <AbsoluteFill style={{ background: brand.gradient }}>
@@ -48,14 +45,18 @@ export const CoverCard: React.FC<{ cover: NonNullable<Clip["cover"]> }> = ({ cov
           com o azul aberto. */}
       <AbsoluteFill
         style={{
-          background: `radial-gradient(circle at 50% 34%, transparent 28%, ${brand.alpha(
+          background: `radial-gradient(circle at 50% 38%, transparent 28%, ${brand.alpha(
             brand.colors.gray,
             0.34,
           )} 100%)`,
         }}
       />
 
-      <Motif frame={frame} fps={fps} dim={recede} />
+      {/* O símbolo fica por baixo da lista no degradê, para a tela não ficar
+          só texto depois que a imagem sai. */}
+      <Rings opacity={videoOut * 0.5} frame={frame} />
+
+      {video && videoOut < 1 ? <SupportFootage src={video.src} opacity={1 - videoOut} /> : null}
 
       <div
         style={{
@@ -113,13 +114,41 @@ export const CoverCard: React.FC<{ cover: NonNullable<Clip["cover"]> }> = ({ cov
 };
 
 /**
- * O ponto de Wi-Fi no meio, as ondas saindo dele e os aparelhos que vão
- * chegando. As ondas são três, defasadas em um terço do ciclo, para a pulsação
- * ser contínua em vez de piscar toda vez que a onda reinicia.
+ * Imagem de apoio. O arquivo é 1280×720 na horizontal, então entra por
+ * `objectFit: cover` — o recorte central é o que enquadra o rosto e o celular,
+ * conferido ao longo dos 8 s do clipe.
+ *
+ * Por cima, um véu azul discreto e o mesmo degradê de topo e base dos blocos
+ * gravados: é o que põe a imagem na paleta da peça sem apagar a luz quente do
+ * café, e o que segura a legenda legível embaixo.
  */
-const Motif: React.FC<{ frame: number; fps: number; dim: number }> = ({ frame, fps, dim }) => {
+const SupportFootage: React.FC<{ src: string; opacity: number }> = ({ src, opacity }) => (
+  <AbsoluteFill style={{ opacity }}>
+    <OffthreadVideo
+      src={staticFile(src)}
+      muted
+      style={{ width: "100%", height: "100%", objectFit: "cover" }}
+    />
+    <AbsoluteFill style={{ background: brand.alpha(brand.colors.blue, 0.2) }} />
+    <AbsoluteFill
+      style={{
+        background:
+          "linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, transparent 26%, transparent 54%, rgba(0,0,0,0.55) 78%, rgba(0,0,0,0.84) 100%)",
+      }}
+    />
+  </AbsoluteFill>
+);
+
+/**
+ * O ponto de Wi-Fi e as ondas saindo dele. São três, defasadas em um terço do
+ * ciclo, para a pulsação ser contínua em vez de piscar toda vez que a onda
+ * reinicia.
+ */
+const Rings: React.FC<{ opacity: number; frame: number }> = ({ opacity, frame }) => {
   const CYCLE = 44;
-  const opacity = 1 - dim * 0.66;
+  const CENTER_X = 540;
+  const CENTER_Y = 600;
+  if (opacity <= 0) return null;
 
   return (
     <AbsoluteFill style={{ opacity }}>
@@ -142,38 +171,6 @@ const Motif: React.FC<{ frame: number; fps: number; dim: number }> = ({ frame, f
               strokeWidth={4}
               opacity={(1 - phase) * 0.5}
             />
-          );
-        })}
-
-        {DEVICES.map((device) => {
-          const enter = spring({
-            frame: frame - device.at,
-            fps,
-            config: { damping: 200, mass: 0.7 },
-          });
-          if (enter <= 0) return null;
-
-          const rad = (device.angle * Math.PI) / 180;
-          const x = CENTER_X + Math.cos(rad) * device.radius;
-          const y = CENTER_Y + Math.sin(rad) * device.radius;
-          // A linha é desenhada do centro para fora junto com a entrada, para o
-          // aparelho parecer se conectar e não só aparecer.
-          const lx = CENTER_X + Math.cos(rad) * device.radius * enter;
-          const ly = CENTER_Y + Math.sin(rad) * device.radius * enter;
-
-          return (
-            <g key={device.angle} opacity={enter}>
-              <line
-                x1={CENTER_X}
-                y1={CENTER_Y}
-                x2={lx}
-                y2={ly}
-                stroke={brand.colors.white}
-                strokeWidth={3}
-                opacity={0.42}
-              />
-              <circle cx={x} cy={y} r={16} fill={brand.colors.white} />
-            </g>
           );
         })}
       </svg>

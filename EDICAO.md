@@ -74,7 +74,7 @@ sobem sobre ele.
 | 3 | Parte 2        | `parte-2.mp4`       | — |
 | 4 | Parte 3        | `parte-3.mp4`       | logomarca |
 | 5 | Encerramento   | `encerramento.mp4`  | — |
-| — | Card final     | `EndCard.tsx`       | — |
+| — | Card final     | `EndCard.tsx`       | "Fale conosco." + site    |
 
 Um elemento por bloco, e nenhum repetido. A parte 2 fica limpa de propósito: é
 o trecho mais denso de fala do vídeo, e a legenda já carrega a enumeração.
@@ -85,9 +85,23 @@ A imagem deste take não vai ao ar: ela fala fora do eixo da câmera na maior
 parte dele, inclusive nas últimas palavras. O áudio é bom, então o bloco inteiro
 corre por baixo de uma tela cheia (`CoverCard.tsx`) e só a imagem se perde.
 
-O motivo não é enfeite, ilustra o que ela está dizendo: primeiro os aparelhos
-se conectando ao ponto de Wi-Fi, um a um, enquanto ela fala de clientes que se
-conectam; depois eles recuam e entra a lista do que a rede passa a enxergar.
+O bloco tem duas fases, e a virada é o que ela está dizendo. Enquanto fala dos
+clientes que se conectam, quem está no ar é a imagem de apoio enviada pelo
+cliente — alguém usando o celular no Wi-Fi de um estabelecimento
+(`public/videos/conexao-cafe.mp4`, 1280×720, 8 s, sem áudio). Quando ela passa
+para o que a rede entende desse público, a imagem se dissolve no degradê da
+marca e entra a lista.
+
+A imagem de apoio entra por `objectFit: cover`, e o recorte central é o que
+enquadra o rosto e o celular — conferido ao longo dos 8 s, porque ela se mexe.
+Por cima vai um véu azul de 20% e o mesmo degradê de topo e base dos blocos
+gravados: põe a imagem na paleta da peça sem apagar a luz quente do café, e
+segura a legenda legível embaixo.
+
+A dissolução termina no quadro 186 (`video.until`), antes dos 192 quadros do
+arquivo — não há repetição nem congelamento de quadro no fim. O primeiro item
+da lista entra no meio dela, no 171, então a troca de fundo e a entrada do
+texto são o mesmo movimento.
 
 Os itens se acumulam em vez de se substituírem porque "com que frequência" dura
 21 quadros na fala — sozinho na tela, não daria tempo de ler. As deixas (`at`)
@@ -97,8 +111,9 @@ sobe (`captionsUntil`): dali em diante a lista é que carrega o texto, e a faixa
 de legenda sumir evita dizer a mesma coisa duas vezes na mesma tela.
 
 Para devolver a imagem do take ao ar, basta tirar o `cover` do bloco em
-`content.ts` — a lista volta a ser a versão em tarjas por cima do vídeo se o
-`Chips` for restaurado do histórico, mas o take continua com o mesmo problema.
+`content.ts` — mas o take continua com o mesmo problema. Para trocar a imagem
+de apoio, é só pôr outro arquivo em `video.src`; se ele for mais curto que 186
+quadros, o `until` desce junto.
 
 A logomarca da parte 3 sobe quando ela diz o nome da empresa e sai antes do
 corte. Nesse bloco a marca d'água do rodapé é suprimida: duas assinaturas ao

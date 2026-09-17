@@ -31,6 +31,12 @@ export type Clip = {
    * `at` é o quadro do clipe em que cada item da lista entra.
    */
   cover?: {
+    /**
+     * Imagem de apoio que segura a primeira metade do bloco. `until` é o
+     * quadro em que ela terminou de se dissolver no degradê — o arquivo tem
+     * 192 quadros, então a dissolução precisa acabar antes disso.
+     */
+    video?: { src: string; until: number };
     items: { text: string; at: number }[];
     /**
      * Quadro em que a legenda se cala. Os itens entram exatamente nas
@@ -61,8 +67,10 @@ export const clips: Clip[] = [
     durationInFrames: 287,
     // A imagem deste take não vai ao ar: ela fala fora do eixo da câmera quase
     // o tempo todo, inclusive nas últimas palavras. O áudio é bom, então o
-    // bloco inteiro corre por baixo da tela cheia.
+    // bloco inteiro corre por baixo da tela cheia — primeiro a imagem de
+    // apoio, depois o degradê com a lista.
     cover: {
+      video: { src: "videos/conexao-cafe.mp4", until: 186 },
       captionsUntil: 171,
       items: [
         { text: "quem se conecta", at: 171 },

@@ -45,7 +45,7 @@ export const EndCard: React.FC = () => {
           textShadow: "0 4px 28px rgba(0,0,0,0.26)",
         }}
       >
-        Fale com a gente.
+        Fale conosco.
       </h2>
 
       <p
