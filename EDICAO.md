@@ -1,6 +1,6 @@
 # Wi-Fi inteligente — institucional
 
-Vídeo vertical 1080×1920, 24 fps, 47,3 s. Composição Remotion: `WifiInteligente`.
+Vídeo vertical 1080×1920, 24 fps, 47,2 s. Composição Remotion: `WifiInteligente`.
 
 Peça institucional sobre o tema *Wi-Fi inteligente como ferramenta de dados e
 relacionamento*, sobre roteiro do cliente, em cinco blocos: abertura, três
@@ -26,7 +26,7 @@ Cinco takes, 4K HEVC 24 fps em retrato, na ordem da gravação.
 | `IMG_8889` | —                            | 1,70 → 9,62 s     | `abertura.mp4`      |
 | `IMG_8892` | —                            | 1,10 → 13,00 s    | `parte-1.mp4`       |
 | `IMG_8893` | —                            | 0 → 9,04 s        | `parte-2.mp4`       |
-| `IMG_8896` | —                            | 0,10 → 7,18 s     | `parte-3.mp4`       |
+| `IMG_8896` | —                            | 0,10 → 6,81 s     | `parte-3.mp4`       |
 | `IMG_8898` | 0 → 4,02 s (take falho)      | 4,02 → 10,85 s    | `encerramento-a.mp4`|
 | `IMG_8898` | 10,85 → 11,35 s (respirada)  | 11,35 → 13,94 s   | `encerramento-b.mp4`|
 
@@ -48,11 +48,13 @@ ser dos quadros. A primeira metade não acaba onde a respirada começa (166), e
 sim no 163, último quadro com os olhos abertos e a cabeça no lugar — que é como
 a segunda metade abre. Assim o salto lê como corte de edição, não como defeito.
 
-**A parte 2 acaba na última palavra.** Ela desvia o olhar no quadro 217, exato
-instante em que fecha a frase, então o clipe termina ali. Não sobra silêncio
-nenhum: o fim leva um fade de áudio de 0,08 s para a cauda de "negócio" não ser
-cortada seca, e a transição para a parte 3 passa a ser corte seco (1 quadro, o
-mínimo que o `TransitionSeries` aceita).
+**As partes 2 e 3 acabam na última palavra.** Na parte 2 ela desvia o olhar no
+quadro 217, exato instante em que fecha a frase, então o clipe termina ali; como
+não sobra silêncio nenhum, o fim leva um fade de áudio de 0,08 s para a cauda de
+"negócio" não ser cortada seca. A parte 3 fecha no quadro 160, onde
+"relacionamento" termina de decair — ali o corte já cai em silêncio, e não
+precisou de fade. Depois das duas, a transição é corte seco (1 quadro, o mínimo
+que o `TransitionSeries` aceita).
 
 As fronteiras não foram estimadas no olho: o áudio de cada take foi varrido em
 janelas curtas com o reconhecedor, e o corte ficou no vale de silêncio anterior
@@ -68,7 +70,7 @@ duração é por bloco (`transitionInFrames` em `content.ts`), e não uma só:
 | abertura      | 12 quadros        | 8 |
 | parte 1       | 7 quadros         | 5 |
 | parte 2       | nenhuma           | 1 (corte seco) |
-| parte 3       | 12 quadros        | 8 |
+| parte 3       | 1 quadro          | 1 (corte seco) |
 | encerramento A| 5 quadros         | 1 (corte seco na emenda) |
 | encerramento B| 14 quadros        | 8 |
 
@@ -80,11 +82,30 @@ Comando por clipe (rotação do iPhone já aplicada, áudio nivelado em -16 LUFS
 
 ```console
 ffmpeg -ss <inicio> -to <fim> -i <origem>.mov \
-  -vf "scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,setsar=1" \
+  -vf "scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,setsar=1,\
+       colortemperature=temperature=5200,eq=saturation=1.12:contrast=1.06:gamma=1.06" \
   -c:v libx264 -preset veryslow -crf 14 -pix_fmt yuv420p -r 24 \
   -af "loudnorm=I=-16:TP=-1.5:LRA=11,afade=t=in:st=0:d=0.10" \
   -c:a aac -b:a 256k -ar 48000 -ac 2 -movflags +faststart <saida>.mp4
 ```
+
+### O tratamento de cor
+
+Chovia no dia da gravação, e a luz de céu encoberto deixou os takes frios e
+chapados. O tratamento é uma correção de temperatura para 5200 K, mais um ganho
+leve de saturação (1,12), contraste (1,06) e gama (1,06). Vai no mesmo passe do
+corte, e não depois: reencodar de novo por cima do clipe cortado seria uma
+geração de perda a troco de nada.
+
+Os números não são gosto, foram medidos. A 4600 K a pele já sai alaranjada, e
+5200 K é o ponto em que ela esquenta sem virar âmbar. A correção de temperatura
+derruba o canal azul e, com ele, a luminância: a média do quadro cai de 140 para
+129, e é isso que o gama de 1,06 devolve (134,8), sem estourar — a 1,10 o brilho
+volta inteiro, mas 0,5% dos pixels vão a 254 ou mais. A saturação e o contraste
+compensam o chapado do dia.
+
+A imagem de apoio do bloco 2 fica fora do tratamento: ela já vem quente, de um
+café com luz amarela, e é ela que o tratamento dos takes está tentando alcançar.
 
 O CRF 14 aqui é o teto de qualidade do vídeo inteiro: o render final reencoda
 por cima destes arquivos, então o que se perde no corte não volta. Os dois
@@ -196,10 +217,10 @@ Duas palavras são leitura, não transcrição limpa, e estão escritas à mão:
 
 `public/audio/theme.mp3` — *Nastelbom / Funky*, 115 BPM, instrumental, a mesma
 faixa da série anterior, reenviada pelo cliente. Do arquivo original (79,1 s)
-saem os 47,4 s usados aqui.
+saem os 47,3 s usados aqui.
 
 ```console
-ffmpeg -ss 1.8453 -t 47.40 -i <original>.mp3 \
+ffmpeg -ss 1.9703 -t 47.25 -i <original>.mp3 \
   -af "volume=-4.5dB,alimiter=limit=0.9:level=disabled,afade=t=in:st=0:d=0.6" \
   -c:a libmp3lame -b:a 192k -ar 44100 public/audio/theme.mp3
 ```
@@ -210,8 +231,8 @@ nelas.
 
 **Corte com a grade do compasso.** A faixa é 115 BPM cravados, compasso de
 2,08696 s, com o primeiro tempo forte em 0,512 s (medido de novo neste arquivo:
-114,7 BPM e fase 0,510 s, dentro do erro da medição). Cortando 1,8453 s da
-cabeça, o tempo forte do compasso 23 cai no quadro 1120 — quinze quadros antes
+114,7 BPM e fase 0,510 s, dentro do erro da medição). Cortando 1,9703 s da
+cabeça, o tempo forte do compasso 23 cai no quadro 1117 — quinze quadros antes
 do fim. O vídeo fecha em cima da batida em vez de cortar no meio de um
 compasso, e o `MUSIC_FADE_OUT` é curto justamente para entrar só depois dela.
 
@@ -233,7 +254,7 @@ O `remotion.config.ts` já carrega os parâmetros de qualidade: quadros
 intermediários em PNG (o padrão é JPEG, que é uma geração de perda no meio do
 caminho, e ainda marca a saída como `yuvj420p`), CRF 13, preset `veryslow` e
 áudio em 320k.
-Sai um master de 1135 quadros, com a mixagem em -16,2 LUFS integrado e pico
+Sai um master de 1132 quadros, com a mixagem em -16,2 LUFS integrado e pico
 real -1,1 dBTP.
 
 O arquivo entregue é uma cópia menor, reencodada em dois passes a partir do

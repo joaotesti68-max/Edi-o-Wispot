@@ -79,9 +79,9 @@ export const clips: Clip[] = [
       video: { src: "videos/conexao-cafe.mp4", until: 186 },
       captionsUntil: 171,
       items: [
-        { text: "quem se conecta", at: 171 },
-        { text: "com que frequência", at: 209 },
-        { text: "como o público se comporta", at: 230 },
+        { text: "Quem se conecta", at: 171 },
+        { text: "Com que frequência", at: 209 },
+        { text: "Como o público se comporta", at: 230 },
       ],
     },
   },
@@ -100,9 +100,12 @@ export const clips: Clip[] = [
     // já carrega a enumeração.
   },
   {
+    // Também cortado na última palavra, a pedido: o clipe acaba no quadro 160,
+    // onde "relacionamento" termina de decair. O corte cai em silêncio, então
+    // aqui não precisou de fade de áudio.
     id: "parte-3",
     video: "videos/parte-3.mp4",
-    durationInFrames: 171,
+    durationInFrames: 161,
     // O bloco anterior acaba na última palavra, sem silêncio nenhum, então aqui
     // é corte seco: 1 quadro é o mínimo que o TransitionSeries aceita.
     transitionInFrames: 1,
@@ -120,6 +123,8 @@ export const clips: Clip[] = [
     id: "encerramento-a",
     video: "videos/encerramento-a.mp4",
     durationInFrames: 164,
+    // Corte seco também aqui: a parte 3 agora acaba na última palavra dela.
+    transitionInFrames: 1,
   },
   {
     id: "encerramento-b",
@@ -183,8 +188,8 @@ export const totalDurationInFrames =
  * vídeo inteiro e só abre no encerramento, onde ninguém fala.
  *
  * O fade final é curto de propósito. A faixa é 115 BPM cravados, compasso de
- * 2,08696 s, com o primeiro tempo forte em 0,512 s; cortando 1,8453 s da cabeça,
- * o tempo forte do compasso 23 cai no quadro 1120 — quinze quadros antes do
+ * 2,08696 s, com o primeiro tempo forte em 0,512 s; cortando 1,9703 s da cabeça,
+ * o tempo forte do compasso 23 cai no quadro 1117 — quinze quadros antes do
  * fim. O vídeo fecha em cima da batida, e o fade entra depois dela.
  */
 const MUSIC_DUCKED = 0.09;

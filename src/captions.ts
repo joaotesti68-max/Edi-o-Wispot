@@ -49,7 +49,7 @@ export const captions: Record<string, Caption[]> = {
     { text: "É isso que a Wispot faz.", from: 2, to: 37 },
     { text: "Transforma redes Wi-Fi", from: 37, to: 76 },
     { text: "em uma ferramenta de captação", from: 76, to: 122 },
-    { text: "de dados e relacionamento.", from: 122, to: 159 },
+    { text: "de dados e relacionamento.", from: 122, to: 161 },
   ],
   "encerramento-a": [
     { text: "Porque as pessoas já estão", from: 3, to: 31 },
