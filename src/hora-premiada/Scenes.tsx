@@ -2,18 +2,9 @@ import React from "react";
 import { brand } from "./brand";
 import { SPEED, clipById } from "./content";
 import { Scene } from "./Scene";
-import { Chip, Cue, Eyebrow, Headline, IconBadge, OverlayStack } from "./Ui";
+import { Chip, Cue, Eyebrow, IconBadge, OverlayStack } from "./Ui";
 import { CouponCard, FeatureTitle, PlatformInset, TimeWindow } from "./Graphics";
-import {
-  BoxIcon,
-  ChatIcon,
-  ClockIcon,
-  CrossIcon,
-  HeartIcon,
-  RepeatIcon,
-  TrendingUpIcon,
-  WifiIcon,
-} from "./Icons";
+import { BoxIcon, CrossIcon, HeartIcon, RepeatIcon, TrendingUpIcon, WifiIcon } from "./Icons";
 
 const FPS = 30;
 const sec = (s: number) => Math.round((s / SPEED) * FPS);
@@ -35,20 +26,14 @@ const outlineBadge = (Icon: React.FC<{ size?: number; color?: string; strokeWidt
 
 /**
  * ABERTURA — "E se, das três às quatro da tarde, quem estivesse conectado na
- * sua loja recebesse um cupom?" One continuous take, so the three ideas of the
- * question build up on screen instead of replacing each other.
+ * sua loja recebesse um cupom?" The voucher is the only thing on screen, landing
+ * once she has set up the hour and holding to the end of the question.
  */
 export const Abertura: React.FC = () => (
   <Scene clip={clipById["abertura"]} nameCard="Vanessa Furiato">
-    <Cue at={1.2} dur={10.2}>
+    <Cue at={4.2} dur={7.2}>
       <OverlayStack>
-        <Chip icon={badge(ClockIcon)}>das 15h às 16h</Chip>
-        <Chip icon={badge(WifiIcon)} delay={sec(3.2)}>
-          quem está conectado na loja
-        </Chip>
-        <div style={{ marginTop: 10 }}>
-          <CouponCard delay={sec(6.7)} />
-        </div>
+        <CouponCard size={1.35} />
       </OverlayStack>
     </Cue>
   </Scene>
@@ -98,7 +83,7 @@ export const Desenvolvimento2: React.FC = () => (
   <Scene clip={clipById["desenvolvimento-2"]}>
     <Cue at={0.2} dur={5.4}>
       <OverlayStack>
-        <Eyebrow>Serve para</Eyebrow>
+        <Eyebrow>Pode ser usado para</Eyebrow>
         <Chip icon={badge(TrendingUpIcon)}>Movimentar o horário parado</Chip>
         <Chip icon={badge(BoxIcon)} delay={sec(1.4)}>
           Girar um estoque específico
@@ -142,30 +127,20 @@ export const Desenvolvimento2: React.FC = () => (
   </Scene>
 );
 
-/** FECHAMENTO, first half — the lockup once more, then the promise. */
+/** FECHAMENTO, first half — the lockup once more, and nothing competing with it. */
 export const FechamentoA: React.FC = () => (
   <Scene clip={clipById["fechamento-a"]}>
-    <Cue at={0.4} dur={3.3}>
+    <Cue at={0.4} dur={6.2}>
       <OverlayStack>
         <FeatureTitle />
       </OverlayStack>
     </Cue>
-
-    <Cue at={4.0} dur={2.8}>
-      <OverlayStack>
-        <Headline size={58}>Gire seu horário mais parado em vendas.</Headline>
-      </OverlayStack>
-    </Cue>
   </Scene>
 );
 
-/** FECHAMENTO, second half — picks up after the fumbled line is cut out. */
-export const FechamentoB: React.FC = () => (
-  <Scene clip={clipById["fechamento-b"]}>
-    <Cue at={0.2} dur={5.6}>
-      <OverlayStack>
-        <Chip icon={badge(ChatIcon)}>Fale Conosco</Chip>
-      </OverlayStack>
-    </Cue>
-  </Scene>
-);
+/**
+ * FECHAMENTO, second half — picks up after the fumbled line is cut out. Left
+ * clean: she delivers the last line to camera and the end card takes the call
+ * to action.
+ */
+export const FechamentoB: React.FC = () => <Scene clip={clipById["fechamento-b"]} />;

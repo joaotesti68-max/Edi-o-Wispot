@@ -1,5 +1,5 @@
 import React from "react";
-import { AbsoluteFill, Audio, Composition, interpolate, staticFile } from "remotion";
+import { AbsoluteFill, Audio, Composition, Sequence, interpolate, staticFile } from "remotion";
 import { TransitionSeries, linearTiming } from "@remotion/transitions";
 import { fade } from "@remotion/transitions/fade";
 import { EndCard } from "./EndCard";
@@ -52,13 +52,35 @@ const musicVolume = (frame: number) =>
       totalDurationInFrames - 18,
       totalDurationInFrames,
     ],
-    [0, 0.06, 0.06, 0.2, 0.2, 0],
+    [0, 0.07, 0.07, 0.23, 0.23, 0],
     { extrapolateLeft: "clamp", extrapolateRight: "clamp" },
   );
 
+// The track is shorter than the piece and ends on a fade to silence, so a plain
+// loop would leave a hole in the middle. Each pass starts before the previous
+// one has died away, and its attack covers that tail.
+const MUSIC_SECONDS = 29.64;
+const MUSIC_OVERLAP = 1.6;
+
+const musicStarts = (() => {
+  const step = MUSIC_SECONDS - MUSIC_OVERLAP;
+  const starts: number[] = [];
+  for (let t = 0; t * FPS < totalDurationInFrames; t += step) {
+    starts.push(Math.round(t * FPS));
+  }
+  return starts;
+})();
+
 export const HoraPremiadaVideo: React.FC = () => (
   <AbsoluteFill style={{ fontFamily }}>
-    <Audio src={staticFile("audio/motivation-corporate.mp3")} volume={musicVolume} />
+    {musicStarts.map((from) => (
+      <Sequence key={from} from={from}>
+        <Audio
+          src={staticFile("audio/funky-corporate-startup.mp3")}
+          volume={(f) => musicVolume(f + from)}
+        />
+      </Sequence>
+    ))}
 
     <TransitionSeries>
       {clips.map((clip, i) => {

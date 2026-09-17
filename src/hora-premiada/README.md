@@ -89,8 +89,11 @@ re-times the whole piece.
 
 ## Music
 
-`public/audio/motivation-corporate.mp3`, mastered hot at -7.9 LUFS, so it runs at
-0.06 gain under the voice (roughly 12 dB down) and opens to 0.2 on the end card.
+`public/audio/funky-corporate-startup.mp3`, mastered hot at -9.2 LUFS, so it runs
+at 0.07 gain under the voice (roughly 12 dB down) and opens to 0.23 on the end
+card. It is only 29.6 s long and ends on a fade to silence, so instead of
+Remotion's `loop` — which would leave a hole mid-video — it plays as overlapping
+passes 28 s apart, each attack covering the previous tail.
 
 ## Rendering
 

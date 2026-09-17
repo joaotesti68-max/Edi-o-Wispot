@@ -120,7 +120,10 @@ export const TimeWindow: React.FC<{ delay?: number }> = ({ delay = 0 }) => {
 };
 
 /** The reward itself, landing with a small overshoot like a card being dealt. */
-export const CouponCard: React.FC<{ delay?: number }> = ({ delay = 0 }) => {
+export const CouponCard: React.FC<{ delay?: number; size?: number }> = ({
+  delay = 0,
+  size = 1,
+}) => {
   const { opacity, progress } = useReveal(delay, 0);
   const lift = interpolate(progress, [0, 1], [70, 0]);
   const tilt = interpolate(progress, [0, 1], [-8, -2.5]);
@@ -131,7 +134,7 @@ export const CouponCard: React.FC<{ delay?: number }> = ({ delay = 0 }) => {
         display: "flex",
         alignItems: "stretch",
         background: brand.colors.white,
-        borderRadius: 30,
+        borderRadius: 30 * size,
         overflow: "hidden",
         opacity,
         transform: `translateY(${lift}px) rotate(${tilt}deg)`,
@@ -140,19 +143,19 @@ export const CouponCard: React.FC<{ delay?: number }> = ({ delay = 0 }) => {
     >
       <div
         style={{
-          width: 110,
+          width: 110 * size,
           background: brand.gradient,
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
         }}
       >
-        <TicketIcon size={52} color={brand.colors.white} strokeWidth={2} />
+        <TicketIcon size={52 * size} color={brand.colors.white} strokeWidth={2} />
       </div>
       <div
         style={{
           borderLeft: `4px dashed ${brand.blueAlpha(0.4)}`,
-          padding: "20px 40px 22px 30px",
+          padding: `${20 * size}px ${40 * size}px ${22 * size}px ${30 * size}px`,
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
@@ -163,7 +166,7 @@ export const CouponCard: React.FC<{ delay?: number }> = ({ delay = 0 }) => {
           style={{
             fontFamily: brand.fontFamily,
             fontWeight: 800,
-            fontSize: 46,
+            fontSize: 46 * size,
             letterSpacing: 0.5,
             color: brand.colors.blue,
           }}
@@ -174,7 +177,7 @@ export const CouponCard: React.FC<{ delay?: number }> = ({ delay = 0 }) => {
           style={{
             fontFamily: brand.fontFamily,
             fontWeight: 600,
-            fontSize: 26,
+            fontSize: 26 * size,
             color: brand.colors.gray,
           }}
         >
