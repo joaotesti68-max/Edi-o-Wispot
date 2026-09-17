@@ -70,7 +70,7 @@ export const EndCard: React.FC = () => {
             transform: `translateY(${interpolate(ctaIn, [0, 1], [16, 0])}px)`,
           }}
         >
-          Fale com a gente
+          Fale Conosco
         </div>
 
         <div

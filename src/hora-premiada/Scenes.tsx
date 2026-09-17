@@ -3,19 +3,23 @@ import { brand } from "./brand";
 import { SPEED, clipById } from "./content";
 import { Scene } from "./Scene";
 import { Chip, Cue, Eyebrow, Headline, IconBadge, OverlayStack } from "./Ui";
-import { AutoLoop, CouponCard, FeatureTitle, PlatformInset, TimeWindow } from "./Graphics";
+import { CouponCard, FeatureTitle, PlatformInset, TimeWindow } from "./Graphics";
 import {
   BoxIcon,
   ChatIcon,
   ClockIcon,
   CrossIcon,
   HeartIcon,
+  RepeatIcon,
   TrendingUpIcon,
   WifiIcon,
 } from "./Icons";
 
 const FPS = 30;
 const sec = (s: number) => Math.round((s / SPEED) * FPS);
+
+// Narrower than the overlay column so a caption still fits beneath the card.
+const INSET_WIDTH = 880;
 
 const badge = (Icon: React.FC<{ size?: number; color?: string; strokeWidth?: number }>) => (
   <IconBadge>
@@ -56,16 +60,21 @@ export const Abertura: React.FC = () => (
  */
 export const Desenvolvimento1: React.FC = () => (
   <Scene clip={clipById["desenvolvimento-1"]}>
-    <Cue at={0.4} dur={6.9}>
+    <Cue at={0.4} dur={5.2}>
       <OverlayStack>
         <FeatureTitle />
       </OverlayStack>
     </Cue>
 
-    <Cue at={7.9} dur={5.2}>
+    <Cue at={5.9} dur={7.3}>
       <OverlayStack>
         <Eyebrow>Monte o cupom</Eyebrow>
-        <PlatformInset src="hora-premiada/anim-cupom.mp4" rate={0.92} delay={sec(0.3)} />
+        <PlatformInset
+          src="hora-premiada/anim-cupom.mp4"
+          rate={1.12}
+          width={INSET_WIDTH}
+          delay={sec(0.3)}
+        />
       </OverlayStack>
     </Cue>
 
@@ -100,30 +109,34 @@ export const Desenvolvimento2: React.FC = () => (
       </OverlayStack>
     </Cue>
 
-    <Cue at={5.9} dur={6.3}>
+    <Cue at={5.9} dur={4.8}>
       <OverlayStack>
         <Chip icon={outlineBadge(CrossIcon)} muted>
           sem promotor
         </Chip>
-        <Chip icon={outlineBadge(CrossIcon)} delay={sec(1.3)} muted>
+        <Chip icon={outlineBadge(CrossIcon)} delay={sec(1.2)} muted>
           sem panfleto
         </Chip>
-        <Chip icon={outlineBadge(CrossIcon)} delay={sec(2.6)} muted>
+        <Chip icon={outlineBadge(CrossIcon)} delay={sec(2.4)} muted>
           sem esforço da equipe
         </Chip>
       </OverlayStack>
     </Cue>
 
-    <Cue at={12.6} dur={3.3}>
-      <OverlayStack>
-        <AutoLoop />
-      </OverlayStack>
-    </Cue>
-
-    <Cue at={16.1} dur={4.6}>
+    {/* The campaign screen runs under the whole automation line, with the
+        caption landing as she says it. */}
+    <Cue at={10.9} dur={9.8}>
       <OverlayStack>
         <Eyebrow>Crie a campanha</Eyebrow>
-        <PlatformInset src="hora-premiada/anim-campanha.mp4" rate={1.06} delay={sec(0.3)} />
+        <PlatformInset
+          src="hora-premiada/anim-campanha.mp4"
+          rate={1.05}
+          width={INSET_WIDTH}
+          delay={sec(0.3)}
+        />
+        <Chip icon={badge(RepeatIcon)} delay={sec(1.7)}>
+          Configura uma vez. Roda sozinha.
+        </Chip>
       </OverlayStack>
     </Cue>
   </Scene>
@@ -151,7 +164,7 @@ export const FechamentoB: React.FC = () => (
   <Scene clip={clipById["fechamento-b"]}>
     <Cue at={0.2} dur={5.6}>
       <OverlayStack>
-        <Chip icon={badge(ChatIcon)}>Fale com a gente</Chip>
+        <Chip icon={badge(ChatIcon)}>Fale Conosco</Chip>
       </OverlayStack>
     </Cue>
   </Scene>

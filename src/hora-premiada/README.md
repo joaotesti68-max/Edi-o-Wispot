@@ -69,12 +69,15 @@ over the shot:
 
 | Inset | Source | Segment | Shown in |
 | --- | --- | --- | --- |
-| Monte o cupom | `Hora_Premiada_editar_cupom.mp4` | 13.6–17.6 | Desenvolvimento 1, 7.9–13.1 |
-| Crie a campanha | `Hora_Premiada_criar_campanha.mp4` | 13.0–17.0 | Desenvolvimento 2, 16.1–20.7 |
+| Monte o cupom | `Hora_Premiada_editar_cupom.mp4` | 10.5–17.6 | Desenvolvimento 1, 5.9–13.2 |
+| Crie a campanha | `Hora_Premiada_criar_campanha.mp4` | 8.0–17.0 | Desenvolvimento 2, 10.9–20.7 |
 
-Each uses the tail of its recording, where the finished coupon and the finished
-campaign screen are on screen. `rate` on `PlatformInset` is set so the clip lands
-on that final state a beat before the cue ends and then holds there.
+Each segment covers the stretch where the thing is actually assembled — the
+coupon art filling in panel by panel, the campaign form switching its fields on —
+and ends on the finished state. `rate` on `PlatformInset` is set so the clip
+reaches that final state a beat before its cue ends and then holds there. The
+campaign inset carries the whole back half of desenvolvimento 2, with the
+"configura uma vez, roda sozinha" caption landing under it as she says the line.
 
 ## Pace
 

@@ -1,8 +1,8 @@
 import React from "react";
 import { Img, OffthreadVideo, interpolate, staticFile, useCurrentFrame } from "remotion";
 import { brand, horaPremiada } from "./brand";
-import { useReveal, IconBadge } from "./Ui";
-import { ClockIcon, RepeatIcon, TicketIcon } from "./Icons";
+import { useReveal } from "./Ui";
+import { ClockIcon, TicketIcon } from "./Icons";
 
 const CARD = {
   background: "rgba(255,255,255,0.96)",
@@ -230,59 +230,6 @@ export const FeatureTitle: React.FC<{ delay?: number; width?: number }> = ({
   );
 };
 
-/** "Configura uma vez, roda sozinha" — the icon keeps turning to say so. */
-export const AutoLoop: React.FC<{ delay?: number }> = ({ delay = 0 }) => {
-  const frame = useCurrentFrame();
-  const { opacity, translateY, progress } = useReveal(delay, 26);
-  const spin = interpolate(frame - delay, [0, 120], [0, 360], { extrapolateRight: "extend" });
-
-  return (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        gap: 24,
-        opacity,
-        transform: `translateY(${translateY}px)`,
-      }}
-    >
-      <div style={{ transform: `rotate(${spin * Math.min(progress * 1.4, 1)}deg)` }}>
-        <IconBadge size={84}>
-          <RepeatIcon size={42} color={brand.colors.white} strokeWidth={2.2} />
-        </IconBadge>
-      </div>
-      <div>
-        <div
-          style={{
-            fontFamily: brand.fontFamily,
-            fontWeight: 800,
-            fontSize: 52,
-            lineHeight: 1.08,
-            letterSpacing: -0.8,
-            color: brand.colors.white,
-            textShadow: "0 5px 26px rgba(4,26,38,0.55)",
-          }}
-        >
-          Configura uma vez.
-        </div>
-        <div
-          style={{
-            fontFamily: brand.fontFamily,
-            fontWeight: 800,
-            fontSize: 52,
-            lineHeight: 1.08,
-            letterSpacing: -0.8,
-            color: brand.colors.blue,
-            textShadow: "0 5px 26px rgba(4,26,38,0.55)",
-          }}
-        >
-          Roda sozinha.
-        </div>
-      </div>
-    </div>
-  );
-};
-
 /**
  * Screen capture of the platform, framed as a card floating over the shot.
  * `rate` is tuned per clip so the recording lands on its finished state just
@@ -292,13 +239,14 @@ export const PlatformInset: React.FC<{
   src: string;
   rate: number;
   delay?: number;
-}> = ({ src, rate, delay = 0 }) => {
+  width?: number | string;
+}> = ({ src, rate, delay = 0, width = "100%" }) => {
   const { opacity, translateY, scale } = useReveal(delay, 30);
 
   return (
     <div
       style={{
-        width: "100%",
+        width,
         aspectRatio: "16 / 9",
         borderRadius: 30,
         overflow: "hidden",
