@@ -14,6 +14,7 @@ import {
   WIDTH,
   clips,
   musicVolume,
+  transitionBefore,
   totalDurationInFrames,
 } from "./content";
 
@@ -40,7 +41,7 @@ export const WifiInteligente: React.FC = () => {
             {i === 0 ? null : (
               <TransitionSeries.Transition
                 presentation={fade()}
-                timing={linearTiming({ durationInFrames: TRANSITION_FRAMES })}
+                timing={linearTiming({ durationInFrames: transitionBefore(i) })}
               />
             )}
             <TransitionSeries.Sequence durationInFrames={clip.durationInFrames}>

@@ -1,6 +1,6 @@
 # Wi-Fi inteligente — institucional
 
-Vídeo vertical 1080×1920, 24 fps, 48,0 s. Composição Remotion: `WifiInteligente`.
+Vídeo vertical 1080×1920, 24 fps, 47,9 s. Composição Remotion: `WifiInteligente`.
 
 Peça institucional sobre o tema *Wi-Fi inteligente como ferramenta de dados e
 relacionamento*, sobre roteiro do cliente, em cinco blocos: abertura, três
@@ -24,8 +24,8 @@ Cinco takes, 4K HEVC 24 fps em retrato, na ordem da gravação.
 | Origem     | Trecho cortado               | Trecho mantido    | Saída               |
 | ---------- | ---------------------------- | ----------------- | ------------------- |
 | `IMG_8889` | —                            | 1,70 → 9,62 s     | `abertura.mp4`      |
-| `IMG_8892` | —                            | 1,10 → 13,22 s    | `parte-1.mp4`       |
-| `IMG_8893` | —                            | 0 → 9,50 s        | `parte-2.mp4`       |
+| `IMG_8892` | —                            | 1,10 → 13,00 s    | `parte-1.mp4`       |
+| `IMG_8893` | —                            | 0 → 9,21 s        | `parte-2.mp4`       |
 | `IMG_8896` | —                            | 0,10 → 7,18 s     | `parte-3.mp4`       |
 | `IMG_8898` | 0 → 4,02 s (take falho)      | 4,02 → 13,94 s    | `encerramento.mp4`  |
 
@@ -38,12 +38,14 @@ As fronteiras não foram estimadas no olho: o áudio de cada take foi varrido em
 janelas curtas com o reconhecedor, e o corte ficou no vale de silêncio anterior
 à primeira palavra, conferido depois palavra a palavra.
 
-**O rabo de cada clipe é mais longo que a fala.** A transição entre blocos dura
-8 quadros e sobrepõe as duas sequências, áudio incluído: com o corte encostado
-na última palavra, o bloco seguinte começava a falar por cima do anterior em
-dois dos cinco cortes. Cada clipe termina com cerca de 0,3 s de silêncio da
-própria gravação, e a sobreposição cai toda dentro dele — sobram de 4 a 7
-quadros de respiro entre o fim de uma fala e o começo da seguinte.
+**A transição tem de caber no silêncio do fim do bloco.** Ela dura 8 quadros e
+sobrepõe as duas sequências, áudio incluído: com o corte encostado na última
+palavra, o bloco seguinte começa a falar por cima do anterior. Nos blocos que o
+cliente pediu para cortar rente — a parte 1, em que ela desvia o olhar assim
+que termina a frase, e a parte 2, que tinha uma pausa sobrando —, o silêncio
+que resta é de 7 e 4 quadros, então a transição que entra depois deles encurta
+para 5 e 3 (`transitionInFrames` em `content.ts`). Nos demais, os 8 quadros
+cabem inteiros no silêncio da gravação.
 
 Comando por clipe (rotação do iPhone já aplicada, áudio nivelado em -16 LUFS):
 
@@ -68,7 +70,7 @@ sobem sobre ele.
 | # | Bloco          | Clipe               | Elemento por cima          |
 | - | -------------- | ------------------- | -------------------------- |
 | 1 | Abertura       | `abertura.mp4`      | tarja "Wi-Fi inteligente"  |
-| 2 | Parte 1        | `parte-1.mp4`       | três itens que se acumulam |
+| 2 | Parte 1        | `parte-1.mp4`       | tela cheia sobre o take    |
 | 3 | Parte 2        | `parte-2.mp4`       | — |
 | 4 | Parte 3        | `parte-3.mp4`       | logomarca |
 | 5 | Encerramento   | `encerramento.mp4`  | — |
@@ -77,10 +79,26 @@ sobem sobre ele.
 Um elemento por bloco, e nenhum repetido. A parte 2 fica limpa de propósito: é
 o trecho mais denso de fala do vídeo, e a legenda já carrega a enumeração.
 
-Os itens da parte 1 se acumulam em vez de se substituírem porque "com que
-frequência" dura 21 quadros na fala — sozinho na tela, não daria tempo de ler.
-As deixas deles (`at`) são as fronteiras das legendas correspondentes, então
-cada item entra junto com a palavra que o nomeia.
+### A tela cheia da parte 1
+
+A imagem deste take não vai ao ar: ela fala fora do eixo da câmera na maior
+parte dele, inclusive nas últimas palavras. O áudio é bom, então o bloco inteiro
+corre por baixo de uma tela cheia (`CoverCard.tsx`) e só a imagem se perde.
+
+O motivo não é enfeite, ilustra o que ela está dizendo: primeiro os aparelhos
+se conectando ao ponto de Wi-Fi, um a um, enquanto ela fala de clientes que se
+conectam; depois eles recuam e entra a lista do que a rede passa a enxergar.
+
+Os itens se acumulam em vez de se substituírem porque "com que frequência" dura
+21 quadros na fala — sozinho na tela, não daria tempo de ler. As deixas (`at`)
+são as fronteiras das legendas correspondentes, então cada item entra junto com
+a palavra que o nomeia. Por isso mesmo a legenda se cala quando o primeiro item
+sobe (`captionsUntil`): dali em diante a lista é que carrega o texto, e a faixa
+de legenda sumir evita dizer a mesma coisa duas vezes na mesma tela.
+
+Para devolver a imagem do take ao ar, basta tirar o `cover` do bloco em
+`content.ts` — a lista volta a ser a versão em tarjas por cima do vídeo se o
+`Chips` for restaurado do histórico, mas o take continua com o mesmo problema.
 
 A logomarca da parte 3 sobe quando ela diz o nome da empresa e sai antes do
 corte. Nesse bloco a marca d'água do rodapé é suprimida: duas assinaturas ao
@@ -134,10 +152,10 @@ Duas palavras são leitura, não transcrição limpa, e estão escritas à mão:
 
 `public/audio/theme.mp3` — *Nastelbom / Funky*, 115 BPM, instrumental, a mesma
 faixa da série anterior, reenviada pelo cliente. Do arquivo original (79,1 s)
-saem os 48,1 s usados aqui.
+saem os 48,0 s usados aqui.
 
 ```console
-ffmpeg -ss 1.0953 -t 48.10 -i <original>.mp3 \
+ffmpeg -ss 1.262 -t 47.95 -i <original>.mp3 \
   -af "volume=-4.5dB,alimiter=limit=0.9:level=disabled,afade=t=in:st=0:d=0.6" \
   -c:a libmp3lame -b:a 192k -ar 44100 public/audio/theme.mp3
 ```
@@ -148,8 +166,8 @@ nelas.
 
 **Corte com a grade do compasso.** A faixa é 115 BPM cravados, compasso de
 2,08696 s, com o primeiro tempo forte em 0,512 s (medido de novo neste arquivo:
-114,7 BPM e fase 0,510 s, dentro do erro da medição). Cortando 1,0953 s da
-cabeça, o tempo forte do compasso 23 cai no quadro 1138 — quinze quadros antes
+114,7 BPM e fase 0,510 s, dentro do erro da medição). Cortando 1,262 s da
+cabeça, o tempo forte do compasso 23 cai no quadro 1134 — quinze quadros antes
 do fim. O vídeo fecha em cima da batida em vez de cortar no meio de um
 compasso, e o `MUSIC_FADE_OUT` é curto justamente para entrar só depois dela.
 
@@ -171,11 +189,11 @@ O `remotion.config.ts` já carrega os parâmetros de qualidade: quadros
 intermediários em PNG (o padrão é JPEG, que é uma geração de perda no meio do
 caminho, e ainda marca a saída como `yuvj420p`), CRF 13, preset `veryslow` e
 áudio em 320k.
-Sai um master de 1153 quadros, 68 MiB a 11,8 Mbps, com a mixagem em -16,2 LUFS
-integrado e pico real -1,1 dBTP.
+Sai um master de 1149 quadros, com a mixagem em -16,2 LUFS integrado e pico
+real -1,1 dBTP.
 
 O arquivo entregue é uma cópia menor, reencodada em dois passes a partir do
-master — 3500k dá 22 MiB com SSIM 0,990 contra ele, e é o que está em
+master — 3500k dá 22 MiB com SSIM 0,992 contra ele, e é o que está em
 `delivery/wifi-inteligente.mp4`:
 
 ```console
