@@ -51,13 +51,15 @@ export const captions: Record<string, Caption[]> = {
     { text: "em uma ferramenta de captação", from: 76, to: 122 },
     { text: "de dados e relacionamento.", from: 122, to: 159 },
   ],
-  encerramento: [
+  "encerramento-a": [
     { text: "Porque as pessoas já estão", from: 3, to: 31 },
     { text: "se conectando ao seu Wi-Fi.", from: 31, to: 77 },
     { text: "Por que a sua empresa", from: 77, to: 102 },
-    { text: "não deveria aproveitar melhor essa conexão?", from: 102, to: 178 },
-    // Fora do roteiro: ela emenda o convite no fim do take, e ele leva direto
-    // ao card final.
-    { text: "Para mais informações, fale conosco.", from: 178, to: 226 },
+    { text: "não deveria aproveitar melhor essa conexão?", from: 102, to: 164 },
+  ],
+  // Fora do roteiro: ela emenda o convite no fim do take, e ele leva direto ao
+  // card final.
+  "encerramento-b": [
+    { text: "Para mais informações, fale conosco.", from: 2, to: 50 },
   ],
 };

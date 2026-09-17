@@ -1,5 +1,5 @@
 import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
-import { clipRanges, outroRange } from "./content";
+import { outroRange, progressRanges } from "./content";
 import { brand } from "./brand";
 
 export const ProgressBar: React.FC = () => {
@@ -27,7 +27,7 @@ export const ProgressBar: React.FC = () => {
           opacity,
         }}
       >
-        {clipRanges.map((range, i) => {
+        {progressRanges.map((range, i) => {
           const fill = interpolate(frame, [range.start, range.end], [0, 1], {
             extrapolateLeft: "clamp",
             extrapolateRight: "clamp",

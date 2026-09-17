@@ -1,6 +1,6 @@
 # Wi-Fi inteligente — institucional
 
-Vídeo vertical 1080×1920, 24 fps, 47,9 s. Composição Remotion: `WifiInteligente`.
+Vídeo vertical 1080×1920, 24 fps, 47,3 s. Composição Remotion: `WifiInteligente`.
 
 Peça institucional sobre o tema *Wi-Fi inteligente como ferramenta de dados e
 relacionamento*, sobre roteiro do cliente, em cinco blocos: abertura, três
@@ -25,14 +25,34 @@ Cinco takes, 4K HEVC 24 fps em retrato, na ordem da gravação.
 | ---------- | ---------------------------- | ----------------- | ------------------- |
 | `IMG_8889` | —                            | 1,70 → 9,62 s     | `abertura.mp4`      |
 | `IMG_8892` | —                            | 1,10 → 13,00 s    | `parte-1.mp4`       |
-| `IMG_8893` | —                            | 0 → 9,21 s        | `parte-2.mp4`       |
+| `IMG_8893` | —                            | 0 → 9,04 s        | `parte-2.mp4`       |
 | `IMG_8896` | —                            | 0,10 → 7,18 s     | `parte-3.mp4`       |
-| `IMG_8898` | 0 → 4,02 s (take falho)      | 4,02 → 13,94 s    | `encerramento.mp4`  |
+| `IMG_8898` | 0 → 4,02 s (take falho)      | 4,02 → 10,85 s    | `encerramento-a.mp4`|
+| `IMG_8898` | 10,85 → 11,35 s (respirada)  | 11,35 → 13,94 s   | `encerramento-b.mp4`|
 
 Só o take do encerramento trazia sujeira: uma tentativa interrompida por volta
 de 2,4 s e a respiração antes da tomada boa, as duas fora do corte. O
 `IMG_8893` começa com a fala já em curso — não há cabeça de silêncio nele, e é
 por isso que a legenda do bloco abre no quadro 0.
+
+**A respirada do encerramento sai por dentro.** Entre a pergunta e o convite
+ela para 21 quadros: silêncio, uma piscada e a inspiração, esta medida em -40 dB
+contra os -16 da fala. O take vira dois clipes e o corte cai nesse vão. Sobram 7
+quadros de silêncio entre "essa conexão?" e "Para mais informações", que é a
+pausa de quem encadeia duas frases, não a de quem respira.
+
+A emenda é corte seco, e isso foi medido, não escolhido por gosto: ela mexe a
+cabeça e pisca durante a respirada, então a primeira dissolução testada punha
+dois rostos deslocados na tela ao mesmo tempo. Com corte seco, a escolha passa a
+ser dos quadros. A primeira metade não acaba onde a respirada começa (166), e
+sim no 163, último quadro com os olhos abertos e a cabeça no lugar — que é como
+a segunda metade abre. Assim o salto lê como corte de edição, não como defeito.
+
+**A parte 2 acaba na última palavra.** Ela desvia o olhar no quadro 217, exato
+instante em que fecha a frase, então o clipe termina ali. Não sobra silêncio
+nenhum: o fim leva um fade de áudio de 0,08 s para a cauda de "negócio" não ser
+cortada seca, e a transição para a parte 3 passa a ser corte seco (1 quadro, o
+mínimo que o `TransitionSeries` aceita).
 
 As fronteiras não foram estimadas no olho: o áudio de cada take foi varrido em
 janelas curtas com o reconhecedor, e o corte ficou no vale de silêncio anterior
@@ -40,12 +60,21 @@ janelas curtas com o reconhecedor, e o corte ficou no vale de silêncio anterior
 
 **A transição tem de caber no silêncio do fim do bloco.** Ela dura 8 quadros e
 sobrepõe as duas sequências, áudio incluído: com o corte encostado na última
-palavra, o bloco seguinte começa a falar por cima do anterior. Nos blocos que o
-cliente pediu para cortar rente — a parte 1, em que ela desvia o olhar assim
-que termina a frase, e a parte 2, que tinha uma pausa sobrando —, o silêncio
-que resta é de 7 e 4 quadros, então a transição que entra depois deles encurta
-para 5 e 3 (`transitionInFrames` em `content.ts`). Nos demais, os 8 quadros
-cabem inteiros no silêncio da gravação.
+palavra, o bloco seguinte começa a falar por cima do anterior. Por isso a
+duração é por bloco (`transitionInFrames` em `content.ts`), e não uma só:
+
+| Depois de     | Sobra de silêncio | Transição |
+| ------------- | ----------------- | --------- |
+| abertura      | 12 quadros        | 8 |
+| parte 1       | 7 quadros         | 5 |
+| parte 2       | nenhuma           | 1 (corte seco) |
+| parte 3       | 12 quadros        | 8 |
+| encerramento A| 5 quadros         | 1 (corte seco na emenda) |
+| encerramento B| 14 quadros        | 8 |
+
+A barra de progresso mostra cinco traços, não seis: as duas metades do
+encerramento contam como um bloco só (`joinsPrevious`), porque para quem assiste
+elas são uma frase contínua.
 
 Comando por clipe (rotação do iPhone já aplicada, áudio nivelado em -16 LUFS):
 
@@ -73,7 +102,7 @@ sobem sobre ele.
 | 2 | Parte 1        | `parte-1.mp4`       | tela cheia sobre o take    |
 | 3 | Parte 2        | `parte-2.mp4`       | — |
 | 4 | Parte 3        | `parte-3.mp4`       | logomarca |
-| 5 | Encerramento   | `encerramento.mp4`  | — |
+| 5 | Encerramento   | `encerramento-a.mp4` + `-b` | — |
 | — | Card final     | `EndCard.tsx`       | "Fale conosco." + site    |
 
 Um elemento por bloco, e nenhum repetido. A parte 2 fica limpa de propósito: é
@@ -167,10 +196,10 @@ Duas palavras são leitura, não transcrição limpa, e estão escritas à mão:
 
 `public/audio/theme.mp3` — *Nastelbom / Funky*, 115 BPM, instrumental, a mesma
 faixa da série anterior, reenviada pelo cliente. Do arquivo original (79,1 s)
-saem os 48,0 s usados aqui.
+saem os 47,4 s usados aqui.
 
 ```console
-ffmpeg -ss 1.262 -t 47.95 -i <original>.mp3 \
+ffmpeg -ss 1.8453 -t 47.40 -i <original>.mp3 \
   -af "volume=-4.5dB,alimiter=limit=0.9:level=disabled,afade=t=in:st=0:d=0.6" \
   -c:a libmp3lame -b:a 192k -ar 44100 public/audio/theme.mp3
 ```
@@ -181,8 +210,8 @@ nelas.
 
 **Corte com a grade do compasso.** A faixa é 115 BPM cravados, compasso de
 2,08696 s, com o primeiro tempo forte em 0,512 s (medido de novo neste arquivo:
-114,7 BPM e fase 0,510 s, dentro do erro da medição). Cortando 1,262 s da
-cabeça, o tempo forte do compasso 23 cai no quadro 1134 — quinze quadros antes
+114,7 BPM e fase 0,510 s, dentro do erro da medição). Cortando 1,8453 s da
+cabeça, o tempo forte do compasso 23 cai no quadro 1120 — quinze quadros antes
 do fim. O vídeo fecha em cima da batida em vez de cortar no meio de um
 compasso, e o `MUSIC_FADE_OUT` é curto justamente para entrar só depois dela.
 
@@ -204,7 +233,7 @@ O `remotion.config.ts` já carrega os parâmetros de qualidade: quadros
 intermediários em PNG (o padrão é JPEG, que é uma geração de perda no meio do
 caminho, e ainda marca a saída como `yuvj420p`), CRF 13, preset `veryslow` e
 áudio em 320k.
-Sai um master de 1149 quadros, com a mixagem em -16,2 LUFS integrado e pico
+Sai um master de 1135 quadros, com a mixagem em -16,2 LUFS integrado e pico
 real -1,1 dBTP.
 
 O arquivo entregue é uma cópia menor, reencodada em dois passes a partir do

@@ -48,6 +48,12 @@ export type Clip = {
   };
   /** Janela em que a logomarca sobe, em quadros do clipe. */
   brandMark?: { from: number; to: number };
+  /**
+   * Continuação do bloco anterior, e não um bloco novo: a barra de progresso
+   * junta os dois num traço só. É o caso das duas metades do encerramento,
+   * separadas apenas para tirar a respirada do meio.
+   */
+  joinsPrevious?: boolean;
 };
 
 /**
@@ -80,9 +86,13 @@ export const clips: Clip[] = [
     },
   },
   {
+    // Cortado no quadro 217, onde ela desvia o olhar assim que fecha a frase, a
+    // pedido do cliente. Não sobra silêncio depois da última palavra: o fim do
+    // clipe tem um fade de áudio de 0,08 s para a cauda de "negócio" não ser
+    // cortada seca.
     id: "parte-2",
     video: "videos/parte-2.mp4",
-    durationInFrames: 221,
+    durationInFrames: 217,
     // Sobram 5 quadros de silêncio no fim do bloco anterior, e a transição cabe
     // dentro deles.
     transitionInFrames: 5,
@@ -93,16 +103,33 @@ export const clips: Clip[] = [
     id: "parte-3",
     video: "videos/parte-3.mp4",
     durationInFrames: 171,
-    // O bloco anterior foi cortado rente à última palavra, a pedido: sobram 4
-    // quadros de silêncio, e a transição encurta para caber neles.
-    transitionInFrames: 3,
+    // O bloco anterior acaba na última palavra, sem silêncio nenhum, então aqui
+    // é corte seco: 1 quadro é o mínimo que o TransitionSeries aceita.
+    transitionInFrames: 1,
     // A marca sobe quando ela diz o nome dela e sai antes do corte.
     brandMark: { from: 22, to: 128 },
   },
   {
-    id: "encerramento",
-    video: "videos/encerramento.mp4",
-    durationInFrames: 239,
+    // O encerramento vem em duas metades porque ela para para respirar entre a
+    // pergunta e o convite — 21 quadros de silêncio, piscada e inspiração, que
+    // saíram a pedido do cliente.
+    //
+    // A primeira metade acaba no quadro 163, e não onde a respirada começa: é o
+    // último quadro em que ela está de olhos abertos e com a cabeça no lugar,
+    // que é o que casa com a abertura da segunda metade.
+    id: "encerramento-a",
+    video: "videos/encerramento-a.mp4",
+    durationInFrames: 164,
+  },
+  {
+    id: "encerramento-b",
+    video: "videos/encerramento-b.mp4",
+    durationInFrames: 64,
+    // Corte seco, não dissolução: ela mexe a cabeça durante a respirada, e
+    // qualquer sobreposição das duas metades vira fantasma de dois rostos. Com
+    // os quadros escolhidos dos dois lados, o salto lê como corte de edição.
+    transitionInFrames: 1,
+    joinsPrevious: true,
   },
 ];
 
@@ -130,6 +157,18 @@ export const clipRanges = clips.map((c, i) => ({
   end: starts[i] + c.durationInFrames,
 }));
 
+/** Um traço por bloco do roteiro, com as continuações somadas ao anterior. */
+export const progressRanges = clipRanges.reduce<{ start: number; end: number }[]>(
+  (acc, range, i) => {
+    if (clips[i].joinsPrevious && acc.length > 0) {
+      acc[acc.length - 1] = { start: acc[acc.length - 1].start, end: range.end };
+      return acc;
+    }
+    return [...acc, range];
+  },
+  [],
+);
+
 export const outroRange = {
   start: starts[starts.length - 1],
   end: starts[starts.length - 1] + OUTRO_FRAMES,
@@ -144,8 +183,8 @@ export const totalDurationInFrames =
  * vídeo inteiro e só abre no encerramento, onde ninguém fala.
  *
  * O fade final é curto de propósito. A faixa é 115 BPM cravados, compasso de
- * 2,08696 s, com o primeiro tempo forte em 0,512 s; cortando 1,262 s da cabeça,
- * o tempo forte do compasso 23 cai no quadro 1134 — quinze quadros antes do
+ * 2,08696 s, com o primeiro tempo forte em 0,512 s; cortando 1,8453 s da cabeça,
+ * o tempo forte do compasso 23 cai no quadro 1120 — quinze quadros antes do
  * fim. O vídeo fecha em cima da batida, e o fade entra depois dela.
  */
 const MUSIC_DUCKED = 0.09;
