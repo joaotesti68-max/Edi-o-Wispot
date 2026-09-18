@@ -83,9 +83,7 @@ Comando por clipe (rotação do iPhone já aplicada, áudio nivelado em -16 LUFS
 ```console
 ffmpeg -ss <inicio> -to <fim> -i <origem>.mov \
   -vf "scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,setsar=1,\
-       colortemperature=temperature=5100,vibrance=intensity=0.35,\
-       curves=master='0/0 0.10/0.07 0.45/0.50 0.80/0.84 1/0.98',\
-       eq=saturation=1.18:gamma=1.06" \
+       colortemperature=temperature=5200,eq=saturation=1.12:contrast=1.06:gamma=1.06" \
   -c:v libx264 -preset veryslow -crf 14 -pix_fmt yuv420p -r 24 \
   -af "loudnorm=I=-16:TP=-1.5:LRA=11,afade=t=in:st=0:d=0.10" \
   -c:a aac -b:a 256k -ar 48000 -ac 2 -movflags +faststart <saida>.mp4
@@ -94,27 +92,17 @@ ffmpeg -ss <inicio> -to <fim> -i <origem>.mov \
 ### O tratamento de cor
 
 Chovia no dia da gravação, e a luz de céu encoberto deixou os takes frios e
-chapados. São quatro operações, nesta ordem, no mesmo passe do corte — reencodar
-de novo por cima do clipe cortado seria uma geração de perda a troco de nada:
+chapados. O tratamento é uma correção de temperatura para 5200 K, mais um ganho
+leve de saturação (1,12), contraste (1,06) e gama (1,06). Vai no mesmo passe do
+corte, e não depois: reencodar de novo por cima do clipe cortado seria uma
+geração de perda a troco de nada.
 
-1. **Temperatura para 5100 K.** A 4600 K a pele sai alaranjada; por volta de
-   5100 K ela esquenta sem virar âmbar.
-2. **Vibrância 0,35.** Age mais sobre as cores lavadas do que sobre as já
-   saturadas, que é o que devolve o verde e o bege do fundo sem carregar o tom
-   de pele junto.
-3. **Curva em S com o topo segurado** (`0.80/0.84`, `1/0.98`). Abre o contraste
-   no meio-tom, que é onde está o rosto, e comprime as altas em vez de
-   empurrá-las: é o que impede o céu encoberto e o brilho da testa de virarem
-   branco chapado.
-4. **Saturação 1,18 e gama 1,06.** O gama devolve a luminância que a correção de
-   temperatura tira ao derrubar o canal azul.
-
-A conta que fechou a escolha: a saturação média do quadro sobe de 0,26 para
-0,37 e a luminância média de 133 para 139, com menos de 1% dos pixels do rosto
-chegando a 254. Uma primeira versão sem a curva, só com vibrância e contraste,
-chegava a uma saturação parecida, mas com 3% do rosto estourado — testa e maçãs
-viravam branco puro. É a diferença entre imagem viva e imagem queimada, e ela
-não aparece no olho num quadro parado, só na medição.
+Os números não são gosto, foram medidos. A 4600 K a pele já sai alaranjada, e
+5200 K é o ponto em que ela esquenta sem virar âmbar. A correção de temperatura
+derruba o canal azul e, com ele, a luminância: a média do quadro cai de 140 para
+129, e é isso que o gama de 1,06 devolve (134,8), sem estourar — a 1,10 o brilho
+volta inteiro, mas 0,5% dos pixels vão a 254 ou mais. A saturação e o contraste
+compensam o chapado do dia.
 
 A imagem de apoio do bloco 2 fica fora do tratamento: ela já vem quente, de um
 café com luz amarela, e é ela que o tratamento dos takes está tentando alcançar.
