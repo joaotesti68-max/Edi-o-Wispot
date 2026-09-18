@@ -82,30 +82,27 @@ Comando por clipe (rotação do iPhone já aplicada, áudio nivelado em -16 LUFS
 
 ```console
 ffmpeg -ss <inicio> -to <fim> -i <origem>.mov \
-  -vf "scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,setsar=1,\
-       colortemperature=temperature=5200,eq=saturation=1.12:contrast=1.06:gamma=1.06" \
+  -vf "scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,setsar=1" \
   -c:v libx264 -preset veryslow -crf 14 -pix_fmt yuv420p -r 24 \
   -af "loudnorm=I=-16:TP=-1.5:LRA=11,afade=t=in:st=0:d=0.10" \
   -c:a aac -b:a 256k -ar 48000 -ac 2 -movflags +faststart <saida>.mp4
 ```
 
-### O tratamento de cor
+### Sem tratamento de cor
 
-Chovia no dia da gravação, e a luz de céu encoberto deixou os takes frios e
-chapados. O tratamento é uma correção de temperatura para 5200 K, mais um ganho
-leve de saturação (1,12), contraste (1,06) e gama (1,06). Vai no mesmo passe do
-corte, e não depois: reencodar de novo por cima do clipe cortado seria uma
-geração de perda a troco de nada.
+A imagem vai como saiu da câmera. Chovia no dia da gravação, e chegamos a testar
+correção de temperatura para esquentar os takes: uma versão leve (5200 K com
+ganho de saturação, contraste e gama) e uma mais forte (vibrância e curva em S).
+As duas foram reprovadas pelo cliente, e a decisão foi entregar a imagem crua.
 
-Os números não são gosto, foram medidos. A 4600 K a pele já sai alaranjada, e
-5200 K é o ponto em que ela esquenta sem virar âmbar. A correção de temperatura
-derruba o canal azul e, com ele, a luminância: a média do quadro cai de 140 para
-129, e é isso que o gama de 1,06 devolve (134,8), sem estourar — a 1,10 o brilho
-volta inteiro, mas 0,5% dos pixels vão a 254 ou mais. A saturação e o contraste
-compensam o chapado do dia.
+O que fica registrado, caso o assunto volte: o filtro entra no mesmo passe do
+corte, nunca depois — reencodar por cima do clipe já cortado é uma geração de
+perda a troco de nada. E, se for para esquentar, a curva importa mais que a
+saturação: sem ela, vibrância e contraste levavam 3% dos pixels do rosto a
+branco puro.
 
-A imagem de apoio do bloco 2 fica fora do tratamento: ela já vem quente, de um
-café com luz amarela, e é ela que o tratamento dos takes está tentando alcançar.
+A imagem de apoio do bloco 2 nunca teve tratamento: ela já vem quente, de um
+café com luz amarela.
 
 O CRF 14 aqui é o teto de qualidade do vídeo inteiro: o render final reencoda
 por cima destes arquivos, então o que se perde no corte não volta. Os dois
