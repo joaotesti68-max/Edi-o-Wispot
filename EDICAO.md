@@ -239,14 +239,22 @@ vídeo, refaça a conta do corte de cabeça.
 
 ## Capa
 
-`delivery/capa-mari.png` (e o mesmo em `.jpg`) — quadro 157 da parte 3, em
-1080×1920, tirado do clipe e não do render, para sair sem legenda, marca d'água
-nem barra de progresso por cima.
+Duas opções, as duas em 1080×1920 e tiradas do clipe, não do render, para saírem
+sem legenda, marca d'água nem barra de progresso por cima:
 
-A escolha foi por medição, não por olho: entre os quadros em que ela sorri
-olhando para a lente, este é o mais nítido — variância do laplaciano de 54,9 no
-recorte do rosto, contra 40,2 do candidato mais próximo. Ela fala o tempo todo,
-então boa parte dos sorrisos está com micro-borrão de movimento.
+| Arquivo | Origem | Como é |
+| --- | --- | --- |
+| `delivery/capa-mari.png` | último quadro da abertura (190) | centrada, sorriso discreto, nada além dela no quadro |
+| `delivery/capa-mari-alt.png` | último quadro do encerramento (63) | sorriso mais aberto e o quadro mais nítido, mas a mão fechada dela aparece embaixo |
+
+As duas têm a boca fechada, que foi o pedido: ela fala o vídeo inteiro, então
+quadro de boca fechada só existe nos rabos de silêncio dos clipes, depois da
+última palavra.
+
+A nitidez foi medida, não avaliada no olho — variância do laplaciano no recorte
+do rosto. O quadro do encerramento dá 58,5 contra 23,7 do da abertura, diferença
+que vem da distância da lente e não de borrão de movimento; nos dois a imagem
+aguenta a tela cheia de um celular.
 
 ## Renderizar
 
