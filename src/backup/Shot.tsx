@@ -10,22 +10,49 @@ import {
 } from "remotion";
 import { brand } from "../brand";
 import { Graphic } from "./graphics";
-import { Headline, Watermark, theme, useEnter } from "./ui";
+import { Headline, Watermark, theme } from "./ui";
 import type { Shot } from "./content";
 
-const Footage: React.FC<{ src: string; muted?: boolean; style?: React.CSSProperties }> = ({
-  src,
-  muted,
-  style,
-}) => (
+const Footage: React.FC<{ src: string }> = ({ src }) => (
   <OffthreadVideo
     src={staticFile(src)}
-    muted={muted}
-    style={{ width: "100%", height: "100%", objectFit: "cover", ...style }}
+    style={{ width: "100%", height: "100%", objectFit: "cover" }}
   />
 );
 
-const FullLayout: React.FC<{ shot: Shot }> = ({ shot }) => {
+/** Shared backdrop for the shots that show no footage. */
+const Backdrop: React.FC = () => {
+  const frame = useCurrentFrame();
+  const { durationInFrames } = useVideoConfig();
+  const drift = interpolate(frame, [0, durationInFrames], [0, -26], {
+    extrapolateRight: "clamp",
+  });
+
+  return (
+    <>
+      <AbsoluteFill
+        style={{ background: "linear-gradient(158deg, #08202f 0%, #061019 46%, #08243c 100%)" }}
+      />
+      <AbsoluteFill
+        style={{
+          backgroundImage: `radial-gradient(circle at 76% 14%, ${theme.primary}46 0%, rgba(0,0,0,0) 52%), radial-gradient(circle at 12% 88%, ${theme.primary}22 0%, rgba(0,0,0,0) 46%)`,
+        }}
+      />
+      <AbsoluteFill
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)",
+          backgroundSize: "80px 80px",
+          transform: `translateY(${drift}px)`,
+          maskImage:
+            "radial-gradient(circle at 50% 40%, #000 0%, rgba(0,0,0,0.3) 60%, transparent 84%)",
+        }}
+      />
+    </>
+  );
+};
+
+const FullLayout: React.FC<{ shot: Shot; video: string }> = ({ shot, video }) => {
   const frame = useCurrentFrame();
   const { durationInFrames } = useVideoConfig();
   const zoom = interpolate(frame, [0, durationInFrames], [1, 1.05], {
@@ -35,7 +62,7 @@ const FullLayout: React.FC<{ shot: Shot }> = ({ shot }) => {
   return (
     <AbsoluteFill style={{ background: theme.ink }}>
       <AbsoluteFill style={{ transform: `scale(${zoom})` }}>
-        <Footage src={shot.video} />
+        <Footage src={video} />
       </AbsoluteFill>
 
       <AbsoluteFill
@@ -59,100 +86,86 @@ const FullLayout: React.FC<{ shot: Shot }> = ({ shot }) => {
           gap: 28,
         }}
       >
-        <Graphic graphic={shot.graphic} delay={shot.graphicDelay} step={shot.graphicStep} />
+        <Graphic graphic={shot.graphic} delay={shot.graphicDelay} />
         <Headline text={shot.headline} size={58} />
       </div>
     </AbsoluteFill>
   );
 };
 
-const MockupLayout: React.FC<{ shot: Shot }> = ({ shot }) => {
-  const frame = useCurrentFrame();
-  const { durationInFrames } = useVideoConfig();
-  const pip = useEnter(2, 17, 0.8);
-  const zoom = interpolate(frame, [0, durationInFrames], [1.04, 1.1], {
-    extrapolateRight: "clamp",
-  });
-
-  return (
-    <AbsoluteFill style={{ background: theme.ink }}>
-      <AbsoluteFill style={{ transform: `scale(${zoom})`, filter: "blur(38px) saturate(0.7)" }}>
-        <Footage src={shot.video} muted />
-      </AbsoluteFill>
-
-      <AbsoluteFill
-        style={{
-          background:
-            "linear-gradient(150deg, rgba(8,26,40,0.92) 0%, rgba(6,13,19,0.9) 45%, rgba(9,31,47,0.93) 100%)",
-        }}
-      />
-      <AbsoluteFill
-        style={{
-          backgroundImage: `radial-gradient(circle at 78% 16%, ${theme.primary}3a 0%, rgba(0,0,0,0) 46%)`,
-        }}
-      />
-      <AbsoluteFill
-        style={{
-          backgroundImage:
-            "linear-gradient(rgba(255,255,255,0.055) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.055) 1px, transparent 1px)",
-          backgroundSize: "72px 72px",
-          maskImage: "radial-gradient(circle at 50% 42%, #000 0%, rgba(0,0,0,0.25) 62%, transparent 85%)",
-        }}
-      />
-
-      <Watermark />
-
-      <div
-        style={{
-          position: "absolute",
-          left: 70,
-          right: 70,
-          top: 214,
-          height: 960,
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-        }}
-      >
-        <Graphic graphic={shot.graphic} delay={shot.graphicDelay} step={shot.graphicStep} />
-      </div>
-
-      <div
-        style={{
-          position: "absolute",
-          left: 70,
-          width: 566,
-          bottom: 196,
-        }}
-      >
-        {shot.hideHeadline ? null : <Headline text={shot.headline} size={46} delay={14} />}
-      </div>
-
-      <div
-        style={{
-          position: "absolute",
-          right: 70,
-          bottom: 170,
-          width: 300,
-          height: 533,
-          borderRadius: 26,
-          overflow: "hidden",
-          border: "3px solid rgba(255,255,255,0.82)",
-          boxShadow: "0 26px 70px rgba(0,0,0,0.55)",
-          opacity: interpolate(pip, [0, 1], [0, 1], { extrapolateRight: "clamp" }),
-          transform: `translateY(${interpolate(pip, [0, 1], [34, 0])}px)`,
-        }}
-      >
-        <Footage src={shot.video} />
-      </div>
-
-      <Img
-        src={staticFile(brand.logo.white)}
-        style={{ position: "absolute", left: 70, bottom: 74, width: 240, opacity: 0.85 }}
-      />
+/**
+ * Used where he reads off the page: the take is heard but never seen, and the
+ * mockup has the screen to itself.
+ */
+const MockupLayout: React.FC<{ shot: Shot; video: string }> = ({ shot, video }) => (
+  <AbsoluteFill style={{ background: "#06121c" }}>
+    <AbsoluteFill style={{ opacity: 0 }}>
+      <Footage src={video} />
     </AbsoluteFill>
+    <Backdrop />
+    <Watermark />
+
+    <div
+      style={{
+        position: "absolute",
+        left: 78,
+        right: 78,
+        top: 250,
+        height: 1130,
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+      }}
+    >
+      <Graphic graphic={shot.graphic} delay={shot.graphicDelay} />
+    </div>
+
+    <div style={{ position: "absolute", left: 78, right: 78, bottom: 200 }}>
+      <Headline text={shot.headline} size={58} delay={10} />
+    </div>
+
+    <Img
+      src={staticFile(brand.logo.white)}
+      style={{ position: "absolute", left: 78, bottom: 84, width: 250, opacity: 0.8 }}
+    />
+  </AbsoluteFill>
+);
+
+/** A beat with no take behind it, covering a line that was never recorded. */
+const CardLayout: React.FC<{ shot: Shot }> = ({ shot }) => (
+  <AbsoluteFill style={{ background: "#06121c" }}>
+    <Backdrop />
+    <Watermark />
+
+    <div
+      style={{
+        position: "absolute",
+        left: 78,
+        right: 78,
+        top: 300,
+        bottom: 300,
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        gap: 56,
+      }}
+    >
+      <Graphic graphic={shot.graphic} delay={shot.graphicDelay} />
+      <Headline text={shot.headline} size={62} delay={shot.graphicDelay + 10} />
+    </div>
+
+    <Img
+      src={staticFile(brand.logo.white)}
+      style={{ position: "absolute", left: 78, bottom: 84, width: 250, opacity: 0.8 }}
+    />
+  </AbsoluteFill>
+);
+
+export const ShotBlock: React.FC<{ shot: Shot }> = ({ shot }) => {
+  if (shot.video === null) return <CardLayout shot={shot} />;
+  return shot.layout === "mockup" ? (
+    <MockupLayout shot={shot} video={shot.video} />
+  ) : (
+    <FullLayout shot={shot} video={shot.video} />
   );
 };
-
-export const ShotBlock: React.FC<{ shot: Shot }> = ({ shot }) =>
-  shot.layout === "mockup" ? <MockupLayout shot={shot} /> : <FullLayout shot={shot} />;

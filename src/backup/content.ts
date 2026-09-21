@@ -2,122 +2,154 @@ export const FPS = 24;
 export const WIDTH = 1080;
 export const HEIGHT = 1920;
 
-/** Cross-fade length between shots, in frames. */
-export const TRANSITION_FRAMES = 6;
-/** Shorter fade used to hide the internal cut inside a single take. */
-export const TIGHT_TRANSITION_FRAMES = 3;
 export const OUTRO_FRAMES = 96;
+/** Default cross-fade between shots. */
+export const TRANSITION_FRAMES = 6;
 
 export type GraphicKey =
   | "none"
   | "singlePoint"
   | "offsite"
+  | "tier3"
   | "datacenter"
+  | "rule321Badge"
   | "rule321"
   | "threats"
+  | "preserved"
   | "services"
   | "cta";
 
 export type Shot = {
   id: string;
-  /** File under public/shots — already trimmed and loudness-normalised. */
-  video: string;
+  /** Trimmed, loudness-normalised take under public/shots — null on a silent card. */
+  video: string | null;
   durationInFrames: number;
-  /** Line of the script this shot delivers (kept here so re-cuts stay traceable). */
+  /** What is actually said in this take (transcribed from the raw clip). */
   line: string;
   headline: string;
-  /** "full" = talking head fills the frame. "mockup" = full-screen visual, speaker in PiP. */
-  layout: "full" | "mockup";
+  /**
+   * full   — talking head fills the frame, graphic supports it from below.
+   * mockup — he is reading off the page, so the footage is dropped and only the
+   *          visual stays on screen; the take is still heard.
+   * card   — no take at all: a designed beat covering a line that was never recorded.
+   */
+  layout: "full" | "mockup" | "card";
   graphic: GraphicKey;
-  /** Frames to wait before the graphic animates in, tuned to the spoken line. */
+  /** Frames before the graphic animates in, measured against the spoken words. */
   graphicDelay: number;
-  /** Progressive state for graphics that span two shots. */
-  graphicStep?: 1 | 2;
-  /** Shots that continue the previous one get a tighter fade. */
-  tightIn?: boolean;
-  /** Suppress the headline (used on the second half of a split take). */
-  hideHeadline?: boolean;
+  /** Cross-fade length in front of this shot; shorter inside a single sentence. */
+  transitionIn?: number;
 };
 
 export const shots: Shot[] = [
   {
     id: "abertura",
     video: "shots/01-abertura.mp4",
-    durationInFrames: 140,
+    durationInFrames: 134,
     line: "Se todas as cópias do seu backup estão dentro da empresa, um único incidente pode comprometer todas elas.",
     headline: "Um único incidente pode levar todas as suas cópias",
     layout: "full",
     graphic: "singlePoint",
-    graphicDelay: 40,
+    graphicDelay: 60,
   },
   {
-    id: "fora-do-ambiente",
-    video: "shots/02-fora-do-ambiente.mp4",
-    durationInFrames: 155,
-    line: "Por isso, uma estratégia de backup segura precisa ter pelo menos uma cópia fora do ambiente principal.",
+    id: "card-fora-do-ambiente",
+    video: null,
+    durationInFrames: 82,
+    line: "(não gravado) Por isso, uma estratégia de backup segura precisa ter pelo menos uma cópia fora do ambiente principal.",
     headline: "Pelo menos uma cópia fora do ambiente principal",
-    layout: "full",
+    layout: "card",
     graphic: "offsite",
-    graphicDelay: 50,
+    graphicDelay: 4,
   },
   {
-    id: "datacenter-a",
-    video: "shots/03-datacenter-a.mp4",
+    id: "tier3",
+    video: "shots/02-tier3.mp4",
     durationInFrames: 158,
-    line: "Na Pro Advanced, essa cópia pode ficar protegida em nosso data center, em uma estrutura padrão Tier 3…",
-    headline: "Seu backup protegido em data center padrão Tier 3",
+    line: "Na Pro Advanced, essa cópia pode ficar protegida em nosso data center, em uma estrutura padrão Tier 3,",
+    headline: "Protegida no data center da Pro Advanced",
+    layout: "full",
+    graphic: "tier3",
+    graphicDelay: 100,
+  },
+  {
+    id: "datacenter-specs",
+    video: "shots/03-datacenter-specs.mp4",
+    durationInFrames: 105,
+    line: "com energia redundante, controle de temperatura e alta disponibilidade.",
+    headline: "Estrutura padrão Tier 3",
     layout: "mockup",
     graphic: "datacenter",
     graphicDelay: 2,
-    graphicStep: 1,
+    transitionIn: 3,
   },
   {
-    id: "datacenter-b",
-    video: "shots/04-datacenter-b.mp4",
-    durationInFrames: 64,
-    line: "…com energia redundante, controle de temperatura e alta disponibilidade.",
-    headline: "Seu backup protegido em data center padrão Tier 3",
-    layout: "mockup",
-    graphic: "datacenter",
-    graphicDelay: 0,
-    graphicStep: 2,
-    tightIn: true,
-    hideHeadline: true,
+    id: "regra321",
+    video: "shots/04-regra321.mp4",
+    durationInFrames: 78,
+    line: "Também aplicamos a regra 3-2-1:",
+    headline: "Também aplicamos a regra 3\u20112\u20111",
+    layout: "full",
+    graphic: "rule321Badge",
+    graphicDelay: 40,
   },
   {
-    id: "regra-321",
-    video: "shots/05-regra-321.mp4",
-    durationInFrames: 140,
-    line: "Também aplicamos a regra 3-2-1: três cópias dos dados, em dois tipos de mídia, com uma delas armazenada fora da empresa.",
-    headline: "Regra 3-2-1: o padrão de um backup confiável",
+    id: "regra321-detalhe",
+    video: "shots/05-regra321-detalhe.mp4",
+    durationInFrames: 133,
+    line: "três cópias dos dados, em dois tipos de mídia, com uma delas armazenada fora da empresa.",
+    headline: "O padrão de um backup confiável",
     layout: "mockup",
     graphic: "rule321",
-    graphicDelay: 10,
+    graphicDelay: 6,
+    transitionIn: 3,
   },
   {
     id: "riscos",
     video: "shots/06-riscos.mp4",
-    durationInFrames: 275,
-    line: "Assim, se houver uma falha de equipamento, incêndio, roubo ou ataque cibernético na sede, você mantém uma cópia preservada e disponível para recuperação em outro ambiente.",
-    headline: "Aconteça o que acontecer na sede, a cópia continua de pé",
+    durationInFrames: 133,
+    line: "Assim, se houver uma falha, roubo, incêndio, ataque cibernético na sede,",
+    headline: "Aconteça o que acontecer na sede",
     layout: "full",
     graphic: "threats",
-    graphicDelay: 40,
+    graphicDelay: 48,
   },
   {
-    id: "hosting-colocation",
-    video: "shots/07-hosting-colocation.mp4",
-    durationInFrames: 195,
-    line: "E essa mesma infraestrutura pode suportar outras necessidades da empresa, como hospedagem de ambientes e equipamentos em hosting ou colocation.",
-    headline: "A mesma estrutura atende hosting e colocation",
+    id: "recuperacao",
+    video: "shots/07-recuperacao.mp4",
+    durationInFrames: 124,
+    line: "você mantém uma cópia preservada e disponível para recuperação em outro ambiente.",
+    headline: "A cópia continua de pé, em outro ambiente",
     layout: "full",
+    graphic: "preserved",
+    graphicDelay: 43,
+    transitionIn: 4,
+  },
+  {
+    id: "infraestrutura",
+    video: "shots/08-infraestrutura.mp4",
+    durationInFrames: 107,
+    line: "E essa mesma infraestrutura pode suportar outras necessidades da empresa.",
+    headline: "A mesma infraestrutura atende outras necessidades",
+    layout: "full",
+    graphic: "none",
+    graphicDelay: 0,
+  },
+  {
+    id: "card-servicos",
+    video: null,
+    durationInFrames: 78,
+    line: "(não gravado) como hospedagem de ambientes e equipamentos em hosting ou colocation.",
+    headline: "Hosting e colocation na mesma estrutura",
+    layout: "card",
     graphic: "services",
-    graphicDelay: 118,
+    graphicDelay: 4,
+    transitionIn: 4,
   },
   {
     id: "fechamento",
-    video: "shots/08-fechamento.mp4",
-    durationInFrames: 114,
+    video: "shots/09-fechamento.mp4",
+    durationInFrames: 135,
     line: "Backup não é só fazer uma cópia. É garantir que ela continue segura quando você mais precisar.",
     headline: "Backup não é copiar. É conseguir recuperar.",
     layout: "full",
@@ -126,21 +158,21 @@ export const shots: Shot[] = [
   },
   {
     id: "cta",
-    video: "shots/09-cta.mp4",
-    durationInFrames: 103,
-    line: "Fale com a Pro Advanced e conheça nossa estrutura de data center.",
+    video: "shots/10-cta.mp4",
+    durationInFrames: 112,
+    line: "Fale com a Pro Advanced e conheça a nossa estrutura de data center.",
     headline: "Conheça nossa estrutura de data center",
     layout: "full",
     graphic: "cta",
-    graphicDelay: 30,
+    graphicDelay: 36,
   },
 ];
 
-const transitionBefore = (i: number) =>
-  i === 0 ? 0 : shots[i].tightIn ? TIGHT_TRANSITION_FRAMES : TRANSITION_FRAMES;
-
+const transitions = [
+  ...shots.map((s, i) => (i === 0 ? 0 : (s.transitionIn ?? TRANSITION_FRAMES))),
+  TRANSITION_FRAMES,
+];
 const sequenceDurations = [...shots.map((s) => s.durationInFrames), OUTRO_FRAMES];
-const transitions = [...shots.map((_, i) => transitionBefore(i)), TRANSITION_FRAMES];
 
 export const shotTransitions = transitions;
 
@@ -153,6 +185,11 @@ export const shotRanges = shots.map((s, i) => ({
   start: starts[i],
   end: starts[i] + s.durationInFrames,
 }));
+
+/** Frame windows with no take under them, where the music can come forward. */
+export const silentRanges = shots
+  .map((s, i) => (s.video === null ? shotRanges[i] : null))
+  .filter((r): r is { start: number; end: number } => r !== null);
 
 export const outroRange = {
   start: starts[starts.length - 1],
