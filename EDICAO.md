@@ -237,6 +237,17 @@ Como ninguém fica em silêncio no meio do vídeo, a trilha fica num leito baixo
 começo ao fim e só abre no card final, onde não há fala. Ao mexer na duração do
 vídeo, refaça a conta do corte de cabeça.
 
+## Capa
+
+`delivery/capa-mari.png` (e o mesmo em `.jpg`) — quadro 157 da parte 3, em
+1080×1920, tirado do clipe e não do render, para sair sem legenda, marca d'água
+nem barra de progresso por cima.
+
+A escolha foi por medição, não por olho: entre os quadros em que ela sorri
+olhando para a lente, este é o mais nítido — variância do laplaciano de 54,9 no
+recorte do rosto, contra 40,2 do candidato mais próximo. Ela fala o tempo todo,
+então boa parte dos sorrisos está com micro-borrão de movimento.
+
 ## Renderizar
 
 O Chrome headless do Remotion não baixa neste ambiente (`remotion.media` fora da
