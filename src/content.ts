@@ -263,57 +263,36 @@ export const episodes: Episode[] = [
     voiceOvers: [{ src: "audio/ep3-vo-1.m4a", startFrame: OPENING, durationInFrames: 1527 }],
     music: TRILHA,
   },
-  // Os dois episódios abaixo são da plataforma Sending, não do painel da
-  // Wispot. A gravação é de uma conta de cliente real, então há tarja sobre:
-  // o nome do usuário no topo da barra lateral, a razão social e o CNPJ na
-  // tela "Minha Empresa", e o cartão de usuário com e-mail pessoal em
-  // "Gestão de Usuários".
+  // Da plataforma Sending, não do painel da Wispot. A narração veio em dois
+  // arquivos, que entram em sequência sobre uma gravação só.
   {
     id: "WispotEp04",
     number: "04",
     series: "Pílulas Wispot",
-    title: "O painel da Sending: dados da empresa",
+    title: "O painel da Sending",
     openingFrames: OPENING,
-    // A gravação tem 187,9s mas só ~20s com movimento. Para caber nos 47,8s
-    // de locução, cada trecho congelado foi encurtado na mesma proporção
-    // (18% do original, no mínimo 0,6s), preservando todo o movimento e a
-    // ordem das telas. Os 12,5s iniciais, com a janela do OBS, ficam de fora.
+    // A gravação tem 187,9s mas só ~20s com movimento. Para caber nos 81,7s
+    // das duas locuções, cada trecho congelado foi encurtado a 40% do
+    // original, com piso de 0,8s, preservando todo o movimento e a ordem das
+    // telas. Os 12,5s iniciais, com a janela do OBS, ficam de fora.
     blocks: [
       {
         id: "sending",
         video: "videos/ep4-sending.mp4",
-        durationInFrames: 1434, // 47,80s
+        durationInFrames: 2451, // 81,70s
+        // O e-mail pessoal do usuário aparece no campo "E-mail" de "Minha
+        // Conta", em duas passagens. A página rola dentro de cada uma, então
+        // a faixa cobre a coluna inteira do campo em vez de só a linha.
         blur: [
-          { top: 0, left: 0, width: 17, height: 30, solid: TARJA },
-          { from: 0, to: 810, top: 0, left: 16, width: 64, height: 62, solid: TARJA },
+          { from: 1200, to: 1365, top: 0, left: 33, width: 36, height: 68, solid: TARJA },
+          { from: 1830, to: 1965, top: 0, left: 33, width: 36, height: 68, solid: TARJA },
         ],
       },
     ],
-    voiceOvers: [{ src: "audio/ep4-vo-1.m4a", startFrame: OPENING, durationInFrames: 1434 }],
-    music: TRILHA,
-  },
-  {
-    id: "WispotEp05",
-    number: "05",
-    series: "Pílulas Wispot",
-    title: "O painel da Sending: usuários e permissões",
-    openingFrames: OPENING,
-    // Mesmo tratamento: 57,1s de conteúdo reduzidos a 33,9s encurtando os
-    // trechos congelados (50% do original). Os 2,0s iniciais, com o OBS,
-    // ficam de fora.
-    blocks: [
-      {
-        id: "sending",
-        video: "videos/ep5-sending.mp4",
-        durationInFrames: 1015, // 33,83s
-        blur: [
-          { top: 0, left: 0, width: 17, height: 30, solid: TARJA },
-          { from: 0, to: 390, top: 0, left: 16, width: 64, height: 62, solid: TARJA },
-          { from: 330, to: 780, top: 33, left: 16, width: 30, height: 60, solid: TARJA },
-        ],
-      },
+    voiceOvers: [
+      { src: "audio/ep4-vo-1.m4a", startFrame: OPENING, durationInFrames: 1434 },
+      { src: "audio/ep5-vo-1.m4a", startFrame: OPENING + 1434, durationInFrames: 1017 },
     ],
-    voiceOvers: [{ src: "audio/ep5-vo-1.m4a", startFrame: OPENING, durationInFrames: 1015 }],
     music: TRILHA,
   },
 ];
