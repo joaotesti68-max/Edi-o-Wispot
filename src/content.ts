@@ -254,6 +254,10 @@ export const episodes: Episode[] = [
         id: "painel",
         video: "videos/ep3-painel.mp4",
         durationInFrames: 1527, // 50,90s — bruto 5,0-55,9
+        // A tela "Temas" (bruto 14,3-17,6s) traz um cartão cuja miniatura é a
+        // marca de um terceiro. A tela fica parada nesse intervalo, então uma
+        // região fixa cobre. Faixa com folga de 0,5s dos dois lados.
+        blur: [{ from: 264, to: 393, top: 25, left: 12, width: 28, height: 19, solid: TARJA }],
       },
     ],
     voiceOvers: [{ src: "audio/ep3-vo-1.m4a", startFrame: OPENING, durationInFrames: 1527 }],
