@@ -263,6 +263,59 @@ export const episodes: Episode[] = [
     voiceOvers: [{ src: "audio/ep3-vo-1.m4a", startFrame: OPENING, durationInFrames: 1527 }],
     music: TRILHA,
   },
+  // Os dois episódios abaixo são da plataforma Sending, não do painel da
+  // Wispot. A gravação é de uma conta de cliente real, então há tarja sobre:
+  // o nome do usuário no topo da barra lateral, a razão social e o CNPJ na
+  // tela "Minha Empresa", e o cartão de usuário com e-mail pessoal em
+  // "Gestão de Usuários".
+  {
+    id: "WispotEp04",
+    number: "04",
+    series: "Pílulas Wispot",
+    title: "O painel da Sending: dados da empresa",
+    openingFrames: OPENING,
+    // A gravação tem 187,9s mas só ~20s com movimento. Para caber nos 47,8s
+    // de locução, cada trecho congelado foi encurtado na mesma proporção
+    // (18% do original, no mínimo 0,6s), preservando todo o movimento e a
+    // ordem das telas. Os 12,5s iniciais, com a janela do OBS, ficam de fora.
+    blocks: [
+      {
+        id: "sending",
+        video: "videos/ep4-sending.mp4",
+        durationInFrames: 1434, // 47,80s
+        blur: [
+          { top: 0, left: 0, width: 17, height: 30, solid: TARJA },
+          { from: 0, to: 810, top: 0, left: 16, width: 64, height: 62, solid: TARJA },
+        ],
+      },
+    ],
+    voiceOvers: [{ src: "audio/ep4-vo-1.m4a", startFrame: OPENING, durationInFrames: 1434 }],
+    music: TRILHA,
+  },
+  {
+    id: "WispotEp05",
+    number: "05",
+    series: "Pílulas Wispot",
+    title: "O painel da Sending: usuários e permissões",
+    openingFrames: OPENING,
+    // Mesmo tratamento: 57,1s de conteúdo reduzidos a 33,9s encurtando os
+    // trechos congelados (50% do original). Os 2,0s iniciais, com o OBS,
+    // ficam de fora.
+    blocks: [
+      {
+        id: "sending",
+        video: "videos/ep5-sending.mp4",
+        durationInFrames: 1015, // 33,83s
+        blur: [
+          { top: 0, left: 0, width: 17, height: 30, solid: TARJA },
+          { from: 0, to: 390, top: 0, left: 16, width: 64, height: 62, solid: TARJA },
+          { from: 330, to: 780, top: 33, left: 16, width: 30, height: 60, solid: TARJA },
+        ],
+      },
+    ],
+    voiceOvers: [{ src: "audio/ep5-vo-1.m4a", startFrame: OPENING, durationInFrames: 1015 }],
+    music: TRILHA,
+  },
 ];
 
 export type Layout = {
