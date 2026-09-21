@@ -2,14 +2,13 @@ export const FPS = 24;
 export const WIDTH = 1080;
 export const HEIGHT = 1920;
 
-export const OUTRO_FRAMES = 96;
+export const OUTRO_FRAMES = 76;
 /** Default cross-fade between shots. */
-export const TRANSITION_FRAMES = 6;
+export const TRANSITION_FRAMES = 5;
 
 export type GraphicKey =
   | "none"
   | "singlePoint"
-  | "offsite"
   | "tier3"
   | "datacenter"
   | "rule321Badge"
@@ -21,8 +20,8 @@ export type GraphicKey =
 
 export type Shot = {
   id: string;
-  /** Trimmed, loudness-normalised take under public/shots — null on a silent card. */
-  video: string | null;
+  /** Trimmed, loudness-normalised take under public/shots, sped up to 1.08x. */
+  video: string;
   durationInFrames: number;
   /** What is actually said in this take (transcribed from the raw clip). */
   line: string;
@@ -31,9 +30,8 @@ export type Shot = {
    * full   — talking head fills the frame, graphic supports it from below.
    * mockup — he is reading off the page, so the footage is dropped and only the
    *          visual stays on screen; the take is still heard.
-   * card   — no take at all: a designed beat covering a line that was never recorded.
    */
-  layout: "full" | "mockup" | "card";
+  layout: "full" | "mockup";
   graphic: GraphicKey;
   /** Frames before the graphic animates in, measured against the spoken words. */
   graphicDelay: number;
@@ -45,37 +43,27 @@ export const shots: Shot[] = [
   {
     id: "abertura",
     video: "shots/01-abertura.mp4",
-    durationInFrames: 134,
+    durationInFrames: 122,
     line: "Se todas as cópias do seu backup estão dentro da empresa, um único incidente pode comprometer todas elas.",
     headline: "Um único incidente pode levar todas as suas cópias",
     layout: "full",
     graphic: "singlePoint",
-    graphicDelay: 60,
-  },
-  {
-    id: "card-fora-do-ambiente",
-    video: null,
-    durationInFrames: 82,
-    line: "(não gravado) Por isso, uma estratégia de backup segura precisa ter pelo menos uma cópia fora do ambiente principal.",
-    headline: "Pelo menos uma cópia fora do ambiente principal",
-    layout: "card",
-    graphic: "offsite",
-    graphicDelay: 4,
+    graphicDelay: 54,
   },
   {
     id: "tier3",
     video: "shots/02-tier3.mp4",
-    durationInFrames: 158,
+    durationInFrames: 144,
     line: "Na Pro Advanced, essa cópia pode ficar protegida em nosso data center, em uma estrutura padrão Tier 3,",
-    headline: "Protegida no data center da Pro Advanced",
+    headline: "Protegida fora da empresa, no nosso data center",
     layout: "full",
     graphic: "tier3",
-    graphicDelay: 100,
+    graphicDelay: 91,
   },
   {
     id: "datacenter-specs",
     video: "shots/03-datacenter-specs.mp4",
-    durationInFrames: 105,
+    durationInFrames: 95,
     line: "com energia redundante, controle de temperatura e alta disponibilidade.",
     headline: "Estrutura padrão Tier 3",
     layout: "mockup",
@@ -86,17 +74,17 @@ export const shots: Shot[] = [
   {
     id: "regra321",
     video: "shots/04-regra321.mp4",
-    durationInFrames: 78,
+    durationInFrames: 65,
     line: "Também aplicamos a regra 3-2-1:",
     headline: "Também aplicamos a regra 3\u20112\u20111",
     layout: "full",
     graphic: "rule321Badge",
-    graphicDelay: 40,
+    graphicDelay: 36,
   },
   {
     id: "regra321-detalhe",
     video: "shots/05-regra321-detalhe.mp4",
-    durationInFrames: 133,
+    durationInFrames: 122,
     line: "três cópias dos dados, em dois tipos de mídia, com uma delas armazenada fora da empresa.",
     headline: "O padrão de um backup confiável",
     layout: "mockup",
@@ -107,49 +95,38 @@ export const shots: Shot[] = [
   {
     id: "riscos",
     video: "shots/06-riscos.mp4",
-    durationInFrames: 133,
+    durationInFrames: 123,
     line: "Assim, se houver uma falha, roubo, incêndio, ataque cibernético na sede,",
     headline: "Aconteça o que acontecer na sede",
     layout: "full",
     graphic: "threats",
-    graphicDelay: 48,
+    graphicDelay: 44,
   },
   {
     id: "recuperacao",
     video: "shots/07-recuperacao.mp4",
-    durationInFrames: 124,
+    durationInFrames: 113,
     line: "você mantém uma cópia preservada e disponível para recuperação em outro ambiente.",
     headline: "A cópia continua de pé, em outro ambiente",
     layout: "full",
     graphic: "preserved",
-    graphicDelay: 43,
+    graphicDelay: 39,
     transitionIn: 4,
   },
   {
     id: "infraestrutura",
     video: "shots/08-infraestrutura.mp4",
-    durationInFrames: 107,
+    durationInFrames: 101,
     line: "E essa mesma infraestrutura pode suportar outras necessidades da empresa.",
-    headline: "A mesma infraestrutura atende outras necessidades",
+    headline: "A mesma estrutura atende hosting e colocation",
     layout: "full",
-    graphic: "none",
-    graphicDelay: 0,
-  },
-  {
-    id: "card-servicos",
-    video: null,
-    durationInFrames: 78,
-    line: "(não gravado) como hospedagem de ambientes e equipamentos em hosting ou colocation.",
-    headline: "Hosting e colocation na mesma estrutura",
-    layout: "card",
     graphic: "services",
-    graphicDelay: 4,
-    transitionIn: 4,
+    graphicDelay: 34,
   },
   {
     id: "fechamento",
     video: "shots/09-fechamento.mp4",
-    durationInFrames: 135,
+    durationInFrames: 123,
     line: "Backup não é só fazer uma cópia. É garantir que ela continue segura quando você mais precisar.",
     headline: "Backup não é copiar. É conseguir recuperar.",
     layout: "full",
@@ -159,12 +136,12 @@ export const shots: Shot[] = [
   {
     id: "cta",
     video: "shots/10-cta.mp4",
-    durationInFrames: 112,
+    durationInFrames: 94,
     line: "Fale com a Pro Advanced e conheça a nossa estrutura de data center.",
     headline: "Conheça nossa estrutura de data center",
     layout: "full",
     graphic: "cta",
-    graphicDelay: 36,
+    graphicDelay: 22,
   },
 ];
 
@@ -185,11 +162,6 @@ export const shotRanges = shots.map((s, i) => ({
   start: starts[i],
   end: starts[i] + s.durationInFrames,
 }));
-
-/** Frame windows with no take under them, where the music can come forward. */
-export const silentRanges = shots
-  .map((s, i) => (s.video === null ? shotRanges[i] : null))
-  .filter((r): r is { start: number; end: number } => r !== null);
 
 export const outroRange = {
   start: starts[starts.length - 1],

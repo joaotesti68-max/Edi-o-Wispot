@@ -150,91 +150,12 @@ const SinglePoint: React.FC<{ delay: number }> = ({ delay }) => {
   );
 };
 
-/* ── card: uma cópia fora do ambiente principal ────────────────────────── */
-
-const Offsite: React.FC<{ delay: number }> = ({ delay }) => {
-  const frame = useCurrentFrame();
-  const travel = interpolate(frame - delay - 10, [0, 24], [0, 1], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-  });
-
-  const node = (icon: React.ReactNode, text: string, tone: string, delayIn: number) => (
-    <Rise delay={delayIn} distance={18} style={{ flex: 1 }}>
-      <div
-        style={{
-          ...card,
-          padding: "40px 22px",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          gap: 18,
-          borderColor: `${tone}55`,
-        }}
-      >
-        {icon}
-        <div style={{ ...label, fontSize: 33, textAlign: "center", whiteSpace: "pre-line" }}>
-          {text}
-        </div>
-      </div>
-    </Rise>
-  );
-
-  return (
-    <div style={{ display: "flex", alignItems: "center", gap: 18, width: "100%" }}>
-      {node(<BuildingIcon size={64} color={theme.white} strokeWidth={2} />, "Sua empresa", "#ffffff", delay)}
-
-      <div style={{ position: "relative", width: 170, height: 6, flexShrink: 0 }}>
-        <div
-          style={{ position: "absolute", inset: 0, borderRadius: 3, background: "rgba(255,255,255,0.2)" }}
-        />
-        <div
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            height: 6,
-            width: `${travel * 100}%`,
-            borderRadius: 3,
-            background: theme.primaryLight,
-          }}
-        />
-        <div
-          style={{
-            position: "absolute",
-            top: -19,
-            left: `calc(${travel * 100}% - 22px)`,
-            width: 44,
-            height: 44,
-            borderRadius: 13,
-            background: theme.primaryLight,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            opacity: travel > 0 ? 1 : 0,
-            boxShadow: `0 0 26px ${theme.primaryLight}88`,
-          }}
-        >
-          <CopyIcon size={22} color="#06131c" strokeWidth={2.4} />
-        </div>
-      </div>
-
-      {node(
-        <OffsiteIcon size={64} color={theme.primaryLight} strokeWidth={2} />,
-        "Data center\nPro Advanced",
-        theme.primaryLight,
-        delay + 14,
-      )}
-    </div>
-  );
-};
-
 /* ── "estrutura padrão Tier 3" (ele falando de frente) ─────────────────── */
 
 const Tier3: React.FC<{ delay: number }> = ({ delay }) => (
   <div style={{ display: "flex", alignItems: "center", gap: 18, flexWrap: "wrap" }}>
     <Chip icon={OffsiteIcon} label="Data center próprio" delay={delay} compact />
-    <Badge text="PADRÃO TIER 3" delay={delay + 27} size={36} />
+    <Badge text="PADRÃO TIER 3" delay={delay + 24} size={36} />
   </div>
 );
 
@@ -327,9 +248,9 @@ const DataCenter: React.FC<{ delay: number }> = ({ delay }) => (
       <div style={{ display: "flex", flexDirection: "column", gap: 26, flex: 1 }}>
         <Badge text="PADRÃO TIER 3" delay={delay} />
         {/* Each line lights up as he names it. */}
-        <Chip icon={BoltIcon} label="Energia redundante" delay={delay + 22} />
-        <Chip icon={ThermoIcon} label="Controle de temperatura" delay={delay + 48} />
-        <Chip icon={UptimeIcon} label="Alta disponibilidade" delay={delay + 77} />
+        <Chip icon={BoltIcon} label="Energia redundante" delay={delay + 18} />
+        <Chip icon={ThermoIcon} label="Controle de temperatura" delay={delay + 42} />
+        <Chip icon={UptimeIcon} label="Alta disponibilidade" delay={delay + 68} />
       </div>
     </div>
   </div>
@@ -393,9 +314,9 @@ const Rule321Badge: React.FC<{ delay: number }> = ({ delay }) => {
 
 const Rule321: React.FC<{ delay: number }> = ({ delay }) => {
   const rows = [
-    { n: "3", text: "cópias dos dados", icon: CopyIcon, at: 23, highlight: false },
-    { n: "2", text: "tipos de mídia", icon: MediaIcon, at: 54, highlight: false },
-    { n: "1", text: "fora da empresa", icon: OffsiteIcon, at: 80, highlight: true },
+    { n: "3", text: "cópias dos dados", icon: CopyIcon, at: 20, highlight: false },
+    { n: "2", text: "tipos de mídia", icon: MediaIcon, at: 48, highlight: false },
+    { n: "1", text: "fora da empresa", icon: OffsiteIcon, at: 72, highlight: true },
   ];
 
   return (
@@ -452,9 +373,9 @@ const Threats: React.FC<{ delay: number }> = ({ delay }) => {
   // Order and timing follow the take: "uma falha, roubo, incêndio, ataque cibernético".
   const items = [
     { icon: HardwareIcon, text: "Falha de equipamento", at: 0 },
-    { icon: ThiefIcon, text: "Roubo", at: 14 },
-    { icon: FlameIcon, text: "Incêndio", at: 36 },
-    { icon: BugIcon, text: "Ataque cibernético", at: 58 },
+    { icon: ThiefIcon, text: "Roubo", at: 13 },
+    { icon: FlameIcon, text: "Incêndio", at: 34 },
+    { icon: BugIcon, text: "Ataque cibernético", at: 54 },
   ];
 
   return (
@@ -497,7 +418,7 @@ const Preserved: React.FC<{ delay: number }> = ({ delay }) => (
 const Services: React.FC<{ delay: number }> = ({ delay }) => {
   const items = [
     { icon: CloudUpIcon, title: "Hosting", sub: "Hospedagem de ambientes" },
-    { icon: RackIcon, title: "Colocation", sub: "Seus equipamentos na nossa estrutura" },
+    { icon: RackIcon, title: "Colocation", sub: "Seus equipamentos" },
   ];
 
   return (
@@ -505,11 +426,11 @@ const Services: React.FC<{ delay: number }> = ({ delay }) => {
       {items.map((item, i) => (
         <Rise key={item.title} delay={delay + i * 12} distance={26} style={{ flex: 1 }}>
           <div
-            style={{ ...card, padding: "32px 28px", display: "flex", flexDirection: "column", gap: 14 }}
+            style={{ ...card, padding: "22px 24px", display: "flex", flexDirection: "column", gap: 10 }}
           >
-            <item.icon size={52} color={theme.primaryLight} strokeWidth={2} />
-            <div style={{ ...label, fontSize: 46 }}>{item.title}</div>
-            <div style={{ ...label, fontSize: 26, color: theme.muted }}>{item.sub}</div>
+            <item.icon size={40} color={theme.primaryLight} strokeWidth={2} />
+            <div style={{ ...label, fontSize: 38 }}>{item.title}</div>
+            <div style={{ ...label, fontSize: 23, color: theme.muted }}>{item.sub}</div>
           </div>
         </Rise>
       ))}
@@ -552,8 +473,6 @@ export const Graphic: React.FC<{ graphic: GraphicKey; delay: number }> = ({ grap
   switch (graphic) {
     case "singlePoint":
       return <SinglePoint delay={delay} />;
-    case "offsite":
-      return <Offsite delay={delay} />;
     case "tier3":
       return <Tier3 delay={delay} />;
     case "datacenter":

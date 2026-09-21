@@ -131,41 +131,9 @@ const MockupLayout: React.FC<{ shot: Shot; video: string }> = ({ shot, video }) 
   </AbsoluteFill>
 );
 
-/** A beat with no take behind it, covering a line that was never recorded. */
-const CardLayout: React.FC<{ shot: Shot }> = ({ shot }) => (
-  <AbsoluteFill style={{ background: "#06121c" }}>
-    <Backdrop />
-    <Watermark />
-
-    <div
-      style={{
-        position: "absolute",
-        left: 78,
-        right: 78,
-        top: 300,
-        bottom: 300,
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        gap: 56,
-      }}
-    >
-      <Graphic graphic={shot.graphic} delay={shot.graphicDelay} />
-      <Headline text={shot.headline} size={62} delay={shot.graphicDelay + 10} />
-    </div>
-
-    <Img
-      src={staticFile(brand.logo.white)}
-      style={{ position: "absolute", left: 78, bottom: 84, width: 250, opacity: 0.8 }}
-    />
-  </AbsoluteFill>
-);
-
-export const ShotBlock: React.FC<{ shot: Shot }> = ({ shot }) => {
-  if (shot.video === null) return <CardLayout shot={shot} />;
-  return shot.layout === "mockup" ? (
+export const ShotBlock: React.FC<{ shot: Shot }> = ({ shot }) =>
+  shot.layout === "mockup" ? (
     <MockupLayout shot={shot} video={shot.video} />
   ) : (
     <FullLayout shot={shot} video={shot.video} />
   );
-};
