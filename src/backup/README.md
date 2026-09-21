@@ -1,6 +1,6 @@
 # Vídeo "Backup fora da empresa" — Pro Advanced
 
-Vertical 1080x1920, 24 fps, ~44 s. Composição `ProAdvancedBackup`.
+Vertical 1080x1920, 24 fps, ~43 s. Composição `ProAdvancedBackup`.
 
 ## Como as tomadas foram escolhidas
 
@@ -14,7 +14,7 @@ posicionado pela transcrição, não pela duração. O que ficou de fora:
 | `4bd9cd78` | "Tá gravando?" + specs + "Então é isso?" | **usado só** 2,81–6,81 |
 | `d53f9b88` | a regra 3-2-1 **três vezes** ("mais uma vez…") | **usado só** 9,43–12,20 (a última) |
 | `690fe7b6` | detalhe da regra 3-2-1, limpo | **usado** 1,81–6,87 |
-| `1e7c961a` | riscos + "pode cortar, ficou bem bom" | **usado só** 0,00–5,44 |
+| `1e7c961a` | riscos + "pode cortar, ficou bem bom" | **usado só** 0,56–5,44 |
 | `9bb9d7be` | "você mantém uma cópia preservada…" | **usado** 1,03–5,25 |
 | `edd3a48e` | "E essa mesma infraestrutura…" | **usado** 0,77–5,04 |
 | `78e65ae9` | fechamento, limpo | **usado** 0,94–6,02 |
@@ -28,7 +28,9 @@ posicionado pela transcrição, não pela duração. O que ficou de fora:
 As tomadas em `public/shots/` já saem do `ffmpeg` a 1,08x (`setpts` no vídeo,
 `atempo` no áudio, que preserva o tom). Cada corte entra e sai rente à fala —
 sobra de 0,04 a 0,14 s de silêncio nas pontas, medida na envoltória de áudio do
-próprio corte — e os cross-fades são de 2 frames (3 ao entrar e sair dos
+próprio corte. Atenção ao medir: ruído de boca antes de falar passa fácil por
+fala. Em `1e7c961a` havia 0,65 s disso antes da primeira palavra, com a boca
+aberta esperando — por isso esse corte entra em 0,56 s e não em zero — e os cross-fades são de 2 frames (3 ao entrar e sair dos
 mockups). É o que mantém as frases coladas sem cortar consoante.
 
 ## Tratamento de imagem

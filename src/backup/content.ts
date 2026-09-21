@@ -95,12 +95,12 @@ export const shots: Shot[] = [
   {
     id: "riscos",
     video: "shots/06-riscos.mp4",
-    durationInFrames: 120,
+    durationInFrames: 108,
     line: "Assim, se houver uma falha, roubo, incêndio, ataque cibernético na sede,",
     headline: "Aconteça o que acontecer na sede",
     layout: "full",
     graphic: "threats",
-    graphicDelay: 44,
+    graphicDelay: 32,
   },
   {
     id: "recuperacao",
