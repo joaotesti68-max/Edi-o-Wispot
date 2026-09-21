@@ -23,7 +23,7 @@ const musicVolume = (frame: number) =>
   interpolate(
     frame,
     [0, 20, outroRange.start - 16, outroRange.start + 10, totalDurationInFrames - 16, totalDurationInFrames],
-    [0, 0.12, 0.12, 0.3, 0.3, 0],
+    [0, 0.085, 0.085, 0.22, 0.22, 0],
     { extrapolateLeft: "clamp", extrapolateRight: "clamp" },
   );
 

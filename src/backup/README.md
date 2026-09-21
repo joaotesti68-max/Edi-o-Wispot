@@ -1,6 +1,6 @@
 # Vídeo "Backup fora da empresa" — Pro Advanced
 
-Vertical 1080x1920, 24 fps, ~47 s. Composição `ProAdvancedBackup`.
+Vertical 1080x1920, 24 fps, ~44 s. Composição `ProAdvancedBackup`.
 
 ## Como as tomadas foram escolhidas
 
@@ -9,25 +9,27 @@ posicionado pela transcrição, não pela duração. O que ficou de fora:
 
 | Clipe | O que tem | Destino |
 |---|---|---|
-| `c959243b` | abertura, limpa | **usado** 1,12–6,60 |
-| `34c391bc` | "Na Pro Advanced… padrão Tier 3" | **usado** 0,98–7,48 |
-| `4bd9cd78` | "Tá gravando?" + specs + "Então é isso?" | **usado só** 2,76–7,03 |
-| `d53f9b88` | a regra 3-2-1 **três vezes** ("mais uma vez…") | **usado só** 9,36–12,30 (a última) |
-| `690fe7b6` | detalhe da regra 3-2-1, limpo | **usado** 1,75–7,25 |
-| `1e7c961a` | riscos + "pode cortar, ficou bem bom" | **usado só** 0,00–5,52 |
-| `9bb9d7be` | "você mantém uma cópia preservada…" | **usado** 0,60–5,66 |
-| `edd3a48e` | "E essa mesma infraestrutura…" | **usado** 0,72–5,24 |
-| `78e65ae9` | fechamento, limpo | **usado** 0,58–6,10 |
-| `40515b17` | CTA, sorrindo | **usado** 1,40–5,58 |
+| `c959243b` | abertura, limpa | **usado** 1,24–6,28 |
+| `34c391bc` | "Na Pro Advanced… padrão Tier 3" | **usado** 1,33–6,92 |
+| `4bd9cd78` | "Tá gravando?" + specs + "Então é isso?" | **usado só** 2,81–6,81 |
+| `d53f9b88` | a regra 3-2-1 **três vezes** ("mais uma vez…") | **usado só** 9,43–12,20 (a última) |
+| `690fe7b6` | detalhe da regra 3-2-1, limpo | **usado** 1,81–6,87 |
+| `1e7c961a` | riscos + "pode cortar, ficou bem bom" | **usado só** 0,00–5,44 |
+| `9bb9d7be` | "você mantém uma cópia preservada…" | **usado** 1,03–5,25 |
+| `edd3a48e` | "E essa mesma infraestrutura…" | **usado** 0,77–5,04 |
+| `78e65ae9` | fechamento, limpo | **usado** 0,94–6,02 |
+| `8db9e6cb` | conversa e risada, depois o CTA | **usado só** 6,30–9,70 |
 | `2e9ab0fc` | regra 3-2-1 interrompida + "pode cortar" | descartado |
 | `33d18225` | mesma frase de `edd3a48e`, entrada cortada | descartado |
-| `8db9e6cb` | conversa e risada antes do CTA | descartado |
+| `40515b17` | CTA, mas ele olha para o lado em ~3,8–4,1 s | descartado |
 
 ## Ritmo
 
 As tomadas em `public/shots/` já saem do `ffmpeg` a 1,08x (`setpts` no vídeo,
-`atempo` no áudio, que preserva o tom), com as sobras de silêncio nas pontas
-aparadas e cross-fades de 5 frames (3 dentro de uma mesma frase).
+`atempo` no áudio, que preserva o tom). Cada corte entra e sai rente à fala —
+sobra de 0,04 a 0,14 s de silêncio nas pontas, medida na envoltória de áudio do
+próprio corte — e os cross-fades são de 2 frames (3 ao entrar e sair dos
+mockups). É o que mantém as frases coladas sem cortar consoante.
 
 ## Duas frases do roteiro não existem no material
 
@@ -70,4 +72,4 @@ Em ambientes sem download do Chromium do Remotion, aponte para um binário local
 com `--browser-executable=<caminho>`.
 
 Trilha: `public/audio/funky-jazz.mp3` (Alex Morgan — *Funky Jazz Cocktail Bar*),
-em 0.12 sob a voz e 0.30 na cartela final.
+em 0.085 sob a voz e 0.22 na cartela final.

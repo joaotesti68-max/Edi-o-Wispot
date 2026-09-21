@@ -2,9 +2,9 @@ export const FPS = 24;
 export const WIDTH = 1080;
 export const HEIGHT = 1920;
 
-export const OUTRO_FRAMES = 76;
+export const OUTRO_FRAMES = 74;
 /** Default cross-fade between shots. */
-export const TRANSITION_FRAMES = 5;
+export const TRANSITION_FRAMES = 2;
 
 export type GraphicKey =
   | "none"
@@ -43,59 +43,59 @@ export const shots: Shot[] = [
   {
     id: "abertura",
     video: "shots/01-abertura.mp4",
-    durationInFrames: 122,
+    durationInFrames: 112,
     line: "Se todas as cópias do seu backup estão dentro da empresa, um único incidente pode comprometer todas elas.",
     headline: "Um único incidente pode levar todas as suas cópias",
     layout: "full",
     graphic: "singlePoint",
-    graphicDelay: 54,
+    graphicDelay: 51,
   },
   {
     id: "tier3",
     video: "shots/02-tier3.mp4",
-    durationInFrames: 144,
+    durationInFrames: 125,
     line: "Na Pro Advanced, essa cópia pode ficar protegida em nosso data center, em uma estrutura padrão Tier 3,",
     headline: "Protegida fora da empresa, no nosso data center",
     layout: "full",
     graphic: "tier3",
-    graphicDelay: 91,
+    graphicDelay: 83,
   },
   {
     id: "datacenter-specs",
     video: "shots/03-datacenter-specs.mp4",
-    durationInFrames: 95,
+    durationInFrames: 89,
     line: "com energia redundante, controle de temperatura e alta disponibilidade.",
     headline: "Estrutura padrão Tier 3",
     layout: "mockup",
     graphic: "datacenter",
-    graphicDelay: 2,
+    graphicDelay: 1,
     transitionIn: 3,
   },
   {
     id: "regra321",
     video: "shots/04-regra321.mp4",
-    durationInFrames: 65,
+    durationInFrames: 62,
     line: "Também aplicamos a regra 3-2-1:",
     headline: "Também aplicamos a regra 3\u20112\u20111",
     layout: "full",
     graphic: "rule321Badge",
-    graphicDelay: 36,
+    graphicDelay: 34,
   },
   {
     id: "regra321-detalhe",
     video: "shots/05-regra321-detalhe.mp4",
-    durationInFrames: 122,
+    durationInFrames: 113,
     line: "três cópias dos dados, em dois tipos de mídia, com uma delas armazenada fora da empresa.",
     headline: "O padrão de um backup confiável",
     layout: "mockup",
     graphic: "rule321",
-    graphicDelay: 6,
+    graphicDelay: 5,
     transitionIn: 3,
   },
   {
     id: "riscos",
     video: "shots/06-riscos.mp4",
-    durationInFrames: 123,
+    durationInFrames: 120,
     line: "Assim, se houver uma falha, roubo, incêndio, ataque cibernético na sede,",
     headline: "Aconteça o que acontecer na sede",
     layout: "full",
@@ -105,28 +105,27 @@ export const shots: Shot[] = [
   {
     id: "recuperacao",
     video: "shots/07-recuperacao.mp4",
-    durationInFrames: 113,
+    durationInFrames: 94,
     line: "você mantém uma cópia preservada e disponível para recuperação em outro ambiente.",
     headline: "A cópia continua de pé, em outro ambiente",
     layout: "full",
     graphic: "preserved",
-    graphicDelay: 39,
-    transitionIn: 4,
+    graphicDelay: 29,
   },
   {
     id: "infraestrutura",
     video: "shots/08-infraestrutura.mp4",
-    durationInFrames: 101,
+    durationInFrames: 95,
     line: "E essa mesma infraestrutura pode suportar outras necessidades da empresa.",
     headline: "A mesma estrutura atende hosting e colocation",
     layout: "full",
     graphic: "services",
-    graphicDelay: 34,
+    graphicDelay: 33,
   },
   {
     id: "fechamento",
     video: "shots/09-fechamento.mp4",
-    durationInFrames: 123,
+    durationInFrames: 113,
     line: "Backup não é só fazer uma cópia. É garantir que ela continue segura quando você mais precisar.",
     headline: "Backup não é copiar. É conseguir recuperar.",
     layout: "full",
@@ -136,12 +135,12 @@ export const shots: Shot[] = [
   {
     id: "cta",
     video: "shots/10-cta.mp4",
-    durationInFrames: 94,
-    line: "Fale com a Pro Advanced e conheça a nossa estrutura de data center.",
+    durationInFrames: 76,
+    line: "Fale com a Pro Advanced e conheça nossas estruturas de data center.",
     headline: "Conheça nossa estrutura de data center",
     layout: "full",
     graphic: "cta",
-    graphicDelay: 22,
+    graphicDelay: 24,
   },
 ];
 

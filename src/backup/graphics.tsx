@@ -248,9 +248,9 @@ const DataCenter: React.FC<{ delay: number }> = ({ delay }) => (
       <div style={{ display: "flex", flexDirection: "column", gap: 26, flex: 1 }}>
         <Badge text="PADRÃO TIER 3" delay={delay} />
         {/* Each line lights up as he names it. */}
-        <Chip icon={BoltIcon} label="Energia redundante" delay={delay + 18} />
-        <Chip icon={ThermoIcon} label="Controle de temperatura" delay={delay + 42} />
-        <Chip icon={UptimeIcon} label="Alta disponibilidade" delay={delay + 68} />
+        <Chip icon={BoltIcon} label="Energia redundante" delay={delay + 17} />
+        <Chip icon={ThermoIcon} label="Controle de temperatura" delay={delay + 41} />
+        <Chip icon={UptimeIcon} label="Alta disponibilidade" delay={delay + 67} />
       </div>
     </div>
   </div>
@@ -314,9 +314,9 @@ const Rule321Badge: React.FC<{ delay: number }> = ({ delay }) => {
 
 const Rule321: React.FC<{ delay: number }> = ({ delay }) => {
   const rows = [
-    { n: "3", text: "cópias dos dados", icon: CopyIcon, at: 20, highlight: false },
-    { n: "2", text: "tipos de mídia", icon: MediaIcon, at: 48, highlight: false },
-    { n: "1", text: "fora da empresa", icon: OffsiteIcon, at: 72, highlight: true },
+    { n: "3", text: "cópias dos dados", icon: CopyIcon, at: 19, highlight: false },
+    { n: "2", text: "tipos de mídia", icon: MediaIcon, at: 47, highlight: false },
+    { n: "1", text: "fora da empresa", icon: OffsiteIcon, at: 71, highlight: true },
   ];
 
   return (
