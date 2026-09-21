@@ -41,7 +41,9 @@ export const FeatureDaSemana: React.FC = () => {
             {i === 0 ? null : (
               <TransitionSeries.Transition
                 presentation={fade()}
-                timing={linearTiming({ durationInFrames: TRANSITION_FRAMES })}
+                timing={linearTiming({
+                  durationInFrames: segment.transitionIn ?? TRANSITION_FRAMES,
+                })}
               />
             )}
             <TransitionSeries.Sequence durationInFrames={segment.durationInFrames}>

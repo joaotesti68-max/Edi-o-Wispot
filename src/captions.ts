@@ -54,10 +54,14 @@ export const captions: Record<string, Caption[]> = {
     { text: "com o cliente final", from: 153, to: 197 },
     { text: "dentro do seu estabelecimento,", from: 197, to: 260 },
     { text: "recebendo essas respostas em tempo real", from: 260, to: 319 },
-    { text: "dentro do painel.", from: 319, to: 355 },
+    // Termina no meio do dissolve para o fechamento, em vez de no fim da fala:
+    // é a única emenda do vídeo entre dois takes, e sem isso as duas legendas
+    // dividem a tela enquanto as imagens se cruzam.
+    { text: "dentro do painel.", from: 319, to: 351 },
   ],
   "fechamento": [
-    { text: "Para entender como a Wispot funciona", from: 1, to: 49 },
+    // Entra onde a anterior sai, no meio do dissolve.
+    { text: "Para entender como a Wispot funciona", from: 10, to: 49 },
     { text: "para o seu negócio,", from: 49, to: 86 },
     { text: "entre em contato conosco.", from: 86, to: 128 },
   ],

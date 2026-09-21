@@ -1,6 +1,6 @@
 # Perguntas e Respostas — setembro
 
-Vídeo vertical 1080×1920, 30 fps, 52,0 s. Composição Remotion: `FeatureDaSemana`.
+Vídeo vertical 1080×1920, 30 fps, 52,1 s. Composição Remotion: `FeatureDaSemana`.
 
 Quarto vídeo da série de perguntas e respostas, gravado com a Mari. Três
 perguntas no ar: segmentos atendidos, fabricantes suportados e pesquisa de
@@ -58,11 +58,34 @@ segmento e a faixa de lembrete que aparece sobre as respostas.
 | - | --------------- | -------- |
 | 1 | Para quais tipos de negócio a Wispot é indicada? | `resposta-1.mp4` |
 | 2 | Quais equipamentos funcionam com a Wispot? | `resposta-3.mp4` |
-| 3 | Como saber o que o público acha do meu espaço? | `resposta-4.mp4` |
+| 3 | Como saber a opinião do público que frequenta meu espaço? | `resposta-4.mp4` |
 | — | Como a Wispot pode gerar receita para um provedor de internet? | `resposta-2.mp4`, fora desta edição |
 
 O número do card é o que o espectador lê, então ele acompanha a ordem no ar; os
 ids e os nomes de arquivo continuam presos ao take que os originou.
+
+### A emenda do fechamento
+
+Todas as outras emendas do vídeo têm um card entre os takes. A do fechamento é a
+única que cola dois takes dela direto, e com o mesmo enquadramento dos dois
+lados o fade padrão de 9 quadros lia como falha de reprodução, não como
+transição.
+
+Dois ajustes, só nessa emenda: o dissolve dobra para 18 quadros (`transitionIn`
+no segmento) e o take entra com o enquadramento 8% mais fechado (`punchIn`).
+A troca passa a aparecer como mudança de plano — e fechar o quadro na hora da
+chamada ainda ajuda o recado.
+
+O tamanho da transição virou campo do segmento em vez de constante única, e a
+conta da linha do tempo passou a somar transição por transição. A rampa de
+volume da trilha acompanha o tamanho da sobreposição pelo mesmo motivo: presa a
+um número fixo, numa transição longa ela terminava antes do platô anterior
+começar, e a lista de quadros deixava de ser crescente.
+
+As legendas trocam no meio do dissolve, não no fim da fala: sem isso as duas
+ficariam na tela ao mesmo tempo enquanto as imagens se cruzam. É o único ponto
+do vídeo onde isso acontece, então o ajuste está nos dois quadros envolvidos em
+`captions.ts`, não numa regra geral.
 
 ### Ritmo
 
@@ -128,14 +151,14 @@ o reconhecedor.
 ## Trilha
 
 `public/audio/theme.mp3` — *Nastelbom / Funky*, 115 BPM, instrumental, fornecida
-pelo cliente. Do arquivo original (79,1 s) saem os 52,2 s usados aqui.
+pelo cliente. Do arquivo original (79,1 s) saem os 52,3 s usados aqui.
 
 Esta faixa não precisou de compressão: o arco dela já varia só 4,6 dB entre as
 seções, e boa parte disso é a própria cauda baixando no fim. O tratamento foi
 nível e corte:
 
 ```console
-ffmpeg -ss 1.1859 -t 52.15 -i <original>.mp3 \
+ffmpeg -ss 1.0859 -t 52.25 -i <original>.mp3 \
   -af "volume=-4.5dB,alimiter=limit=0.9:level=disabled,afade=t=in:st=0:d=0.6" \
   -c:a libmp3lame -b:a 192k -ar 44100 public/audio/theme.mp3
 ```
@@ -145,8 +168,8 @@ da série ficava — é o que mantém válidas as constantes de `musicVolume` se
 remexer nelas.
 
 **Corte com a grade do compasso.** A faixa é 115 BPM cravados, compasso de
-2,08696 s, com o primeiro tempo forte em 0,512 s. Cortando 1,1859 s da cabeça, o
-tempo forte do compasso 26 cai no quadro 1545 — quinze quadros antes do fim. O
+2,08696 s, com o primeiro tempo forte em 0,512 s. Cortando 1,0859 s da cabeça, o
+tempo forte do compasso 26 cai no quadro 1548 — quinze quadros antes do fim. O
 vídeo fecha em cima da batida em vez de cortar no meio de um compasso, e o
 `MUSIC_FADE_OUT` é curto justamente para entrar só depois dela.
 
@@ -200,7 +223,7 @@ npx remotion render FeatureDaSemana out/perguntas-respostas-setembro.mp4 \
 O `remotion.config.ts` já carrega os parâmetros de qualidade: quadros
 intermediários em PNG (o padrão é JPEG, que é uma geração de perda no meio do
 caminho, e ainda marca a saída como `yuvj420p`), CRF 13, preset `veryslow` e
-áudio em 320k. Sai um master de 1560 quadros, 59 MiB a 9,2 Mbps, com a mixagem
+áudio em 320k. Sai um master de 1563 quadros, 59 MiB a 9,2 Mbps, com a mixagem
 em -16,9 LUFS integrado e pico real -1,3 dBTP.
 
 Para uma cópia menor sem perda visível, reencode em dois passes a partir do

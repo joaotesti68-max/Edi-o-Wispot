@@ -17,11 +17,13 @@ import { captions } from "./captions";
 export const VideoBlock: React.FC<{ clip: Clip }> = ({ clip }) => {
   return (
     <AbsoluteFill style={{ background: brand.colors.gray }}>
-      <OffthreadVideo
-        src={staticFile(clip.video)}
-        playbackRate={SPEED}
-        style={{ width: "100%", height: "100%", objectFit: "cover" }}
-      />
+      <AbsoluteFill style={clip.punchIn ? { transform: `scale(${clip.punchIn})` } : undefined}>
+        <OffthreadVideo
+          src={staticFile(clip.video)}
+          playbackRate={SPEED}
+          style={{ width: "100%", height: "100%", objectFit: "cover" }}
+        />
+      </AbsoluteFill>
 
       <Scrim />
 
