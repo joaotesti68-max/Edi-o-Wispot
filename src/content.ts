@@ -233,6 +233,32 @@ export const episodes: Episode[] = [
     voiceOvers: [{ src: "audio/ep2-vo-1.m4a", startFrame: OPENING, durationInFrames: 2298 }],
     music: TRILHA,
   },
+  {
+    id: "WispotEp03",
+    number: "03",
+    series: "Pílulas Wispot",
+    title: "Personalize a tela de login do seu Wi-Fi",
+    openingFrames: OPENING,
+    // Take contínuo, em velocidade natural, sem corte interno.
+    //
+    // A âncora veio de quem gravou: a fala começa quando a gravação está em
+    // 5,0s, que é onde a interface do OBS sai da tela e o painel aparece. Daí
+    // os 50,9s de locução cobrem até 55,9s, e os 40,5s restantes da gravação
+    // são o que ficou rodando depois que ela parou de falar — a partir dos
+    // 72s a tela nem se mexe mais.
+    //
+    // Os 4,9s iniciais e os 0,8s finais do bruto mostram a janela do OBS, com
+    // mixer e botão de interromper gravação, e ficam de fora.
+    blocks: [
+      {
+        id: "painel",
+        video: "videos/ep3-painel.mp4",
+        durationInFrames: 1527, // 50,90s — bruto 5,0-55,9
+      },
+    ],
+    voiceOvers: [{ src: "audio/ep3-vo-1.m4a", startFrame: OPENING, durationInFrames: 1527 }],
+    music: TRILHA,
+  },
 ];
 
 export type Layout = {
