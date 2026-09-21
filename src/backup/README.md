@@ -31,6 +31,21 @@ sobra de 0,04 a 0,14 s de silêncio nas pontas, medida na envoltória de áudio 
 próprio corte — e os cross-fades são de 2 frames (3 ao entrar e sair dos
 mockups). É o que mantém as frases coladas sem cortar consoante.
 
+## Tratamento de imagem
+
+O material bruto vinha com o azul por cima nos tons médios: a camiseta preta
+media R70 G67 **B79** e a pele saía com G−B de apenas +3, o que dá a sensação
+de imagem fria. O grade aplicado no corte (`colorbalance` nos médios e altas,
+sem mexer nas sombras para não amarelar o preto, mais um toque de contraste e
+saturação) leva a camiseta para R69 G64 B66 e a pele para G−B ≈ +12:
+
+```
+colorbalance=rm=0.032:bm=-0.038:rh=0.016:bh=-0.024,eq=contrast=1.06:saturation=1.08:brightness=0.006
+```
+
+Vale só para as tomadas. Os gráficos e os fundos dos mockups continuam com o
+azul da marca, porque o grade é assado nos arquivos de `public/shots/`.
+
 ## Duas frases do roteiro não existem no material
 
 Nenhum clipe contém:
