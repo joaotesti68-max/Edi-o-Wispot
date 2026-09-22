@@ -269,12 +269,24 @@ export const episodes: Episode[] = [
     id: "WispotEp04",
     number: "04",
     series: "Pílulas Wispot",
-    title: "O painel da Sending",
+    title: "O painel do Sending",
     openingFrames: OPENING,
-    // A gravação tem 187,9s mas só ~20s com movimento. Para caber nos 81,7s
-    // das duas locuções, cada trecho congelado foi encurtado a 40% do
-    // original, com piso de 0,8s, preservando todo o movimento e a ordem das
-    // telas. Os 12,5s iniciais, com a janela do OBS, ficam de fora.
+    // O corte segue um ponto informado por quem ouviu a locução: ela fala de
+    // Database dos 15s aos 35s da narração. Na gravação a tela de Database
+    // vai de 38s a 58s — 20s para 20s de fala, então esse trecho roda em
+    // velocidade natural, inteiro, sem corte interno.
+    //
+    // O que vem antes e depois é encolhido para caber em volta:
+    //   fala  0-15s  <- bruto  14-38s   (Dashboard, 24s -> 15s)
+    //   fala 15-35s  <- bruto  38-58s   (Database, natural)
+    //   fala 35-77s  <- bruto  58-188s  (Campanhas a Configurações, 130s -> 46,7s)
+    //
+    // Encolher tudo na mesma proporção, como na primeira tentativa, preserva a
+    // distribuição da gravação — que dedica 97s a Configurações e 20s a
+    // Database. A fala tem a forma oposta, e por isso a imagem passava batido
+    // justamente onde ela mais falava.
+    //
+    // Os 14s iniciais, com a janela do OBS, ficam de fora.
     blocks: [
       {
         id: "sending",
@@ -284,8 +296,8 @@ export const episodes: Episode[] = [
         // Conta", em duas passagens. A página rola dentro de cada uma, então
         // a faixa cobre a coluna inteira do campo em vez de só a linha.
         blur: [
-          { from: 1200, to: 1365, top: 0, left: 33, width: 36, height: 68, solid: TARJA },
-          { from: 1830, to: 1965, top: 0, left: 33, width: 36, height: 68, solid: TARJA },
+          { from: 1515, to: 1620, top: 0, left: 33, width: 36, height: 68, solid: TARJA },
+          { from: 1995, to: 2070, top: 0, left: 33, width: 36, height: 68, solid: TARJA },
         ],
       },
     ],
