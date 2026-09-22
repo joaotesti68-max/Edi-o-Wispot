@@ -18,7 +18,7 @@ const VoiceOver: React.FC<{ src: string; durationInFrames: number }> = ({
   <Audio
     src={staticFile(src)}
     volume={(f) =>
-      interpolate(f, [0, 3, durationInFrames - 4, durationInFrames - 1], [0, 1, 1, 0], {
+      interpolate(f, [0, 6, durationInFrames - 7, durationInFrames - 1], [0, 1, 1, 0], {
         extrapolateLeft: "clamp",
         extrapolateRight: "clamp",
       })

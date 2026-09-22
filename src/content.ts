@@ -271,39 +271,43 @@ export const episodes: Episode[] = [
     series: "Pílulas Wispot",
     title: "O painel do Sending",
     openingFrames: OPENING,
-    // O corte segue um ponto informado por quem ouviu a locução: ela fala de
-    // Database dos 15s aos 35s da narração. Na gravação a tela de Database
-    // vai de 38s a 58s — 20s para 20s de fala, então esse trecho roda em
-    // velocidade natural, inteiro, sem corte interno.
+    // O corte é ancorado nas pausas da própria locução, medidas no áudio
+    // (trechos de silêncio acima de 0,3s), e não em proporção da gravação.
+    // A Mari respira em 10,6s / 31,6s / 43,5s / 47,5s, e é aí que a tela troca:
     //
-    // O que vem antes e depois é encolhido para caber em volta:
-    //   fala  0-15s  <- bruto  14-38s   (Dashboard, 24s -> 15s)
-    //   fala 15-35s  <- bruto  38-58s   (Database, natural)
-    //   fala 35-77s  <- bruto  58-188s  (Campanhas a Configurações, 130s -> 46,7s)
+    //   fala  0,0-11,0s  <- bruto  15,0-26,0s   Dashboard
+    //   fala 11,0-32,6s  <- bruto  36,9-58,5s   Database (21,6s, sem corte)
+    //   fala 32,6-55,0s  <- bruto  58,5-81,0s   Campanhas -> Minha Empresa
+    //   fala 55,0-61,0s  <- bruto 106,5-112,5s  Minha Conta
+    //   fala 61,0-66,5s  <- bruto 115,0-120,5s  Grupos de Permissões
+    //   fala 66,5-72,5s  <- bruto 122,5-128,5s  Configurações
+    //   fala 72,5-78,0s  <- bruto 139,5-145,0s  Informações da Empresa
+    //   fala 78,0-82,2s  <- bruto 168,0-172,2s  Lembretes de Sistema
     //
-    // Encolher tudo na mesma proporção, como na primeira tentativa, preserva a
-    // distribuição da gravação — que dedica 97s a Configurações e 20s a
-    // Database. A fala tem a forma oposta, e por isso a imagem passava batido
-    // justamente onde ela mais falava.
-    //
-    // Os 14s iniciais, com a janela do OBS, ficam de fora.
+    // Todos os oito pedaços rodam em velocidade natural: nada é acelerado.
+    // A gravação bruta gasta 97s em Configurações e 20s em Database; a fala
+    // tem a forma oposta, então encolher tudo na mesma proporção (as duas
+    // tentativas anteriores) atrasava a imagem justamente onde ela mais fala.
+    // Os 15s iniciais, com a janela do OBS, ficam de fora.
     blocks: [
       {
         id: "sending",
         video: "videos/ep4-sending.mp4",
-        durationInFrames: 2451, // 81,70s
-        // O e-mail pessoal do usuário aparece no campo "E-mail" de "Minha
-        // Conta", em duas passagens. A página rola dentro de cada uma, então
-        // a faixa cobre a coluna inteira do campo em vez de só a linha.
-        blur: [
-          { from: 1515, to: 1620, top: 0, left: 33, width: 36, height: 68, solid: TARJA },
-          { from: 1995, to: 2070, top: 0, left: 33, width: 36, height: 68, solid: TARJA },
-        ],
+        durationInFrames: 2466, // 82,20s
+        // Sem `blur` aqui: os dados do cliente (razão social, apelido, CNPJ,
+        // nome e e-mail do titular) são desfocados no próprio arquivo, por
+        // scripts/redact-ep4.py. A página rola enquanto ela navega, então uma
+        // região fixa em porcentagem não acompanharia; o script encontra o
+        // rótulo quadro a quadro e desfoca em relação a ele.
       },
     ],
     voiceOvers: [
       { src: "audio/ep4-vo-1.m4a", startFrame: OPENING, durationInFrames: 1434 },
-      { src: "audio/ep5-vo-1.m4a", startFrame: OPENING + 1434, durationInFrames: 1017 },
+      // A segunda gravação entra 0,45s mais tarde do que o fim da primeira:
+      // a fala termina em 47,46s e recomeça em 48,47s, o que dá 1,0s de
+      // respiro na emenda. Colada no fim do arquivo anterior, a pausa ficava
+      // em 0,56s — curta demais para separar duas gravações diferentes.
+      { src: "audio/ep5-vo-1.m4a", startFrame: OPENING + 1448, durationInFrames: 1017 },
     ],
     music: TRILHA,
   },
