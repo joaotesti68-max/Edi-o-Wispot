@@ -48,6 +48,14 @@ colorbalance=rm=0.032:bm=-0.038:rh=0.016:bh=-0.024,eq=contrast=1.06:saturation=1
 Vale só para as tomadas. Os gráficos e os fundos dos mockups continuam com o
 azul da marca, porque o grade é assado nos arquivos de `public/shots/`.
 
+## Um selo por assunto
+
+Cada elemento gráfico aparece uma vez só. O selo "PADRÃO TIER 3" vive na tomada
+em que ele fala a palavra e sai com ela — quando o mockup também tinha o seu, os
+dois se cruzavam na transição em posições diferentes e a palavra parecia tremer.
+Pela mesma razão o bloco `recuperacao` ficou sem headline: a barra verde já diz
+que a cópia está preservada.
+
 ## Duas frases do roteiro não existem no material
 
 Nenhum clipe contém:

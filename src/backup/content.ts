@@ -25,6 +25,7 @@ export type Shot = {
   durationInFrames: number;
   /** What is actually said in this take (transcribed from the raw clip). */
   line: string;
+  /** Empty when the graphic already says it and a second line would just repeat. */
   headline: string;
   /**
    * full   — talking head fills the frame, graphic supports it from below.
@@ -65,7 +66,7 @@ export const shots: Shot[] = [
     video: "shots/03-datacenter-specs.mp4",
     durationInFrames: 89,
     line: "com energia redundante, controle de temperatura e alta disponibilidade.",
-    headline: "Estrutura padrão Tier 3",
+    headline: "Dentro do nosso data center",
     layout: "mockup",
     graphic: "datacenter",
     graphicDelay: 1,
@@ -107,7 +108,7 @@ export const shots: Shot[] = [
     video: "shots/07-recuperacao.mp4",
     durationInFrames: 94,
     line: "você mantém uma cópia preservada e disponível para recuperação em outro ambiente.",
-    headline: "A cópia continua de pé, em outro ambiente",
+    headline: "",
     layout: "full",
     graphic: "preserved",
     graphicDelay: 29,

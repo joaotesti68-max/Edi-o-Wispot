@@ -245,8 +245,9 @@ const DataCenter: React.FC<{ delay: number }> = ({ delay }) => (
     <div style={{ display: "flex", gap: 40, alignItems: "flex-start" }}>
       <Rack delay={delay} />
 
+      {/* No Tier 3 badge here: the shot before this one already carries it, and
+          two of them crossing over in the transition read as a wobble. */}
       <div style={{ display: "flex", flexDirection: "column", gap: 26, flex: 1 }}>
-        <Badge text="PADRÃO TIER 3" delay={delay} />
         {/* Each line lights up as he names it. */}
         <Chip icon={BoltIcon} label="Energia redundante" delay={delay + 17} />
         <Chip icon={ThermoIcon} label="Controle de temperatura" delay={delay + 41} />

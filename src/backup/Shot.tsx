@@ -87,7 +87,7 @@ const FullLayout: React.FC<{ shot: Shot; video: string }> = ({ shot, video }) =>
         }}
       >
         <Graphic graphic={shot.graphic} delay={shot.graphicDelay} />
-        <Headline text={shot.headline} size={58} />
+        {shot.headline ? <Headline text={shot.headline} size={58} /> : null}
       </div>
     </AbsoluteFill>
   );
@@ -120,9 +120,11 @@ const MockupLayout: React.FC<{ shot: Shot; video: string }> = ({ shot, video }) 
       <Graphic graphic={shot.graphic} delay={shot.graphicDelay} />
     </div>
 
-    <div style={{ position: "absolute", left: 78, right: 78, bottom: 200 }}>
-      <Headline text={shot.headline} size={58} delay={10} />
-    </div>
+    {shot.headline ? (
+      <div style={{ position: "absolute", left: 78, right: 78, bottom: 200 }}>
+        <Headline text={shot.headline} size={58} delay={10} />
+      </div>
+    ) : null}
 
     <Img
       src={staticFile(brand.logo.white)}
