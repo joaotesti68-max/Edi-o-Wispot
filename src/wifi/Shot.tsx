@@ -1,0 +1,124 @@
+import React from "react";
+import {
+  AbsoluteFill,
+  Img,
+  OffthreadVideo,
+  interpolate,
+  staticFile,
+  useCurrentFrame,
+  useVideoConfig,
+} from "remotion";
+import { brand } from "../brand";
+import { Headline, Watermark, theme } from "../backup/ui";
+import { Graphic } from "./graphics";
+import type { Shot } from "./content";
+
+const Footage: React.FC<{ src: string }> = ({ src }) => (
+  <OffthreadVideo src={staticFile(src)} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+);
+
+/** Backdrop for the shots where the visual covers the whole screen. */
+const Backdrop: React.FC = () => {
+  const frame = useCurrentFrame();
+  const { durationInFrames } = useVideoConfig();
+  const drift = interpolate(frame, [0, durationInFrames], [0, -26], { extrapolateRight: "clamp" });
+
+  return (
+    <>
+      <AbsoluteFill style={{ background: "linear-gradient(158deg, #08202f 0%, #061019 46%, #08243c 100%)" }} />
+      <AbsoluteFill
+        style={{
+          backgroundImage: `radial-gradient(circle at 76% 14%, ${theme.primary}46 0%, rgba(0,0,0,0) 52%), radial-gradient(circle at 12% 88%, ${theme.primary}22 0%, rgba(0,0,0,0) 46%)`,
+        }}
+      />
+      <AbsoluteFill
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)",
+          backgroundSize: "80px 80px",
+          transform: `translateY(${drift}px)`,
+          maskImage: "radial-gradient(circle at 50% 40%, #000 0%, rgba(0,0,0,0.3) 60%, transparent 84%)",
+        }}
+      />
+    </>
+  );
+};
+
+const FullLayout: React.FC<{ shot: Shot }> = ({ shot }) => {
+  const frame = useCurrentFrame();
+  const { durationInFrames } = useVideoConfig();
+  const zoom = interpolate(frame, [0, durationInFrames], [1, 1.05], { extrapolateRight: "clamp" });
+
+  return (
+    <AbsoluteFill style={{ background: theme.ink }}>
+      <AbsoluteFill style={{ transform: `scale(${zoom})` }}>
+        <Footage src={shot.video} />
+      </AbsoluteFill>
+
+      <AbsoluteFill
+        style={{
+          background:
+            "linear-gradient(to bottom, rgba(0,0,0,0.34) 0%, rgba(0,0,0,0) 26%, rgba(0,0,0,0) 44%, rgba(7,11,15,0.72) 70%, rgba(7,11,15,0.94) 100%)",
+        }}
+      />
+
+      <Watermark />
+
+      <div
+        style={{
+          position: "absolute",
+          left: 64,
+          right: 64,
+          bottom: 132,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "stretch",
+          gap: 28,
+        }}
+      >
+        <Graphic graphic={shot.graphic} delay={shot.graphicDelay} />
+        {shot.headline ? <Headline text={shot.headline} size={58} delay={shot.headlineDelay} /> : null}
+      </div>
+    </AbsoluteFill>
+  );
+};
+
+/** The take is heard but not seen; the visual has the whole screen. */
+const MockupLayout: React.FC<{ shot: Shot }> = ({ shot }) => (
+  <AbsoluteFill style={{ background: "#06121c" }}>
+    <AbsoluteFill style={{ opacity: 0 }}>
+      <Footage src={shot.video} />
+    </AbsoluteFill>
+    <Backdrop />
+    <Watermark />
+
+    <div
+      style={{
+        position: "absolute",
+        left: 78,
+        right: 78,
+        top: 200,
+        bottom: 260,
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+      }}
+    >
+      <Graphic graphic={shot.graphic} delay={shot.graphicDelay} />
+    </div>
+
+    {shot.headline ? (
+      <div style={{ position: "absolute", left: 78, right: 78, bottom: 200 }}>
+        <Headline text={shot.headline} size={58} delay={shot.headlineDelay ?? 10} />
+      </div>
+    ) : null}
+
+    <Img
+      src={staticFile(brand.logo.white)}
+      style={{ position: "absolute", left: 78, bottom: 84, width: 250, opacity: 0.8 }}
+    />
+  </AbsoluteFill>
+);
+
+export const ShotBlock: React.FC<{ shot: Shot }> = ({ shot }) =>
+  shot.layout === "mockup" ? <MockupLayout shot={shot} /> : <FullLayout shot={shot} />;
