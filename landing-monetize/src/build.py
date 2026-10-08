@@ -4,7 +4,7 @@ css=open(d+'/style.css').read(); body=open(d+'/body.html').read(); js=open(d+'/s
 CDN='https://d335luupugsy2.cloudfront.net/cms/files/870990/'
 import base64,glob
 # client logos live in clients/*.png (transparent, trimmed); listed in this order, the rest alphabetically
-ORDER=['carrefour','heineken','applebees','johnny-rockets','ofner']
+ORDER=['carrefour','heineken','applebees','japan-house','johnny-rockets','bendito-cacao','ofner']
 files=sorted(glob.glob(d+'/clients/*.png'),key=lambda f:(ORDER.index(os.path.basename(f)[:-4]) if os.path.basename(f)[:-4] in ORDER else 99,f))
 def name(f):return os.path.basename(f)[:-4].replace('-',' ').title()
 one=[(name(f),'data:image/png;base64,'+base64.b64encode(open(f,'rb').read()).decode()) for f in files]
