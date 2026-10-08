@@ -284,16 +284,91 @@ footer{border-top:1px solid var(--line);padding-block:56px 40px;margin-top:clamp
 @media (max-width:820px){.foot{grid-template-columns:repeat(2,minmax(0,1fr))}.foot > div:first-child{grid-column:1/-1}}
 
 /* reveal: visible at rest, animated in when JS runs */
-.js .rv{opacity:0;transform:translateY(24px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1)}
-.js .rv.in{opacity:1;transform:none}
+.io .rv{opacity:0;transform:translateY(24px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1)}
+.io .rv.in{opacity:1;transform:none}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important}
-  .js .rv{opacity:1;transform:none}
+  .io .rv{opacity:1;transform:none}
   .reveal-words .w{opacity:1}
 }
+
+/* ===== motion layer (GSAP + ScrollTrigger + Lenis) ===== */
+main,footer{position:relative;z-index:1}
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+.progress{position:fixed;left:0;right:0;top:0;height:2px;background:var(--blue);transform-origin:0 50%;transform:scaleX(0);z-index:120;pointer-events:none}
+.gridlines{position:fixed;inset:0;z-index:0;pointer-events:none;display:flex;justify-content:space-between;max-width:var(--max);margin-inline:auto;padding-inline:var(--gutter)}
+.gridlines i{width:1px;background:var(--line);opacity:.6}
+@media (max-width:700px){.gridlines i:nth-child(2),.gridlines i:nth-child(4){display:none}}
+
+.loader{position:fixed;inset:0;z-index:500;background:var(--panel);color:var(--panel-ink);display:none;place-items:center;clip-path:inset(0 0 0 0)}
+.preload .loader{display:grid}
+.l-inner{display:grid;justify-items:center;gap:30px;text-align:center;padding-inline:var(--gutter)}
+.l-arcs path{stroke:var(--blue)}
+.l-phrase{font-family:var(--display);font-weight:600;font-size:clamp(22px,3vw,40px);letter-spacing:-.03em;line-height:1.1}
+.l-foot{position:absolute;left:var(--gutter);right:var(--gutter);bottom:calc(28px + env(safe-area-inset-bottom,0px));display:flex;justify-content:space-between;gap:16px;font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--panel-muted)}
+.l-foot b{color:var(--panel-ink);font-weight:500;font-variant-numeric:tabular-nums}
+
+.wm{display:inline-block;overflow:hidden;vertical-align:top;padding:0 .08em .1em 0;margin:0 -.08em -.1em 0}
+.wm>span{display:inline-block;will-change:transform}
+
+.roll{display:inline-grid;overflow:hidden;vertical-align:top}
+.roll>span{grid-area:1/1;transition:transform .55s cubic-bezier(.7,0,.2,1)}
+.roll>span+span{transform:translateY(105%)}
+a:hover .roll>span:first-child{transform:translateY(-105%)}
+a:hover .roll>span+span{transform:none}
+
+.cursor{position:fixed;left:0;top:0;z-index:400;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:#fff;mix-blend-mode:difference;pointer-events:none;display:grid;place-items:center;transition:width .4s cubic-bezier(.2,.8,.2,1),height .4s cubic-bezier(.2,.8,.2,1),margin .4s cubic-bezier(.2,.8,.2,1),opacity .3s}
+.cursor span{font:600 11px/1 var(--body);letter-spacing:.08em;text-transform:uppercase;color:#000;opacity:0;transition:opacity .2s}
+.cursor.big{width:88px;height:88px;margin:-44px 0 0 -44px}
+.cursor.big span{opacity:1}
+.cursor.hide{opacity:0}
+
+.gs .phone{transform:none}
+.gs .bar .fill{animation:none}
+
+/* 3D word cloud */
+.cloud{position:relative;height:330vh;background:var(--panel);color:var(--panel-ink)}
+.cloud-sticky{position:sticky;top:0;height:100vh;overflow:hidden;perspective:900px}
+.cloud-scene{position:absolute;inset:0;transform-style:preserve-3d}
+.cloud-scene span{position:absolute;left:50%;top:50%;font-family:var(--display);font-weight:600;letter-spacing:-.03em;white-space:nowrap;color:var(--panel-ink);will-change:transform,opacity;backface-visibility:hidden}
+.cloud-scene span.b{color:var(--blue)}
+.cloud-scene span.i{font-style:italic;font-weight:300;color:var(--panel-muted)}
+.cloud-center{position:absolute;inset:0;display:grid;place-content:center;justify-items:center;text-align:center;gap:20px;padding-inline:var(--gutter);pointer-events:none}
+.cloud-text{font-family:var(--display);font-weight:700;font-size:clamp(36px,6.4vw,104px);line-height:1;letter-spacing:-.045em;text-wrap:balance}
+.cloud-text em{font-style:italic;font-weight:300;color:var(--blue)}
+.cloud-center .eyebrow{color:var(--blue)}
+.cloud-hint{position:absolute;left:var(--gutter);right:var(--gutter);bottom:28px;display:flex;justify-content:space-between;font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--panel-muted)}
+.no-motion .cloud{height:auto}
+.no-motion .cloud-sticky{position:relative;height:auto;padding-block:clamp(100px,14vw,180px)}
+.no-motion .cloud-scene,.no-motion .cloud-hint{display:none}
+.no-motion .cloud-center{position:relative}
+
+/* horizontal steps (desktop, pinned) */
+.hpin #como-funciona{overflow:hidden;min-height:100vh;display:flex;align-items:center;padding-block:clamp(40px,7vh,90px)}
+.hpin #como-funciona>.wrap{width:100%}
+.hpin #como-funciona .sec-head{margin-bottom:clamp(28px,5vh,60px)}
+.hpin .journey{display:flex;width:max-content;border-top:0}
+.hpin .step,.hpin .step+.step{width:clamp(360px,34vw,500px);min-height:min(46vh,430px);padding:34px 44px 40px 0;margin-top:0;border-top:1px solid var(--ink);border-left:0}
+.hpin .step+.step{padding-left:44px;border-left:1px solid var(--line)}
+.hpin .step h3{font-size:clamp(30px,2.8vw,42px)}
+.hpin .step::after{content:attr(data-n);position:absolute;right:40px;top:26px;font:800 clamp(80px,8.5vw,140px)/1 var(--display);letter-spacing:-.06em;color:transparent;-webkit-text-stroke:1.5px var(--line)}
+.giant span{display:inline-block}
+.giant{color:var(--blue)}
 </style>
 </head>
 <body>
+
+<script>(function(){var r=document.documentElement,seen=false;try{seen=sessionStorage.getItem('wsp-intro')==='1'}catch(e){}if(!seen&&!matchMedia('(prefers-reduced-motion: reduce)').matches){r.classList.add('preload');setTimeout(function(){if(r.classList.contains('preload')&&!window.gsap){r.classList.remove('preload');var l=document.getElementById('loader');if(l)l.remove()}},5000)}})();</script>
+<div class="loader" id="loader" aria-hidden="true">
+  <div class="l-inner">
+    <svg class="l-arcs" width="120" height="84" viewBox="0 0 40 28" fill="none" stroke-width="3" stroke-linecap="round"><path d="M3 11a24 24 0 0 1 34 0"/><path d="M10 18a14 14 0 0 1 20 0"/><path d="M16.5 24.5a5 5 0 0 1 7 0"/></svg>
+    <p class="l-phrase">Tudo que buscamos é se conectar.</p>
+  </div>
+  <div class="l-foot"><span>Wispot · smart data</span><span>Conectando <b class="l-num">000</b>%</span></div>
+</div>
+<div class="progress" aria-hidden="true"></div>
+<div class="gridlines" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
 
 <header class="nav" id="nav">
   <div class="wrap">
@@ -332,7 +407,7 @@ footer{border-top:1px solid var(--line);padding-block:56px 40px;margin-top:clamp
         </div>
       </div>
 
-      <div class="stage rv" aria-label="Exemplo do portal de acesso Wi-Fi da Wispot">
+      <div class="stage rv" data-cursor="Wi-Fi" aria-label="Exemplo do portal de acesso Wi-Fi da Wispot">
         <canvas id="signal" aria-hidden="true"></canvas>
         <div class="chip c1"><span class="dot"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12.5a10 10 0 0 1 14 0M8.5 16a5 5 0 0 1 7 0"/><circle cx="12" cy="19.5" r="1" fill="currentColor"/></svg></span><span><b>Nova conexão</b><small>Cliente recorrente · 3ª visita</small></span></div>
         <div class="phone">
@@ -372,6 +447,18 @@ footer{border-top:1px solid var(--line);padding-block:56px 40px;margin-top:clamp
     </div>
   </section>
 
+  <!-- 3D CLOUD -->
+  <section class="cloud" id="cloud" data-cursor="Role" aria-label="Cada conexão vira dado. Cada dado vira venda.">
+    <div class="cloud-sticky">
+      <div class="cloud-scene" id="cloudScene" aria-hidden="true"></div>
+      <div class="cloud-center">
+        <div class="eyebrow">Smart data</div>
+        <p class="cloud-text">Cada conexão vira <em>dado</em>.<br>Cada dado vira <em>venda</em>.</p>
+      </div>
+      <div class="cloud-hint" aria-hidden="true"><span>Role para conectar</span><span>Wi-Fi → dados → relacionamento</span></div>
+    </div>
+  </section>
+
   <!-- HOW -->
   <section class="sec" id="como-funciona" style="padding-top:0">
     <div class="wrap">
@@ -383,25 +470,25 @@ footer{border-top:1px solid var(--line);padding-block:56px 40px;margin-top:clamp
         <p>Instalamos nossa tecnologia na rede que sua empresa já tem. O cliente vê uma tela com a sua marca, faz login e, a partir daí, cada visita vira informação útil para o seu negócio.</p>
       </div>
       <div class="journey">
-        <div class="step rv">
+        <div class="step" data-n="01">
           <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M2.5 9a14 14 0 0 1 19 0M5.5 12.5a9.5 9.5 0 0 1 13 0M9 16a4.5 4.5 0 0 1 6 0"/><circle cx="12" cy="19.5" r="1.2" fill="currentColor"/></svg></div>
           <span class="n">01 · Conecta</span>
           <h3>O cliente acessa o Wi-Fi</h3>
           <p>Um portal personalizado com a identidade da sua marca recebe cada pessoa que se conecta.</p>
         </div>
-        <div class="step rv">
+        <div class="step" data-n="02">
           <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></div>
           <span class="n">02 · Cadastra</span>
           <h3>A conexão vira cadastro</h3>
           <p>Login por e-mail, redes sociais ou celular. Nome, contato e frequência de visita, de acordo com a LGPD.</p>
         </div>
-        <div class="step rv">
+        <div class="step" data-n="03">
           <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11v2a1 1 0 0 0 1 1h2l5 4V6L6 10H4a1 1 0 0 0-1 1zM15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg></div>
           <span class="n">03 · Comunica</span>
           <h3>Campanhas no momento certo</h3>
           <p>Cupons, promoções e pesquisas por e-mail, SMS ou WhatsApp, para clientes novos, frequentes ou inativos.</p>
         </div>
-        <div class="step rv">
+        <div class="step" data-n="04">
           <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg></div>
           <span class="n">04 · Mede</span>
           <h3>Dados viram decisão</h3>
@@ -423,7 +510,7 @@ footer{border-top:1px solid var(--line);padding-block:56px 40px;margin-top:clamp
           <p>A Wispot reúne tecnologia, comunicação, inteligência de dados e automação para você conhecer melhor seu público e agir com base em informação real.</p>
         </div>
 
-        <div class="dash rv" role="img" aria-label="Exemplo ilustrativo do painel da Wispot com conexões, cadastros, recorrência e horários de pico">
+        <div class="dash rv" data-cursor="Dados" role="img" aria-label="Exemplo ilustrativo do painel da Wispot com conexões, cadastros, recorrência e horários de pico">
           <div class="dash-top">
             <div class="t"><i></i>Painel · Loja Centro</div>
             <div class="tabs-mini"><span>Hoje</span><span class="on">7 dias</span><span>30 dias</span></div>
@@ -513,7 +600,7 @@ footer{border-top:1px solid var(--line);padding-block:56px 40px;margin-top:clamp
         </ul>
         <div style="margin-top:36px"><a class="btn btn-primary" href="#contato">Quero ser parceiro <span class="arr"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1 6h10M7 2l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a></div>
       </div>
-      <div class="isp-visual rv" aria-label="Fluxo da parceria entre provedor, Wispot e estabelecimento">
+      <div class="isp-visual rv" data-cursor="SVA" aria-label="Fluxo da parceria entre provedor, Wispot e estabelecimento">
         <div class="rings"></div>
         <div class="flow">
           <div class="node"><span class="ix">ISP</span><span>Provedor<small>Leva a Wispot como SVA no plano</small></span></div>
@@ -575,8 +662,11 @@ footer{border-top:1px solid var(--line);padding-block:56px 40px;margin-top:clamp
   </div>
 </footer>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
 <script>
-document.documentElement.classList.add('js');
+
 
 /* nav */
 const nav=document.getElementById('nav'),menuBtn=document.getElementById('menuBtn');
@@ -584,11 +674,7 @@ addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>8),{passiv
 menuBtn.addEventListener('click',()=>{const o=nav.classList.toggle('open');menuBtn.setAttribute('aria-expanded',o);menuBtn.textContent=o?'Fechar':'Menu'});
 document.querySelectorAll('#menu a').forEach(a=>a.addEventListener('click',()=>{nav.classList.remove('open');menuBtn.setAttribute('aria-expanded',false);menuBtn.textContent='Menu'}));
 
-/* reveal on scroll; anything already on screen shows at once */
-const rvs=[...document.querySelectorAll('.rv')];
-const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
-rvs.forEach((el,i)=>{el.style.transitionDelay=(i%4)*80+'ms';const r=el.getBoundingClientRect();if(r.top<innerHeight)el.classList.add('in');else io.observe(el)});
-setTimeout(()=>rvs.forEach(el=>el.classList.add('in')),2500);
+
 
 /* statement: words light up as it scrolls through */
 const st=document.getElementById('statement');
@@ -652,6 +738,246 @@ form.addEventListener('submit',e=>{e.preventDefault();
     if(!reduce)requestAnimationFrame(draw);
   }
   requestAnimationFrame(draw);
+})();
+</script>
+<script>
+/* Motion: GSAP + ScrollTrigger + Lenis. Without them (or with reduced motion) the page stays fully readable. */
+(function(){
+  const root=document.documentElement;
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const HAS=!!(window.gsap&&window.ScrollTrigger);
+  const loader=document.getElementById('loader');
+
+  function fallback(){
+    root.classList.add('no-motion','io');
+    root.classList.remove('preload');
+    if(loader)loader.remove();
+    const rvs=[...document.querySelectorAll('.rv')];
+    const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
+    rvs.forEach(el=>{if(el.getBoundingClientRect().top<innerHeight)el.classList.add('in');else io.observe(el)});
+    setTimeout(()=>rvs.forEach(el=>el.classList.add('in')),2500);
+  }
+  if(!HAS||reduce){fallback();return}
+
+  gsap.registerPlugin(ScrollTrigger);
+  root.classList.add('gs');
+  const EO='expo.out',clamp=gsap.utils.clamp;
+  const fine=matchMedia('(hover:hover) and (pointer:fine)').matches;
+
+  /* smooth scroll */
+  let lenis=null;
+  if(window.Lenis){
+    lenis=new Lenis({duration:1.35,wheelMultiplier:.85,smoothWheel:true});
+    lenis.on('scroll',ScrollTrigger.update);
+    gsap.ticker.add(t=>lenis.raf(t*1000));
+    gsap.ticker.lagSmoothing(0);
+  }
+  document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{
+    const id=a.getAttribute('href');const t=id==='#top'?0:document.querySelector(id);
+    if(t===null||!lenis)return;e.preventDefault();lenis.scrollTo(t,{offset:id==='#top'?0:-10,duration:1.6});
+  }));
+
+  /* helpers */
+  function splitWords(el){
+    if(el._w)return el._w;const out=[];
+    (function walk(node){[...node.childNodes].forEach(n=>{
+      if(n.nodeType===3){const f=document.createDocumentFragment();
+        n.textContent.split(/(\s+)/).forEach(t=>{if(!t)return;if(/^\s+$/.test(t)){f.append(t);return}
+          const m=document.createElement('span');m.className='wm';const i=document.createElement('span');i.textContent=t;m.append(i);f.append(m);out.push(i)});
+        n.replaceWith(f)}
+      else if(n.nodeType===1&&n.tagName!=='BR')walk(n)})})(el);
+    return el._w=out;
+  }
+
+  /* progress + nav hide */
+  gsap.to('.progress',{scaleX:1,ease:'none',scrollTrigger:{start:0,end:'max',scrub:.3}});
+  const nav=document.getElementById('nav');let navShown=true;
+  ScrollTrigger.create({start:0,end:'max',onUpdate:s=>{
+    const hide=s.direction===1&&s.scroll()>260&&!nav.classList.contains('open');
+    if(hide===navShown){navShown=!hide;gsap.to(nav,{yPercent:hide?-110:0,duration:.6,ease:'power3.out'})}
+  }});
+
+  /* rolling link labels */
+  document.querySelectorAll('.nav ul a, .foot a').forEach(a=>{const t=a.textContent;a.innerHTML=`<span class="roll"><span>${t}</span><span aria-hidden="true">${t}</span></span>`});
+
+  /* hero intro */
+  gsap.set('.phone',{xPercent:-50,yPercent:-50});
+  const h1w=splitWords(document.querySelector('.hero h1'));
+  const intro=gsap.timeline({paused:true});
+  intro.from(h1w,{yPercent:118,rotate:5,duration:1.35,ease:EO,stagger:.07},0)
+    .from('.hero .eyebrow, .hero .lede, .hero .actions, .hero-meta',{y:34,opacity:0,duration:1.1,ease:EO,stagger:.09},.3)
+    .fromTo('.stage',{clipPath:'inset(100% 0% 0% 0% round 32px)'},{clipPath:'inset(0% 0% 0% 0% round 32px)',duration:1.5,ease:'expo.inOut'},0)
+    .from('.phone',{scale:.72,rotate:-8,opacity:0,duration:1.4,ease:EO},.55)
+    .from('.chip',{scale:.4,opacity:0,duration:1,ease:'back.out(1.7)',stagger:.14},1)
+    .from('.nav .wrap>*',{y:-24,opacity:0,duration:.9,ease:EO,stagger:.06},.1);
+
+  /* preloader (once per session) */
+  if(root.classList.contains('preload')&&loader){
+    try{sessionStorage.setItem('wsp-intro','1')}catch(e){}
+    if(lenis)lenis.stop();
+    const arcs=loader.querySelectorAll('.l-arcs path');
+    arcs.forEach(p=>{const L=p.getTotalLength();p.style.strokeDasharray=L;p.style.strokeDashoffset=L});
+    const pw=splitWords(loader.querySelector('.l-phrase'));
+    const num=loader.querySelector('.l-num'),cnt={v:0};
+    gsap.timeline({onComplete:()=>{loader.remove();root.classList.remove('preload');if(lenis)lenis.start();ScrollTrigger.refresh()}})
+      .to(arcs,{strokeDashoffset:0,duration:1,ease:'power2.out',stagger:{each:.2,from:'end'}},0)
+      .from(pw,{yPercent:115,duration:1,ease:EO,stagger:.06},.25)
+      .to(cnt,{v:100,duration:1.8,ease:'power2.inOut',onUpdate:()=>{num.textContent=String(Math.round(cnt.v)).padStart(3,'0')}},0)
+      .to('.l-inner',{y:-40,opacity:0,duration:.7,ease:'power3.in'},1.95)
+      .to(loader,{clipPath:'inset(0% 0% 100% 0%)',duration:1.05,ease:'power4.inOut'},2.15)
+      .add(()=>intro.play(),2.45);
+  }else{
+    if(loader)loader.remove();root.classList.remove('preload');intro.play();
+  }
+
+  /* hero parallax */
+  const heroST={trigger:'.hero',start:'top top',end:'bottom top',scrub:true};
+  gsap.to('.hero-grid>div:first-child',{y:90,ease:'none',scrollTrigger:heroST});
+  gsap.to('.phone',{y:-80,ease:'none',scrollTrigger:heroST});
+  gsap.to('.chip.c1',{y:-160,ease:'none',scrollTrigger:heroST});
+  gsap.to('.chip.c2',{y:-40,ease:'none',scrollTrigger:heroST});
+  gsap.to('.chip.c3',{y:-230,ease:'none',scrollTrigger:heroST});
+
+  /* section headings: words rise out of a mask */
+  document.querySelectorAll('.sec-head h2, .isp h2, .cta h2').forEach(h=>{
+    gsap.from(splitWords(h),{yPercent:118,rotate:4,duration:1.25,ease:EO,stagger:.05,scrollTrigger:{trigger:h,start:'top 86%'}});
+  });
+  document.querySelectorAll('main .eyebrow').forEach(e=>{
+    if(e.closest('.hero')||e.closest('.cloud'))return;
+    gsap.from(e,{x:-24,opacity:0,duration:1,ease:EO,scrollTrigger:{trigger:e,start:'top 90%'}});
+  });
+  gsap.utils.toArray('.sec-head p, .isp p.l, .cta p.l, .statement .sig').forEach(p=>{
+    gsap.from(p,{y:30,opacity:0,duration:1.1,ease:EO,scrollTrigger:{trigger:p,start:'top 90%'}});
+  });
+
+  /* staggered batches */
+  function batch(sel,from){
+    const els=gsap.utils.toArray(sel);if(!els.length)return;
+    gsap.set(els,from);
+    ScrollTrigger.batch(els,{start:'top 90%',once:true,onEnter:b=>gsap.to(b,{x:0,y:0,opacity:1,scale:1,duration:1.1,ease:EO,stagger:.09,overwrite:true})});
+  }
+  batch('.strip .item',{y:40,opacity:0});
+  batch('.feat',{y:50,opacity:0});
+  batch('.seg-list li',{x:-30,opacity:0});
+  batch('.checks li',{y:20,opacity:0});
+  batch('.contact-lines, #form .field, #form .btn',{y:30,opacity:0});
+  batch('.foot>div',{y:30,opacity:0});
+  gsap.from('.seg-card',{y:60,opacity:0,duration:1.2,ease:EO,scrollTrigger:{trigger:'.seg',start:'top 80%'}});
+  document.querySelectorAll('.seg-list button').forEach(b=>b.dataset.cursor='Ver');
+
+  /* 3D word cloud: fly through the data as you scroll */
+  (function(){
+    const scene=document.getElementById('cloudScene');if(!scene)return;
+    const words=['Conexão','Cadastro','Campanha','Retorno','Venda','Fidelização','Dados','Relacionamento','Cupom','Pesquisa','Frequência','Permanência','Wi-Fi','Engajamento','Recorrência','Insight','Cliente','Marca'];
+    let seed=11;const rnd=()=>(seed=(seed*16807)%2147483647)/2147483647;
+    const W=[];
+    words.concat(words).forEach((t,i)=>{
+      const s=document.createElement('span');s.textContent=t;
+      s.className=i%5===0?'b':(i%3===0?'i':'');
+      scene.append(s);
+      W.push({el:s,f:18+rnd()*50,x:(rnd()-.5)*1.5,y:(rnd()-.5)*1.25,z:-150-rnd()*2700,ry:(rnd()-.5)*70,rx:(rnd()-.5)*30});
+    });
+    const center=document.querySelector('.cloud-center'),hint=document.querySelector('.cloud-hint');
+    const cw=splitWords(document.querySelector('.cloud-text'));
+    function size(){const k=Math.min(1,innerWidth/1300)*.55+.45;W.forEach(w=>w.el.style.fontSize=(w.f*k).toFixed(1)+'px')}
+    size();addEventListener('resize',size);
+    const textTl=gsap.timeline({paused:true}).from(center.querySelector('.eyebrow'),{opacity:0,y:20,duration:.4}).from(cw,{yPercent:118,rotate:5,duration:1,ease:'power3.out',stagger:.06},.1);
+    function render(p){
+      const vw=innerWidth,vh=innerHeight,cam=p*3000;
+      scene.style.transform=`rotateX(${14-24*p}deg) rotateZ(${-10+20*p}deg) rotateY(${-22+44*p}deg)`;
+      const dim=1-.8*clamp(0,1,(p-.55)/.2);
+      W.forEach(w=>{
+        const z=w.z+cam;
+        let o=clamp(0,1,(z+2850)/1300)*clamp(0,1,1-(z-150)/450)*dim;
+        w.el.style.opacity=o.toFixed(3);
+        w.el.style.visibility=o<.01?'hidden':'visible';
+        w.el.style.transform=`translate(-50%,-50%) translate3d(${(w.x*vw).toFixed(1)}px,${(w.y*vh).toFixed(1)}px,${z.toFixed(1)}px) rotateY(${w.ry}deg) rotateX(${w.rx}deg)`;
+      });
+      textTl.progress(clamp(0,1,(p-.58)/.22));
+      hint.style.opacity=(1-clamp(0,1,p/.12)).toFixed(3);
+    }
+    render(0);
+    ScrollTrigger.create({trigger:'#cloud',start:'top top',end:'bottom bottom',onUpdate:s=>render(s.progress),onRefresh:s=>render(s.progress)});
+  })();
+
+  /* statement words already light up on scroll; nothing to add */
+
+  /* horizontal steps on desktop */
+  const mm=gsap.matchMedia();
+  mm.add('(min-width: 901px)',()=>{
+    root.classList.add('hpin');
+    const sec=document.getElementById('como-funciona'),track=sec.querySelector('.journey');
+    const dist=()=>{const left=track.getBoundingClientRect().left-gsap.getProperty(track,'x');return Math.max(0,track.scrollWidth-(innerWidth-left)+parseFloat(getComputedStyle(document.body).fontSize)*3)};
+    const tw=gsap.to(track,{x:()=>-dist(),ease:'none',scrollTrigger:{trigger:sec,start:'top top',end:()=>'+='+(dist()+innerHeight*.4),pin:true,scrub:1,invalidateOnRefresh:true}});
+    sec.querySelectorAll('.step').forEach((st,i)=>{
+      const trg=i===0?{trigger:sec,start:'top 65%'}:{trigger:st,containerAnimation:tw,start:'left 85%'};
+      gsap.from(st.querySelector('.ico'),{rotate:-120,scale:.3,opacity:0,duration:1,ease:'back.out(1.6)',scrollTrigger:trg});
+      gsap.from(st.querySelectorAll('h3,p,.n'),{y:30,opacity:0,duration:1,ease:EO,stagger:.07,scrollTrigger:{...trg}});
+    });
+    return()=>root.classList.remove('hpin');
+  });
+  mm.add('(max-width: 900px)',()=>{
+    gsap.utils.toArray('.step').forEach(st=>gsap.from(st,{y:50,opacity:0,duration:1.1,ease:EO,scrollTrigger:{trigger:st,start:'top 88%'}}));
+  });
+
+  /* dark platform panel grows into place */
+  gsap.fromTo('.panel',{scale:.92,borderRadius:'72px'},{scale:1,borderRadius:'40px',ease:'none',scrollTrigger:{trigger:'.panel',start:'top bottom',end:'top 20%',scrub:true}});
+
+  /* dashboard: count up, draw the line, grow the bars */
+  (function(){
+    const line=document.getElementById('linePath'),area=document.getElementById('areaPath');
+    const L=line.getTotalLength();gsap.set(line,{strokeDasharray:L,strokeDashoffset:L});gsap.set(area,{opacity:0});
+    const pts=document.querySelectorAll('.chart svg circle, .chart svg g:last-of-type');
+    gsap.set(pts,{opacity:0});
+    const fills=document.querySelectorAll('.bar .fill');gsap.set(fills,{scaleX:0,transformOrigin:'left center'});
+    const kp=[...document.querySelectorAll('.kpi b')].map(b=>{const t=b.textContent;const m=t.match(/[\d.]+/);return{b,t,n:parseInt(m[0].replace('.','')),pre:t.slice(0,m.index),suf:t.slice(m.index+m[0].length)}});
+    kp.forEach(k=>k.b.textContent=k.pre+'0'+k.suf);
+    gsap.from('.dash',{y:80,opacity:0,duration:1.3,ease:EO,scrollTrigger:{trigger:'.dash',start:'top 88%'}});
+    ScrollTrigger.create({trigger:'.dash',start:'top 70%',once:true,onEnter:()=>{
+      kp.forEach(k=>{const o={v:0};gsap.to(o,{v:k.n,duration:2,ease:'power3.out',onUpdate:()=>k.b.textContent=k.pre+Math.round(o.v).toLocaleString('pt-BR')+k.suf})});
+      gsap.to(line,{strokeDashoffset:0,duration:2,ease:'power2.inOut'});
+      gsap.to(area,{opacity:1,duration:1.4,delay:.8});
+      gsap.to(pts,{opacity:1,duration:.5,stagger:.12,delay:.5});
+      gsap.to(fills,{scaleX:1,duration:1.4,ease:'expo.out',stagger:.1,delay:.3});
+    }});
+  })();
+
+  /* ISP flow */
+  gsap.from('.isp-visual',{clipPath:'inset(15% 15% 15% 15% round 32px)',duration:1.4,ease:'expo.inOut',scrollTrigger:{trigger:'.isp-visual',start:'top 85%'}});
+  gsap.from('.isp-visual .node',{x:70,opacity:0,duration:1.1,ease:EO,stagger:.16,delay:.35,scrollTrigger:{trigger:'.isp-visual',start:'top 85%'}});
+  gsap.from('.isp-visual .link',{scaleY:0,transformOrigin:'top center',duration:.6,ease:'power2.out',stagger:.16,delay:.55,scrollTrigger:{trigger:'.isp-visual',start:'top 85%'}});
+  gsap.fromTo('.isp-visual .rings',{scale:.6,rotate:0},{scale:1.25,rotate:30,ease:'none',scrollTrigger:{trigger:'.isp',start:'top bottom',end:'bottom top',scrub:true}});
+
+  /* marquee leans with scroll speed */
+  const skew=gsap.quickTo('.marquee span','skewX',{duration:.5,ease:'power3'});
+  ScrollTrigger.create({start:0,end:'max',onUpdate:s=>skew(clamp(-14,14,s.getVelocity()/-180))});
+
+  /* footer wordmark rises letter by letter */
+  const giant=document.querySelector('.giant');
+  giant.innerHTML=[...giant.textContent].map(c=>`<span>${c}</span>`).join('');
+  gsap.from(giant.children,{yPercent:105,duration:1.3,ease:EO,stagger:.07,scrollTrigger:{trigger:giant,start:'top 98%'}});
+
+  /* pointer niceties: magnetic buttons + blend cursor */
+  if(fine){
+    document.querySelectorAll('.btn').forEach(b=>{
+      const xT=gsap.quickTo(b,'x',{duration:.6,ease:'power3'}),yT=gsap.quickTo(b,'y',{duration:.6,ease:'power3'});
+      b.addEventListener('mousemove',e=>{const r=b.getBoundingClientRect();xT((e.clientX-r.left-r.width/2)*.25);yT((e.clientY-r.top-r.height/2)*.4)});
+      b.addEventListener('mouseleave',()=>{xT(0);yT(0)});
+    });
+    const c=document.createElement('div');c.className='cursor';c.setAttribute('aria-hidden','true');c.innerHTML='<span></span>';document.body.append(c);
+    const lab=c.firstChild;
+    const xs=gsap.quickTo(c,'x',{duration:.35,ease:'power3'}),ys=gsap.quickTo(c,'y',{duration:.35,ease:'power3'});
+    addEventListener('mousemove',e=>{xs(e.clientX);ys(e.clientY)});
+    document.addEventListener('mouseover',e=>{
+      const t=e.target.closest('[data-cursor]');
+      if(t){lab.textContent=t.dataset.cursor;c.classList.add('big')}else c.classList.remove('big');
+      c.classList.toggle('hide',!!e.target.closest('.btn, input, textarea, select, .nav'));
+    });
+    document.addEventListener('mouseleave',()=>c.classList.add('hide'));
+  }
+
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>ScrollTrigger.refresh());
+  addEventListener('load',()=>ScrollTrigger.refresh());
 })();
 </script>
 </body>
