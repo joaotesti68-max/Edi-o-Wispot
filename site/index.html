@@ -1,0 +1,658 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Wispot Smart Data</title>
+<meta name="description" content="Wispot transforma o Wi-Fi do seu negócio em relacionamento, dados e vendas.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300&family=DM+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: editorial Swiss grid — oversized statement type, generous white, one signal-wave motif from the logo */
+:root{
+  --bg:#ffffff;
+  --surface:#f3f8fb;
+  --tint:#e4f3fb;
+  --ink:#1d1b1a;
+  --muted:#514d4b;
+  --soft:#8a8583;
+  --line:#e3e6e8;
+  --blue:#25a8e0;
+  --blue-deep:#0b91c1;
+  --on-blue:#ffffff;
+  --panel:#0f1a20;
+  --panel-ink:#eef6fa;
+  --panel-muted:#9fb2bc;
+  --panel-line:#23343d;
+  --grad:linear-gradient(120deg,#25a8e0 0%,#0b91c1 100%);
+  --logo-light:block;--logo-dark:none;
+
+  --display:"Montserrat","Helvetica Neue",Arial,sans-serif;
+  --body:"Montserrat","Helvetica Neue",Arial,sans-serif;
+  --mono:"DM Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+
+  --max:1280px;
+  --gutter:clamp(16px,4vw,48px);
+  --r:22px;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0b1216;--surface:#111c22;--tint:#12283330;--ink:#eef3f5;--muted:#b7c0c4;--soft:#7f8b91;--line:#1f2c33;
+  --panel:#061015;--panel-ink:#eef6fa;--panel-muted:#93a8b2;--panel-line:#1c2e37;
+  --logo-light:none;--logo-dark:block;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0b1216;--surface:#111c22;--tint:#12283330;--ink:#eef3f5;--muted:#b7c0c4;--soft:#7f8b91;--line:#1f2c33;
+  --panel:#061015;--panel-ink:#eef6fa;--panel-muted:#93a8b2;--panel-line:#1c2e37;
+  --logo-light:none;--logo-dark:block;color-scheme:dark}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit}
+img{max-width:100%;display:block}
+:focus-visible{outline:2px solid var(--blue);outline-offset:3px;border-radius:6px}
+.wrap{max-width:var(--max);margin-inline:auto;padding-inline:var(--gutter)}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--blue-deep);display:flex;align-items:center;gap:10px}
+:root[data-theme="dark"] .eyebrow{color:var(--blue)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .eyebrow{color:var(--blue)}}
+.eyebrow::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--blue)}
+h1,h2,h3{font-family:var(--display);margin:0;text-wrap:balance}
+p{margin:0}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;gap:12px;font:600 15px/1 var(--body);padding:16px 22px 16px 26px;border-radius:999px;text-decoration:none;border:1px solid transparent;cursor:pointer;transition:transform .25s ease,background .25s ease,color .25s ease,border-color .25s ease}
+.btn .arr{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;transition:transform .3s ease}
+.btn-primary{background:var(--ink);color:var(--bg)}
+.btn-primary .arr{background:var(--blue);color:var(--on-blue)}
+.btn-primary:hover{transform:translateY(-2px)}
+.btn-primary:hover .arr{transform:rotate(-45deg)}
+.btn-ghost{border-color:var(--line);color:var(--ink);background:transparent}
+.btn-ghost:hover{border-color:var(--ink)}
+
+/* nav */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:saturate(1.4) blur(14px);-webkit-backdrop-filter:saturate(1.4) blur(14px);border-bottom:1px solid transparent;transition:border-color .3s}
+.nav.scrolled{border-bottom-color:var(--line)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:24px;height:76px}
+.brand{display:flex;align-items:center}
+.brand img{height:40px;width:auto}
+.logo-l{display:var(--logo-light)!important}
+.logo-d{display:var(--logo-dark)!important}
+.nav ul{display:flex;gap:34px;list-style:none;margin:0;padding:0}
+.nav ul a{text-decoration:none;font-size:14px;font-weight:500;color:var(--muted);position:relative;padding-block:6px}
+.nav ul a::after{content:"";position:absolute;left:0;right:100%;bottom:0;height:1.5px;background:var(--blue);transition:right .3s ease}
+.nav ul a:hover{color:var(--ink)}
+.nav ul a:hover::after{right:0}
+.nav .btn{padding:12px 14px 12px 20px;font-size:14px}
+.nav .btn .arr{width:24px;height:24px}
+.menu-btn{display:none;background:none;border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:10px 16px;font:600 14px var(--body);cursor:pointer}
+@media (max-width:920px){
+  .nav ul{display:none}
+  .nav .cta-nav{display:none}
+  .menu-btn{display:inline-flex}
+  .nav.open ul{display:flex;flex-direction:column;gap:4px;position:absolute;top:76px;left:0;right:0;background:var(--bg);padding:12px var(--gutter) 24px;border-bottom:1px solid var(--line)}
+  .nav.open ul a{font-size:22px;font-weight:600;color:var(--ink);display:block;padding-block:10px}
+}
+
+/* hero */
+.hero{position:relative;padding-block:clamp(48px,8vw,110px) clamp(40px,6vw,80px);overflow:hidden}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,.85fr);gap:clamp(32px,5vw,72px);align-items:center}
+.hero h1{font-weight:700;font-size:clamp(40px,5.7vw,86px);line-height:.96;letter-spacing:-.045em;margin-top:26px}
+.hero h1 .accent{color:var(--blue)}
+.hero h1 .thin{font-weight:300;font-style:italic;letter-spacing:-.03em}
+.hero .lede{max-width:52ch;font-size:clamp(17px,1.4vw,19px);color:var(--muted);margin-top:30px}
+.hero .actions{display:flex;flex-wrap:wrap;gap:14px;margin-top:38px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:10px 28px;margin-top:56px;padding-top:24px;border-top:1px solid var(--line);font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:var(--soft);text-transform:uppercase}
+.hero-meta span b{color:var(--ink);font-weight:500}
+
+/* signal stage */
+.stage{position:relative;aspect-ratio:4/5;max-width:100%;border-radius:32px;background:var(--grad);overflow:hidden;isolation:isolate}
+.stage canvas{position:absolute;inset:0;width:100%;height:100%;z-index:0}
+.phone{position:absolute;z-index:2;left:50%;top:55%;transform:translate(-50%,-50%);width:58%;aspect-ratio:9/18.5;background:#fff;border-radius:34px;box-shadow:0 40px 80px -30px rgba(4,40,60,.55),0 0 0 8px rgba(255,255,255,.22);padding:14% 9% 9%;display:flex;flex-direction:column;align-items:center;color:#1d1b1a;animation:float 7s ease-in-out infinite}
+.phone::before{content:"";position:absolute;top:3.2%;left:50%;transform:translateX(-50%);width:28%;height:2.4%;border-radius:99px;background:#1d1b1a}
+.phone .pl-logo{width:62%}
+.phone .pl-title{font-weight:700;font-size:clamp(11px,1.15vw,15px);text-align:center;margin-top:10%;line-height:1.25}
+.phone .pl-sub{font-size:clamp(8px,.75vw,10.5px);color:#6d6866;text-align:center;margin-top:4%}
+.phone .pl-btn{width:100%;margin-top:7%;border-radius:12px;padding:9% 0;font-weight:600;font-size:clamp(8px,.8vw,11px);text-align:center;border:1px solid #e3e6e8;display:flex;align-items:center;justify-content:center;gap:6px}
+.phone .pl-btn.main{background:#25a8e0;color:#fff;border-color:#25a8e0}
+.phone .pl-foot{margin-top:auto;font-size:clamp(7px,.6vw,9px);color:#9a9593;text-align:center}
+.chip{position:absolute;z-index:3;background:rgba(255,255,255,.96);color:#1d1b1a;border-radius:16px;padding:12px 14px;box-shadow:0 18px 40px -18px rgba(4,40,60,.5);font-size:12px;line-height:1.3;display:flex;gap:10px;align-items:center;min-width:0}
+.chip .dot{width:30px;height:30px;border-radius:10px;background:#e4f3fb;display:grid;place-items:center;color:#0b91c1;flex:none}
+.chip b{display:block;font-size:13px}
+.chip small{color:#6d6866;font-size:11px}
+.chip.c1{top:4%;left:5%;animation:float 6s ease-in-out infinite .4s}
+.chip.c2{bottom:12%;right:5%;animation:float 6.5s ease-in-out infinite 1.1s}
+.chip.c3{bottom:30%;left:4%;animation:float 7.5s ease-in-out infinite 2s}
+@keyframes float{0%,100%{translate:0 0}50%{translate:0 -10px}}
+@media (max-width:920px){.hero-grid{grid-template-columns:1fr}.stage{aspect-ratio:1/1;max-height:640px}.phone{width:44%}}
+@media (max-width:520px){.stage{aspect-ratio:4/5}.phone{width:56%}.chip.c3{display:none}.chip{padding:9px 11px}}
+
+/* benefits strip */
+.strip{border-block:1px solid var(--line)}
+.strip .wrap{display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
+.strip .item{padding:28px 24px 30px 0;display:grid;gap:6px}
+.strip .item + .item{padding-left:24px;border-left:1px solid var(--line)}
+.strip h3{font-size:15px;font-weight:700;letter-spacing:-.01em}
+.strip p{font-size:14px;color:var(--muted)}
+@media (max-width:820px){.strip .wrap{grid-template-columns:repeat(2,minmax(0,1fr))}.strip .item:nth-child(3){padding-left:0;border-left:0}.strip .item:nth-child(n+3){border-top:1px solid var(--line)}}
+@media (max-width:460px){.strip .wrap{grid-template-columns:1fr}.strip .item,.strip .item + .item{padding-left:0;border-left:0}.strip .item + .item{border-top:1px solid var(--line)}}
+
+/* sections */
+section{scroll-margin-top:84px}
+.sec{padding-block:clamp(80px,11vw,160px)}
+.sec-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);gap:clamp(24px,5vw,80px);align-items:end;margin-bottom:clamp(48px,6vw,88px)}
+.sec-head h2{font-size:clamp(34px,4.6vw,66px);line-height:1.02;letter-spacing:-.035em;font-weight:700;margin-top:18px}
+.sec-head p{color:var(--muted);font-size:clamp(16px,1.3vw,18px);max-width:54ch}
+@media (max-width:820px){.sec-head{grid-template-columns:1fr;align-items:start}}
+
+/* statement */
+.statement{padding-block:clamp(80px,12vw,180px)}
+.statement p.big{font-family:var(--display);font-weight:600;font-size:clamp(30px,4.8vw,72px);line-height:1.08;letter-spacing:-.035em;max-width:20ch;text-wrap:balance}
+.statement p.big em{font-style:italic;font-weight:300;color:var(--blue)}
+.statement .sig{display:flex;align-items:center;gap:16px;margin-top:48px;color:var(--muted);font-size:15px;max-width:60ch}
+.statement .sig svg{flex:none;color:var(--blue)}
+.reveal-words .w{opacity:.28;transition:opacity .5s ease}
+.reveal-words .w.on{opacity:1}
+
+/* journey */
+.journey{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;border-top:1px solid var(--ink)}
+.step{padding:28px 28px 8px 0;display:grid;gap:14px;align-content:start;position:relative}
+.step + .step{padding-left:28px;border-left:1px solid var(--line)}
+.step .n{font-family:var(--mono);font-size:13px;color:var(--soft)}
+.step h3{font-size:clamp(24px,2.3vw,32px);font-weight:700;letter-spacing:-.03em;line-height:1.05}
+.step p{color:var(--muted);font-size:15px}
+.step .ico{width:52px;height:52px;border-radius:16px;background:var(--tint);color:var(--blue-deep);display:grid;place-items:center;margin-bottom:8px}
+:root[data-theme="dark"] .step .ico{color:var(--blue)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .step .ico{color:var(--blue)}}
+@media (max-width:900px){.journey{grid-template-columns:repeat(2,minmax(0,1fr))}.step:nth-child(3){padding-left:0;border-left:0}.step:nth-child(n+3){border-top:1px solid var(--line);margin-top:24px}}
+@media (max-width:520px){.journey{grid-template-columns:1fr}.step,.step + .step{padding-left:0;border-left:0}.step + .step{border-top:1px solid var(--line);margin-top:18px}}
+
+/* platform (dark panel) */
+.panel{background:var(--panel);color:var(--panel-ink);border-radius:clamp(24px,3vw,40px);margin-inline:clamp(8px,1.5vw,20px);overflow:hidden}
+.panel .sec-head p{color:var(--panel-muted)}
+.panel .eyebrow{color:var(--blue)}
+.dash{background:#0a141a;border:1px solid var(--panel-line);border-radius:24px;padding:clamp(16px,2.4vw,28px);display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px}
+.dash-top{grid-column:1/-1;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;padding-bottom:16px;border-bottom:1px solid var(--panel-line)}
+.dash-top .t{font-weight:600;font-size:15px;display:flex;align-items:center;gap:10px}
+.dash-top .t i{width:8px;height:8px;border-radius:50%;background:#3ddc97;box-shadow:0 0 0 4px rgba(61,220,151,.18)}
+.tabs-mini{display:flex;gap:6px;font-family:var(--mono);font-size:11px}
+.tabs-mini span{padding:6px 10px;border-radius:99px;border:1px solid var(--panel-line);color:var(--panel-muted)}
+.tabs-mini span.on{background:var(--blue);border-color:var(--blue);color:#fff}
+.kpi{grid-column:span 3;background:#0f1d24;border:1px solid var(--panel-line);border-radius:16px;padding:18px;display:grid;gap:4px;min-width:0}
+.kpi small{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--panel-muted);text-transform:uppercase}
+.kpi b{font-size:clamp(24px,2.4vw,34px);font-weight:700;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.kpi .d{font-size:12px;color:#3ddc97;font-family:var(--mono)}
+.chart{grid-column:span 8;background:#0f1d24;border:1px solid var(--panel-line);border-radius:16px;padding:18px;min-width:0}
+.chart h4,.side h4{margin:0 0 12px;font-size:13px;font-weight:600;color:var(--panel-ink);display:flex;justify-content:space-between;gap:8px}
+.chart h4 span,.side h4 span{font-family:var(--mono);font-weight:400;color:var(--panel-muted);font-size:11px}
+.chart svg{width:100%;height:auto;display:block}
+.side{grid-column:span 4;background:#0f1d24;border:1px solid var(--panel-line);border-radius:16px;padding:18px;display:grid;gap:14px;align-content:start;min-width:0}
+.bar{display:grid;gap:6px;font-size:12.5px}
+.bar .row{display:flex;justify-content:space-between;color:var(--panel-muted)}
+.bar .row b{color:var(--panel-ink);font-weight:600;font-variant-numeric:tabular-nums}
+.bar .track{height:6px;border-radius:99px;background:#1a2c35;overflow:hidden}
+.bar .fill{height:100%;border-radius:99px;background:var(--grad);width:var(--w);transform-origin:left;animation:grow 1.4s cubic-bezier(.2,.8,.2,1) both}
+@keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.dash-note{grid-column:1/-1;font-family:var(--mono);font-size:11px;color:var(--panel-muted);letter-spacing:.04em}
+@media (max-width:980px){.kpi{grid-column:span 6}.chart,.side{grid-column:1/-1}}
+@media (max-width:460px){.kpi{grid-column:1/-1}}
+
+.features{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;margin-top:clamp(56px,7vw,96px);border-top:1px solid var(--panel-line)}
+.feat{padding:32px 28px 36px 0;display:grid;gap:12px;align-content:start;border-bottom:1px solid var(--panel-line)}
+.feat:not(:nth-child(3n+1)){padding-left:28px;border-left:1px solid var(--panel-line)}
+.feat .tag{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--blue);text-transform:uppercase}
+.feat h3{font-size:22px;font-weight:700;letter-spacing:-.02em}
+.feat p{color:var(--panel-muted);font-size:15px}
+@media (max-width:900px){.features{grid-template-columns:repeat(2,minmax(0,1fr))}.feat:not(:nth-child(3n+1)){padding-left:0;border-left:0}.feat:nth-child(2n){padding-left:28px;border-left:1px solid var(--panel-line)}}
+@media (max-width:560px){.features{grid-template-columns:1fr}.feat:nth-child(2n){padding-left:0;border-left:0}}
+
+/* segments */
+.seg{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:clamp(32px,5vw,80px);align-items:start}
+.seg-list{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.seg-list button{all:unset;box-sizing:border-box;cursor:pointer;width:100%;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:18px 4px;border-bottom:1px solid var(--line);font-family:var(--display);font-weight:600;font-size:clamp(20px,2.2vw,30px);letter-spacing:-.025em;color:var(--soft);transition:color .25s ease,padding .3s ease}
+.seg-list button .k{font-family:var(--mono);font-size:12px;font-weight:400;letter-spacing:.06em}
+.seg-list button:hover{color:var(--ink)}
+.seg-list button[aria-selected="true"]{color:var(--ink);padding-left:18px}
+.seg-list button[aria-selected="true"] .k{color:var(--blue)}
+.seg-list button:focus-visible{outline:2px solid var(--blue);outline-offset:-2px}
+.seg-card{position:sticky;top:110px;background:var(--surface);border-radius:28px;padding:clamp(28px,3.4vw,48px);display:grid;gap:22px;min-height:440px;align-content:start}
+.seg-card .label{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--blue-deep)}
+:root[data-theme="dark"] .seg-card .label{color:var(--blue)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .seg-card .label{color:var(--blue)}}
+.seg-card h3{font-size:clamp(28px,3vw,44px);line-height:1.05;letter-spacing:-.035em;font-weight:700}
+.seg-card p{color:var(--muted);max-width:56ch}
+.seg-card ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.seg-card li{font-size:13px;font-weight:500;padding:8px 14px;border-radius:99px;background:var(--bg);border:1px solid var(--line)}
+.seg-card .swap{animation:swap .5s ease both}
+@keyframes swap{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@media (max-width:900px){.seg{grid-template-columns:1fr}.seg-card{position:relative;top:0;min-height:0}}
+
+/* ISP band */
+.isp{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(32px,5vw,80px);align-items:center}
+.isp-visual{background:var(--grad);border-radius:32px;padding:clamp(28px,4vw,56px);color:#fff;display:grid;gap:22px;position:relative;overflow:hidden}
+.isp-visual .flow{display:grid;gap:10px;position:relative;z-index:1}
+.isp-visual .node{display:flex;align-items:center;gap:14px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.25);border-radius:16px;padding:14px 16px;font-weight:600;font-size:15px}
+.isp-visual .node small{display:block;font-weight:400;opacity:.85;font-size:12.5px}
+.isp-visual .node .ix{width:36px;height:36px;border-radius:11px;background:#fff;color:#0b91c1;display:grid;place-items:center;flex:none;font-family:var(--mono);font-size:12px;font-weight:500}
+.isp-visual .link{width:2px;height:16px;background:rgba(255,255,255,.5);margin-left:33px}
+.isp-visual .rings{position:absolute;right:-120px;top:-120px;width:360px;height:360px;border-radius:50%;border:1px solid rgba(255,255,255,.18);box-shadow:0 0 0 60px rgba(255,255,255,.04),0 0 0 120px rgba(255,255,255,.03)}
+.isp h2{font-size:clamp(32px,4.2vw,58px);line-height:1.03;letter-spacing:-.035em;font-weight:700;margin-top:18px}
+.isp p.l{color:var(--muted);margin-top:22px;max-width:52ch}
+.checks{list-style:none;padding:0;margin:30px 0 0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 24px}
+.checks li{display:flex;gap:10px;align-items:flex-start;font-size:15px;font-weight:500}
+.checks svg{flex:none;margin-top:3px;color:var(--blue)}
+@media (max-width:900px){.isp{grid-template-columns:1fr}.isp-visual{order:2}}
+@media (max-width:460px){.checks{grid-template-columns:1fr}}
+
+/* marquee */
+.marquee{overflow:hidden;border-block:1px solid var(--line);padding-block:26px;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.marquee .track{display:flex;gap:56px;width:max-content;animation:mq 40s linear infinite}
+.marquee span{font-family:var(--display);font-size:clamp(22px,2.6vw,36px);font-weight:600;letter-spacing:-.03em;color:var(--soft);display:flex;align-items:center;gap:56px;white-space:nowrap}
+.marquee span::after{content:"";width:10px;height:10px;border-radius:50%;background:var(--blue)}
+@keyframes mq{to{transform:translateX(-50%)}}
+
+/* CTA + form */
+.cta{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(32px,5vw,80px);align-items:start}
+.cta h2{font-size:clamp(40px,6vw,92px);line-height:.96;letter-spacing:-.045em;font-weight:700;margin-top:18px}
+.cta h2 em{font-style:italic;font-weight:300;color:var(--blue)}
+.cta p.l{color:var(--muted);margin-top:26px;max-width:46ch}
+.contact-lines{margin-top:40px;display:grid;gap:4px;font-size:15px;color:var(--muted)}
+.contact-lines b{color:var(--ink);font-weight:600}
+form{background:var(--surface);border-radius:28px;padding:clamp(24px,3vw,40px);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.field{display:grid;gap:8px;min-width:0}
+.field.full{grid-column:1/-1}
+label{font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+input,select,textarea{font:500 16px var(--body);color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:14px 16px;width:100%;transition:border-color .2s}
+textarea{resize:vertical;min-height:110px}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 4px color-mix(in srgb,var(--blue) 18%,transparent)}
+form .btn{grid-column:1/-1;justify-content:space-between;width:100%;border:0}
+.form-msg{grid-column:1/-1;font-size:14px;color:var(--muted);min-height:1.4em}
+.form-msg.ok{color:var(--blue-deep)}
+@media (max-width:900px){.cta{grid-template-columns:1fr}}
+@media (max-width:520px){form{grid-template-columns:1fr}}
+
+/* footer */
+footer{border-top:1px solid var(--line);padding-block:56px 40px;margin-top:clamp(60px,8vw,120px)}
+.foot{display:grid;grid-template-columns:minmax(0,1.4fr) repeat(3,minmax(0,1fr));gap:32px}
+.foot img{height:54px;width:auto}
+.foot p{color:var(--muted);font-size:14px;margin-top:18px;max-width:34ch}
+.foot h4{margin:0 0 14px;font-family:var(--mono);font-size:11.5px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--soft)}
+.foot ul{list-style:none;margin:0;padding:0;display:grid;gap:8px;font-size:14px}
+.foot a{text-decoration:none;color:var(--ink)}
+.foot a:hover{color:var(--blue)}
+.legal{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;margin-top:56px;padding-top:24px;border-top:1px solid var(--line);font-size:13px;color:var(--soft)}
+.giant{font-family:var(--display);font-weight:800;letter-spacing:-.06em;line-height:.8;font-size:clamp(80px,22vw,330px);color:var(--surface);margin-top:40px;user-select:none;white-space:nowrap;overflow:hidden}
+@media (max-width:820px){.foot{grid-template-columns:repeat(2,minmax(0,1fr))}.foot > div:first-child{grid-column:1/-1}}
+
+/* reveal: visible at rest, animated in when JS runs */
+.js .rv{opacity:0;transform:translateY(24px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1)}
+.js .rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .js .rv{opacity:1;transform:none}
+  .reveal-words .w{opacity:1}
+}
+</style>
+</head>
+<body>
+
+<header class="nav" id="nav">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Wispot, início">
+      <img class="logo-l" src="assets/logo-blue.png" alt="Wispot smart data">
+      <img class="logo-d" src="assets/logo-white.png" alt="Wispot smart data">
+    </a>
+    <ul id="menu">
+      <li><a href="#como-funciona">Como funciona</a></li>
+      <li><a href="#plataforma">Plataforma</a></li>
+      <li><a href="#segmentos">Segmentos</a></li>
+      <li><a href="#provedores">Provedores</a></li>
+      <li><a href="#contato">Contato</a></li>
+    </ul>
+    <a class="btn btn-primary cta-nav" href="#contato">Fale com um especialista <span class="arr"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1 6h10M7 2l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="menu">Menu</button>
+  </div>
+</header>
+
+<main id="top">
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="eyebrow rv">Plataforma de inteligência para Wi-Fi</div>
+        <h1 class="rv">Cada <span class="accent">conexão</span><br>vira <span class="thin">relacionamento.</span></h1>
+        <p class="lede rv">A Wispot transforma o Wi-Fi que sua empresa já oferece em um canal de marketing. Quem se conecta vira cadastro, campanha, cliente que volta e venda.</p>
+        <div class="actions rv">
+          <a class="btn btn-primary" href="#contato">Fale com um especialista <span class="arr"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1 6h10M7 2l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+          <a class="btn btn-ghost" href="#como-funciona">Ver como funciona</a>
+        </div>
+        <div class="hero-meta rv">
+          <span><b>Login</b> por e-mail, redes sociais ou celular</span>
+          <span><b>Integração</b> IXC e Hubsoft</span>
+          <span><b>Sem app</b> para o cliente baixar</span>
+        </div>
+      </div>
+
+      <div class="stage rv" aria-label="Exemplo do portal de acesso Wi-Fi da Wispot">
+        <canvas id="signal" aria-hidden="true"></canvas>
+        <div class="chip c1"><span class="dot"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12.5a10 10 0 0 1 14 0M8.5 16a5 5 0 0 1 7 0"/><circle cx="12" cy="19.5" r="1" fill="currentColor"/></svg></span><span><b>Nova conexão</b><small>Cliente recorrente · 3ª visita</small></span></div>
+        <div class="phone">
+          <img class="pl-logo" src="assets/logo-blue.png" alt="">
+          <div class="pl-title">Bem-vindo! Conecte-se ao nosso Wi-Fi</div>
+          <div class="pl-sub">Acesso gratuito em poucos segundos</div>
+          <div class="pl-btn main">Entrar com celular</div>
+          <div class="pl-btn">Entrar com e-mail</div>
+          <div class="pl-btn">Entrar com rede social</div>
+          <div class="pl-foot">Ao conectar você aceita os termos de uso e a política de privacidade (LGPD)</div>
+        </div>
+        <div class="chip c3"><span class="dot"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.6 8.6 0 0 1-3.8-.9L3 21l1.9-5.2A8.4 8.4 0 1 1 21 11.5z"/></svg></span><span><b>Pesquisa WiQuest</b><small>Como foi sua visita hoje?</small></span></div>
+        <div class="chip c2"><span class="dot"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12v9H4v-9M2 7h20v5H2zM12 21V7M12 7H7.5a2.5 2.5 0 1 1 0-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 1 0 0-5C13 2 12 7 12 7z"/></svg></span><span><b>Cupom enviado</b><small>10% na próxima visita</small></span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STRIP -->
+  <div class="strip">
+    <div class="wrap">
+      <div class="item"><h3>Clientes recorrentes</h3><p>Faça cada visita gerar a próxima.</p></div>
+      <div class="item"><h3>Mais vendas</h3><p>A oferta certa no momento certo.</p></div>
+      <div class="item"><h3>Inteligência de dados</h3><p>Conheça o comportamento do seu público.</p></div>
+      <div class="item"><h3>Experiência digital</h3><p>Sua marca desde o primeiro acesso.</p></div>
+    </div>
+  </div>
+
+  <!-- STATEMENT -->
+  <section class="statement">
+    <div class="wrap">
+      <div class="eyebrow">Sobre a Wispot</div>
+      <p class="big reveal-words" id="statement" style="margin-top:28px">Tudo que buscamos é se conectar. Por isso transformamos o seu Wi-Fi em <em>relacionamento</em> com quem já está dentro do seu negócio.</p>
+      <div class="sig">
+        <svg width="40" height="28" viewBox="0 0 40 28" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M3 11a24 24 0 0 1 34 0"/><path d="M10 18a14 14 0 0 1 20 0"/><path d="M16.5 24.5a5 5 0 0 1 7 0"/></svg>
+        <span>Com um simples toque geramos milhares de conexões todos os dias. A Wispot é a ferramenta de comunicação entre sua empresa, seus clientes e seus colaboradores.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW -->
+  <section class="sec" id="como-funciona" style="padding-top:0">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <div class="eyebrow">Como funciona</div>
+          <h2>Do login à venda, em quatro passos.</h2>
+        </div>
+        <p>Instalamos nossa tecnologia na rede que sua empresa já tem. O cliente vê uma tela com a sua marca, faz login e, a partir daí, cada visita vira informação útil para o seu negócio.</p>
+      </div>
+      <div class="journey">
+        <div class="step rv">
+          <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M2.5 9a14 14 0 0 1 19 0M5.5 12.5a9.5 9.5 0 0 1 13 0M9 16a4.5 4.5 0 0 1 6 0"/><circle cx="12" cy="19.5" r="1.2" fill="currentColor"/></svg></div>
+          <span class="n">01 · Conecta</span>
+          <h3>O cliente acessa o Wi-Fi</h3>
+          <p>Um portal personalizado com a identidade da sua marca recebe cada pessoa que se conecta.</p>
+        </div>
+        <div class="step rv">
+          <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></div>
+          <span class="n">02 · Cadastra</span>
+          <h3>A conexão vira cadastro</h3>
+          <p>Login por e-mail, redes sociais ou celular. Nome, contato e frequência de visita, de acordo com a LGPD.</p>
+        </div>
+        <div class="step rv">
+          <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11v2a1 1 0 0 0 1 1h2l5 4V6L6 10H4a1 1 0 0 0-1 1zM15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg></div>
+          <span class="n">03 · Comunica</span>
+          <h3>Campanhas no momento certo</h3>
+          <p>Cupons, promoções e pesquisas por e-mail, SMS ou WhatsApp, para clientes novos, frequentes ou inativos.</p>
+        </div>
+        <div class="step rv">
+          <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg></div>
+          <span class="n">04 · Mede</span>
+          <h3>Dados viram decisão</h3>
+          <p>Dashboards com perfil, recorrência, tempo de permanência e horários de pico, em tempo real.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PLATFORM -->
+  <section class="panel" id="plataforma">
+    <div class="sec">
+      <div class="wrap">
+        <div class="sec-head">
+          <div>
+            <div class="eyebrow">Plataforma</div>
+            <h2>Tudo em um único ecossistema.</h2>
+          </div>
+          <p>A Wispot reúne tecnologia, comunicação, inteligência de dados e automação para você conhecer melhor seu público e agir com base em informação real.</p>
+        </div>
+
+        <div class="dash rv" role="img" aria-label="Exemplo ilustrativo do painel da Wispot com conexões, cadastros, recorrência e horários de pico">
+          <div class="dash-top">
+            <div class="t"><i></i>Painel · Loja Centro</div>
+            <div class="tabs-mini"><span>Hoje</span><span class="on">7 dias</span><span>30 dias</span></div>
+          </div>
+          <div class="kpi"><small>Conexões</small><b>4.585</b><span class="d">+12,4% vs. semana anterior</span></div>
+          <div class="kpi"><small>Novos cadastros</small><b>1.236</b><span class="d">+8,1%</span></div>
+          <div class="kpi"><small>Taxa de retorno</small><b>38%</b><span class="d">+3 p.p.</span></div>
+          <div class="kpi"><small>Permanência média</small><b>42 min</b><span class="d">+5 min</span></div>
+          <div class="chart">
+            <h4>Conexões por dia <span>seg → dom</span></h4>
+            <svg viewBox="0 -34 640 254" aria-hidden="true">
+              <defs>
+                <linearGradient id="ar" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#25a8e0" stop-opacity=".45"/><stop offset="1" stop-color="#25a8e0" stop-opacity="0"/></linearGradient>
+              </defs>
+              <g stroke="#1f3340" stroke-width="1">
+                <line x1="40" y1="20" x2="630" y2="20"/><line x1="40" y1="80" x2="630" y2="80"/><line x1="40" y1="140" x2="630" y2="140"/><line x1="40" y1="190" x2="630" y2="190"/>
+              </g>
+              <g fill="#7f97a3" font-family="DM Mono, monospace" font-size="11">
+                <text x="0" y="24">1000</text><text x="8" y="84">600</text><text x="8" y="144">200</text><text x="22" y="194">0</text>
+                <text x="40" y="214">Seg</text><text x="133" y="214">Ter</text><text x="228" y="214">Qua</text><text x="323" y="214">Qui</text><text x="418" y="214">Sex</text><text x="513" y="214">Sáb</text><text x="604" y="214">Dom</text>
+              </g>
+              <path id="areaPath" d="M50 115 L145 103 L240 98 L335 86 L430 59 L525 29 L620 59 L620 190 L50 190 Z" fill="url(#ar)"/>
+              <path id="linePath" d="M50 115 L145 103 L240 98 L335 86 L430 59 L525 29 L620 59" fill="none" stroke="#25a8e0" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+              <g fill="#0a141a" stroke="#25a8e0" stroke-width="2.5">
+                <circle cx="50" cy="115" r="4"/><circle cx="145" cy="103" r="4"/><circle cx="240" cy="98" r="4"/><circle cx="335" cy="86" r="4"/><circle cx="430" cy="59" r="4"/><circle cx="620" cy="59" r="4"/>
+              </g>
+              <circle cx="525" cy="29" r="7" fill="#25a8e0"/>
+              <g font-family="Montserrat, sans-serif" font-size="12" font-weight="600"><rect x="478" y="-30" width="94" height="24" rx="12" fill="#25a8e0"/><text x="525" y="-14" text-anchor="middle" fill="#ffffff">Sáb · 945</text></g>
+            </svg>
+          </div>
+          <div class="side">
+            <h4>Horários de pico <span>média</span></h4>
+            <div class="bar"><div class="row"><span>12h – 14h</span><b>31%</b></div><div class="track"><div class="fill" style="--w:100%"></div></div></div>
+            <div class="bar"><div class="row"><span>18h – 20h</span><b>26%</b></div><div class="track"><div class="fill" style="--w:84%"></div></div></div>
+            <div class="bar"><div class="row"><span>15h – 17h</span><b>19%</b></div><div class="track"><div class="fill" style="--w:61%"></div></div></div>
+            <div class="bar"><div class="row"><span>9h – 11h</span><b>14%</b></div><div class="track"><div class="fill" style="--w:45%"></div></div></div>
+            <div class="bar"><div class="row"><span>Outros</span><b>10%</b></div><div class="track"><div class="fill" style="--w:32%"></div></div></div>
+          </div>
+          <div class="dash-note">Dados ilustrativos para demonstração do painel.</div>
+        </div>
+
+        <div class="features">
+          <div class="feat rv"><span class="tag">Portal inteligente</span><h3>Sua marca no primeiro acesso</h3><p>Tela de login personalizada, com comunicação, ofertas e informações úteis para quem se conecta.</p></div>
+          <div class="feat rv"><span class="tag">Wi-Fi marketing</span><h3>Campanhas segmentadas</h3><p>Cupons e promoções para clientes novos, frequentes ou inativos, no canal certo.</p></div>
+          <div class="feat rv"><span class="tag">WiQuest</span><h3>Pesquisas dentro da conexão</h3><p>A pergunta aparece no acesso ao Wi-Fi, com a experiência ainda fresca. Sem app, em segundos.</p></div>
+          <div class="feat rv"><span class="tag">Automação</span><h3>Comunicação no piloto automático</h3><p>Boas-vindas, lembretes e reativação disparados sozinhos a partir do comportamento de visita.</p></div>
+          <div class="feat rv"><span class="tag">Dashboards</span><h3>Indicadores em tempo real</h3><p>Perfil, frequência, permanência e resultado de campanhas em relatórios gerenciais.</p></div>
+          <div class="feat rv"><span class="tag">APIs e integrações</span><h3>Conectada ao que você usa</h3><p>Integração com IXC, Hubsoft e APIs para levar os dados para o seu CRM.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEGMENTS -->
+  <section class="sec" id="segmentos">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <div class="eyebrow">Segmentos</div>
+          <h2>Uma plataforma. Muitos negócios.</h2>
+        </div>
+        <p>A tecnologia é a mesma; a estratégia é personalizada. Escolha seu segmento e veja como a Wispot trabalha nele.</p>
+      </div>
+      <div class="seg">
+        <ul class="seg-list" role="tablist" aria-label="Segmentos atendidos" id="segList"></ul>
+        <div class="seg-card" id="segCard" role="tabpanel" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="marquee" aria-hidden="true">
+    <div class="track" id="mq"></div>
+  </div>
+
+  <!-- ISP -->
+  <section class="sec" id="provedores">
+    <div class="wrap isp">
+      <div>
+        <div class="eyebrow">Para provedores de internet</div>
+        <h2>Tecnologia que transforma provedores em negócios mais rentáveis.</h2>
+        <p class="l">Com um Serviço de Valor Adicionado (SVA) e um ecossistema integrado, o provedor vai além da conexão: aumenta o valor percebido dos planos, fortalece o relacionamento com o assinante e reduz o churn.</p>
+        <ul class="checks">
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Novas receitas com SVA</li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Mais fidelização, menos churn</li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Integração com IXC e Hubsoft</li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Dashboards por cliente final</li>
+        </ul>
+        <div style="margin-top:36px"><a class="btn btn-primary" href="#contato">Quero ser parceiro <span class="arr"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1 6h10M7 2l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a></div>
+      </div>
+      <div class="isp-visual rv" aria-label="Fluxo da parceria entre provedor, Wispot e estabelecimento">
+        <div class="rings"></div>
+        <div class="flow">
+          <div class="node"><span class="ix">ISP</span><span>Provedor<small>Leva a Wispot como SVA no plano</small></span></div>
+          <div class="link"></div>
+          <div class="node"><span class="ix">Wi</span><span>Wispot<small>Portal, dados e automação</small></span></div>
+          <div class="link"></div>
+          <div class="node"><span class="ix">PDV</span><span>Estabelecimento<small>Cadastros, campanhas e vendas</small></span></div>
+          <div class="link"></div>
+          <div class="node"><span class="ix">↻</span><span>Assinante fiel<small>Mais valor percebido, menos troca de provedor</small></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="sec" id="contato" style="padding-top:0">
+    <div class="wrap cta">
+      <div>
+        <div class="eyebrow">O próximo passo começa aqui</div>
+        <h2>Transforme <em>conexão</em> em crescimento.</h2>
+        <p class="l">Conte o desafio do seu negócio. Nossa equipe monta a estratégia certa para o seu segmento e mostra a plataforma funcionando.</p>
+        <div class="contact-lines">
+          <span><b>Site</b> · wispot.com.br</span>
+          <span><b>Resposta</b> · em até 1 dia útil</span>
+        </div>
+      </div>
+      <form id="form" novalidate>
+        <div class="field"><label for="f-nome">Nome</label><input id="f-nome" name="nome" autocomplete="name" placeholder="Seu nome" required></div>
+        <div class="field"><label for="f-empresa">Empresa</label><input id="f-empresa" name="empresa" autocomplete="organization" placeholder="Nome da empresa" required></div>
+        <div class="field"><label for="f-email">E-mail</label><input id="f-email" type="email" name="email" autocomplete="email" placeholder="voce@empresa.com.br" required></div>
+        <div class="field"><label for="f-tel">WhatsApp</label><input id="f-tel" type="tel" name="tel" autocomplete="tel" placeholder="(00) 00000-0000"></div>
+        <div class="field full"><label for="f-seg">Segmento</label>
+          <select id="f-seg" name="segmento">
+            <option>Provedor de internet</option><option>Varejo</option><option>Restaurante</option><option>Cafeteria</option><option>Hotel</option><option>Aeroporto</option><option>Centro comercial</option><option>Feiras e eventos</option><option>Instituição de ensino</option><option>Espaço público</option><option>Outro</option>
+          </select>
+        </div>
+        <div class="field full"><label for="f-msg">Mensagem</label><textarea id="f-msg" name="mensagem" placeholder="Conte um pouco sobre o seu negócio"></textarea></div>
+        <button class="btn btn-primary" type="submit">Fale com um especialista <span class="arr"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1 6h10M7 2l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
+        <p class="form-msg" id="formMsg" role="status"></p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div>
+        <img class="logo-l" src="assets/logo-blue.png" alt="Wispot smart data">
+        <img class="logo-d" src="assets/logo-white.png" alt="Wispot smart data">
+        <p>Plataforma de inteligência de marketing que transforma o Wi-Fi em relacionamento, dados e vendas.</p>
+      </div>
+      <div><h4>Plataforma</h4><ul><li><a href="#plataforma">Portal inteligente</a></li><li><a href="#plataforma">Wi-Fi marketing</a></li><li><a href="#plataforma">WiQuest</a></li><li><a href="#plataforma">Dashboards</a></li></ul></div>
+      <div><h4>Segmentos</h4><ul><li><a href="#provedores">Provedores</a></li><li><a href="#segmentos">Varejo</a></li><li><a href="#segmentos">Hotéis</a></li><li><a href="#segmentos">Eventos</a></li></ul></div>
+      <div><h4>Empresa</h4><ul><li><a href="#top">Sobre</a></li><li><a href="#contato">Contato</a></li><li><a href="#contato">Seja parceiro</a></li><li><a href="#top">Privacidade e LGPD</a></li></ul></div>
+    </div>
+    <div class="giant" aria-hidden="true">wispot</div>
+    <div class="legal"><span>© 2026 Wispot. Todos os direitos reservados.</span><span>Smart data para quem quer se conectar.</span></div>
+  </div>
+</footer>
+
+<script>
+document.documentElement.classList.add('js');
+
+/* nav */
+const nav=document.getElementById('nav'),menuBtn=document.getElementById('menuBtn');
+addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>8),{passive:true});
+menuBtn.addEventListener('click',()=>{const o=nav.classList.toggle('open');menuBtn.setAttribute('aria-expanded',o);menuBtn.textContent=o?'Fechar':'Menu'});
+document.querySelectorAll('#menu a').forEach(a=>a.addEventListener('click',()=>{nav.classList.remove('open');menuBtn.setAttribute('aria-expanded',false);menuBtn.textContent='Menu'}));
+
+/* reveal on scroll; anything already on screen shows at once */
+const rvs=[...document.querySelectorAll('.rv')];
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
+rvs.forEach((el,i)=>{el.style.transitionDelay=(i%4)*80+'ms';const r=el.getBoundingClientRect();if(r.top<innerHeight)el.classList.add('in');else io.observe(el)});
+setTimeout(()=>rvs.forEach(el=>el.classList.add('in')),2500);
+
+/* statement: words light up as it scrolls through */
+const st=document.getElementById('statement');
+(function split(node){[...node.childNodes].forEach(n=>{if(n.nodeType===3){const f=document.createDocumentFragment();n.textContent.split(/(\s+)/).forEach(t=>{if(/^\s+$/.test(t)||!t)f.append(t);else{const s=document.createElement('span');s.className='w';s.textContent=t;f.append(s)}});n.replaceWith(f)}else split(n)})})(st);
+const words=[...st.querySelectorAll('.w')];
+function lightWords(){const r=st.getBoundingClientRect();const p=Math.min(1,Math.max(0,(innerHeight*.85-r.top)/(r.height+innerHeight*.35)));const k=Math.round(p*words.length);words.forEach((w,i)=>w.classList.toggle('on',i<k))}
+if(matchMedia('(prefers-reduced-motion: reduce)').matches)words.forEach(w=>w.classList.add('on'));else{addEventListener('scroll',lightWords,{passive:true});lightWords()}
+
+/* segments */
+const SEG=[
+ {k:'Provedores',label:'Provedores de internet',h:'Tecnologia que transforma provedores em negócios mais rentáveis.',p:'Uma plataforma completa e um Serviço de Valor Adicionado para aumentar a receita, fortalecer o relacionamento com assinantes e transformar dados em inteligência.',b:['SVA','Redução de churn','Integração IXC e Hubsoft','Dashboards']},
+ {k:'Varejo',label:'Soluções para o varejo',h:'Transforme cada visita em uma nova oportunidade de venda.',p:'Sua loja recebe centenas de pessoas todos os dias. A Wispot ajuda você a saber quem são, trazê-las de volta e aproximar a loja física do digital.',b:['Cupons personalizados','Frequência de visitas','Reativação de clientes','Omnichannel']},
+ {k:'Restaurantes',label:'Soluções para restaurantes',h:'A refeição termina. O relacionamento continua.',p:'Promova pratos, bebidas e eventos no momento certo, aumente o ticket médio e incentive a próxima visita.',b:['Ticket médio','Campanhas automáticas','Horários de pico','Clientes inativos']},
+ {k:'Cafeterias',label:'Soluções para cafeterias',h:'O café pode acabar. O relacionamento não.',p:'Campanhas automáticas e cupons personalizados para aumentar a frequência e transformar visitantes em clientes recorrentes.',b:['Recorrência','Cupons','Tempo de permanência','Perfil dos clientes']},
+ {k:'Hotéis',label:'Soluções para hotéis',h:'A hospedagem termina. O relacionamento continua.',p:'Divulgue restaurante, spa e upgrades durante a estadia e fale com o hóspede antes, durante e depois do check-out.',b:['Boas-vindas automáticas','Mais receita por estadia','Pesquisa de satisfação','Novas reservas']},
+ {k:'Aeroportos',label:'Soluções para aeroportos',h:'A conexão dos passageiros vira inteligência para o aeroporto.',p:'Conheça fluxo, horários e perfil dos passageiros e use o portal para comunicação institucional e campanhas.',b:['Fluxo e recorrência','Comunicação em tempo real','Indicadores operacionais','APIs']},
+ {k:'Centros comerciais',label:'Soluções para centros comerciais',h:'O fluxo passa todos os dias. A inteligência fica.',p:'Entenda como as pessoas circulam pelo empreendimento, apoie as campanhas dos lojistas e incentive novas visitas.',b:['Fluxo por áreas','Valor para lojistas','Eventos e campanhas','Relatórios gerenciais']},
+ {k:'Feiras e eventos',label:'Soluções para feiras e eventos',h:'O evento termina. Os dados continuam gerando valor.',p:'Entregue informação a expositores e patrocinadores, comunique a programação em tempo real e planeje a próxima edição com dados.',b:['Relatórios para expositores','Áreas mais visitadas','Ativações','Patrocinadores']},
+ {k:'Ensino',label:'Instituições de ensino',h:'A aula termina. A relação com a comunidade acadêmica continua.',p:'Comunicados, eventos e pesquisas para alunos, professores e colaboradores, com dados de uso dos espaços.',b:['Comunicação institucional','Uso dos ambientes','Engajamento','Pesquisas']},
+ {k:'Espaços públicos',label:'Espaços públicos conectados',h:'O Wi-Fi conecta pessoas. Os dados ajudam a gestão pública.',p:'Praças, parques e orlas mais conectados, com informação para cidadãos e turistas e indicadores para decisões do município.',b:['Inteligência territorial','Informação turística','Campanhas institucionais','Gestão por dados']}
+];
+const list=document.getElementById('segList'),card=document.getElementById('segCard');
+function showSeg(i,focus){
+  [...list.querySelectorAll('button')].forEach((b,j)=>{b.setAttribute('aria-selected',j===i);b.tabIndex=j===i?0:-1;if(j===i&&focus)b.focus()});
+  const s=SEG[i];
+  card.innerHTML=`<div class="swap" style="display:grid;gap:22px"><span class="label">${s.label}</span><h3>${s.h}</h3><p>${s.p}</p><ul>${s.b.map(x=>`<li>${x}</li>`).join('')}</ul><div><a class="btn btn-primary" href="#contato">Fale com um especialista <span class="arr"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1 6h10M7 2l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a></div></div>`;
+}
+SEG.forEach((s,i)=>{const li=document.createElement('li');li.setAttribute('role','presentation');const b=document.createElement('button');b.setAttribute('role','tab');b.id='seg-'+i;b.innerHTML=`<span>${s.k}</span><span class="k">${String(i+1).padStart(2,'0')}</span>`;b.addEventListener('click',()=>showSeg(i));b.addEventListener('mouseenter',()=>{if(matchMedia('(hover:hover)').matches)showSeg(i)});b.addEventListener('keydown',e=>{if(e.key==='ArrowDown'||e.key==='ArrowRight'){e.preventDefault();showSeg((i+1)%SEG.length,true)}if(e.key==='ArrowUp'||e.key==='ArrowLeft'){e.preventDefault();showSeg((i-1+SEG.length)%SEG.length,true)}});li.append(b);list.append(li)});
+showSeg(0);
+
+/* marquee */
+const extra=['Academias','Clínicas','Coworkings','Hospitais','Resorts','Condomínios','Museus','Indústrias','Centros esportivos','Laboratórios'];
+const mq=document.getElementById('mq');const items=[...extra,...extra].map(t=>`<span>${t}</span>`).join('');mq.innerHTML=items+items;
+
+/* form (prototype: no backend yet) */
+const form=document.getElementById('form'),msg=document.getElementById('formMsg');
+form.addEventListener('submit',e=>{e.preventDefault();
+  const req=['f-nome','f-empresa','f-email'].map(id=>document.getElementById(id));
+  const miss=req.find(el=>!el.value.trim());
+  if(miss){msg.className='form-msg';msg.textContent='Preencha nome, empresa e e-mail para continuar.';miss.focus();return}
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(req[2].value)){msg.className='form-msg';msg.textContent='Confira o e-mail: falta o @ ou o domínio.';req[2].focus();return}
+  msg.className='form-msg ok';msg.textContent='Tudo certo. Neste protótipo o envio ainda não está ligado a um CRM; na versão final a mensagem segue para a equipe comercial.';
+});
+
+/* hero signal waves: concentric Wi-Fi arcs radiating from the bottom of the stage */
+(function(){
+  const c=document.getElementById('signal');if(!c)return;const x=c.getContext('2d');
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let w,h,dpr;
+  function size(){dpr=Math.min(2,devicePixelRatio||1);const r=c.getBoundingClientRect();w=r.width;h=r.height;c.width=w*dpr;c.height=h*dpr;x.setTransform(dpr,0,0,dpr,0,0)}
+  size();addEventListener('resize',size);
+  function draw(t){
+    x.clearRect(0,0,w,h);
+    const cx=w/2,cy=h*1.02,max=Math.hypot(w,h)*1.05,gap=56,phase=(t/40)%gap;
+    for(let r=phase;r<max;r+=gap){
+      const a=Math.max(0,1-r/max);
+      x.beginPath();x.arc(cx,cy,r,Math.PI*1.08,Math.PI*1.92);
+      x.strokeStyle=`rgba(255,255,255,${0.32*a})`;x.lineWidth=r%(gap*3)<gap?2.2:1.2;x.lineCap='round';x.stroke();
+    }
+    const g=x.createRadialGradient(cx,cy,0,cx,cy,h*.9);g.addColorStop(0,'rgba(255,255,255,.18)');g.addColorStop(1,'rgba(255,255,255,0)');x.fillStyle=g;x.fillRect(0,0,w,h);
+    if(!reduce)requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+})();
+</script>
+</body>
+</html>
