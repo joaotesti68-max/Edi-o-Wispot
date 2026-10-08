@@ -170,12 +170,33 @@
 .wsp.hpin .step h3{font-size:clamp(28px,2.7vw,40px)}
 .wsp.hpin .step::after{content:attr(data-n);position:absolute;right:40px;top:26px;font:800 clamp(80px,8.5vw,140px)/1 var(--display);letter-spacing:-.06em;color:transparent;-webkit-text-stroke:1.5px var(--line)}
 
-/* clients */
-.wsp .clients{display:flex;gap:72px;width:max-content;animation:wsp-mq 40s linear infinite;align-items:center}
-.wsp .clients-wrap{overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);padding-block:10px}
-.wsp .clients img{height:64px;width:auto;max-width:190px;object-fit:contain;transition:transform .3s}
-.wsp .clients img:hover{transform:scale(1.06)}
-.wsp .clients .ph{height:56px;min-width:150px;border-radius:12px;border:1px dashed var(--line);display:grid;place-items:center;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--soft)}
+/* bridge card at the end of the steps */
+.wsp .step-cta{display:grid;align-content:space-between;gap:24px;background:var(--grad);color:#fff;border-radius:28px;padding:34px;text-decoration:none;min-height:240px;grid-column:1/-1;margin-top:28px;position:relative;overflow:hidden;box-shadow:0 30px 60px -30px rgba(11,145,193,.6)}
+.wsp .step-cta::before{content:"";position:absolute;right:-90px;top:-90px;width:240px;height:240px;border-radius:50%;border:1px solid rgba(255,255,255,.25);box-shadow:0 0 0 40px rgba(255,255,255,.06),0 0 0 80px rgba(255,255,255,.04)}
+.wsp .sc-k{font-weight:600;font-size:12px;letter-spacing:.14em;text-transform:uppercase;opacity:.9}
+.wsp .sc-h{font-family:var(--display);font-weight:700;font-size:clamp(26px,2.6vw,38px);line-height:1.05;letter-spacing:-.035em;max-width:14ch}
+.wsp .sc-arr{width:52px;height:52px;border-radius:50%;background:#fff;color:var(--blue-deep);display:grid;place-items:center;transition:transform .3s}
+.wsp .step-cta:hover .sc-arr{transform:translateY(4px)}
+.wsp.hpin .step-cta{width:clamp(340px,30vw,440px);min-height:min(44vh,420px);margin:0 0 0 44px;align-self:stretch}
+
+/* clients band */
+.wsp .clients-sec{padding-block:clamp(40px,6vw,80px) 0}
+.wsp .clients-band{position:relative;background:var(--grad);color:#fff;border-radius:clamp(24px,3vw,40px);margin-inline:clamp(8px,1.5vw,20px);padding-block:clamp(64px,8vw,110px);overflow:hidden;isolation:isolate}
+.wsp .cb-rings{position:absolute;left:50%;top:-30%;width:620px;height:620px;margin-left:-310px;border-radius:50%;border:1px solid rgba(255,255,255,.22);box-shadow:0 0 0 90px rgba(255,255,255,.05),0 0 0 180px rgba(255,255,255,.035),0 0 0 270px rgba(255,255,255,.025);z-index:-1;pointer-events:none}
+.wsp .cb-head{display:grid;justify-items:center;text-align:center;gap:18px;margin-bottom:clamp(40px,5vw,64px)}
+.wsp .cb-head .eyebrow{color:#fff}
+.wsp .cb-head .eyebrow::before{background:#fff}
+.wsp .cb-head h2{font-size:clamp(36px,5.4vw,80px);line-height:1;letter-spacing:-.045em;font-weight:700}
+.wsp .cb-head h2 em{font-style:italic;font-weight:300}
+.wsp .cb-head p{max-width:52ch;opacity:.92}
+.wsp .crow{overflow:hidden;padding-block:9px;-webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent)}
+.wsp .ctrack{display:flex;gap:18px;width:max-content;animation:wsp-mq 45s linear infinite}
+.wsp .crow.rev .ctrack{animation-direction:reverse}
+.wsp.gs .ctrack{animation:none}
+.wsp .logo-card{flex:none;width:clamp(170px,16vw,230px);height:clamp(92px,8vw,116px);background:#fff;border-radius:22px;display:grid;place-items:center;padding:16px 26px;box-shadow:0 18px 40px -22px rgba(4,60,90,.55);transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+.wsp .logo-card:hover{transform:translateY(-6px) rotate(-1.5deg)}
+.wsp .logo-card img{max-height:62px;max-width:100%;width:auto;object-fit:contain}
+.wsp .logo-card .ph{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--soft)}
 
 /* why */
 .wsp .why{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}

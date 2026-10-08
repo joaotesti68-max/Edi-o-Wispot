@@ -10,12 +10,16 @@ def name(f):return os.path.basename(f)[:-4].replace('-',' ').title()
 one=[(name(f),'data:image/png;base64,'+base64.b64encode(open(f,'rb').read()).decode()) for f in files]
 reps=max(1,-(-10//max(1,len(one))))  # each half of the loop holds at least 10 logos
 half=one*reps
-logos=''.join(f'<img src="{u}" alt="{n}">' for n,u in one)+''.join(f'<img src="{u}" alt="" aria-hidden="true">' for n,u in (half[len(one):]+half))
+def cards(items,hide_all=False):
+    return ''.join(f'<div class="logo-card"><img src="{u}" alt="{"" if hide_all or i>=len(one) else n}"{" aria-hidden=\"true\"" if hide_all or i>=len(one) else ""}></div>' for i,(n,u) in enumerate(items))
+row=half+half
+row2=list(reversed(half))+list(reversed(half))
+logos=None
 libs='''<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>'''
 def page(logo):
-    return body.replace('{{LOGO}}',logo).replace('{{CLIENT_LOGOS}}',logos)
+    return body.replace('{{LOGO}}',logo).replace('{{ROW1}}',cards(row)).replace('{{ROW2}}',cards(row2,True))
 # preview artifact
 prev=f'<title>Monetize seu Wi-Fi</title>\n<style>\nbody{{margin:0;background:#fff}}\n{css}</style>\n{page("../site/assets/logo-blue.png")}\n{libs}\n<script>\n{js}</script>\n'
 open(d+'/../preview.html','w').write(prev)

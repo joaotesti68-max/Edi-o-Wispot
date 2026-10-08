@@ -65,7 +65,7 @@
   });
 
   /* ---------- client logos: hide broken images ---------- */
-  document.querySelectorAll('#wsp-clients img').forEach(img=>{
+  document.querySelectorAll('.wsp .logo-card img').forEach(img=>{
     const swap=()=>{const d=document.createElement('div');d.className='ph';d.textContent='Logo cliente';img.replaceWith(d)};
     if(img.complete&&!img.naturalWidth)swap();else img.addEventListener('error',swap);
   });
@@ -188,6 +188,20 @@
   /* panels grow into place */
   ['.wsp .final'].forEach(s=>gsap.fromTo(s,{scale:.92,borderRadius:'72px'},{scale:1,borderRadius:'40px',ease:'none',scrollTrigger:{trigger:s,start:'top bottom',end:'top 25%',scrub:true}}));
   gsap.fromTo('.wsp .final .rings',{scale:.6,rotate:0},{scale:1.3,rotate:40,ease:'none',scrollTrigger:{trigger:'.wsp .final',start:'top bottom',end:'bottom top',scrub:true}});
+
+  /* bridge card + clients band */
+  gsap.from('.wsp .step-cta',{y:40,opacity:0,duration:1,ease:EO,scrollTrigger:{trigger:'.wsp .step-cta',start:'top 95%'}});
+  gsap.fromTo('.wsp .clients-band',{scale:.9,borderRadius:'80px',y:60},{scale:1,borderRadius:'40px',y:0,ease:'none',scrollTrigger:{trigger:'.wsp .clients-band',start:'top bottom',end:'top 30%',scrub:true}});
+  gsap.fromTo('.wsp .cb-rings',{scale:.5,rotate:0},{scale:1.3,rotate:45,ease:'none',scrollTrigger:{trigger:'.wsp .clients-band',start:'top bottom',end:'bottom top',scrub:true}});
+  gsap.from('.wsp .logo-card',{y:60,scale:.8,opacity:0,duration:1,ease:'back.out(1.6)',stagger:{each:.02,from:'center'},clearProps:'transform,opacity',scrollTrigger:{trigger:'.wsp .crow',start:'top 92%'}});
+  const loops=[...page.querySelectorAll('.crow')].map(row=>{const t=row.querySelector('.ctrack');const rev=row.classList.contains('rev');
+    return gsap.fromTo(t,{xPercent:rev?-50:0},{xPercent:rev?0:-50,duration:45,ease:'none',repeat:-1})});
+  let boost=null;
+  ScrollTrigger.create({trigger:'.wsp .clients-band',start:'top bottom',end:'bottom top',onUpdate:s=>{
+    const v=gsap.utils.clamp(1,7,1+Math.abs(s.getVelocity())/250);
+    loops.forEach(l=>l.timeScale(v));
+    if(boost)boost.kill();boost=gsap.to(loops,{timeScale:1,duration:1.2,ease:'power2.out',delay:.1});
+  }});
 
   /* marquee leans with scroll speed */
   const skew=gsap.quickTo('.wsp .marquee span','skewX',{duration:.5,ease:'power3'});
