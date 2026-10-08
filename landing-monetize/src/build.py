@@ -11,12 +11,12 @@ libs='''<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min
 def page(logo):
     return body.replace('{{LOGO}}',logo).replace('{{CLIENT_LOGOS}}',logos)
 # preview artifact
-prev=f'<title>Monetize seu Wi-Fi</title>\n<style>\nbody{{margin:0;background:#fff}}\n{css}</style>\n{page("assets/logo-blue.png")}\n{libs}\n<script>\n{js}</script>\n'
-open(d+'/index.html','w').write(prev)
+prev=f'<title>Monetize seu Wi-Fi</title>\n<style>\nbody{{margin:0;background:#fff}}\n{css}</style>\n{page("../../site/assets/logo-blue.png")}\n{libs}\n<script>\n{js}</script>\n'
+open(d+'/../preview.html','w').write(prev)
 # RD kit
 rdlogo=CDN+'1726599561/$f3z0q825xnf'
-open(d+'/rd/1-bloco-html.html','w').write(page(rdlogo))
-open(d+'/rd/2-css.css','w').write(css)
-open(d+'/rd/3-javascript-body.html','w').write(libs+'\n<script>\n'+js+'</script>\n')
-open(d+'/rd/tudo-em-um-bloco-html.html','w').write('<style>\n'+css+'</style>\n'+page(rdlogo)+'\n'+libs+'\n<script>\n'+js+'</script>\n')
+open(d+'/../rd-station/1-bloco-html.html','w').write(page(rdlogo))
+open(d+'/../rd-station/2-css.css','w').write(css)
+open(d+'/../rd-station/3-javascript-body.html','w').write(libs+'\n<script>\n'+js+'</script>\n')
+open(d+'/../rd-station/tudo-em-um-bloco-html.html','w').write('<style>\n'+css+'</style>\n'+page(rdlogo)+'\n'+libs+'\n<script>\n'+js+'</script>\n')
 print('built')
