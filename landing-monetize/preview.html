@@ -1,14 +1,14 @@
 <title>Monetize seu Wi-Fi</title>
 <style>
 body{margin:0;background:#fff}
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300&family=DM+Mono:wght@400;500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300&display=swap");
 
-/* Wispot LP · "Monetize seu Wi-Fi". Everything is scoped under .wsp so RD Station's own styles don't collide. */
+/* Wispot LP · "Monetize seu Wi-Fi". Brand manual: azul #25A8E0, degradê até #0B91C1, cinza #514D4B, branco; fonte Montserrat. No black anywhere. Everything is scoped under .wsp so RD Station's own styles don't collide. */
 .wsp{
-  --bg:#ffffff;--surface:#f3f8fb;--tint:#e4f3fb;--ink:#1d1b1a;--muted:#514d4b;--soft:#8a8583;--line:#e3e6e8;
-  --blue:#25a8e0;--blue-deep:#0b91c1;--panel:#0f1a20;--panel-ink:#eef6fa;--panel-muted:#9fb2bc;--panel-line:#23343d;
+  --bg:#ffffff;--surface:#f3f8fb;--tint:#e4f3fb;--ink:#514d4b;--muted:#6b6765;--soft:#8f8a88;--line:#e3e6e8;
+  --blue:#25a8e0;--blue-deep:#0b91c1;
   --grad:linear-gradient(120deg,#25a8e0 0%,#0b91c1 100%);
-  --display:"Montserrat","Helvetica Neue",Arial,sans-serif;--body:"Montserrat","Helvetica Neue",Arial,sans-serif;--mono:"DM Mono",ui-monospace,Menlo,monospace;
+  --display:"Montserrat","Helvetica Neue",Arial,sans-serif;--body:"Montserrat","Helvetica Neue",Arial,sans-serif;--mono:"Montserrat","Helvetica Neue",Arial,sans-serif;
   --max:1280px;--gutter:clamp(16px,4vw,48px);
   color-scheme:light;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:clip;position:relative
 }
@@ -19,14 +19,15 @@ body{margin:0;background:#fff}
 .wsp h1,.wsp h2,.wsp h3{font-family:var(--display);text-wrap:balance}
 .wsp :focus-visible{outline:2px solid var(--blue);outline-offset:3px;border-radius:6px}
 .wsp .wrap{max-width:var(--max);margin-inline:auto;padding-inline:var(--gutter)}
-.wsp .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--blue-deep);display:flex;align-items:center;gap:10px}
+.wsp .eyebrow{font-family:var(--mono);font-weight:600;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--blue-deep);display:flex;align-items:center;gap:10px}
 .wsp .eyebrow::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--blue);flex:none}
 .wsp .on-dark .eyebrow,.wsp .eyebrow.light{color:var(--blue)}
 .wsp section{position:relative;z-index:1;scroll-margin-top:20px}
 
 /* buttons */
-.wsp .btn{display:inline-flex;align-items:center;gap:12px;font:600 15px/1 var(--body);padding:16px 22px 16px 26px;border-radius:999px;text-decoration:none;border:0;cursor:pointer;background:var(--ink);color:#fff;transition:background .25s}
-.wsp .btn .arr{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--blue);color:#fff;transition:transform .3s ease}
+.wsp .btn{display:inline-flex;align-items:center;gap:12px;font:600 15px/1 var(--body);padding:16px 22px 16px 26px;border-radius:999px;text-decoration:none;border:0;cursor:pointer;background:var(--blue);color:#fff;transition:background .25s}
+.wsp .btn:hover{background:var(--blue-deep)}
+.wsp .btn .arr{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:#fff;color:var(--blue-deep);transition:transform .3s ease}
 .wsp .btn:hover .arr{transform:rotate(-45deg)}
 .wsp .btn.blue{background:var(--blue)}
 .wsp .btn.blue .arr{background:#fff;color:var(--blue-deep)}
@@ -37,8 +38,8 @@ body{margin:0;background:#fff}
 .wsp .gridlines{position:absolute;inset:0;z-index:0;pointer-events:none;display:flex;justify-content:space-between;max-width:var(--max);margin-inline:auto;padding-inline:var(--gutter)}
 .wsp .gridlines i{width:1px;background:var(--line);opacity:.6}
 @media (max-width:700px){.wsp .gridlines i:nth-child(2),.wsp .gridlines i:nth-child(4){display:none}}
-.wsp-cursor{position:fixed;left:0;top:0;z-index:400;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:#fff;mix-blend-mode:difference;pointer-events:none;display:grid;place-items:center;transition:width .4s cubic-bezier(.2,.8,.2,1),height .4s cubic-bezier(.2,.8,.2,1),margin .4s cubic-bezier(.2,.8,.2,1),opacity .3s}
-.wsp-cursor span{font:600 11px/1 "Montserrat",Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#000;opacity:0;transition:opacity .2s}
+.wsp-cursor{position:fixed;left:0;top:0;z-index:400;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:rgba(37,168,224,.92);pointer-events:none;display:grid;place-items:center;transition:width .4s cubic-bezier(.2,.8,.2,1),height .4s cubic-bezier(.2,.8,.2,1),margin .4s cubic-bezier(.2,.8,.2,1),opacity .3s}
+.wsp-cursor span{font:600 11px/1 "Montserrat",Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#fff;opacity:0;transition:opacity .2s}
 .wsp-cursor.big{width:88px;height:88px;margin:-44px 0 0 -44px}
 .wsp-cursor.big span{opacity:1}
 .wsp-cursor.hide{opacity:0}
@@ -63,14 +64,14 @@ body{margin:0;background:#fff}
 /* form stage */
 .wsp .stage{position:relative;border-radius:32px;background:var(--grad);padding:clamp(18px,2.6vw,34px);overflow:hidden;isolation:isolate}
 .wsp .stage canvas{position:absolute;inset:0;width:100%;height:100%;z-index:-1}
-.wsp .form-card{background:#fff;color:#1d1b1a;border-radius:24px;padding:clamp(22px,2.6vw,34px);box-shadow:0 40px 80px -30px rgba(4,40,60,.5);display:grid;gap:16px}
+.wsp .form-card{background:#fff;color:#514d4b;border-radius:24px;padding:clamp(22px,2.6vw,34px);box-shadow:0 40px 80px -30px rgba(4,40,60,.5);display:grid;gap:16px}
 .wsp .form-card h2{font-size:clamp(22px,2vw,28px);font-weight:700;letter-spacing:-.03em;line-height:1.1}
 .wsp .form-card .sub{font-size:14px;color:#514d4b}
 .wsp .form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
 .wsp .field{display:grid;gap:6px;min-width:0}
 .wsp .field.full{grid-column:1/-1}
 .wsp label{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#514d4b}
-.wsp input,.wsp select{font:500 15px var(--body);color:#1d1b1a;background:#f6f9fb;border:1px solid #e3e6e8;border-radius:12px;padding:13px 14px;width:100%;transition:border-color .2s,box-shadow .2s;appearance:none;-webkit-appearance:none}
+.wsp input,.wsp select{font:500 15px var(--body);color:#514d4b;background:#f6f9fb;border:1px solid #e3e6e8;border-radius:12px;padding:13px 14px;width:100%;transition:border-color .2s,box-shadow .2s;appearance:none;-webkit-appearance:none}
 .wsp select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%23514d4b' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}
 .wsp input:focus,.wsp select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 4px rgba(37,168,224,.18);background:#fff}
 .wsp .field.err input,.wsp .field.err select{border-color:#d4443a}
@@ -101,16 +102,18 @@ body{margin:0;background:#fff}
 @media (max-width:860px){.wsp .about{grid-template-columns:1fr}}
 
 /* 3D cloud */
-.wsp .cloud{height:280vh;background:var(--panel);color:var(--panel-ink)}
+.wsp .cloud{height:280vh;background:var(--grad);color:#fff}
 .wsp .cloud-sticky{position:sticky;top:0;height:100vh;overflow:hidden;perspective:900px}
 .wsp .cloud-scene{position:absolute;inset:0;transform-style:preserve-3d}
-.wsp .cloud-scene span{position:absolute;left:50%;top:50%;font-family:var(--display);font-weight:600;letter-spacing:-.03em;white-space:nowrap;color:var(--panel-ink);will-change:transform,opacity;backface-visibility:hidden}
-.wsp .cloud-scene span.b{color:var(--blue)}
-.wsp .cloud-scene span.i{font-style:italic;font-weight:300;color:var(--panel-muted)}
+.wsp .cloud-scene span{position:absolute;left:50%;top:50%;font-family:var(--display);font-weight:600;letter-spacing:-.03em;white-space:nowrap;color:#fff;will-change:transform,opacity;backface-visibility:hidden}
+.wsp .cloud-scene span.b{color:#fff;font-weight:800}
+.wsp .cloud-scene span.i{font-style:italic;font-weight:300;color:rgba(255,255,255,.72)}
 .wsp .cloud-center{position:absolute;inset:0;display:grid;place-content:center;justify-items:center;text-align:center;gap:20px;padding-inline:var(--gutter);pointer-events:none}
 .wsp .cloud-text{font-family:var(--display);font-weight:700;font-size:clamp(36px,6.4vw,100px);line-height:1;letter-spacing:-.045em}
-.wsp .cloud-text em{font-style:italic;font-weight:300;color:var(--blue)}
-.wsp .cloud-hint{position:absolute;left:var(--gutter);right:var(--gutter);bottom:28px;display:flex;justify-content:space-between;gap:12px;font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--panel-muted)}
+.wsp .cloud-text em{font-style:italic;font-weight:300;color:#fff}
+.wsp .cloud .eyebrow{color:#fff}
+.wsp .cloud .eyebrow::before{background:#fff}
+.wsp .cloud-hint{position:absolute;left:var(--gutter);right:var(--gutter);bottom:28px;display:flex;justify-content:space-between;gap:12px;font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.8)}
 .wsp.no-motion .cloud{height:auto}
 .wsp.no-motion .cloud-sticky{position:relative;height:auto;padding-block:clamp(100px,14vw,180px)}
 .wsp.no-motion .cloud-scene,.wsp.no-motion .cloud-hint{display:none}
@@ -141,29 +144,6 @@ body{margin:0;background:#fff}
 .wsp.hpin .step h3{font-size:clamp(28px,2.7vw,40px)}
 .wsp.hpin .step::after{content:attr(data-n);position:absolute;right:40px;top:26px;font:800 clamp(80px,8.5vw,140px)/1 var(--display);letter-spacing:-.06em;color:transparent;-webkit-text-stroke:1.5px var(--line)}
 
-/* dark panel: features + dashboard */
-.wsp .panel{background:var(--panel);color:var(--panel-ink);border-radius:clamp(24px,3vw,40px);margin-inline:clamp(8px,1.5vw,20px)}
-.wsp .panel .sec-head p{color:var(--panel-muted)}
-.wsp .dash{background:#0a141a;border:1px solid var(--panel-line);border-radius:24px;padding:clamp(16px,2.2vw,26px);display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}
-.wsp .dash-top{grid-column:1/-1;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;padding-bottom:14px;border-bottom:1px solid var(--panel-line);font-weight:600;font-size:15px}
-.wsp .dash-top i{display:inline-block;width:8px;height:8px;border-radius:50%;background:#3ddc97;box-shadow:0 0 0 4px rgba(61,220,151,.18);margin-right:10px}
-.wsp .dash-top small{font-family:var(--mono);font-weight:400;font-size:11px;color:var(--panel-muted)}
-.wsp .kpi{grid-column:span 3;background:#0f1d24;border:1px solid var(--panel-line);border-radius:16px;padding:18px;display:grid;gap:4px;min-width:0}
-.wsp .kpi small{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--panel-muted);text-transform:uppercase}
-.wsp .kpi b{font-size:clamp(24px,2.4vw,34px);font-weight:700;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
-.wsp .kpi .d{font-size:12px;color:#3ddc97;font-family:var(--mono)}
-.wsp .dash-note{grid-column:1/-1;font-family:var(--mono);font-size:11px;color:var(--panel-muted)}
-@media (max-width:900px){.wsp .kpi{grid-column:span 6}}
-@media (max-width:440px){.wsp .kpi{grid-column:1/-1}}
-.wsp .features{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:clamp(48px,6vw,80px);border-top:1px solid var(--panel-line)}
-.wsp .feat{padding:30px 28px 34px 0;display:grid;gap:12px;align-content:start;border-bottom:1px solid var(--panel-line)}
-.wsp .feat:not(:nth-child(3n+1)){padding-left:28px;border-left:1px solid var(--panel-line)}
-.wsp .feat .tag{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--blue);text-transform:uppercase}
-.wsp .feat h3{font-size:21px;font-weight:700;letter-spacing:-.02em}
-.wsp .feat p{color:var(--panel-muted);font-size:15px}
-@media (max-width:900px){.wsp .features{grid-template-columns:repeat(2,minmax(0,1fr))}.wsp .feat:not(:nth-child(3n+1)){padding-left:0;border-left:0}.wsp .feat:nth-child(2n){padding-left:28px;border-left:1px solid var(--panel-line)}}
-@media (max-width:560px){.wsp .features{grid-template-columns:1fr}.wsp .feat:nth-child(2n){padding-left:0;border-left:0}}
-
 /* clients */
 .wsp .clients{display:flex;gap:56px;width:max-content;animation:wsp-mq 40s linear infinite;align-items:center}
 .wsp .clients-wrap{overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);padding-block:10px}
@@ -192,17 +172,21 @@ body{margin:0;background:#fff}
 .wsp .diffs{list-style:none;margin:0;padding:0;display:grid;gap:12px}
 .wsp .diffs li{display:flex;gap:12px;align-items:flex-start;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.25);border-radius:16px;padding:14px 16px;font-weight:600;font-size:15px}
 .wsp .diffs svg{flex:none;margin-top:2px}
-.wsp .final .btn{background:#fff;color:#1d1b1a;margin-top:34px}
+.wsp .final .btn{background:#fff;color:var(--blue-deep);margin-top:34px}
 .wsp .final .btn .arr{background:var(--blue);color:#fff}
+.wsp .final .btn:hover{background:#eaf7fd}
 .wsp .final .rings{position:absolute;right:-160px;bottom:-160px;width:420px;height:420px;border-radius:50%;border:1px solid rgba(255,255,255,.2);box-shadow:0 0 0 70px rgba(255,255,255,.05),0 0 0 140px rgba(255,255,255,.035);pointer-events:none}
 @media (max-width:900px){.wsp .final .inner{grid-template-columns:1fr}}
 
 /* footer */
 .wsp .foot{padding-block:48px 32px;position:relative;z-index:1}
-.wsp .foot .row{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:16px;font-size:13px;color:var(--soft)}
 .wsp .foot img{height:40px;width:auto}
-.wsp .giant{font-family:var(--display);font-weight:800;letter-spacing:-.06em;line-height:.8;font-size:clamp(80px,22vw,330px);color:var(--blue);margin-top:36px;white-space:nowrap;overflow:hidden;user-select:none}
-.wsp .giant span{display:inline-block}
+.wsp .foot{border-top:1px solid var(--line);margin-top:clamp(60px,8vw,110px)}
+.wsp .foot .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:20px}
+.wsp .foot .sign{display:flex;align-items:center;gap:18px}
+.wsp .foot .sign i{width:1px;height:34px;background:var(--line)}
+.wsp .foot .sign span{font-weight:600;color:var(--ink);font-size:15px}
+.wsp .foot small{font-size:13px;color:var(--soft)}
 
 /* motion helpers */
 .wsp .wm{display:inline-block;overflow:hidden;vertical-align:top;padding:0 .08em .1em 0;margin:0 -.08em -.1em 0}
@@ -321,34 +305,6 @@ body{margin:0;background:#fff}
     </div>
   </section>
 
-  <!-- PLATFORM -->
-  <section class="panel on-dark">
-    <div class="sec">
-      <div class="wrap">
-        <div class="sec-head">
-          <div><div class="eyebrow">O que a Wispot faz pela sua empresa</div><h2>Dados, automação e fidelização em um só lugar.</h2></div>
-          <p>Acompanhe métricas e relatórios sobre o comportamento dos clientes, como tempo de permanência, horários de pico e taxa de retorno.</p>
-        </div>
-        <div class="dash" data-cursor="Dados" role="img" aria-label="Exemplo ilustrativo do painel da Wispot">
-          <div class="dash-top"><span><i></i>Painel · Sua loja</span><small>Últimos 7 dias</small></div>
-          <div class="kpi"><small>Conexões</small><b>4.585</b><span class="d">+12,4% na semana</span></div>
-          <div class="kpi"><small>Novos cadastros</small><b>1.236</b><span class="d">+8,1%</span></div>
-          <div class="kpi"><small>Taxa de retorno</small><b>38%</b><span class="d">+3 p.p.</span></div>
-          <div class="kpi"><small>Permanência média</small><b>42 min</b><span class="d">+5 min</span></div>
-          <div class="dash-note">Dados ilustrativos para demonstração do painel.</div>
-        </div>
-        <div class="features">
-          <div class="feat"><span class="tag">Captura de dados</span><h3>Informação no momento da conexão</h3><p>Conheça quem visita sua empresa assim que a pessoa se conecta ao Wi-Fi.</p></div>
-          <div class="feat"><span class="tag">Automação de marketing</span><h3>Campanhas segmentadas</h3><p>Promoções personalizadas por SMS, e-mail ou WhatsApp para cada perfil de cliente.</p></div>
-          <div class="feat"><span class="tag">Engajamento</span><h3>Mais conversões</h3><p>O Wi-Fi vira um canal direto, que impacta o cliente na hora certa para vender mais.</p></div>
-          <div class="feat"><span class="tag">Insights</span><h3>Relatórios detalhados</h3><p>Tempo de permanência, horários de pico e taxa de retorno para decidir com dados.</p></div>
-          <div class="feat"><span class="tag">Integração</span><h3>Simples e segura</h3><p>Compatível com diversos roteadores e sistemas. A Wispot se adapta à sua infraestrutura.</p></div>
-          <div class="feat"><span class="tag">Fidelização</span><h3>Clientes que voltam</h3><p>Cupons, promoções especiais e benefícios exclusivos para quem retorna.</p></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- CLIENTS -->
   <section class="sec">
     <div class="wrap">
@@ -399,8 +355,8 @@ body{margin:0;background:#fff}
 
   <footer class="foot">
     <div class="wrap">
-      <div class="giant" aria-hidden="true">wispot</div>
-      <div class="row"><img src="../../site/assets/logo-blue.png" alt="Wispot smart data"><span>© 2026 Wispot. Todos os direitos reservados.</span></div>
+      <div class="sign"><img src="../../site/assets/logo-blue.png" alt="Wispot smart data"><i aria-hidden="true"></i><span>Conecte-se com seus clientes!</span></div>
+      <small>© 2026 Wispot. Todos os direitos reservados.</small>
     </div>
   </footer>
 </div>
@@ -523,7 +479,6 @@ body{margin:0;background:#fff}
 
   function batch(sel,from){const els=gsap.utils.toArray(sel);if(!els.length)return;gsap.set(els,from);
     ScrollTrigger.batch(els,{start:'top 90%',once:true,onEnter:b=>gsap.to(b,{x:0,y:0,opacity:1,scale:1,rotate:0,duration:1.1,ease:EO,stagger:.09,overwrite:true})})}
-  batch('.wsp .feat',{y:50,opacity:0});
   batch('.wsp .why article',{y:70,opacity:0,rotate:2});
   batch('.wsp .diffs li',{x:40,opacity:0});
 
@@ -566,22 +521,14 @@ body{margin:0;background:#fff}
   mm.add('(max-width: 900px)',()=>{gsap.utils.toArray('.wsp .step').forEach(st=>gsap.from(st,{y:50,opacity:0,duration:1.1,ease:EO,scrollTrigger:{trigger:st,start:'top 88%'}}))});
 
   /* panels grow into place */
-  ['.wsp .panel','.wsp .final'].forEach(s=>gsap.fromTo(s,{scale:.92,borderRadius:'72px'},{scale:1,borderRadius:'40px',ease:'none',scrollTrigger:{trigger:s,start:'top bottom',end:'top 25%',scrub:true}}));
+  ['.wsp .final'].forEach(s=>gsap.fromTo(s,{scale:.92,borderRadius:'72px'},{scale:1,borderRadius:'40px',ease:'none',scrollTrigger:{trigger:s,start:'top bottom',end:'top 25%',scrub:true}}));
   gsap.fromTo('.wsp .final .rings',{scale:.6,rotate:0},{scale:1.3,rotate:40,ease:'none',scrollTrigger:{trigger:'.wsp .final',start:'top bottom',end:'bottom top',scrub:true}});
-
-  /* KPI count-up */
-  const kp=[...page.querySelectorAll('.kpi b')].map(b=>{const t=b.textContent,m=t.match(/[\d.]+/);return{b,n:parseInt(m[0].replace('.','')),pre:t.slice(0,m.index),suf:t.slice(m.index+m[0].length)}});
-  kp.forEach(k=>k.b.textContent=k.pre+'0'+k.suf);
-  gsap.from('.wsp .dash',{y:70,opacity:0,duration:1.2,ease:EO,scrollTrigger:{trigger:'.wsp .dash',start:'top 88%'}});
-  ScrollTrigger.create({trigger:'.wsp .dash',start:'top 75%',once:true,onEnter:()=>kp.forEach(k=>{const o={v:0};gsap.to(o,{v:k.n,duration:2,ease:'power3.out',onUpdate:()=>k.b.textContent=k.pre+Math.round(o.v).toLocaleString('pt-BR')+k.suf})})});
 
   /* marquee leans with scroll speed */
   const skew=gsap.quickTo('.wsp .marquee span','skewX',{duration:.5,ease:'power3'});
   ScrollTrigger.create({start:0,end:'max',onUpdate:s=>skew(clamp(-14,14,s.getVelocity()/-180))});
 
-  /* footer wordmark */
-  const giant=page.querySelector('.giant');giant.innerHTML=[...giant.textContent].map(c=>`<span>${c}</span>`).join('');
-  gsap.from(giant.children,{yPercent:105,duration:1.3,ease:EO,stagger:.07,scrollTrigger:{trigger:giant,start:'top 98%'}});
+  gsap.from('.wsp .foot .wrap > *',{y:24,opacity:0,duration:1,ease:EO,stagger:.1,scrollTrigger:{trigger:'.wsp .foot',start:'top 95%'}});
 
   /* cursor + magnetic buttons */
   if(fine){

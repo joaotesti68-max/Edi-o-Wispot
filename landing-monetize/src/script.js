@@ -112,7 +112,6 @@
 
   function batch(sel,from){const els=gsap.utils.toArray(sel);if(!els.length)return;gsap.set(els,from);
     ScrollTrigger.batch(els,{start:'top 90%',once:true,onEnter:b=>gsap.to(b,{x:0,y:0,opacity:1,scale:1,rotate:0,duration:1.1,ease:EO,stagger:.09,overwrite:true})})}
-  batch('.wsp .feat',{y:50,opacity:0});
   batch('.wsp .why article',{y:70,opacity:0,rotate:2});
   batch('.wsp .diffs li',{x:40,opacity:0});
 
@@ -155,22 +154,14 @@
   mm.add('(max-width: 900px)',()=>{gsap.utils.toArray('.wsp .step').forEach(st=>gsap.from(st,{y:50,opacity:0,duration:1.1,ease:EO,scrollTrigger:{trigger:st,start:'top 88%'}}))});
 
   /* panels grow into place */
-  ['.wsp .panel','.wsp .final'].forEach(s=>gsap.fromTo(s,{scale:.92,borderRadius:'72px'},{scale:1,borderRadius:'40px',ease:'none',scrollTrigger:{trigger:s,start:'top bottom',end:'top 25%',scrub:true}}));
+  ['.wsp .final'].forEach(s=>gsap.fromTo(s,{scale:.92,borderRadius:'72px'},{scale:1,borderRadius:'40px',ease:'none',scrollTrigger:{trigger:s,start:'top bottom',end:'top 25%',scrub:true}}));
   gsap.fromTo('.wsp .final .rings',{scale:.6,rotate:0},{scale:1.3,rotate:40,ease:'none',scrollTrigger:{trigger:'.wsp .final',start:'top bottom',end:'bottom top',scrub:true}});
-
-  /* KPI count-up */
-  const kp=[...page.querySelectorAll('.kpi b')].map(b=>{const t=b.textContent,m=t.match(/[\d.]+/);return{b,n:parseInt(m[0].replace('.','')),pre:t.slice(0,m.index),suf:t.slice(m.index+m[0].length)}});
-  kp.forEach(k=>k.b.textContent=k.pre+'0'+k.suf);
-  gsap.from('.wsp .dash',{y:70,opacity:0,duration:1.2,ease:EO,scrollTrigger:{trigger:'.wsp .dash',start:'top 88%'}});
-  ScrollTrigger.create({trigger:'.wsp .dash',start:'top 75%',once:true,onEnter:()=>kp.forEach(k=>{const o={v:0};gsap.to(o,{v:k.n,duration:2,ease:'power3.out',onUpdate:()=>k.b.textContent=k.pre+Math.round(o.v).toLocaleString('pt-BR')+k.suf})})});
 
   /* marquee leans with scroll speed */
   const skew=gsap.quickTo('.wsp .marquee span','skewX',{duration:.5,ease:'power3'});
   ScrollTrigger.create({start:0,end:'max',onUpdate:s=>skew(clamp(-14,14,s.getVelocity()/-180))});
 
-  /* footer wordmark */
-  const giant=page.querySelector('.giant');giant.innerHTML=[...giant.textContent].map(c=>`<span>${c}</span>`).join('');
-  gsap.from(giant.children,{yPercent:105,duration:1.3,ease:EO,stagger:.07,scrollTrigger:{trigger:giant,start:'top 98%'}});
+  gsap.from('.wsp .foot .wrap > *',{y:24,opacity:0,duration:1,ease:EO,stagger:.1,scrollTrigger:{trigger:'.wsp .foot',start:'top 95%'}});
 
   /* cursor + magnetic buttons */
   if(fine){
