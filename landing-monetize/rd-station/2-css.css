@@ -17,7 +17,6 @@
 .wsp :focus-visible{outline:2px solid var(--blue);outline-offset:3px;border-radius:6px}
 .wsp .wrap{max-width:var(--max);margin-inline:auto;padding-inline:var(--gutter)}
 .wsp .eyebrow{font-family:var(--mono);font-weight:600;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--blue-deep);display:flex;align-items:center;gap:10px}
-.wsp .eyebrow::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--blue);flex:none}
 .wsp .on-dark .eyebrow,.wsp .eyebrow.light{color:var(--blue)}
 .wsp section{position:relative;z-index:1;scroll-margin-top:20px}
 
@@ -32,9 +31,6 @@
 
 /* fixed chrome */
 .wsp-progress{position:fixed;left:0;right:0;top:0;height:2px;background:#25a8e0;transform-origin:0 50%;transform:scaleX(0);z-index:120;pointer-events:none}
-.wsp .gridlines{position:absolute;inset:0;z-index:0;pointer-events:none;display:flex;justify-content:space-between;max-width:var(--max);margin-inline:auto;padding-inline:var(--gutter)}
-.wsp .gridlines i{width:1px;background:var(--line);opacity:.6}
-@media (max-width:700px){.wsp .gridlines i:nth-child(2),.wsp .gridlines i:nth-child(4){display:none}}
 .wsp-cursor{position:fixed;left:0;top:0;z-index:400;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:rgba(37,168,224,.92);pointer-events:none;display:grid;place-items:center;transition:width .4s cubic-bezier(.2,.8,.2,1),height .4s cubic-bezier(.2,.8,.2,1),margin .4s cubic-bezier(.2,.8,.2,1),opacity .3s}
 .wsp-cursor span{font:600 11px/1 "Montserrat",Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#fff;opacity:0;transition:opacity .2s}
 .wsp-cursor.big{width:88px;height:88px;margin:-44px 0 0 -44px}
@@ -138,7 +134,6 @@
 .wsp .cloud-text{font-family:var(--display);font-weight:700;font-size:clamp(36px,6.4vw,100px);line-height:1;letter-spacing:-.045em}
 .wsp .cloud-text em{font-style:italic;font-weight:300;color:#fff}
 .wsp .cloud .eyebrow{color:#fff}
-.wsp .cloud .eyebrow::before{background:#fff}
 .wsp .cloud-hint{position:absolute;left:var(--gutter);right:var(--gutter);bottom:28px;display:flex;justify-content:space-between;gap:12px;font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.8)}
 .wsp.no-motion .cloud{height:auto}
 .wsp.no-motion .cloud-sticky{position:relative;height:auto;padding-block:clamp(100px,14vw,180px)}
@@ -185,7 +180,6 @@
 .wsp .cb-rings{position:absolute;left:50%;top:-30%;width:620px;height:620px;margin-left:-310px;border-radius:50%;border:1px solid rgba(255,255,255,.22);box-shadow:0 0 0 90px rgba(255,255,255,.05),0 0 0 180px rgba(255,255,255,.035),0 0 0 270px rgba(255,255,255,.025);z-index:-1;pointer-events:none}
 .wsp .cb-head{display:grid;justify-items:center;text-align:center;gap:18px;margin-bottom:clamp(40px,5vw,64px)}
 .wsp .cb-head .eyebrow{color:#fff}
-.wsp .cb-head .eyebrow::before{background:#fff}
 .wsp .cb-head h2{font-size:clamp(36px,5.4vw,80px);line-height:1;letter-spacing:-.045em;font-weight:700}
 .wsp .cb-head h2 em{font-style:italic;font-weight:300}
 .wsp .cb-head p{max-width:52ch;opacity:.92}
@@ -215,7 +209,6 @@
 .wsp .final h2 em{font-style:italic;font-weight:300}
 .wsp .final p{opacity:.92;margin-top:24px;max-width:48ch}
 .wsp .final .eyebrow{color:#fff}
-.wsp .final .eyebrow::before{background:#fff}
 .wsp .diffs{list-style:none;margin:0;padding:0;display:grid;gap:12px}
 .wsp .diffs li{display:flex;gap:12px;align-items:flex-start;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.25);border-radius:16px;padding:14px 16px;font-weight:600;font-size:15px}
 .wsp .diffs svg{flex:none;margin-top:2px}
