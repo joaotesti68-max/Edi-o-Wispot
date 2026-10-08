@@ -78,6 +78,7 @@
 
   /* ================= motion ================= */
   gsap.registerPlugin(ScrollTrigger);
+  page.classList.add('gs');
   const EO='expo.out',clamp=gsap.utils.clamp;
   const fine=matchMedia('(hover:hover) and (pointer:fine)').matches;
 
@@ -118,6 +119,37 @@
     ScrollTrigger.batch(els,{start:'top 90%',once:true,onEnter:b=>gsap.to(b,{x:0,y:0,opacity:1,scale:1,rotate:0,duration:1.1,ease:EO,stagger:.09,overwrite:true})})}
   batch('.wsp .why article',{y:70,opacity:0,rotate:2});
   batch('.wsp .diffs li',{x:40,opacity:0});
+
+  /* login mockup: options appear, a tap on "telefone", then the connected screen with a coupon; loops while visible */
+  (function(){
+    const m=page.querySelector('.mock');if(!m)return;
+    const opts=m.querySelectorAll('.opt'),main=m.querySelector('.opt.main'),tap=m.querySelector('.tap'),ok=m.querySelector('.ph-ok'),login=m.querySelector('.ph-login'),chip=m.querySelector('.mock-chip');
+    gsap.set(ok,{yPercent:100});
+    const ck=m.querySelector('.ck');const L=ck.getTotalLength();
+    gsap.from(m.querySelector('.phone2'),{y:120,rotate:-6,opacity:0,duration:1.4,ease:EO,scrollTrigger:{trigger:m,start:'top 80%'}});
+    gsap.to(m.querySelector('.mock-rings'),{scale:1.25,ease:'none',scrollTrigger:{trigger:m,start:'top bottom',end:'bottom top',scrub:true}});
+    const tl=gsap.timeline({repeat:-1,repeatDelay:.6,paused:true});
+    tl.set(ok,{yPercent:100}).set(login,{opacity:1,scale:1}).set(chip,{opacity:0,y:16,scale:.9}).set(ck,{strokeDasharray:L,strokeDashoffset:L}).set(tap,{left:'72%',top:'112%',opacity:0,scale:1})
+      .from(m.querySelector('.ph-brand'),{scale:.85,opacity:0,duration:.6,ease:'back.out(1.8)'})
+      .from(m.querySelectorAll('.ph-login h4, .ph-login p'),{y:14,opacity:0,duration:.5,ease:EO,stagger:.08},'-=.2')
+      .from(opts,{y:18,opacity:0,duration:.5,ease:EO,stagger:.1},'-=.2')
+      .to(tap,{opacity:1,duration:.2},'+=.4')
+      .to(tap,{left:'50%',top:()=>(main.offsetTop+main.offsetHeight/2+login.offsetTop)+'px',duration:.9,ease:'power2.inOut'},'<')
+      .to(tap,{scale:.7,duration:.12,yoyo:true,repeat:1})
+      .add(()=>main.classList.add('pressed'),'<')
+      .add(()=>main.classList.remove('pressed'),'+=.15')
+      .to(tap,{opacity:0,scale:1.6,duration:.35})
+      .to(login,{opacity:0,scale:.96,duration:.35},'+=.15')
+      .to(ok,{yPercent:0,duration:.6,ease:'expo.out'},'<')
+      .to(ck,{strokeDashoffset:0,duration:.5,ease:'power2.out'},'-=.2')
+      .from(m.querySelectorAll('.ph-ok h4, .ph-ok p'),{y:12,opacity:0,duration:.4,stagger:.08},'-=.3')
+      .from(m.querySelector('.ok-coupon'),{scale:.6,opacity:0,duration:.6,ease:'back.out(2)'},'-=.1')
+      .to(chip,{opacity:1,y:0,scale:1,duration:.6,ease:'back.out(1.8)'},'-=.3')
+      .to({}, {duration:2.2})
+      .to(chip,{opacity:0,y:-10,duration:.4})
+      .to(ok,{yPercent:100,duration:.5,ease:'power3.in'},'<');
+    ScrollTrigger.create({trigger:m,start:'top 85%',end:'bottom top',onToggle:s=>s.isActive?tl.play():tl.pause()});
+  })();
 
   /* 3D cloud */
   (function(){

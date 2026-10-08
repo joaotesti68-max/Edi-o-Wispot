@@ -95,11 +95,40 @@ body{margin:0;background:#fff}
 
 /* about */
 .wsp .sec{padding-block:clamp(80px,10vw,150px)}
-.wsp .about{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.5fr);gap:clamp(24px,5vw,80px)}
-.wsp .about .big{font-family:var(--display);font-weight:600;font-size:clamp(28px,3.8vw,56px);line-height:1.08;letter-spacing:-.035em}
+.wsp .about{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.2fr);gap:clamp(32px,6vw,96px);align-items:center}
+.wsp .about-copy .big{margin-top:22px}
+.wsp .about .big{font-family:var(--display);font-weight:600;font-size:clamp(28px,3.4vw,50px);line-height:1.08;letter-spacing:-.035em}
 .wsp .about .big em{font-style:italic;font-weight:300;color:var(--blue)}
 .wsp .about .body{display:grid;gap:16px;color:var(--muted);margin-top:28px;max-width:62ch}
-@media (max-width:860px){.wsp .about{grid-template-columns:1fr}}
+@media (max-width:860px){.wsp .about{grid-template-columns:1fr}.wsp .mock{order:2}}
+
+/* animated login mockup */
+.wsp .mock{position:relative;background:var(--surface);border-radius:32px;padding:clamp(28px,4vw,56px) 16px;display:grid;place-items:center;overflow:hidden;isolation:isolate;min-height:560px}
+.wsp .mock-rings{position:absolute;left:50%;top:50%;width:300px;height:300px;margin:-150px 0 0 -150px;border-radius:50%;border:1px solid rgba(37,168,224,.22);box-shadow:0 0 0 60px rgba(37,168,224,.06),0 0 0 120px rgba(37,168,224,.04),0 0 0 180px rgba(37,168,224,.025);z-index:-1}
+.wsp .phone2{width:min(270px,78%);aspect-ratio:9/18.6;background:#fff;border-radius:38px;border:9px solid #e6f0f6;box-shadow:0 40px 70px -30px rgba(11,145,193,.45),0 0 0 1px rgba(37,168,224,.18);display:flex;flex-direction:column;overflow:hidden;position:relative}
+.wsp .ph-status{display:flex;justify-content:space-between;align-items:center;padding:10px 18px 4px;font-size:11px;font-weight:700;color:#514d4b}
+.wsp .ph-screen{position:relative;flex:1;overflow:hidden}
+.wsp .ph-login,.wsp .ph-ok{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;padding:14px 16px 16px;text-align:center}
+.wsp .ph-brand{width:100%;border:1.5px dashed rgba(37,168,224,.55);background:var(--tint);color:var(--blue-deep);border-radius:16px;padding:16px 10px;display:grid;justify-items:center;gap:6px;font-weight:800;font-size:15px;letter-spacing:.02em;text-transform:uppercase}
+.wsp .phone2 h4{margin:14px 0 2px;font-size:17px;font-weight:700;color:#514d4b;letter-spacing:-.02em}
+.wsp .phone2 p{font-size:11.5px;color:#8f8a88}
+.wsp .ph-opts{width:100%;display:grid;gap:8px;margin-top:14px}
+.wsp .opt{display:flex;align-items:center;justify-content:center;gap:8px;border:1px solid #e3e6e8;border-radius:12px;padding:10px 8px;font-size:11.5px;font-weight:600;color:#514d4b;background:#fff;transition:transform .2s,background .2s}
+.wsp .opt.main{background:var(--blue);border-color:var(--blue);color:#fff}
+.wsp .opt.pressed{transform:scale(.95);background:var(--blue-deep)}
+.wsp .phone2 small{margin-top:auto;font-size:9px;line-height:1.4;color:#a19c9a}
+.wsp .ph-ok{justify-content:center;gap:4px;background:#fff}
+.wsp:not(.gs) .ph-ok{display:none}
+.wsp .ok-check{width:68px;height:68px;border-radius:50%;background:var(--grad);color:#fff;display:grid;place-items:center;margin-bottom:6px;box-shadow:0 0 0 10px var(--tint)}
+.wsp .ok-coupon{margin-top:18px;border:1.5px dashed var(--blue);border-radius:14px;padding:10px 16px;display:grid;gap:2px;color:var(--blue-deep)}
+.wsp .ok-coupon b{font-size:20px;font-weight:800;letter-spacing:-.02em}
+.wsp .ok-coupon span{font-size:11px;font-weight:600}
+.wsp .tap{position:absolute;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;background:rgba(37,168,224,.28);border:2px solid rgba(255,255,255,.9);box-shadow:0 6px 18px rgba(11,145,193,.35);left:70%;top:110%;opacity:0;pointer-events:none}
+.wsp .mock-chip{position:absolute;right:clamp(10px,4%,40px);top:clamp(24px,12%,80px);background:#fff;border-radius:16px;padding:11px 14px;display:flex;gap:10px;align-items:center;box-shadow:0 18px 40px -18px rgba(11,145,193,.45);font-size:12px;line-height:1.3;color:#514d4b}
+.wsp .mock-chip .dot{width:28px;height:28px;border-radius:9px;background:var(--tint);color:var(--blue-deep);display:grid;place-items:center;flex:none}
+.wsp .mock-chip b{display:block;font-size:12.5px}
+.wsp .mock-chip small{color:#8f8a88;font-size:10.5px}
+@media (max-width:480px){.wsp .mock{min-height:500px}.wsp .mock-chip{top:14px;right:10px}}
 
 /* 3D cloud */
 .wsp .cloud{height:280vh;background:var(--grad);color:#fff}
@@ -254,8 +283,36 @@ body{margin:0;background:#fff}
   <!-- ABOUT -->
   <section class="sec">
     <div class="wrap about">
-      <div><div class="eyebrow">Conheça a Wispot</div></div>
-      <div>
+      <div class="mock" data-cursor="Login" role="img" aria-label="Exemplo animado da tela de login do Wi-Fi com a marca do estabelecimento e as opções de acesso por Google, Facebook, e-mail e telefone">
+        <div class="mock-rings" aria-hidden="true"></div>
+        <div class="phone2" aria-hidden="true">
+          <div class="ph-status"><span>9:41</span><svg width="16" height="12" viewBox="0 0 24 18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M2 6.5a14 14 0 0 1 20 0M5.5 10a9 9 0 0 1 13 0M9 13.5a4 4 0 0 1 6 0"/></svg></div>
+          <div class="ph-screen">
+            <div class="ph-login">
+              <div class="ph-brand"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1.5-5h15L21 9M3 9h18M3 9v11h18V9M9 20v-6h6v6"/></svg><span>Sua Marca</span></div>
+              <h4>Bem-vindo!</h4>
+              <p>Conecte-se ao nosso Wi-Fi gratuito</p>
+              <div class="ph-opts">
+                <div class="opt"><svg width="16" height="16" viewBox="0 0 24 24"><path fill="#4285F4" d="M22 12.2c0-.7-.1-1.4-.2-2H12v3.9h5.6a4.8 4.8 0 0 1-2.1 3.1v2.6h3.4c2-1.8 3.1-4.5 3.1-7.6z"/><path fill="#34A853" d="M12 22.5c2.8 0 5.2-.9 6.9-2.5l-3.4-2.6c-.9.6-2.1 1-3.5 1-2.7 0-5-1.8-5.8-4.3H2.7v2.7A10.5 10.5 0 0 0 12 22.5z"/><path fill="#FBBC05" d="M6.2 14.1a6.3 6.3 0 0 1 0-4.2V7.2H2.7a10.5 10.5 0 0 0 0 9.6z"/><path fill="#EA4335" d="M12 5.6c1.5 0 2.9.5 4 1.6l3-3A10.5 10.5 0 0 0 2.7 7.2l3.5 2.7C7 7.4 9.3 5.6 12 5.6z"/></svg>Entrar com Google</div>
+                <div class="opt"><svg width="16" height="16" viewBox="0 0 24 24"><path fill="#1877F2" d="M24 12a12 12 0 1 0-13.9 11.9v-8.4h-3V12h3V9.4c0-3 1.8-4.7 4.5-4.7 1.3 0 2.7.2 2.7.2v3h-1.5c-1.5 0-2 .9-2 1.9V12h3.4l-.5 3.5h-2.9v8.4A12 12 0 0 0 24 12z"/></svg>Entrar com Facebook</div>
+                <div class="opt"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>Entrar com e-mail</div>
+                <div class="opt main"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 18h2"/></svg>Entrar com telefone</div>
+              </div>
+              <small>Ao conectar, você aceita os termos de uso e a política de privacidade.</small>
+            </div>
+            <div class="ph-ok">
+              <div class="ok-check"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path class="ck" d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+              <h4>Você está conectado!</h4>
+              <p>Aproveite a sua visita.</p>
+              <div class="ok-coupon"><b>10% OFF</b><span>na sua próxima visita</span></div>
+            </div>
+            <div class="tap"></div>
+          </div>
+        </div>
+        <div class="mock-chip"><span class="dot"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span><span><b>Novo cadastro</b><small>Nome, e-mail e telefone</small></span></div>
+      </div>
+      <div class="about-copy">
+        <div class="eyebrow">Conheça a Wispot</div>
         <p class="big">Uma plataforma que transforma o Wi-Fi da sua empresa em um canal de <em>marketing e vendas</em>.</p>
         <div class="body">
           <p>Em vez de apenas oferecer internet gratuita, você transforma essa conexão em engajamento e monetização: captura dados valiosos e cria campanhas personalizadas.</p>
@@ -441,6 +498,7 @@ body{margin:0;background:#fff}
 
   /* ================= motion ================= */
   gsap.registerPlugin(ScrollTrigger);
+  page.classList.add('gs');
   const EO='expo.out',clamp=gsap.utils.clamp;
   const fine=matchMedia('(hover:hover) and (pointer:fine)').matches;
 
@@ -481,6 +539,37 @@ body{margin:0;background:#fff}
     ScrollTrigger.batch(els,{start:'top 90%',once:true,onEnter:b=>gsap.to(b,{x:0,y:0,opacity:1,scale:1,rotate:0,duration:1.1,ease:EO,stagger:.09,overwrite:true})})}
   batch('.wsp .why article',{y:70,opacity:0,rotate:2});
   batch('.wsp .diffs li',{x:40,opacity:0});
+
+  /* login mockup: options appear, a tap on "telefone", then the connected screen with a coupon; loops while visible */
+  (function(){
+    const m=page.querySelector('.mock');if(!m)return;
+    const opts=m.querySelectorAll('.opt'),main=m.querySelector('.opt.main'),tap=m.querySelector('.tap'),ok=m.querySelector('.ph-ok'),login=m.querySelector('.ph-login'),chip=m.querySelector('.mock-chip');
+    gsap.set(ok,{yPercent:100});
+    const ck=m.querySelector('.ck');const L=ck.getTotalLength();
+    gsap.from(m.querySelector('.phone2'),{y:120,rotate:-6,opacity:0,duration:1.4,ease:EO,scrollTrigger:{trigger:m,start:'top 80%'}});
+    gsap.to(m.querySelector('.mock-rings'),{scale:1.25,ease:'none',scrollTrigger:{trigger:m,start:'top bottom',end:'bottom top',scrub:true}});
+    const tl=gsap.timeline({repeat:-1,repeatDelay:.6,paused:true});
+    tl.set(ok,{yPercent:100}).set(login,{opacity:1,scale:1}).set(chip,{opacity:0,y:16,scale:.9}).set(ck,{strokeDasharray:L,strokeDashoffset:L}).set(tap,{left:'72%',top:'112%',opacity:0,scale:1})
+      .from(m.querySelector('.ph-brand'),{scale:.85,opacity:0,duration:.6,ease:'back.out(1.8)'})
+      .from(m.querySelectorAll('.ph-login h4, .ph-login p'),{y:14,opacity:0,duration:.5,ease:EO,stagger:.08},'-=.2')
+      .from(opts,{y:18,opacity:0,duration:.5,ease:EO,stagger:.1},'-=.2')
+      .to(tap,{opacity:1,duration:.2},'+=.4')
+      .to(tap,{left:'50%',top:()=>(main.offsetTop+main.offsetHeight/2+login.offsetTop)+'px',duration:.9,ease:'power2.inOut'},'<')
+      .to(tap,{scale:.7,duration:.12,yoyo:true,repeat:1})
+      .add(()=>main.classList.add('pressed'),'<')
+      .add(()=>main.classList.remove('pressed'),'+=.15')
+      .to(tap,{opacity:0,scale:1.6,duration:.35})
+      .to(login,{opacity:0,scale:.96,duration:.35},'+=.15')
+      .to(ok,{yPercent:0,duration:.6,ease:'expo.out'},'<')
+      .to(ck,{strokeDashoffset:0,duration:.5,ease:'power2.out'},'-=.2')
+      .from(m.querySelectorAll('.ph-ok h4, .ph-ok p'),{y:12,opacity:0,duration:.4,stagger:.08},'-=.3')
+      .from(m.querySelector('.ok-coupon'),{scale:.6,opacity:0,duration:.6,ease:'back.out(2)'},'-=.1')
+      .to(chip,{opacity:1,y:0,scale:1,duration:.6,ease:'back.out(1.8)'},'-=.3')
+      .to({}, {duration:2.2})
+      .to(chip,{opacity:0,y:-10,duration:.4})
+      .to(ok,{yPercent:100,duration:.5,ease:'power3.in'},'<');
+    ScrollTrigger.create({trigger:m,start:'top 85%',end:'bottom top',onToggle:s=>s.isActive?tl.play():tl.pause()});
+  })();
 
   /* 3D cloud */
   (function(){

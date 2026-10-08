@@ -92,11 +92,40 @@
 
 /* about */
 .wsp .sec{padding-block:clamp(80px,10vw,150px)}
-.wsp .about{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.5fr);gap:clamp(24px,5vw,80px)}
-.wsp .about .big{font-family:var(--display);font-weight:600;font-size:clamp(28px,3.8vw,56px);line-height:1.08;letter-spacing:-.035em}
+.wsp .about{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.2fr);gap:clamp(32px,6vw,96px);align-items:center}
+.wsp .about-copy .big{margin-top:22px}
+.wsp .about .big{font-family:var(--display);font-weight:600;font-size:clamp(28px,3.4vw,50px);line-height:1.08;letter-spacing:-.035em}
 .wsp .about .big em{font-style:italic;font-weight:300;color:var(--blue)}
 .wsp .about .body{display:grid;gap:16px;color:var(--muted);margin-top:28px;max-width:62ch}
-@media (max-width:860px){.wsp .about{grid-template-columns:1fr}}
+@media (max-width:860px){.wsp .about{grid-template-columns:1fr}.wsp .mock{order:2}}
+
+/* animated login mockup */
+.wsp .mock{position:relative;background:var(--surface);border-radius:32px;padding:clamp(28px,4vw,56px) 16px;display:grid;place-items:center;overflow:hidden;isolation:isolate;min-height:560px}
+.wsp .mock-rings{position:absolute;left:50%;top:50%;width:300px;height:300px;margin:-150px 0 0 -150px;border-radius:50%;border:1px solid rgba(37,168,224,.22);box-shadow:0 0 0 60px rgba(37,168,224,.06),0 0 0 120px rgba(37,168,224,.04),0 0 0 180px rgba(37,168,224,.025);z-index:-1}
+.wsp .phone2{width:min(270px,78%);aspect-ratio:9/18.6;background:#fff;border-radius:38px;border:9px solid #e6f0f6;box-shadow:0 40px 70px -30px rgba(11,145,193,.45),0 0 0 1px rgba(37,168,224,.18);display:flex;flex-direction:column;overflow:hidden;position:relative}
+.wsp .ph-status{display:flex;justify-content:space-between;align-items:center;padding:10px 18px 4px;font-size:11px;font-weight:700;color:#514d4b}
+.wsp .ph-screen{position:relative;flex:1;overflow:hidden}
+.wsp .ph-login,.wsp .ph-ok{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;padding:14px 16px 16px;text-align:center}
+.wsp .ph-brand{width:100%;border:1.5px dashed rgba(37,168,224,.55);background:var(--tint);color:var(--blue-deep);border-radius:16px;padding:16px 10px;display:grid;justify-items:center;gap:6px;font-weight:800;font-size:15px;letter-spacing:.02em;text-transform:uppercase}
+.wsp .phone2 h4{margin:14px 0 2px;font-size:17px;font-weight:700;color:#514d4b;letter-spacing:-.02em}
+.wsp .phone2 p{font-size:11.5px;color:#8f8a88}
+.wsp .ph-opts{width:100%;display:grid;gap:8px;margin-top:14px}
+.wsp .opt{display:flex;align-items:center;justify-content:center;gap:8px;border:1px solid #e3e6e8;border-radius:12px;padding:10px 8px;font-size:11.5px;font-weight:600;color:#514d4b;background:#fff;transition:transform .2s,background .2s}
+.wsp .opt.main{background:var(--blue);border-color:var(--blue);color:#fff}
+.wsp .opt.pressed{transform:scale(.95);background:var(--blue-deep)}
+.wsp .phone2 small{margin-top:auto;font-size:9px;line-height:1.4;color:#a19c9a}
+.wsp .ph-ok{justify-content:center;gap:4px;background:#fff}
+.wsp:not(.gs) .ph-ok{display:none}
+.wsp .ok-check{width:68px;height:68px;border-radius:50%;background:var(--grad);color:#fff;display:grid;place-items:center;margin-bottom:6px;box-shadow:0 0 0 10px var(--tint)}
+.wsp .ok-coupon{margin-top:18px;border:1.5px dashed var(--blue);border-radius:14px;padding:10px 16px;display:grid;gap:2px;color:var(--blue-deep)}
+.wsp .ok-coupon b{font-size:20px;font-weight:800;letter-spacing:-.02em}
+.wsp .ok-coupon span{font-size:11px;font-weight:600}
+.wsp .tap{position:absolute;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;background:rgba(37,168,224,.28);border:2px solid rgba(255,255,255,.9);box-shadow:0 6px 18px rgba(11,145,193,.35);left:70%;top:110%;opacity:0;pointer-events:none}
+.wsp .mock-chip{position:absolute;right:clamp(10px,4%,40px);top:clamp(24px,12%,80px);background:#fff;border-radius:16px;padding:11px 14px;display:flex;gap:10px;align-items:center;box-shadow:0 18px 40px -18px rgba(11,145,193,.45);font-size:12px;line-height:1.3;color:#514d4b}
+.wsp .mock-chip .dot{width:28px;height:28px;border-radius:9px;background:var(--tint);color:var(--blue-deep);display:grid;place-items:center;flex:none}
+.wsp .mock-chip b{display:block;font-size:12.5px}
+.wsp .mock-chip small{color:#8f8a88;font-size:10.5px}
+@media (max-width:480px){.wsp .mock{min-height:500px}.wsp .mock-chip{top:14px;right:10px}}
 
 /* 3D cloud */
 .wsp .cloud{height:280vh;background:var(--grad);color:#fff}
