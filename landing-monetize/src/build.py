@@ -1,17 +1,23 @@
 import sys,os
-d=os.path.dirname(os.path.abspath(__file__))  # src/ holds style.css, body.html, script.js; outputs go to ../rd-station
+d=os.path.dirname(os.path.abspath(__file__))
 css=open(d+'/style.css').read(); body=open(d+'/body.html').read(); js=open(d+'/script.js').read()
 CDN='https://d335luupugsy2.cloudfront.net/cms/files/870990/'
-clients=['1739895020/$9hrs3y4cjzv','1739895020/$fo2muk8twn','1739895020/$n0va1pm137i','1739895020/$sbtcp1w2v6j','1739895020/$q1fbqxtbjoh','1739895020/$bz5quhd71ae','1739895020/$0blkp3ho81e','1739895020/$38ggppeu98a']
-imgs=''.join(f'<img src="{CDN}{c}" alt="Logo de cliente Wispot" loading="lazy">' for c in clients)
-logos=imgs+imgs.replace('alt="Logo de cliente Wispot"','alt="" aria-hidden="true"')
+import base64,glob
+# client logos live in clients/*.png (transparent, trimmed); listed in this order, the rest alphabetically
+ORDER=['carrefour','heineken','applebees','johnny-rockets','ofner']
+files=sorted(glob.glob(d+'/clients/*.png'),key=lambda f:(ORDER.index(os.path.basename(f)[:-4]) if os.path.basename(f)[:-4] in ORDER else 99,f))
+def name(f):return os.path.basename(f)[:-4].replace('-',' ').title()
+one=[(name(f),'data:image/png;base64,'+base64.b64encode(open(f,'rb').read()).decode()) for f in files]
+reps=max(1,-(-10//max(1,len(one))))  # each half of the loop holds at least 10 logos
+half=one*reps
+logos=''.join(f'<img src="{u}" alt="{n}">' for n,u in one)+''.join(f'<img src="{u}" alt="" aria-hidden="true">' for n,u in (half[len(one):]+half))
 libs='''<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>'''
 def page(logo):
     return body.replace('{{LOGO}}',logo).replace('{{CLIENT_LOGOS}}',logos)
 # preview artifact
-prev=f'<title>Monetize seu Wi-Fi</title>\n<style>\nbody{{margin:0;background:#fff}}\n{css}</style>\n{page("../../site/assets/logo-blue.png")}\n{libs}\n<script>\n{js}</script>\n'
+prev=f'<title>Monetize seu Wi-Fi</title>\n<style>\nbody{{margin:0;background:#fff}}\n{css}</style>\n{page("../site/assets/logo-blue.png")}\n{libs}\n<script>\n{js}</script>\n'
 open(d+'/../preview.html','w').write(prev)
 # RD kit
 rdlogo=CDN+'1726599561/$f3z0q825xnf'
