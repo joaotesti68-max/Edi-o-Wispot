@@ -228,7 +228,7 @@
 .wsp .pm-flag{position:absolute;right:12px;top:11%;width:12px;height:12px;border-radius:50%;background:radial-gradient(circle,#1e3a8a 0 2.5px,transparent 3px),linear-gradient(45deg,transparent 30%,#fde047 30% 70%,transparent 70%),#16a34a;display:block}
 .wsp .pm-btns{position:absolute;left:11%;right:11%;top:40%;display:grid;gap:5px}
 .wsp .pm-b{border-radius:3px;padding:6px 8px;font-size:6.6px;font-weight:600;color:#fff;letter-spacing:.02em;display:flex;align-items:center;transition:filter .2s,transform .2s}
-.wsp .pm-b.fb{background:#3b5998}.wsp .pm-b.gg{background:#dd4b39}.wsp .pm-b.li{background:#0e76a8}.wsp .pm-b.ap{background:#222}.wsp .pm-b.tw{background:#1da1f2}.wsp .pm-b.ce{background:#fff;color:#333}
+.wsp .pm-b.fb{background:#3b5998}.wsp .pm-b.gg{background:#dd4b39}.wsp .pm-b.li{background:#0e76a8}.wsp .pm-b.ap{background:#222}.wsp .pm-b.tw{background:#14171a}.wsp .pm-b.ce{background:#fff;color:#333}
 .wsp .pm-b.press{filter:brightness(.85);transform:scale(.97)}
 .wsp .pm-terms-link{position:absolute;left:0;right:0;top:82%;text-align:center;font-size:6px;color:#fff;opacity:.9}
 .wsp .pm-sheet{position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:14px 14px 0 0;padding:6px 14px 14px;box-shadow:0 -10px 30px rgba(0,0,0,.18)}
