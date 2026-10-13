@@ -68,6 +68,17 @@
     requestAnimationFrame(draw);
   });
 
+  /* ---------- client logos: each logo ships once; fill both looping rows here ---------- */
+  (function(){
+    const rows=page.querySelectorAll('.crow .ctrack');if(!rows.length)return;
+    const base=[...rows[0].children];if(!base.length)return;
+    const per=Math.max(1,Math.ceil(12/base.length));
+    rows.forEach((t,ri)=>{
+      const src=ri?base.slice().reverse():base;t.innerHTML='';
+      for(let h=0;h<2;h++)for(let k=0;k<per;k++)src.forEach((c,i)=>{const n=c.cloneNode(true);if(ri||h||k){n.querySelector('img').alt='';n.setAttribute('aria-hidden','true')}t.append(n)});
+    });
+  })();
+
   /* ---------- client logos: hide broken images ---------- */
   document.querySelectorAll('.wsp .logo-card img').forEach(img=>{
     const swap=()=>{const d=document.createElement('div');d.className='ph';d.textContent='Logo cliente';img.replaceWith(d)};
@@ -103,7 +114,7 @@
   /* hero intro */
   gsap.timeline()
     .from(splitWords(page.querySelector('.hero h1')),{yPercent:118,rotate:5,duration:1.3,ease:EO,stagger:.07},.1)
-    .from('.wsp .hero .eyebrow, .wsp .hero .lede, .wsp .proof',{y:30,opacity:0,duration:1,ease:EO,stagger:.09},.35)
+    .from('.wsp .hero .eyebrow, .wsp .hero .lede',{y:30,opacity:0,duration:1,ease:EO,stagger:.09},.35)
     .fromTo('.wsp .stage',{clipPath:'inset(100% 0% 0% 0% round 32px)'},{clipPath:'inset(0% 0% 0% 0% round 32px)',duration:1.4,ease:'expo.inOut'},0)
     .from('.wsp .form-card',{y:80,rotate:-3,opacity:0,duration:1.3,ease:EO},.6)
     .from('.wsp .form-card > *',{y:20,opacity:0,duration:.8,ease:EO,stagger:.06},.85)
@@ -120,34 +131,35 @@
   batch('.wsp .why article',{y:70,opacity:0,rotate:2});
   batch('.wsp .diffs li',{x:40,opacity:0});
 
-  /* login mockup: options appear, a tap on "telefone", then the connected screen with a coupon; loops while visible */
+  /* login mockup: real portal screens, a tap on each step, loops while visible */
   (function(){
     const m=page.querySelector('.mock');if(!m)return;
-    const opts=m.querySelectorAll('.opt'),main=m.querySelector('.opt.main'),tap=m.querySelector('.tap'),ok=m.querySelector('.ph-ok'),login=m.querySelector('.ph-login'),chip=m.querySelector('.mock-chip');
-    gsap.set(ok,{yPercent:100});
-    const ck=m.querySelector('.ck');const L=ck.getTotalLength();
+    const S=[...m.querySelectorAll('.scr')],tap=m.querySelector('.tap'),chip=m.querySelector('.mock-chip');
     gsap.from(m.querySelector('.phone2'),{y:120,rotate:-6,opacity:0,duration:1.4,ease:EO,scrollTrigger:{trigger:m,start:'top 80%'}});
     gsap.to(m.querySelector('.mock-rings'),{scale:1.25,ease:'none',scrollTrigger:{trigger:m,start:'top bottom',end:'bottom top',scrub:true}});
-    const tl=gsap.timeline({repeat:-1,repeatDelay:.6,paused:true});
-    tl.set(ok,{yPercent:100}).set(login,{opacity:1,scale:1}).set(chip,{opacity:0,y:16,scale:.9}).set(ck,{strokeDasharray:L,strokeDashoffset:L}).set(tap,{left:'72%',top:'112%',opacity:0,scale:1})
-      .from(m.querySelector('.ph-brand'),{scale:.85,opacity:0,duration:.6,ease:'back.out(1.8)'})
-      .from(m.querySelectorAll('.ph-login h4, .ph-login p'),{y:14,opacity:0,duration:.5,ease:EO,stagger:.08},'-=.2')
-      .from(opts,{y:18,opacity:0,duration:.5,ease:EO,stagger:.1},'-=.2')
-      .to(tap,{opacity:1,duration:.2},'+=.4')
-      .to(tap,{left:'50%',top:()=>(main.offsetTop+main.offsetHeight/2+login.offsetTop)+'px',duration:.9,ease:'power2.inOut'},'<')
-      .to(tap,{scale:.7,duration:.12,yoyo:true,repeat:1})
-      .add(()=>main.classList.add('pressed'),'<')
-      .add(()=>main.classList.remove('pressed'),'+=.15')
-      .to(tap,{opacity:0,scale:1.6,duration:.35})
-      .to(login,{opacity:0,scale:.96,duration:.35},'+=.15')
-      .to(ok,{yPercent:0,duration:.6,ease:'expo.out'},'<')
-      .to(ck,{strokeDashoffset:0,duration:.5,ease:'power2.out'},'-=.2')
-      .from(m.querySelectorAll('.ph-ok h4, .ph-ok p'),{y:12,opacity:0,duration:.4,stagger:.08},'-=.3')
-      .from(m.querySelector('.ok-coupon'),{scale:.6,opacity:0,duration:.6,ease:'back.out(2)'},'-=.1')
-      .to(chip,{opacity:1,y:0,scale:1,duration:.6,ease:'back.out(1.8)'},'-=.3')
-      .to({}, {duration:2.2})
+    // tap targets as % of the screen: rede, aceite, continuar, Google, conta
+    const taps=[[49,29],[18,61],[50,80],[50,52],[50,74]];
+    const tl=gsap.timeline({repeat:-1,repeatDelay:.4,paused:true});
+    tl.set(S,{opacity:0}).set(S[0],{opacity:1}).set(chip,{opacity:0,y:16,scale:.9}).set(tap,{opacity:0,scale:1});
+    function step(from,to,t,hold){
+      tl.set(tap,{left:t[0]+'%',top:t[1]+'%',scale:1.4},'+='+hold)
+        .to(tap,{opacity:1,scale:1,duration:.3,ease:'power2.out'})
+        .to(tap,{scale:.75,duration:.12,yoyo:true,repeat:1})
+        .to(tap,{opacity:0,scale:1.5,duration:.3})
+        .to(S[to],{opacity:1,duration:.45,ease:'power1.inOut'},'-=.2')
+        .set(S[from],{opacity:0});
+    }
+    step(0,1,taps[0],.9);
+    step(1,2,taps[1],1.1);
+    step(2,3,taps[2],.6);
+    step(3,4,taps[3],1.2);
+    step(4,5,taps[4],.9);
+    tl.to(S[6],{opacity:1,duration:.5},'+=1.1').set(S[5],{opacity:0})
+      .to(chip,{opacity:1,y:0,scale:1,duration:.6,ease:'back.out(1.8)'},'-=.2')
+      .to({},{duration:2.4})
       .to(chip,{opacity:0,y:-10,duration:.4})
-      .to(ok,{yPercent:100,duration:.5,ease:'power3.in'},'<');
+      .to(S[0],{opacity:1,duration:.5},'<')
+      .set(S[6],{opacity:0});
     ScrollTrigger.create({trigger:m,start:'top 85%',end:'bottom top',onToggle:s=>s.isActive?tl.play():tl.pause()});
   })();
 

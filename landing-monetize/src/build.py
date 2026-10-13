@@ -18,10 +18,11 @@ logos=None
 libs='''<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>'''
+screens=''.join(f'<img class="scr s{i}" src="data:image/jpeg;base64,'+base64.b64encode(open(f'{d}/screens/s{i}.jpg','rb').read()).decode()+'" alt="">' for i in range(7))
 def page(logo):
-    return body.replace('{{LOGO}}',logo).replace('{{ROW1}}',cards(row)).replace('{{ROW2}}',cards(row2,True))
+    return body.replace('{{SCREENS}}',screens).replace('{{LOGO}}',logo).replace('{{ROW1}}',cards(one)).replace('{{ROW2}}','')
 # preview artifact
-prev=f'<title>Monetize seu Wi-Fi</title>\n<style>\nbody{{margin:0;background:#fff}}\n{css}</style>\n{page("../site/assets/logo-blue.png")}\n{libs}\n<script>\n{js}</script>\n'
+prev=f'<title>Monetize seu Wi-Fi</title>\n<style>\n{css}\nbody{{margin:0;background:#fff}}\n</style>\n{page("../site/assets/logo-blue.png")}\n{libs}\n<script>\n{js}</script>\n'
 open(d+'/../preview.html','w').write(prev)
 # RD kit
 rdlogo=CDN+'1726599561/$f3z0q825xnf'
