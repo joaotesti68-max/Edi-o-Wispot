@@ -127,35 +127,59 @@
   batch('.wsp .why article',{y:70,opacity:0,rotate:2});
   batch('.wsp .diffs li',{x:40,opacity:0});
 
-  /* login mockup: real portal screens, a tap on each step, loops while visible */
+  /* login mockup: recreated Wispot portal flow, a tap on each step, loops while visible */
   (function(){
     const m=page.querySelector('.mock');if(!m)return;
-    const S=[...m.querySelectorAll('.scr')],tap=m.querySelector('.tap'),chip=m.querySelector('.mock-chip');
-    gsap.from(m.querySelector('.phone2'),{y:120,rotate:-6,opacity:0,duration:1.4,ease:EO,scrollTrigger:{trigger:m,start:'top 80%'}});
-    gsap.to(m.querySelector('.mock-rings'),{scale:1.25,ease:'none',scrollTrigger:{trigger:m,start:'top bottom',end:'bottom top',scrub:true}});
-    // tap targets as % of the screen: rede, aceite, continuar, Google, conta
-    const taps=[[49,29],[18,61],[50,80],[50,52],[50,74]];
-    const tl=gsap.timeline({repeat:-1,repeatDelay:.4,paused:true});
-    tl.set(S,{opacity:0}).set(S[0],{opacity:1}).set(chip,{opacity:0,y:16,scale:.9}).set(tap,{opacity:0,scale:1});
-    function step(from,to,t,hold){
-      tl.set(tap,{left:t[0]+'%',top:t[1]+'%',scale:1.4},'+='+hold)
+    const q=s=>m.querySelector(s),qa=s=>m.querySelectorAll(s);
+    const wifi=q('.pm-wifi'),terms=q('.pm-terms'),social=q('.pm-social'),done=q('.pm-done'),bar=q('.pm-bar');
+    const tap=q('.tap'),chip=q('.mock-chip'),sheet=q('.pm-sheet'),load=q('.pm-loading'),ck=q('.pm-done .ck');
+    const spin=q('.pm-net .pm-spin'),ok=q('.pm-net .pm-ok'),check=q('.pm-check'),cont=q('.pm-continue'),gbtn=q('.pm-b.gg'),acc=q('.pm-acc');
+    const L=ck.getTotalLength();
+    gsap.from(q('.phone2'),{y:120,rotate:-6,opacity:0,duration:1.4,ease:EO,scrollTrigger:{trigger:m,start:'top 80%'}});
+    gsap.to(q('.mock-rings'),{scale:1.25,ease:'none',scrollTrigger:{trigger:m,start:'top bottom',end:'bottom top',scrub:true}});
+    const cls=(el,c,on)=>()=>el.classList.toggle(c,on);
+    function tapAt(tl,el,dx,dy,hold){
+      tl.set(tap,{left:()=>{const s=q('.ph-screen').getBoundingClientRect(),r=el.getBoundingClientRect();return (r.left-s.left+r.width*(dx||.5))+'px'},top:()=>{const s=q('.ph-screen').getBoundingClientRect(),r=el.getBoundingClientRect();return (r.top-s.top+r.height*(dy||.5))+'px'},scale:1.4},'+='+hold)
         .to(tap,{opacity:1,scale:1,duration:.3,ease:'power2.out'})
         .to(tap,{scale:.75,duration:.12,yoyo:true,repeat:1})
-        .to(tap,{opacity:0,scale:1.5,duration:.3})
-        .to(S[to],{opacity:1,duration:.45,ease:'power1.inOut'},'-=.2')
-        .set(S[from],{opacity:0});
+        .to(tap,{opacity:0,scale:1.5,duration:.3});
     }
-    step(0,1,taps[0],.9);
-    step(1,2,taps[1],1.1);
-    step(2,3,taps[2],.6);
-    step(3,4,taps[3],1.2);
-    step(4,5,taps[4],.9);
-    tl.to(S[6],{opacity:1,duration:.5},'+=1.1').set(S[5],{opacity:0})
+    const tl=gsap.timeline({repeat:-1,repeatDelay:.3,paused:true});
+    tl.set([wifi,terms,social,done],{opacity:0}).set(wifi,{opacity:1}).set(bar,{className:'pm-bar'})
+      .set(spin,{display:'none'}).set(ok,{display:'none'}).add(cls(check,'on',false)).add(cls(cont,'on',false))
+      .set(sheet,{yPercent:100}).set(load,{opacity:0}).set(acc,{className:'pm-acc'}).set(chip,{opacity:0,y:16,scale:.9})
+      .set(ck,{strokeDasharray:L,strokeDashoffset:L}).set(tap,{opacity:0});
+    // 1. pick the network
+    tapAt(tl,q('.pm-net'),.3,.5,.8);
+    tl.set(spin,{display:'inline-block'},'-=.35').set(spin,{display:'none'},'+=.9').set(ok,{display:'inline-block'})
+    // 2. terms modal
+      .to(terms,{opacity:1,duration:.45},'+=.35').set(bar,{className:'pm-bar light'},'<').set(wifi,{opacity:0})
+      .from(q('.pm-modal'),{y:30,opacity:0,duration:.5,ease:'power3.out'},'<');
+    tapAt(tl,q('.pm-check i'),.5,.5,.9);
+    tl.add(cls(check,'on',true),'-=.4').add(cls(cont,'on',true),'-=.3');
+    tapAt(tl,cont,.5,.5,.5);
+    // 3. branded social login
+    tl.to(social,{opacity:1,duration:.45},'+=.1').set(terms,{opacity:0})
+      .from(q('.pm-social .pm-brand'),{scale:.6,opacity:0,duration:.6,ease:'back.out(1.8)'},'<')
+      .from(qa('.pm-b'),{y:14,opacity:0,duration:.4,ease:'power2.out',stagger:.07},'<.15');
+    tapAt(tl,gbtn,.5,.5,.8);
+    tl.add(cls(gbtn,'press',true),'-=.45').add(cls(gbtn,'press',false),'-=.15')
+    // 4. Google account picker
+      .to(sheet,{yPercent:0,duration:.55,ease:'expo.out'},'+=.1');
+    tapAt(tl,acc,.5,.5,1);
+    tl.add(cls(acc,'hl',true),'-=.4')
+    // 5. connecting
+      .to(sheet,{yPercent:100,duration:.4,ease:'power3.in'},'+=.15')
+      .to(load,{opacity:1,duration:.3},'<.2')
+    // 6. connected
+      .to(done,{opacity:1,duration:.5},'+=1.3').set(social,{opacity:0})
+      .from(q('.pm-okc'),{scale:0,duration:.6,ease:'back.out(2.2)'},'<.1')
+      .to(ck,{strokeDashoffset:0,duration:.45,ease:'power2.out'},'-=.2')
+      .from(qa('.pm-done strong, .pm-done > span'),{y:12,opacity:0,duration:.4,stagger:.08},'-=.25')
       .to(chip,{opacity:1,y:0,scale:1,duration:.6,ease:'back.out(1.8)'},'-=.2')
       .to({},{duration:2.4})
       .to(chip,{opacity:0,y:-10,duration:.4})
-      .to(S[0],{opacity:1,duration:.5},'<')
-      .set(S[6],{opacity:0});
+      .to(wifi,{opacity:1,duration:.5},'<').set(bar,{className:'pm-bar'},'<').set(done,{opacity:0});
     ScrollTrigger.create({trigger:m,start:'top 85%',end:'bottom top',onToggle:s=>s.isActive?tl.play():tl.pause()});
   })();
 

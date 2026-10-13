@@ -56,12 +56,72 @@
   <!-- ABOUT -->
   <section class="sec">
     <div class="wrap about">
-      <div class="mock" data-cursor="Login" role="img" aria-label="Telas reais do portal Wispot: o cliente escolhe a rede, aceita os termos, entra com o Google e fica conectado, com a marca do estabelecimento no topo">
+      <div class="mock" data-cursor="Login" role="img" aria-label="Telas do portal Wispot: o cliente escolhe a rede, aceita os termos, entra com o Google e fica conectado, com a marca do estabelecimento no topo">
         <div class="mock-rings" aria-hidden="true"></div>
         <div class="phone2" aria-hidden="true">
           <span class="btn-side l1"></span><span class="btn-side l2"></span><span class="btn-side r1"></span>
           <div class="ph-screen">
-            {{SCREENS}}
+            <div class="pm-bar"><span>15:32</span><span class="pm-ic"><svg width="15" height="10" viewBox="0 0 17 11"><rect x="0" y="7" width="3" height="4" rx="1"/><rect x="4.5" y="5" width="3" height="6" rx="1"/><rect x="9" y="2.5" width="3" height="8.5" rx="1"/><rect x="13.5" y="0" width="3" height="11" rx="1"/></svg><svg width="13" height="10" viewBox="0 0 24 18" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M2 6.5a14 14 0 0 1 20 0M5.5 10a9 9 0 0 1 13 0M9 13.5a4 4 0 0 1 6 0"/></svg><i class="pm-bat"><b></b></i></span></div>
+
+            <!-- 1. iOS Wi-Fi settings -->
+            <div class="scr pm-wifi">
+              <h5>Wi-Fi</h5>
+              <div class="pm-card"><div class="pm-row"><span>Wi-Fi</span><i class="pm-toggle"></i></div></div>
+              <div class="pm-lab">MINHA REDE</div>
+              <div class="pm-card"><div class="pm-row pm-net"><span><i class="pm-spin"></i><svg class="pm-ok" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5L20 6.5"/></svg>WISPOT_GUEST</span><span class="pm-sig"><svg width="12" height="9" viewBox="0 0 24 18" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M2 6.5a14 14 0 0 1 20 0M5.5 10a9 9 0 0 1 13 0M9 13.5a4 4 0 0 1 6 0"/></svg>›</span></div></div>
+              <div class="pm-lab">OUTRAS REDES</div>
+              <div class="pm-card">
+                <div class="pm-row"><span class="pm-blur">Rede_Convidados</span><span class="pm-sig"><svg width="9" height="11" viewBox="0 0 20 24" fill="none" stroke="currentColor" stroke-width="2.6"><rect x="3" y="10" width="14" height="11" rx="2" fill="currentColor"/><path d="M6 10V7a4 4 0 0 1 8 0v3"/></svg> ›</span></div>
+                <div class="pm-row"><span class="pm-blur">Escritório_SC</span><span class="pm-sig"><svg width="9" height="11" viewBox="0 0 20 24" fill="none" stroke="currentColor" stroke-width="2.6"><rect x="3" y="10" width="14" height="11" rx="2" fill="currentColor"/><path d="M6 10V7a4 4 0 0 1 8 0v3"/></svg> ›</span></div>
+              </div>
+            </div>
+
+            <!-- 2. Wispot terms -->
+            <div class="scr pm-portal pm-terms">
+              <div class="pm-bg"></div>
+              <div class="pm-modal">
+                <span class="pm-x">×</span>
+                <img src="{{LOGO}}" alt="">
+                <h6>TERMOS DE USO E POLÍTICA DE PRIVACIDADE DA WISPOT</h6>
+                <p>A WISPOT é uma empresa inovadora na área de tecnologia, especializada na criação de soluções através de projetos Wi-Fi, com o objetivo de aproximar os clientes e as empresas.</p>
+                <label class="pm-check"><i></i>Declaro que li e estou de acordo com os Termos de Uso e Política de Privacidade do(a) WISPOT</label>
+              </div>
+              <div class="pm-continue">→ CONTINUE</div>
+            </div>
+
+            <!-- 3. branded social login -->
+            <div class="scr pm-portal pm-social">
+              <div class="pm-bg"></div>
+              <div class="pm-brand"><i class="pm-ring"></i><span>SUA MARCA</span></div>
+              <i class="pm-flag"></i>
+              <div class="pm-btns">
+                <div class="pm-b fb">f&nbsp; CONECTE-SE COM FACEBOOK</div>
+                <div class="pm-b gg">G&nbsp; CONECTE-SE COM GOOGLE</div>
+                <div class="pm-b li">in&nbsp; CONECTE-SE COM LINKEDIN</div>
+                <div class="pm-b ap"><svg width="9" height="10" viewBox="0 0 24 28" fill="currentColor"><path d="M19.6 14.9c0-3.4 2.8-5 2.9-5.1-1.6-2.3-4-2.6-4.9-2.7-2.1-.2-4.1 1.2-5.1 1.2-1.1 0-2.7-1.2-4.4-1.2-2.3 0-4.4 1.3-5.5 3.4-2.4 4.1-.6 10.2 1.7 13.5 1.1 1.6 2.5 3.5 4.3 3.4 1.7-.1 2.4-1.1 4.5-1.1s2.7 1.1 4.5 1.1c1.9 0 3-1.7 4.1-3.3 1.3-1.9 1.8-3.7 1.8-3.8 0 0-3.6-1.4-3.6-5.4zM16.3 4.8c.9-1.1 1.6-2.7 1.4-4.3-1.3.1-3 .9-3.9 2-.9 1-1.6 2.6-1.4 4.2 1.5.1 3-.8 3.9-1.9z"/></svg>&nbsp; CONECTE-SE COM APPLE</div>
+                <div class="pm-b tw">ENTRAR COM TWITTER</div>
+                <div class="pm-b ce"><svg width="8" height="11" viewBox="0 0 16 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="2" y="1.5" width="12" height="21" rx="2.5"/></svg>&nbsp; CONECTE-SE COM CELULAR</div>
+              </div>
+              <div class="pm-terms-link">Termos e Condições, e Política de Privacidade</div>
+              <div class="pm-sheet">
+                <div class="pm-grab"></div>
+                <div class="pm-gh"><svg width="16" height="16" viewBox="0 0 24 24"><path fill="#4285F4" d="M22 12.2c0-.7-.1-1.4-.2-2H12v3.9h5.6a4.8 4.8 0 0 1-2.1 3.1v2.6h3.4c2-1.8 3.1-4.5 3.1-7.6z"/><path fill="#34A853" d="M12 22.5c2.8 0 5.2-.9 6.9-2.5l-3.4-2.6c-.9.6-2.1 1-3.5 1-2.7 0-5-1.8-5.8-4.3H2.7v2.7A10.5 10.5 0 0 0 12 22.5z"/><path fill="#FBBC05" d="M6.2 14.1a6.3 6.3 0 0 1 0-4.2V7.2H2.7a10.5 10.5 0 0 0 0 9.6z"/><path fill="#EA4335" d="M12 5.6c1.5 0 2.9.5 4 1.6l3-3A10.5 10.5 0 0 0 2.7 7.2l3.5 2.7C7 7.4 9.3 5.6 12 5.6z"/></svg><span><b>Escolher uma conta</b><small>para continuar</small></span></div>
+                <div class="pm-acc"><i></i><span><b>Maria Fernanda Souza</b><small>mariafernanda@gmail.com</small></span></div>
+                <div class="pm-other"><i>+</i>Usar outra conta</div>
+                <small class="pm-fine">Ao continuar, o Google compartilha seu nome e endereço de e-mail com este site.</small>
+              </div>
+              <div class="pm-loading"><i class="pm-spin big"></i><span>CONECTANDO...</span></div>
+            </div>
+
+            <!-- 4. connected -->
+            <div class="scr pm-portal pm-done">
+              <div class="pm-bg"></div>
+              <div class="pm-brand"><i class="pm-ring"></i><span>SUA MARCA</span></div>
+              <div class="pm-okc"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path class="ck" d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+              <strong>CONECTADO!</strong>
+              <span>APROVEITE A NAVEGAÇÃO</span>
+            </div>
+
             <div class="tap"></div>
           </div>
         </div>

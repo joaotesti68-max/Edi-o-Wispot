@@ -38,5 +38,5 @@ Se preferir usar o formulário nativo do RD, apague o `<form ...>...</form>` do 
 
 ## Imagens
 - **Logo da Wispot:** usa uma imagem que já está no gerenciador de arquivos do RD (a mesma da página antiga). Se aparecer outra imagem, suba o logo e troque o endereço nas tags `<img src=...>` que usam o logo.
-- **Logos de clientes e telas do celular:** vão embutidos no próprio código, então não precisa subir nada.
-- **Tamanho:** por causa dessas imagens, o arquivo `tudo-em-um-bloco-html.html` tem uns 470 KB. Se o RD reclamar do tamanho, use a opção B (três partes).
+- **Logos de clientes:** vão embutidos no próprio código, então não precisa subir nada.
+- **Tamanho:** por causa dessas imagens, o arquivo `tudo-em-um-bloco-html.html` tem uns 280 KB. Se o RD reclamar do tamanho, use a opção B (três partes).
