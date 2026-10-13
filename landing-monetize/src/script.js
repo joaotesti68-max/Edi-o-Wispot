@@ -14,6 +14,14 @@
   };
 
   const page=document.getElementById('wsp');if(!page)return;
+
+  /* ---------- full width inside RD Station's 960px column ---------- */
+  function bleed(){
+    const st=page.style;st.setProperty('margin-left','0px','important');st.setProperty('width','auto','important');
+    const left=page.getBoundingClientRect().left,w=document.documentElement.clientWidth;
+    st.setProperty('width',w+'px','important');st.setProperty('max-width',w+'px','important');st.setProperty('margin-left',(-left)+'px','important');
+  }
+  bleed();addEventListener('resize',()=>{bleed();if(window.ScrollTrigger)ScrollTrigger.refresh()});addEventListener('load',bleed);
   const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
   const HAS=!!(window.gsap&&window.ScrollTrigger);
 
