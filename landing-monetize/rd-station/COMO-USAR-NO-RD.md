@@ -37,5 +37,6 @@ O envio só acontece quando a página está publicada em `wispot.com.br` ou num 
 Se preferir usar o formulário nativo do RD, apague o `<form ...>...</form>` do HTML e coloque um bloco de formulário do RD logo abaixo. O visual do resto da página não muda.
 
 ## Imagens
-- **Logo:** usa uma imagem que já está no gerenciador de arquivos do RD (a mesma da página atual). Se aparecer outra imagem, suba o logo e troque o endereço nas duas tags `<img src=...>` que usam o logo.
-- **Logos de clientes:** usam as 8 imagens da seção "Conheça nossos clientes" da página atual. Confira se são os logos certos.
+- **Logo da Wispot:** usa uma imagem que já está no gerenciador de arquivos do RD (a mesma da página antiga). Se aparecer outra imagem, suba o logo e troque o endereço nas tags `<img src=...>` que usam o logo.
+- **Logos de clientes e telas do celular:** vão embutidos no próprio código, então não precisa subir nada.
+- **Tamanho:** por causa dessas imagens, o arquivo `tudo-em-um-bloco-html.html` tem uns 470 KB. Se o RD reclamar do tamanho, use a opção B (três partes).
