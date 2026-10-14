@@ -1,6 +1,6 @@
 # Landing page Pro Advanced no RD Station
 
-Mesmo passo a passo da landing page da Wispot. Versão 4 "Campo de Dados": fundo azul-marinho com um campo de pixels de dados que se reorganiza em cada seção (ícones das soluções, escudo, 27, símbolo da Pro). Fonte Montserrat.
+Mesmo passo a passo da landing page da Wispot. Versão 4 "Campo de Dados": fundo azul-marinho com uma rota de dados que percorre a página; um ponto de luz segue a rolagem levando pixels que montam a figura de cada seção (ícones das soluções, escudo, 27, símbolo da Pro). Fonte Montserrat.
 
 1. Crie uma landing page no RD, apague as seções do modelo e deixe só uma, com largura total e margens internas em 0.
 2. Arraste um bloco **HTML** e cole o conteúdo de `tudo-em-um-bloco-html.html`.
