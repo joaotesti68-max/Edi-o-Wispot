@@ -1,0 +1,635 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pro Advanced · A Estrutura</title>
+<meta name="description" content="Gestão completa de TI e Cibersegurança para empresas que não podem parar.">
+<style>
+/* Pro Advanced · v5 "A Estrutura" — one living cybersecurity structure, palette from proadvanced.com.br, Montserrat */
+.px{--black:#000;--navy:#0e2a3f;--deep:#045089;--blue:#2ba3db;--cyan:#68c5db;--steel:#488ab7;--mist:#c9d6e4;--mut:#a8b6c6;--white:#fff;
+  --grad:linear-gradient(117deg,#488ab7 0%,#68c5db 100%);--line:rgba(104,197,219,.22);--line2:rgba(201,214,228,.1);--panel:rgba(8,26,40,.82);
+  --font:'Montserrat',system-ui,sans-serif;--gutter:clamp(18px,4vw,56px);--col:min(600px,46vw);
+  position:relative;isolation:isolate;background:#071a28;color:var(--mist);font-family:var(--font);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:clip;font-variant-numeric:tabular-nums}
+.px *,.px *::before,.px *::after{box-sizing:border-box;margin:0;padding:0}
+.px a{color:inherit;text-decoration:none}
+.px ol,.px ul{list-style:none}
+.px img{display:block;max-width:100%}
+.px h1,.px h2,.px h3,.px h4{font-family:var(--font);color:#fff;font-weight:600;letter-spacing:-.025em;line-height:1.06}
+.px h1 b,.px h2 b{font-weight:inherit;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.px main,.px .ftr{position:relative;z-index:3}
+.px ::selection{background:var(--cyan);color:#0e2a3f}
+
+/* the structure (fixed 3D scene) + reading scrim */
+.px .scene{position:fixed;inset:0;width:100%;height:100%;z-index:0;display:block;background:radial-gradient(90% 80% at 70% 45%,#0e2a3f 0%,#071a28 55%,#020a10 100%)}
+.px .scrim{position:fixed;inset:0;z-index:1;pointer-events:none;background:linear-gradient(90deg,rgba(7,26,40,.94) 0%,rgba(7,26,40,.82) calc(var(--gutter) + var(--col) - 40px),rgba(7,26,40,0) calc(var(--gutter) + var(--col) + 160px))}
+@media (max-width:900px){.px .scrim{background:linear-gradient(180deg,rgba(7,26,40,.35),rgba(7,26,40,.7))}}
+.px .tags{position:fixed;inset:0;z-index:2;pointer-events:none}
+.px .tag{position:absolute;left:0;top:0;opacity:0;font-size:10.5px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:#fff;white-space:nowrap;transition:opacity .5s}
+.px .tag.on{opacity:1}
+.px .tag i{position:absolute;left:0;top:0;width:8px;height:8px;margin:-4px 0 0 -4px;border:1.5px solid var(--cyan);background:rgba(104,197,219,.25)}
+.px .tag span{position:absolute;left:46px;top:-46px;padding:7px 11px;background:rgba(7,26,40,.85);border:1px solid var(--line);border-left:2px solid var(--cyan)}
+.px .tag span small{display:block;font-size:9.5px;letter-spacing:.2em;color:var(--cyan);margin-bottom:2px}
+.px .tag svg{position:absolute;left:0;top:-46px;overflow:visible}
+@media (max-width:900px){.px .tags{display:none}}
+
+/* mini-map: where we are in the structure */
+.px .map{position:fixed;right:var(--gutter);bottom:26px;z-index:4;width:150px;padding:10px 10px 8px;background:rgba(7,26,40,.85);border:1px solid var(--line2);pointer-events:none}
+.px .map canvas{display:block;width:130px;height:130px}
+.px .map b{display:block;margin-top:6px;font-size:9.5px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--cyan);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media (max-width:900px){.px .map{display:none}.px .lab .v{display:none}}
+
+/* loader */
+.px-load{position:fixed;inset:0;z-index:9999;background:#071a28;display:grid;place-items:center;font-family:'Montserrat',sans-serif;color:#c9d6e4;transition:opacity .7s,visibility .7s}
+.px-load .in{width:min(420px,84vw)}
+.px-load .st{display:flex;justify-content:space-between;font-size:11px;font-weight:600;letter-spacing:.26em;text-transform:uppercase}
+.px-load .st b{color:#fff;font-weight:600}
+.px-load .bar{height:2px;margin-top:12px;background:rgba(201,214,228,.12);position:relative;overflow:hidden}
+.px-load .bar i{position:absolute;inset:0;background:linear-gradient(90deg,#488ab7,#68c5db);transform-origin:left;transform:scaleX(0)}
+.px-load .ls{margin-top:16px;display:grid;gap:4px;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:rgba(168,182,198,.7)}
+.px-load .ls span.ok{color:#68c5db}
+html:not(.px-preload) .px-load{opacity:0;visibility:hidden}
+
+/* header */
+.px .top{position:fixed;top:0;left:0;right:0;z-index:50;transition:transform .5s cubic-bezier(.2,.8,.2,1),background .4s,border-color .4s;border-bottom:1px solid transparent}
+.px .top.solid{background:rgba(7,26,40,.9);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-color:var(--line2)}
+.px .top.hide{transform:translateY(-101%)}
+.px .top .bar{display:flex;align-items:center;justify-content:space-between;gap:24px;height:76px;padding-inline:var(--gutter)}
+.px .top img{height:32px;width:auto}
+.px .menu{display:flex;gap:28px}
+.px .menu a{font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--mist);padding:6px 0;border-bottom:1px solid transparent;transition:color .3s,border-color .3s}
+.px .menu a:hover{color:#fff;border-color:var(--cyan)}
+.px .prog{position:absolute;left:0;bottom:-1px;height:1px;width:100%;background:var(--grad);transform-origin:left;transform:scaleX(0)}
+.px .burger{display:none;width:46px;height:46px;border:1px solid var(--line);background:transparent;cursor:pointer;position:relative}
+.px .burger i{position:absolute;left:13px;right:13px;height:1.5px;background:#fff;transition:transform .3s,opacity .3s}
+.px .burger i:nth-child(1){top:16px}.px .burger i:nth-child(2){top:22px}.px .burger i:nth-child(3){top:28px}
+.px .top.open .burger i:nth-child(1){transform:translateY(6px) rotate(45deg)}.px .top.open .burger i:nth-child(2){opacity:0}.px .top.open .burger i:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+.px .top .cta{white-space:nowrap}
+@media (max-width:1100px){
+  .px .menu{display:none;position:absolute;top:76px;left:0;right:0;flex-direction:column;gap:0;padding:8px var(--gutter) 18px;background:rgba(7,26,40,.97);border-bottom:1px solid var(--line2)}
+  .px .top.open .menu{display:flex}.px .top.open{background:rgba(7,26,40,.97)}
+  .px .menu a{font-size:14px;padding:15px 0;border-top:1px solid var(--line2)}
+  .px .burger{display:block}.px .top .cta{display:none}
+}
+
+/* buttons */
+.px .btn{position:relative;display:inline-flex;align-items:center;gap:14px;padding:17px 26px;font:600 12px var(--font);letter-spacing:.18em;text-transform:uppercase;color:#fff;border:1px solid rgba(104,197,219,.45);background:rgba(7,26,40,.5);overflow:hidden;isolation:isolate;cursor:pointer;transition:border-color .4s,background .4s}
+.px .btn::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--grad);transform:scaleX(0);transform-origin:left;transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+.px .btn:hover::before{transform:none}.px .btn:hover{border-color:transparent}
+.px .btn.solid{background:var(--grad);border-color:transparent}
+.px .btn.solid::before{background:#fff}.px .btn.solid:hover{color:var(--deep)}
+.px .btn svg{transition:transform .4s}.px .btn:hover svg{transform:translateX(4px)}
+
+/* chapters: content lives in the left column, the structure on the right */
+.px .ch{position:relative;min-height:100vh;padding:clamp(110px,14vh,170px) var(--gutter) clamp(80px,12vh,140px);display:flex;flex-direction:column;justify-content:center}
+.px .col{width:var(--col);max-width:100%}
+.px .lab{display:inline-flex;align-items:center;gap:12px;font-size:11.5px;font-weight:600;letter-spacing:.28em;text-transform:uppercase;color:var(--cyan)}
+.px .lab::before{content:"";width:22px;height:1px;background:currentColor}
+.px .lab .v{color:var(--mut);letter-spacing:.18em}
+.px .ch h2{font-size:clamp(32px,3.8vw,58px);margin-top:20px}
+.px .ch .lead{margin-top:20px;font-size:clamp(15px,1.1vw,17px);color:var(--mut);max-width:52ch}
+.px .more{margin-top:36px}
+@media (max-width:900px){.px .ch{min-height:0;padding-top:110px;padding-bottom:70px}.px .col{width:100%}}
+
+/* hero */
+.px .hero h1{font-size:clamp(36px,4vw,64px);letter-spacing:-.035em;line-height:1.02;margin-top:24px}
+.px .hero h1 .thin{font-weight:300;color:var(--mist)}
+.px .hero .acts{display:flex;gap:12px;flex-wrap:wrap;margin-top:34px}
+.px .hero .meta{display:grid;grid-template-columns:repeat(4,auto);justify-content:start;gap:clamp(18px,3vw,40px);margin-top:44px;padding-top:22px;border-top:1px solid var(--line2);font-size:10.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--mut)}
+.px .hero .meta b{display:block;font-size:clamp(20px,2vw,28px);font-weight:300;letter-spacing:-.02em;color:#fff;text-transform:none;margin-bottom:4px}
+.px .hero .meta b i{font-style:normal}
+@media (max-width:560px){.px .hero .meta{grid-template-columns:repeat(2,auto)}}
+
+/* solution list: each item flies the camera to its part of the structure */
+.px .sl{margin-top:40px}
+.px .sl li{border-top:1px solid var(--line2)}
+.px .sl li:last-child{border-bottom:1px solid var(--line2)}
+.px .sl a{display:grid;grid-template-columns:44px minmax(0,1fr) 36px;gap:14px;padding:20px 0;align-items:start}
+.px .sl .k{font-size:11.5px;font-weight:600;letter-spacing:.2em;color:var(--mut);padding-top:5px;transition:color .4s}
+.px .sl h3{font-size:clamp(19px,1.6vw,24px);color:rgba(255,255,255,.45);transition:color .4s}
+.px .sl p{max-height:0;opacity:0;overflow:hidden;font-size:14.5px;color:var(--mut);transition:max-height .6s,opacity .5s,margin-top .5s}
+.px .sl .go{width:36px;height:36px;border:1px solid var(--line);display:grid;place-items:center;color:#fff;opacity:.4;transition:opacity .4s,background .4s}
+.px .sl li.on .k{color:var(--cyan)}.px .sl li.on h3{color:#fff}.px .sl li.on p{max-height:120px;opacity:1;margin-top:10px}.px .sl li.on .go{opacity:1}
+.px .sl a:hover .go{background:var(--grad);border-color:transparent}
+.px .sol-steps .stp{height:46vh}
+@media (max-width:900px){.px .sl p{max-height:none;opacity:1;margin-top:8px}.px .sl h3{color:#fff}.px .sol-steps{display:none}}
+
+/* reasons */
+.px .rl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:40px}
+.px .rl div{padding:20px;background:var(--panel);border:1px solid var(--line2);border-top:2px solid var(--cyan)}
+.px .rl .k{font-size:11px;font-weight:600;letter-spacing:.2em;color:var(--cyan)}
+.px .rl h3{font-size:16px;margin-top:10px}
+.px .rl p{font-size:13.5px;color:var(--mut);margin-top:8px}
+@media (max-width:560px){.px .rl{grid-template-columns:1fr}}
+
+/* 27 */
+.px .big{display:flex;align-items:baseline;gap:18px;margin-top:20px}
+.px .big b{font-size:clamp(110px,14vw,220px);font-weight:200;letter-spacing:-.06em;line-height:.85;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.px .big span{font-size:13px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:var(--mut)}
+.px .tl{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-top:30px;font-size:12px;font-weight:600;letter-spacing:.22em;color:var(--mut)}
+.px .tl i{flex:1;height:1px;background:var(--line2);position:relative}
+.px .tl i::after{content:"";position:absolute;inset:0;background:var(--grad);transform-origin:left;transform:scaleX(var(--p,0))}
+
+/* segments */
+.px .sg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:40px}
+.px .sg a{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:15px 16px;background:var(--panel);border:1px solid var(--line2);font-size:14px;font-weight:600;color:#fff;transition:border-color .3s,background .3s}
+.px .sg a span{font-size:10.5px;letter-spacing:.2em;color:var(--mut)}
+.px .sg a:hover,.px .sg a.on{border-color:var(--cyan);background:rgba(4,80,137,.45)}
+.px .sg a.wide{grid-column:1/-1;background:linear-gradient(117deg,rgba(72,138,183,.4),rgba(4,80,137,.5))}
+
+/* cases */
+.px .cl{margin-top:40px;display:grid;gap:10px}
+.px .cl a{display:grid;grid-template-columns:56px minmax(0,1fr);gap:16px;padding:20px;background:var(--panel);border:1px solid var(--line2);transition:border-color .4s,background .4s}
+.px .cl .n{font-size:30px;font-weight:200;letter-spacing:-.04em;color:var(--mut);line-height:1;transition:color .4s}
+.px .cl small{display:block;font-size:10.5px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--cyan);margin-bottom:6px}
+.px .cl h3{font-size:17px}
+.px .cl p{font-size:13.5px;color:var(--mut);max-height:0;opacity:0;overflow:hidden;transition:max-height .6s,opacity .5s,margin-top .5s}
+.px .cl a.on{border-color:var(--cyan);background:rgba(4,80,137,.4)}.px .cl a.on .n{color:#fff}.px .cl a.on p{max-height:110px;opacity:1;margin-top:8px}
+@media (max-width:900px){.px .cl p{max-height:none;opacity:1;margin-top:8px}}
+
+/* partners */
+.px .logos{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin-top:40px;border-top:1px solid var(--line2);border-left:1px solid var(--line2)}
+.px .logos>div{aspect-ratio:16/10;display:grid;place-items:center;padding:14%;border-right:1px solid var(--line2);border-bottom:1px solid var(--line2);background:var(--panel);transition:background .4s}
+.px .logos>div:hover{background:rgba(4,80,137,.5)}
+.px .logos img{max-height:28px;width:auto;max-width:100%;opacity:.85}
+.px .verde{display:flex;gap:16px;align-items:center;margin-top:12px;padding:18px 20px;background:var(--panel);border:1px solid var(--line2)}
+.px .verde .s{flex:none;width:48px;height:48px;display:grid;place-items:center;background:var(--grad)}
+.px .verde h3{font-size:15px}.px .verde p{font-size:13px;color:var(--mut);margin-top:4px}
+@media (max-width:560px){.px .logos{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
+/* blog */
+.px .bl{margin-top:40px;display:grid;gap:10px}
+.px .bl a{display:grid;grid-template-columns:110px minmax(0,1fr);gap:16px;align-items:center;padding:12px;background:var(--panel);border:1px solid var(--line2);transition:border-color .3s}
+.px .bl a:hover{border-color:var(--cyan)}
+.px .bl .im{aspect-ratio:4/3;overflow:hidden}
+.px .bl img{width:100%;height:100%;object-fit:cover;filter:saturate(.6)}
+.px .bl h3{font-size:14.5px;line-height:1.35}
+
+/* contact */
+.px .info{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:30px}
+.px .info b{display:block;font-size:10.5px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--cyan);margin-bottom:6px}
+.px .info span{display:block;font-size:13.5px;color:var(--mist)}
+.px .info a{display:inline-block;margin-top:6px;font-size:12.5px;color:#fff;border-bottom:1px solid var(--cyan)}
+@media (max-width:620px){.px .info{grid-template-columns:1fr}}
+.px .fbox{margin-top:34px;padding:clamp(22px,3vw,34px);background:var(--panel);border:1px solid var(--line2);border-top:2px solid var(--cyan)}
+.px .fbox h3{font-size:19px;margin-bottom:18px}
+.px .ff{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.px .ff .f{display:grid;gap:6px;min-width:0}
+.px .ff .f.full{grid-column:1/-1}
+.px .ff label{font-size:10.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--mut)}
+.px .ff input,.px .ff textarea{font:500 15px var(--font);color:#fff;background:rgba(0,0,0,.2);border:0;border-bottom:1px solid rgba(201,214,228,.3);padding:12px 10px;width:100%;border-radius:0}
+.px .ff textarea{min-height:84px;resize:vertical}
+.px .ff input:focus,.px .ff textarea:focus{outline:none;border-bottom-color:var(--cyan);background:rgba(4,80,137,.25)}
+.px .ff .btn{grid-column:1/-1;justify-content:space-between;margin-top:6px}
+.px .ff .msg{grid-column:1/-1;font-size:13px;min-height:1.2em;color:var(--mist)}
+.px .fbox .bricks-form__label,.px .fbox label{font:600 10.5px var(--font)!important;letter-spacing:.2em!important;text-transform:uppercase;color:#a8b6c6!important}
+.px .fbox .bricks-form__input,.px .fbox input[type=text],.px .fbox input[type=email],.px .fbox input[type=tel],.px .fbox select,.px .fbox textarea{font:500 15px var(--font)!important;color:#fff!important;background:rgba(0,0,0,.2)!important;border:0!important;border-bottom:1px solid rgba(201,214,228,.3)!important;border-radius:0!important;box-shadow:none!important;padding:12px 10px!important;height:auto!important}
+.px .fbox select option{color:#0e2a3f}
+.px .fbox .bricks--component-button,.px .fbox button[type=submit]{background:linear-gradient(117deg,#488ab7 0%,#68c5db 100%)!important;border:0!important;border-radius:0!important;color:#fff!important;font:600 12px var(--font)!important;letter-spacing:.18em!important;text-transform:uppercase!important;padding:18px 24px!important;width:100%!important;cursor:pointer}
+.px .fbox a{color:#68c5db}
+@media (max-width:480px){.px .ff{grid-template-columns:1fr}}
+
+/* footer */
+.px .ftr{background:linear-gradient(180deg,rgba(7,26,40,0),#04121c 35%);padding:80px var(--gutter) 30px}
+.px .fg{display:grid;grid-template-columns:minmax(0,1.3fr) repeat(4,minmax(0,1fr));gap:30px;padding-top:40px;border-top:1px solid var(--line2)}
+.px .fg img{height:36px;width:auto}
+.px .fg h4{margin:0 0 14px;font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--cyan)}
+.px .fg ul{display:grid;gap:8px;font-size:14px}
+.px .fg a:hover{color:#fff}
+.px .soc{display:flex;gap:8px;margin-top:22px}
+.px .soc a{width:40px;height:40px;border:1px solid var(--line);display:grid;place-items:center;color:#fff;transition:background .3s,border-color .3s}
+.px .soc a:hover{background:var(--grad);border-color:transparent}
+.px .legal{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;margin-top:36px;font-size:12.5px;color:var(--mut)}
+@media (max-width:1000px){.px .fg{grid-template-columns:repeat(2,minmax(0,1fr))}.px .fg>div:first-child{grid-column:1/-1}}
+@media (max-width:420px){.px .fg{grid-template-columns:1fr}}
+
+@media (prefers-reduced-motion:reduce){.px *,.px *::before,.px *::after{animation:none!important;transition:none!important}}
+
+/* sequenced chapters: the column holds still while the camera visits each part */
+.px .ch.seq{display:block;min-height:0;padding:0}
+.px .ch.seq .pin{position:sticky;top:0;min-height:100vh;padding:clamp(100px,12vh,150px) var(--gutter) 60px;display:flex;flex-direction:column;justify-content:center}
+.px .ch.seq .steps i{display:block;height:42vh}
+@media (max-width:900px){.px .ch.seq .pin{position:relative;min-height:0;padding:110px var(--gutter) 70px}.px .ch.seq .steps{display:none}}
+
+body{margin:0;background:#071a28}
+</style>
+</head>
+<body>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700&display=swap">
+<script>(function(){var r=document.documentElement;if(!matchMedia('(prefers-reduced-motion: reduce)').matches){r.classList.add('px-preload');setTimeout(function(){r.classList.remove('px-preload')},6500)}})();</script>
+<div class="px-load" aria-hidden="true"><div class="in"><div class="st"><span>Mapeando a estrutura</span><b id="px-lpct">00%</b></div><div class="bar"><i id="px-lbar"></i></div>
+<div class="ls" id="px-lls"><span>Perímetro · firewall</span><span>Servidores · rede</span><span>Cloud · backup</span><span>SOC · monitoramento 24×7</span></div></div></div>
+
+<div class="px" id="px">
+  <canvas class="scene" id="px-scene" aria-hidden="true"></canvas>
+  <div class="scrim" aria-hidden="true"></div>
+  <div class="tags" id="px-tags" aria-hidden="true"></div>
+  <div class="map" aria-hidden="true"><canvas id="px-map" width="260" height="260"></canvas><b id="px-mapl">Visão geral</b></div>
+
+  <header class="top" id="px-nav">
+    <div class="bar">
+      <a href="#top" aria-label="Pro Advanced, início"><img src="assets/logo-white-sm.png" alt="Pro Advanced IT Solutions"></a>
+      <!--MENU--><nav class="menu" id="px-menu" aria-label="Principal"><a href="#solucoes">Soluções</a><a href="#sobre">Sobre</a><a href="#segmentos">Segmentos</a><a href="#cases">Cases</a><a href="#blog">Blog</a><a href="#contato">Contato</a></nav><!--/MENU-->
+      <a class="btn solid cta" href="#contato">Fale com um especialista <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.8"/></svg></a>
+      <!--BURGER--><button class="burger" id="px-burger" aria-label="Abrir menu" aria-expanded="false" aria-controls="px-menu"><i></i><i></i><i></i></button><!--/BURGER-->
+    </div>
+    <i class="prog" id="px-prog"></i>
+  </header>
+
+  <main id="top">
+    <!--HERO--><section class="ch hero" data-view="hero">
+      <div class="col">
+        <span class="lab">00 · Proteção Digital <span class="v">/ Visão geral</span></span>
+        <h1 id="px-h1">Gestão completa de TI e <b>Cibersegurança</b> <span class="thin">para empresas que</span> não podem parar</h1>
+        <p class="lead">Infraestrutura, segurança, cloud, backup, monitoramento e suporte especializado para manter sua operação protegida e disponível.</p>
+        <div class="acts"><a class="btn solid" href="#contato">Fale com um especialista <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.8"/></svg></a><a class="btn" href="#solucoes">Explorar a estrutura</a></div>
+        <div class="meta"><span><b><i data-count="24">24</i>×7</b>NOC e SOC</span><span><b data-count="27">27</b>anos</span><span><b data-count="22">22</b>parceiros</span><span><b data-count="12">12</b>segmentos</span></div>
+      </div>
+    </section><!--/HERO-->
+
+    <section class="ch seq" id="solucoes" data-view="sol" data-n="6">
+      <div class="pin"><div class="col">
+        <span class="lab">01 · Soluções <span class="v">/ Camadas</span></span>
+        <h2>Tecnologia para sustentar <b>toda a sua operação</b></h2>
+        <p class="lead">Da infraestrutura à cibersegurança, a Pro Advanced reúne soluções e especialistas para proteger, monitorar e manter o ambiente de TI da sua empresa funcionando.</p>
+        <ol class="sl" id="px-sl"><li class="on" data-i="0"><a href="https://proadvanced.com.br/infraestrutura-de-ti/"><span class="k">01</span><div><h3>Infraestrutura de TI</h3><p>Redes, servidores, storage, virtualização e Wi-Fi corporativo para manter sua operação conectada, estável e preparada para crescer.</p></div><span class="go"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M2 8h12M9 3l5 5-5 5" stroke="currentColor" stroke-width="1.6"/></svg></span></a></li><li data-i="1"><a href="https://proadvanced.com.br/ciberseguranca/"><span class="k">02</span><div><h3>Cibersegurança</h3><p>Firewall, proteção de endpoints, SOC/MDR, controle de acessos e gestão de vulnerabilidades para proteger sua empresa em diferentes camadas.</p></div><span class="go"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M2 8h12M9 3l5 5-5 5" stroke="currentColor" stroke-width="1.6"/></svg></span></a></li><li data-i="2"><a href="https://proadvanced.com.br/backup-e-continuidade/"><span class="k">03</span><div><h3>Backup e Continuidade</h3><p>Proteção, recuperação e disponibilidade dos dados para reduzir impactos e acelerar a retomada diante de falhas ou incidentes.</p></div><span class="go"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M2 8h12M9 3l5 5-5 5" stroke="currentColor" stroke-width="1.6"/></svg></span></a></li><li data-i="3"><a href="https://proadvanced.com.br/cloud-e-data-center/"><span class="k">04</span><div><h3>Cloud e Data Center</h3><p>Soluções em nuvem, data center e ambientes híbridos com segurança, disponibilidade e escalabilidade para sua operação.</p></div><span class="go"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M2 8h12M9 3l5 5-5 5" stroke="currentColor" stroke-width="1.6"/></svg></span></a></li><li data-i="4"><a href="https://proadvanced.com.br/monitoramento-e-gestao-de-ti/"><span class="k">05</span><div><h3>Monitoramento e Gestão de TI</h3><p>Monitoramento contínuo da infraestrutura, ativos e segurança para antecipar falhas e manter o ambiente sob controle.</p></div><span class="go"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M2 8h12M9 3l5 5-5 5" stroke="currentColor" stroke-width="1.6"/></svg></span></a></li><li data-i="5"><a href="https://proadvanced.com.br/consultoria-e-governanca/"><span class="k">06</span><div><h3>Consultoria e Governança</h3><p>LGPD, segurança da informação, análise de riscos, maturidade e projetos especializados para apoiar decisões e adequações.</p></div><span class="go"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M2 8h12M9 3l5 5-5 5" stroke="currentColor" stroke-width="1.6"/></svg></span></a></li></ol>
+        <div class="more"><a class="btn" href="https://proadvanced.com.br/solucoes/">Conheça todas as nossas soluções <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.8"/></svg></a></div>
+      </div></div>
+      <div class="steps" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    </section>
+
+    <section class="ch" id="sobre" data-view="why">
+      <div class="col">
+        <span class="lab">02 · Por que a Pro Advanced <span class="v">/ Escudo</span></span>
+        <h2>Por que contar com a <b>Pro Advanced?</b></h2>
+        <p class="lead">Especialistas, tecnologia e acompanhamento contínuo para manter sua operação segura, disponível e preparada para evoluir.</p>
+        <div class="rl"><div><span class="k">01</span><h3>Proteção e prevenção contínuas</h3><p>Tecnologias e estratégias de segurança para identificar vulnerabilidades, antecipar ameaças e reduzir riscos antes que afetem sua operação.</p></div><div><span class="k">02</span><h3>Gestão completa de TI e Segurança</h3><p>Infraestrutura, monitoramento e cibersegurança integrados para manter seu ambiente protegido, estável e funcionando.</p></div><div><span class="k">03</span><h3>Soluções sob medida</h3><p>Projetos desenvolvidos de acordo com a infraestrutura, os riscos e as necessidades específicas de cada empresa.</p></div><div><span class="k">04</span><h3>Especialistas ao seu lado</h3><p>Profissionais especializados em TI e cibersegurança para apoiar a gestão, proteção e evolução do seu ambiente.</p></div><div><span class="k">05</span><h3>Conformidade e Governança</h3><p>Apoio na adequação de processos, tecnologias e controles às normas, regulamentações e boas práticas aplicáveis ao negócio.</p></div><div><span class="k">06</span><h3>Mais foco no seu negócio</h3><p>Enquanto a Pro Advanced cuida da tecnologia e da segurança, sua equipe pode concentrar esforços na operação, inovação e crescimento da empresa.</p></div></div>
+      </div>
+    </section>
+
+    <section class="ch" data-view="years">
+      <div class="col">
+        <span class="lab">03 · Desde 1999 <span class="v">/ Evolução</span></span>
+        <div class="big"><b data-count="27">27</b><span>anos</span></div>
+        <h2>De experiência em <b>tecnologia e segurança</b></h2>
+        <p class="lead">Há quase três décadas, ajudamos empresas a proteger seus ambientes, manter suas operações disponíveis e evoluir sua infraestrutura de TI.</p>
+        <div class="tl" aria-hidden="true"><span>1999</span><i id="px-tl"></i><span>2026</span></div>
+      </div>
+    </section>
+
+    <!--SEGS--><section class="ch" id="segmentos" data-view="segs">
+      <div class="col">
+        <span class="lab">04 · Segmentos <span class="v">/ Pontos conectados</span></span>
+        <h2>Soluções para <b>o seu segmento</b></h2>
+        <p class="lead">Tecnologia e cibersegurança aplicadas às necessidades, riscos e desafios de diferentes setores.</p>
+        <div class="sg" id="px-sg"><a href="https://proadvanced.com.br/cartorios/" data-i="0">Cartórios<span>01</span></a><a href="https://proadvanced.com.br/contabilidade/" data-i="1">Contabilidade<span>02</span></a><a href="https://proadvanced.com.br/logistica/" data-i="2">Logística<span>03</span></a><a href="https://proadvanced.com.br/advocacia/" data-i="3">Advocacia<span>04</span></a><a href="https://proadvanced.com.br/fintechs-e-instituicoes-financeiras/" data-i="4">Fintechs e Instituições Financeiras<span>05</span></a><a href="https://proadvanced.com.br/saude/" data-i="5">Saúde<span>06</span></a><a href="https://proadvanced.com.br/hotelaria/" data-i="6">Hotelaria<span>07</span></a><a href="https://proadvanced.com.br/varejo/" data-i="7">Varejo<span>08</span></a><a href="https://proadvanced.com.br/empresas-de-servicos/" data-i="8">Empresas de Serviços<span>09</span></a><a href="https://proadvanced.com.br/midias-e-entretenimento/" data-i="9">Mídias e Entretenimento<span>10</span></a><a href="https://proadvanced.com.br/setor-publico/" data-i="10">Setor Público<span>11</span></a><a href="https://proadvanced.com.br/construcao/" data-i="11">Construção<span>12</span></a><a class="wide" href="#contato">Não encontrou seu segmento? Fale com a gente<span>→</span></a></div>
+      </div>
+    </section><!--/SEGS-->
+
+    <!--CASES--><section class="ch seq" id="cases" data-view="case" data-n="5">
+      <div class="pin"><div class="col">
+        <span class="lab">05 · Cases <span class="v">/ Projetos</span></span>
+        <h2>Tecnologia aplicada a <b>desafios reais</b></h2>
+        <div class="cl" id="px-cl"><a href="https://proadvanced.com.br/cases/" data-i="0" class="on"><span class="n">01</span><div><small>Mídia e Entretenimento</small><h3>Tecnologia e infraestrutura para uma operação de alta performance</h3><p>Infraestrutura de rede desenvolvida para atender uma operação de alta demanda, com foco em conectividade, estabilidade e segurança.</p></div></a><a href="https://proadvanced.com.br/cases/" data-i="1"><span class="n">02</span><div><small>Fintechs e Instituições Financeiras</small><h3>Infraestrutura e segurança para uma operação mais robusta</h3><p>Modernização da rede, conectividade e cibersegurança, com alta disponibilidade, monitoramento e gestão do ambiente de TI.</p></div></a><a href="https://proadvanced.com.br/cases/" data-i="2"><span class="n">03</span><div><small>Saúde</small><h3>Mais maturidade e controle em Segurança da Informação</h3><p>Projeto para fortalecer a segurança do ambiente, com avaliação de vulnerabilidades, monitoramento e proteção dos acessos remotos.</p></div></a><a href="https://proadvanced.com.br/cases/" data-i="3"><span class="n">04</span><div><small>Varejo</small><h3>Uma jornada estruturada de adequação à LGPD</h3><p>Mapeamento de dados, gestão de riscos, organização de fornecedores e políticas para fortalecer a proteção de dados e a conformidade.</p></div></a><a href="https://proadvanced.com.br/cases/" data-i="4"><span class="n">05</span><div><small>Mídia e Entretenimento</small><h3>Segurança e infraestrutura para conquistar a certificação TPN</h3><p>Evolução dos processos, controles e infraestrutura de segurança para atender aos requisitos e concluir com êxito a certificação TPN.</p></div></a></div>
+        <div class="more"><a class="btn" href="https://proadvanced.com.br/cases/">Ver todos os cases <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.8"/></svg></a></div>
+      </div></div>
+      <div class="steps" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+    </section><!--/CASES-->
+
+    <section class="ch" id="parceiros" data-view="partners">
+      <div class="col">
+        <span class="lab">06 · Parceiros <span class="v">/ Integrações</span></span>
+        <h2>Tecnologia de líderes do mercado. <b>Expertise Pro Advanced</b></h2>
+        <div class="logos"><div><img src="assets/partners/microsoft.png" alt="Microsoft" loading="lazy"></div><div><img src="assets/partners/fortinet.png" alt="Fortinet" loading="lazy"></div><div><img src="assets/partners/sophos.png" alt="Sophos" loading="lazy"></div><div><img src="assets/partners/sentinelone.png" alt="SentinelOne" loading="lazy"></div><div><img src="assets/partners/huawei.png" alt="Huawei" loading="lazy"></div><div><img src="assets/partners/acronis.png" alt="Acronis" loading="lazy"></div><div><img src="assets/partners/vmware.png" alt="VMware" loading="lazy"></div><div><img src="assets/partners/cisco-meraki.png" alt="Cisco Meraki" loading="lazy"></div><div><img src="assets/partners/thales.png" alt="Thales" loading="lazy"></div><div><img src="assets/partners/zyxel.png" alt="Zyxel" loading="lazy"></div><div><img src="assets/partners/outpost24.png" alt="Outpost24" loading="lazy"></div><div><img src="assets/partners/senhasegura.png" alt="senhasegura" loading="lazy"></div><div><img src="assets/partners/portnox.png" alt="Portnox" loading="lazy"></div><div><img src="assets/partners/vicarius.png" alt="Vicarius" loading="lazy"></div><div><img src="assets/partners/cybero.png" alt="Cybero" loading="lazy"></div><div><img src="assets/partners/phishx.png" alt="PhishX" loading="lazy"></div><div><img src="assets/partners/privally.png" alt="Privally" loading="lazy"></div><div><img src="assets/partners/dahua.png" alt="Dahua" loading="lazy"></div><div><img src="assets/partners/cambium.png" alt="Cambium" loading="lazy"></div><div><img src="assets/partners/apptalk.png" alt="Apptalk" loading="lazy"></div><div><img src="assets/partners/wiplay.png" alt="Wiplay" loading="lazy"></div><div><img src="assets/partners/wispot.png" alt="Wispot" loading="lazy"></div></div>
+        <div class="verde">
+          <span class="s"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 2 4.2 2 8 0 5.5-4.8 10-10 10z"/><path d="M2 21c0-3 1.9-5.4 5.2-6.1C9.5 14.5 12 13 13 12"/></svg></span>
+          <div><h3>Tecnologia e responsabilidade caminham juntas</h3><p>A Pro Advanced possui o Selo TI Verde, reforçando nosso compromisso com práticas mais responsáveis e sustentáveis no uso da tecnologia.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!--BLOG--><section class="ch" id="blog" data-view="blog">
+      <div class="col">
+        <span class="lab">07 · Blog <span class="v">/ Conteúdos</span></span>
+        <h2>Conteúdos e <b>insights</b></h2>
+        <div class="bl"><a href="https://proadvanced.com.br/ti-para-cartorios-como-evitar-a-indisponibilidade-e-manter-os-servicos-em-funcionamento/"><div class="im"><img src="assets/blog/cartorios-autenticacao.jpg" alt="" loading="lazy"></div><h3>TI para cartórios: como evitar a indisponibilidade e manter os serviços em funcionamento</h3></a><a href="https://proadvanced.com.br/lgpd-na-advocacia-tecnologia-ajuda-a-fortalecer-a-protecao-de-dados-nos-escritorios/"><div class="im"><img src="assets/blog/lgpd-advocacia.jpg" alt="" loading="lazy"></div><h3>LGPD na advocacia: tecnologia ajuda a fortalecer a proteção de dados nos escritórios</h3></a><a href="https://proadvanced.com.br/backup-juridico-por-que-escritorios-de-advocacia-precisam-de-uma-estrategia-de-recuperacao-de-dados/"><div class="im"><img src="assets/blog/backup-juridico-2.jpg" alt="" loading="lazy"></div><h3>Backup jurídico: por que escritórios de advocacia precisam de uma estratégia de recuperação de dados</h3></a><a href="https://proadvanced.com.br/seguranca-digital-para-escritorios-juridicos-quais-sao-os-principais-riscos-e-como-reduzi-los/"><div class="im"><img src="assets/blog/seguranca-digital-juridicos.jpg" alt="" loading="lazy"></div><h3>Segurança digital para escritórios jurídicos: quais são os principais riscos e como reduzi-los</h3></a><a href="https://proadvanced.com.br/ti-para-escritorios-de-advocacia-como-proteger-informacoes-sigilosas-dos-clientes/"><div class="im"><img src="assets/blog/ti-escritorios-advocacia.jpg" alt="" loading="lazy"></div><h3>TI para escritórios de advocacia: como proteger informações sigilosas dos clientes</h3></a><a href="https://proadvanced.com.br/data-center-para-logistica-como-a-pro-advanced-ajuda-a-garantir-disponibilidade-e-continuidade-operacional/"><div class="im"><img src="assets/blog/data-center-logistica-1.jpg" alt="" loading="lazy"></div><h3>Data Center para logística: como a Pro Advanced ajuda a garantir disponibilidade e continuidade operacional</h3></a></div>
+        <div class="more"><a class="btn" href="https://proadvanced.com.br/blog/">Ver todos os conteúdos <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.8"/></svg></a></div>
+      </div>
+    </section><!--/BLOG-->
+
+    <section class="ch" id="contato" data-view="contact">
+      <div class="col">
+        <span class="lab">08 · Contato <span class="v">/ Estrutura completa</span></span>
+        <h2>Vamos falar sobre a tecnologia da <b>sua empresa?</b></h2>
+        <p class="lead">Conte-nos um pouco sobre sua operação. Nossos especialistas entrarão em contato para entender suas necessidades e como podemos ajudar.</p>
+        <div class="info">
+              <div><b>Endereço</b><span>Av. Queiroz Filho, 1700 · Conjunto 805, Sala 1 · Torre A · Condomínio Vila Lobos Office Park · Vila Hamburguesa · São Paulo · CEP 05319-000</span><a href="https://www.google.com/maps/search/?api=1&amp;query=Av.+Queiroz+Filho+1700+Vila+Lobos+Office+Park+Sao+Paulo" target="_blank" rel="noopener">Ver localização no mapa</a></div>
+              <div><b>Telefone</b><span>+55 11 94719-8132 · +55 11 3646-2970</span></div>
+              <div><b>E-mail</b><span>contato@proadvanced.com.br</span></div>
+            </div>
+        <div class="fbox" id="px-form">
+            <h3>Fale com um especialista</h3>
+            <div role="main" id="gmk-forms-home-f6a9607991fe0a26527a"></div>
+            <form class="ff" id="px-fallback" novalidate hidden>
+              <div class="f"><label for="px-n">Nome*</label><input id="px-n" autocomplete="name" required></div>
+              <div class="f"><label for="px-e">E-mail corporativo*</label><input id="px-e" type="email" autocomplete="email" required></div>
+              <div class="f"><label for="px-t">Telefone*</label><input id="px-t" type="tel" autocomplete="tel" required></div>
+              <div class="f"><label for="px-c">Empresa*</label><input id="px-c" autocomplete="organization" required></div>
+              <div class="f full"><label for="px-m">Como podemos ajudar?</label><textarea id="px-m"></textarea></div>
+              <button class="btn solid" type="submit">Enviar <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.8"/></svg></button>
+              <p class="msg" role="status"></p>
+            </form>
+          </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="ftr">
+    <div class="fg">
+      <div><img src="assets/logo-white-sm.png" alt="Pro Advanced IT Solutions"><div class="soc">
+            <a href="https://www.linkedin.com/company/proadvanced/" target="_blank" rel="noopener" aria-label="LinkedIn"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM9 9h3.8v1.7h.1c.5-1 1.8-2 3.8-2 4 0 4.8 2.6 4.8 6V21h-4v-5.6c0-1.3 0-3-1.9-3s-2.1 1.4-2.1 2.9V21H9z"/></svg></a>
+            <a href="https://www.instagram.com/proadvancedti/" target="_blank" rel="noopener" aria-label="Instagram"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></a>
+            <a href="https://www.facebook.com/proadvancedti/" target="_blank" rel="noopener" aria-label="Facebook"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M14 8h3V4h-3c-2.8 0-4 1.8-4 4.3V10H7v4h3v8h4v-8h3l1-4h-4V8.6c0-.4.3-.6.6-.6z"/></svg></a>
+            <a href="https://www.youtube.com/channel/UCrQDLjivNeU0e8b2aDd-XRQ" target="_blank" rel="noopener" aria-label="YouTube"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M23 7.2a3 3 0 0 0-2.1-2.1C19 4.6 12 4.6 12 4.6s-7 0-8.9.5A3 3 0 0 0 1 7.2 31 31 0 0 0 .5 12 31 31 0 0 0 1 16.8a3 3 0 0 0 2.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5a3 3 0 0 0 2.1-2.1 31 31 0 0 0 .5-4.8 31 31 0 0 0-.5-4.8zM9.8 15.1V8.9L15.6 12z"/></svg></a>
+            <a href="https://twitter.com/proadvancedti" target="_blank" rel="noopener" aria-label="X"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 1.2h3.7l-8 9.2 9.4 12.4h-7.4l-5.8-7.6-6.6 7.6H.5l8.6-9.8L.1 1.2h7.6l5.2 6.9 6-6.9zm-1.3 19.4h2L6.5 3.3H4.3l13.3 17.3z"/></svg></a>
+          </div></div>
+      <!--FCOLS--><div><h4>Institucional</h4><ul><li><a href="#top">Home</a></li><li><a href="#sobre">Sobre</a></li><li><a href="#cases">Cases</a></li><li><a href="#blog">Blog</a></li><li><a href="#contato">Contato</a></li></ul></div>
+        <div><h4>Soluções</h4><ul><li><a href="https://proadvanced.com.br/infraestrutura-de-ti/">Infraestrutura de TI</a></li><li><a href="https://proadvanced.com.br/ciberseguranca/">Cibersegurança</a></li><li><a href="https://proadvanced.com.br/backup-e-continuidade/">Backup e Continuidade</a></li><li><a href="https://proadvanced.com.br/cloud-e-data-center/">Cloud e Data Center</a></li><li><a href="https://proadvanced.com.br/monitoramento-e-gestao-de-ti/">Monitoramento e Gestão de TI</a></li><li><a href="https://proadvanced.com.br/consultoria-e-governanca/">Consultoria e Governança</a></li></ul></div>
+        <div><h4>Segmentos</h4><ul><li><a href="https://proadvanced.com.br/cartorios/">Cartórios</a></li><li><a href="https://proadvanced.com.br/contabilidade/">Contabilidade</a></li><li><a href="https://proadvanced.com.br/logistica/">Logística</a></li><li><a href="https://proadvanced.com.br/advocacia/">Advocacia</a></li><li><a href="https://proadvanced.com.br/fintechs-e-instituicoes-financeiras/">Fintechs e Instituições Financeiras</a></li><li><a href="https://proadvanced.com.br/segmentos/">Ver todos os segmentos</a></li></ul></div>
+        <!--/FCOLS-->
+      <div><h4>Contato</h4><ul><li>contato@proadvanced.com.br</li><li>+55 11 3646-2970</li><li>+55 11 94719-8132</li><li><a href="https://proadvanced.com.br/contato/">Trabalhe conosco</a></li></ul></div>
+    </div>
+    <div class="legal"><span>Pro Advanced | Todos os direitos reservados - 2026</span><span>Av. Queiroz Filho, 1700 – Vila Hamburguesa – São Paulo – CEP 05319-000</span></div>
+  </footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+<script>
+/* Pro Advanced · v5 "A Estrutura": the whole page is one living cybersecurity structure (three.js).
+   Each chapter moves the camera to a different part of it: servers, firewall perimeter, backup vault,
+   cloud, SOC, governance, the shield, the endpoints, and finally a top-down view where the structure
+   reads as the Pro Advanced symbol. GSAP/ScrollTrigger/Lenis drive the page; it reads fine without them. */
+(function(){
+  const page=document.getElementById('px');if(!page)return;
+  const root=document.documentElement;
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const $=s=>page.querySelector(s),$$=s=>[...page.querySelectorAll(s)];
+  const clamp=(a,b,v)=>Math.max(a,Math.min(b,v));
+
+  /* full width when embedded in a narrower column (RD Station blocks) */
+  function bleed(){const st=page.style;st.setProperty('margin-left','0px','important');st.setProperty('width','auto','important');
+    const left=page.getBoundingClientRect().left,w=document.documentElement.clientWidth;
+    if(Math.abs(left)<1&&Math.abs(page.offsetWidth-w)<2){st.removeProperty('width');st.removeProperty('margin-left');return}
+    st.setProperty('width',w+'px','important');st.setProperty('max-width',w+'px','important');st.setProperty('margin-left',(-left)+'px','important')}
+  bleed();addEventListener('resize',()=>{bleed();window.ScrollTrigger&&ScrollTrigger.refresh()});
+
+  /* header */
+  const nav=$('#px-nav'),bg=$('#px-burger'),prog=$('#px-prog');
+  if(bg)bg.addEventListener('click',()=>{const o=nav.classList.toggle('open');bg.setAttribute('aria-expanded',o)});
+  $$('#px-menu a').forEach(a=>a.addEventListener('click',()=>{nav.classList.remove('open');bg&&bg.setAttribute('aria-expanded',false)}));
+  let lastY=0;addEventListener('scroll',()=>{const y=scrollY;nav.classList.toggle('solid',y>40);nav.classList.toggle('hide',y>500&&y>lastY&&!nav.classList.contains('open'));lastY=y;
+    if(prog)prog.style.transform='scaleX('+clamp(0,1,y/Math.max(1,document.documentElement.scrollHeight-innerHeight))+')'},{passive:true});
+
+  /* RD Station form (same embed as proadvanced.com.br) with a static fallback */
+  (function(){
+    const host=document.getElementById('gmk-forms-home-f6a9607991fe0a26527a'),fb=document.getElementById('px-fallback');if(!host||!fb)return;
+    const showFb=()=>{if(!host.children.length){host.hidden=true;fb.hidden=false}};
+    try{const s=document.createElement('script');s.src='https://d335luupugsy2.cloudfront.net/js/rdstation-forms/stable/rdstation-forms.min.js';s.async=true;
+      s.onload=()=>{try{new RDStationForms('gmk-forms-home-f6a9607991fe0a26527a','null').createForm()}catch(e){}setTimeout(showFb,2500)};s.onerror=showFb;document.head.appendChild(s)}catch(e){showFb()}
+    setTimeout(showFb,6000);
+    fb.addEventListener('submit',e=>{e.preventDefault();const msg=fb.querySelector('.msg');const miss=[...fb.querySelectorAll('[required]')].find(i=>!i.value.trim());
+      if(miss){msg.textContent='Preencha os campos marcados com *.';miss.focus();return}
+      msg.textContent='Prévia: o formulário oficial do RD Station aparece aqui na página publicada. Enquanto isso, escreva para contato@proadvanced.com.br.'});
+  })();
+
+  /* ---------- views: where the camera looks for each chapter ---------- */
+  const VIEWS={
+    hero:{p:[48,30,44],l:[0,3,0],z:null,name:'Visão geral',orbit:1},
+    sol0:{p:[-1,12,10],l:[-15,3,-8],z:'servers',name:'Infraestrutura de TI'},
+    sol1:{p:[46,11,30],l:[22,4,12],z:'perimeter',name:'Perímetro · Cibersegurança'},
+    sol2:{p:[31,12,26],l:[15,3,9],z:'backup',name:'Backup e Continuidade'},
+    sol3:{p:[27,22,6],l:[8,14,-14],z:'cloud',name:'Cloud e Data Center'},
+    sol4:{p:[11,15,15],l:[0,6,0],z:'core',name:'SOC · Monitoramento 24×7'},
+    sol5:{p:[3,11,28],l:[-12,2,13],z:'gov',name:'Governança · Compliance'},
+    why:{p:[2,50,60],l:[0,5,0],z:'dome',name:'Escudo de proteção'},
+    years:{p:[-48,26,24],l:[0,0,0],z:'timeline',name:'Evolução · 1999–2026'},
+    segs:{p:[4,44,40],l:[0,0,6],z:'endpoints',name:'Pontos conectados'},
+    case0:{p:[-2,12,12],l:[-15,3,-8],z:'servers',name:'Case · Infraestrutura'},
+    case1:{p:[46,11,30],l:[22,4,12],z:'perimeter',name:'Case · Segurança de rede'},
+    case2:{p:[11,15,15],l:[0,6,0],z:'core',name:'Case · Monitoramento'},
+    case3:{p:[3,11,28],l:[-12,2,13],z:'gov',name:'Case · LGPD'},
+    case4:{p:[-26,20,30],l:[-6,3,6],z:'gov',name:'Case · Certificação TPN'},
+    partners:{p:[58,42,-32],l:[0,4,0],z:null,name:'Integrações',orbit:1},
+    blog:{p:[-52,36,-42],l:[0,2,0],z:null,name:'Visão geral',orbit:1},
+    contact:{p:[0,86,.01],l:[0,0,0],z:'symbol',name:'Estrutura completa'}};
+  const TAGS={servers:['Infraestrutura','Servidores · rede · storage',[-15,6.2,-8]],perimeter:['Cibersegurança','Firewall · perímetro',[20.5,4.5,20.5]],
+    backup:['Backup','Cofre · replicação',[16,5,9]],cloud:['Cloud','Data center · híbrido',[8,17.5,-14]],core:['SOC 24×7','Monitoramento contínuo',[0,10.5,0]],
+    gov:['Governança','LGPD · compliance',[-12,2.6,13]],dome:['Escudo','Proteção em camadas',[0,31,0]],endpoints:['Segmentos','Pontos conectados',[0,1,19]]};
+
+  /* ---------- the structure ---------- */
+  function Structure(cv){
+    const T=window.THREE;if(!T)return null;let R;
+    const low=innerWidth<760;
+    try{R=new T.WebGLRenderer({canvas:cv,antialias:!low,alpha:true})}catch(e){return null}
+    R.setClearColor(0x000000,0);
+    const scene=new T.Scene(),cam=new T.PerspectiveCamera(36,1,.1,600);scene.fog=new T.Fog(0x071a28,70,190);
+    const CY=new T.Color('#68c5db'),BL=new T.Color('#2ba3db'),ST=new T.Color('#488ab7'),MI=new T.Color('#c9d6e4'),NV=new T.Color('#0e2a3f');
+    const zones={};const Z=n=>zones[n]||(zones[n]={mats:[],op:1,target:1});
+    const lm=(z,c,o)=>{const m=new T.LineBasicMaterial({color:c||CY,transparent:true,opacity:o||1,fog:true});m.userData.base=o||1;Z(z).mats.push(m);return m};
+    const fill=new T.MeshBasicMaterial({color:NV,transparent:true,opacity:.62,depthWrite:true,fog:true});
+    function box(z,w,h,d,x,y,zz,c,o,parent){const g=new T.BoxGeometry(w,h,d);const m=new T.Mesh(g,fill);m.position.set(x,y+h/2,zz);
+      const e=new T.LineSegments(new T.EdgesGeometry(g),lm(z,c,o));m.add(e);(parent||scene).add(m);return m}
+    function line(z,pts,c,o){const g=new T.BufferGeometry().setFromPoints(pts.map(p=>new T.Vector3(...p)));const l=new T.Line(g,lm(z,c,o));scene.add(l);return l}
+    function segs(z,arr,c,o){const g=new T.BufferGeometry();g.setAttribute('position',new T.Float32BufferAttribute(arr,3));const l=new T.LineSegments(g,lm(z,c,o));scene.add(l);return l}
+    const circle=(r,y,n)=>{const p=[];for(let i=0;i<=n;i++){const a=i/n*Math.PI*2;p.push([Math.cos(a)*r,y,Math.sin(a)*r])}return p};
+
+    /* ground: blueprint grid + guide rings */
+    {const a=[];for(let i=-44;i<=44;i+=4){a.push(i,0,-44,i,0,44,-44,0,i,44,0,i)}segs('ground',a,ST,.08);
+      line('ground',circle(19,.02,96),ST,.25);line('ground',circle(24,.02,120),ST,.18)}
+    /* SOC core: hex tower, radar, screens */
+    const core=new T.Group();scene.add(core);
+    {const g=new T.CylinderGeometry(3.1,3.6,9,6);const m=new T.Mesh(g,fill);m.position.y=4.5;m.add(new T.LineSegments(new T.EdgesGeometry(g),lm('core',CY,.95)));core.add(m);
+      const g2=new T.CylinderGeometry(1.6,1.6,1.2,6);const m2=new T.Mesh(g2,fill);m2.position.y=9.6;m2.add(new T.LineSegments(new T.EdgesGeometry(g2),lm('core',CY,.9)));core.add(m2)}
+    const radar=new T.Group();radar.position.y=10.3;core.add(radar);
+    {const rl=new T.Line(new T.BufferGeometry().setFromPoints(circle(4.6,0,64).map(p=>new T.Vector3(...p))),lm('core',CY,.7));radar.add(rl);
+      const sw=new T.Mesh(new T.CircleGeometry(4.6,24,0,.7),new T.MeshBasicMaterial({color:CY,transparent:true,opacity:.22,side:T.DoubleSide,depthWrite:false}));sw.rotation.x=-Math.PI/2;radar.add(sw);Z('core').mats.push(sw.material);sw.material.userData.base=.22}
+    const bars=[];for(let i=0;i<3;i++){const a=i/3*Math.PI*2+.5,s=box('core',3.2,2,.15,Math.cos(a)*6.4,1.4,Math.sin(a)*6.4,CY,.6);s.lookAt(0,s.position.y,0);
+      for(let k=0;k<5;k++){const b=box('core',.32,1,.05,-1.1+k*.55,-.9,.1,BL,.9,s);bars.push(b)}}
+    /* servers */
+    for(let r=0;r<2;r++)for(let c=0;c<4;c++)box('servers',1.7,5.2,1.3,-19.5+c*2.6,0,-10+r*4,CY,.85);
+    const leds=new T.Points(new T.BufferGeometry().setFromPoints((()=>{const p=[];for(let r=0;r<2;r++)for(let c=0;c<4;c++)for(let k=0;k<6;k++)p.push(new T.Vector3(-19.5+c*2.6-.5+(k%2)*.4,1+k*.7,-10+r*4+.68));return p})()),
+      new T.PointsMaterial({color:CY,size:.28,transparent:true,opacity:.9,fog:true}));scene.add(leds);Z('servers').mats.push(leds.material);leds.material.userData.base=.9;
+    /* backup vault */
+    box('backup',5.2,4.2,5.2,16,0,9,CY,.9);box('backup',3.2,2.6,3.2,16,.8,9,BL,.7);
+    {const r=new T.Line(new T.BufferGeometry().setFromPoints(circle(1.1,0,40).map(p=>new T.Vector3(p[0],p[2],0))),lm('backup',CY,.9));r.position.set(16,2.1,11.62);scene.add(r)}
+    /* cloud */
+    const cloud=new T.Group();cloud.position.set(8,14,-14);scene.add(cloud);
+    [[0,0,0,2.6],[2.6,-.4,.6,2],[-2.4,-.5,-.3,1.9],[.5,1.3,-.8,1.7]].forEach(([x,y,z,r])=>{const g=new T.IcosahedronGeometry(r,1);const m=new T.Mesh(g,fill);m.position.set(x,y,z);m.add(new T.LineSegments(new T.EdgesGeometry(g),lm('cloud',CY,.75)));cloud.add(m)});
+    {const g=new T.BufferGeometry().setFromPoints([new T.Vector3(8,11.5,-14),new T.Vector3(8,0,-14)]);const l=new T.Line(g,new T.LineDashedMaterial({color:CY,dashSize:.5,gapSize:.5,transparent:true,opacity:.6}));l.computeLineDistances();scene.add(l);Z('cloud').mats.push(l.material);l.material.userData.base=.6}
+    /* governance: stacked plates with checks */
+    for(let i=0;i<5;i++){const b=box('gov',6,.22,4.2,-12,i*.75,13,CY,.8);b.rotation.y=.25+i*.04}
+    segs('gov',[-14,4.1,12.3,-13.4,4.1,12.9,-13.4,4.1,12.9,-12.2,4.1,11.6,-11.2,4.1,13.6,-9.5,4.1,13.6,-11.2,4.1,12.4,-9.8,4.1,12.4],CY,.9);
+    /* endpoints: radial dashes, laid out like the Pro symbol seen from above */
+    const eps=[];
+    for(let i=0;i<12;i++){const a=i/12*Math.PI*2+.13,r=19;const b=box('endpoints',.8,.8,2.2,Math.cos(a)*r,0,Math.sin(a)*r,CY,.85);b.rotation.y=-a+Math.PI/2;eps.push(b);
+      segs('links',[Math.cos(a)*3.6,.4,Math.sin(a)*3.6,Math.cos(a)*(r-1.2),.4,Math.sin(a)*(r-1.2)],BL,.22)}
+    for(let i=0;i<18;i++){const a=i/18*Math.PI*2,r=24;const b=box('endpoints',.6,.5,1.3,Math.cos(a)*r,0,Math.sin(a)*r,ST,.7);b.rotation.y=-a+Math.PI/2}
+    /* firewall perimeter: a ring of posts with a pulse travelling around */
+    const PR=29;const fwU={uT:{value:0},uOp:{value:1}};
+    {const p=[],ang=[];for(let i=0;i<120;i++){const a=i/120*Math.PI*2;p.push(Math.cos(a)*PR,0,Math.sin(a)*PR,Math.cos(a)*PR,4.2,Math.sin(a)*PR);ang.push(a,a)}
+      const g=new T.BufferGeometry();g.setAttribute('position',new T.Float32BufferAttribute(p,3));g.setAttribute('aA',new T.Float32BufferAttribute(ang,1));
+      const m=new T.ShaderMaterial({uniforms:fwU,transparent:true,depthWrite:false,vertexShader:'attribute float aA;varying float vA;void main(){vA=aA;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
+        fragmentShader:'uniform float uT,uOp;varying float vA;void main(){float w=pow(.5+.5*sin(vA*3.-uT*1.6),10.);gl_FragColor=vec4(vec3(.41,.77,.86),(.28+.72*w)*uOp);}'});
+      scene.add(new T.LineSegments(g,m));Z('perimeter').fw=fwU}
+    line('perimeter',circle(PR,4.2,160),CY,.55);line('perimeter',circle(PR,0,160),CY,.35);
+    /* shield dome */
+    {const a=[],R2=31;for(let la=1;la<=8;la++){const ph=la/8*Math.PI/2,y=Math.cos(ph)*R2,r=Math.sin(ph)*R2;for(let i=0;i<64;i++){const a0=i/64*Math.PI*2,a1=(i+1)/64*Math.PI*2;a.push(Math.cos(a0)*r,y,Math.sin(a0)*r,Math.cos(a1)*r,y,Math.sin(a1)*r)}}
+      for(let lo=0;lo<24;lo++){const th=lo/24*Math.PI*2;for(let k=0;k<16;k++){const p0=k/16*Math.PI/2,p1=(k+1)/16*Math.PI/2;a.push(Math.cos(th)*Math.sin(p0)*R2,Math.cos(p0)*R2,Math.sin(th)*Math.sin(p0)*R2,Math.cos(th)*Math.sin(p1)*R2,Math.cos(p1)*R2,Math.sin(th)*Math.sin(p1)*R2)}}
+      segs('dome',a,CY,.5)}
+    /* evolution ring (1999 → 2026) */
+    const tlPts=circle(33,.05,270);const tl=line('timeline',tlPts,CY,.95);tl.geometry.setDrawRange(0,1);
+    {const a=[];for(let i=0;i<28;i++){const ang=i/27*Math.PI*2*.995;const h=i%5===0||i===27?2.4:1.1;a.push(Math.cos(ang)*33,0,Math.sin(ang)*33,Math.cos(ang)*33,h,Math.sin(ang)*33)}
+      const tk=segs('timeline',a,CY,.9);tk.geometry.setDrawRange(0,0);var ticks=tk}
+    /* data packets along links and replication arcs */
+    const curves=[];
+    for(let i=0;i<12;i++){const a=i/12*Math.PI*2+.13;curves.push(new T.LineCurve3(new T.Vector3(Math.cos(a)*3.6,.4,Math.sin(a)*3.6),new T.Vector3(Math.cos(a)*17.8,.4,Math.sin(a)*17.8)))}
+    const arc=(a,b,h)=>new T.QuadraticBezierCurve3(new T.Vector3(...a),new T.Vector3((a[0]+b[0])/2,h,(a[2]+b[2])/2),new T.Vector3(...b));
+    [arc([-15,5.4,-8],[16,4.4,9],15),arc([0,9,0],[16,4.4,9],12),arc([-15,5.4,-8],[0,9,0],11),arc([0,10,0],[8,11.4,-14],14),arc([-12,4,13],[0,9,0],9)].forEach(c=>{curves.push(c);
+      const l=new T.Line(new T.BufferGeometry().setFromPoints(c.getPoints(48)),lm('links',BL,.35));scene.add(l)});
+    const NPK=low?50:110,pk=new Float32Array(NPK*3),pkS=[];for(let i=0;i<NPK;i++)pkS.push({c:i%curves.length,t:Math.random(),v:.12+Math.random()*.3});
+    const pkG=new T.BufferGeometry();pkG.setAttribute('position',new T.BufferAttribute(pk,3));
+    const pkM=new T.PointsMaterial({color:0xffffff,size:.26,transparent:true,opacity:.9,fog:true});scene.add(new T.Points(pkG,pkM));
+    /* threats: come from outside and break on the shield */
+    const NT=low?40:80,th=new Float32Array(NT*3),thS=[];const rnd=()=>{const a=Math.random()*Math.PI*2,e=Math.random()*.9+.1;return new T.Vector3(Math.cos(a)*Math.cos(e),Math.sin(e),Math.sin(a)*Math.cos(e))};
+    for(let i=0;i<NT;i++)thS.push({d:rnd(),r:40+Math.random()*40,v:6+Math.random()*8});
+    const thG=new T.BufferGeometry();thG.setAttribute('position',new T.BufferAttribute(th,3));const thM=new T.PointsMaterial({color:0xc9d6e4,size:.32,transparent:true,opacity:.0,fog:true});scene.add(new T.Points(thG,thM));
+    const hits=[];const hitM=new T.MeshBasicMaterial({color:CY,transparent:true,opacity:0,side:T.DoubleSide,depthWrite:false});
+    for(let i=0;i<10;i++){const m=new T.Mesh(new T.RingGeometry(.35,.45,24),hitM.clone());m.visible=false;scene.add(m);hits.push({m,t:9})}
+    let hitI=0;
+
+    /* camera, view offset (structure sits right of the reading column), sizing */
+    const cur={p:new T.Vector3(110,80,120),l:new T.Vector3(0,0,0)},tgt={p:new T.Vector3(...VIEWS.hero.p),l:new T.Vector3(...VIEWS.hero.l)};
+    let view='hero',focus=null,mx=0,my=0,tmx=0,tmy=0,tlP=0,tlT=0,segOn=-1,run=true;
+    function size(){const w=innerWidth,h=innerHeight;R.setPixelRatio(Math.min(low?1.25:1.6,devicePixelRatio||1));R.setSize(w,h,false);cam.aspect=w/h;cam.fov=w<h?52:36;
+      if(w>900)cam.setViewOffset(w,h,-w*.19,0,w,h);else cam.clearViewOffset();cam.updateProjectionMatrix()}
+    size();addEventListener('resize',size);
+    addEventListener('pointermove',e=>{tmx=e.clientX/innerWidth-.5;tmy=e.clientY/innerHeight-.5},{passive:true});
+    document.addEventListener('visibilitychange',()=>{run=!document.hidden;if(run){last=performance.now();requestAnimationFrame(loop)}});
+
+    /* labels that point at the part in focus */
+    const tagsEl=$('#px-tags'),tagEls={};
+    Object.keys(TAGS).forEach(k=>{const d=document.createElement('div');d.className='tag';d.innerHTML='<svg width="46" height="46"><path d="M0 46 L30 16 H46" fill="none" stroke="rgba(104,197,219,.7)" stroke-width="1"/></svg><i></i><span><small>'+TAGS[k][1]+'</small>'+TAGS[k][0]+'</span>';tagsEl&&tagsEl.append(d);tagEls[k]=d});
+    const v3=new T.Vector3();
+    /* mini-map */
+    const mc=$('#px-map'),mx2=mc&&mc.getContext('2d'),ml=$('#px-mapl');
+    const ZPOS={servers:[-15,-8],perimeter:[20.5,20.5],backup:[16,9],cloud:[8,-14],core:[0,0],gov:[-12,13],endpoints:[0,19],dome:[0,0],timeline:[0,33]};
+    function drawMap(){if(!mx2)return;const S=260,c=S/2,k=S/2/40;mx2.clearRect(0,0,S,S);mx2.lineWidth=1.5;
+      mx2.strokeStyle='rgba(104,197,219,.5)';mx2.beginPath();mx2.arc(c,c,PR*k,0,7);mx2.stroke();
+      mx2.strokeStyle='rgba(72,138,183,.4)';mx2.beginPath();mx2.arc(c,c,19*k,0,7);mx2.stroke();
+      for(let i=0;i<12;i++){const a=i/12*Math.PI*2+.13;mx2.fillStyle=(focus==='endpoints'&&(segOn<0||segOn===i))?'#68c5db':'rgba(201,214,228,.45)';mx2.fillRect(c+Math.cos(a)*19*k-3,c+Math.sin(a)*19*k-3,6,6)}
+      Object.entries(ZPOS).forEach(([z,[x,y]])=>{if(z==='dome'||z==='timeline'||z==='endpoints')return;const on=focus===z;mx2.fillStyle=on?'#68c5db':'rgba(201,214,228,.55)';const s=on?16:11;mx2.fillRect(c+x*k-s/2,c+y*k-s/2,s,s);
+        if(on){mx2.strokeStyle='#68c5db';mx2.strokeRect(c+x*k-s,c+y*k-s,s*2,s*2)}});
+      /* camera position and view direction */
+      const px=c+clamp(-40,40,cur.p.x)*k,py=c+clamp(-40,40,cur.p.z)*k,lx=c+cur.l.x*k,ly=c+cur.l.z*k,ang=Math.atan2(ly-py,lx-px);
+      mx2.fillStyle='rgba(104,197,219,.18)';mx2.beginPath();mx2.moveTo(px,py);mx2.arc(px,py,70,ang-.38,ang+.38);mx2.closePath();mx2.fill();
+      mx2.fillStyle='#fff';mx2.beginPath();mx2.arc(px,py,6,0,7);mx2.fill()}
+
+    let last=performance.now();const t0=last;
+    function loop(now){if(!run)return;requestAnimationFrame(loop);const dt=Math.min(.1,(now-last)/1000);last=now;const t=(now-t0)/1000;
+      const V=VIEWS[view];const e=1-Math.exp(-dt*1.9);
+      tgt.p.set(...V.p);tgt.l.set(...V.l);
+      if(V.orbit){const a=t*.05,c=Math.cos(a),s=Math.sin(a),x=tgt.p.x,z=tgt.p.z;tgt.p.x=x*c-z*s;tgt.p.z=x*s+z*c}
+      cur.p.lerp(tgt.p,e);cur.l.lerp(tgt.l,e);mx+=(tmx-mx)*.04;my+=(tmy-my)*.04;
+      cam.position.copy(cur.p);cam.position.x+=mx*4;cam.position.y-=my*3;cam.lookAt(cur.l);
+      /* focus: the part in view is lit, the rest dims */
+      for(const k in zones){const zz=zones[k];zz.target=!focus?(k==='dome'?.22:k==='timeline'?(view==='years'?1:.2):.75):(k===focus||(focus==='perimeter'&&k==='dome')||k==='ground'?1:k==='links'?.5:.22);
+        if(focus==='dome'&&k==='perimeter')zz.target=.9;
+        if(focus==='symbol')zz.target=(k==='endpoints'||k==='core'||k==='perimeter'||k==='links'||k==='ground')?1:.07;
+        zz.op+=(zz.target-zz.op)*(1-Math.exp(-dt*3));zz.mats.forEach(m=>m.opacity=m.userData.base*zz.op);if(zz.fw)zz.fw.uOp.value=zz.op}
+      fwU.uT.value=t;radar.rotation.y=-t*1.4;cloud.rotation.y=Math.sin(t*.3)*.15;cloud.position.y=14+Math.sin(t*.8)*.4;
+      bars.forEach((b,i)=>{b.scale.y=.4+.6*Math.abs(Math.sin(t*1.7+i*1.3))});
+      leds.material.opacity=leds.material.userData.base*zones.servers.op*(.55+.45*Math.sin(t*9));
+      eps.forEach((b,i)=>{const on=focus==='endpoints'&&(segOn<0?(Math.floor(t*2)%12===i):segOn===i);b.scale.setScalar(on?1.35:1)});
+      /* evolution ring draws itself */
+      tlP+=(tlT-tlP)*(1-Math.exp(-dt*4));tl.geometry.setDrawRange(0,Math.max(1,Math.floor(tlP*271)));ticks.geometry.setDrawRange(0,Math.floor(tlP*28)*2);
+      /* packets */
+      for(let i=0;i<NPK;i++){const s=pkS[i];s.t=(s.t+s.v*dt)%1;curves[s.c].getPoint(s.t,v3);pk[i*3]=v3.x;pk[i*3+1]=v3.y;pk[i*3+2]=v3.z}pkG.attributes.position.needsUpdate=true;
+      /* threats */
+      const thOn=view==='why'||view==='sol1'||view==='case1';thM.opacity+=((thOn?.95:.25)-thM.opacity)*(1-Math.exp(-dt*3));
+      for(let i=0;i<NT;i++){const s=thS[i];s.r-=s.v*dt*(thOn?1.6:.7);if(s.r<31.2){const h=hits[hitI++%hits.length];h.m.position.copy(s.d).multiplyScalar(31.2);h.m.lookAt(0,0,0);h.m.visible=true;h.t=0;s.d=rnd();s.r=60+Math.random()*30}
+        th[i*3]=s.d.x*s.r;th[i*3+1]=s.d.y*s.r;th[i*3+2]=s.d.z*s.r}thG.attributes.position.needsUpdate=true;
+      hits.forEach(h=>{if(h.t>1.2){h.m.visible=false;return}h.t+=dt;const k=h.t/1.2;h.m.scale.setScalar(1+k*2.2);h.m.material.opacity=(1-k)*.45*(thOn?1:0)});
+      R.render(scene,cam);
+      /* labels */
+      for(const k in tagEls){const el=tagEls[k],on=k===focus&&innerWidth>900;el.classList.toggle('on',on);if(!on)continue;v3.set(...TAGS[k][2]).project(cam);
+        el.style.transform='translate('+((v3.x*.5+.5)*innerWidth).toFixed(1)+'px,'+((-v3.y*.5+.5)*innerHeight).toFixed(1)+'px)'}
+      drawMap();
+    }
+    requestAnimationFrame(loop);
+    return{set(v){if(!VIEWS[v]||v===view)return;view=v;focus=VIEWS[v].z;if(ml)ml.textContent=VIEWS[v].name},years(p){tlT=p},seg(i){segOn=i}};
+  }
+
+  const HAS=!!(window.gsap&&window.ScrollTrigger);
+  const loader=document.querySelector('.px-load');
+  function done(){root.classList.remove('px-preload');loader&&loader.remove()}
+  const S=reduce?null:Structure($('#px-scene'));
+
+  /* lists that drive the camera */
+  const sl=$$('#px-sl li'),cl=$$('#px-cl a');
+  function setSol(i){sl.forEach((l,k)=>l.classList.toggle('on',k===i));S&&S.set('sol'+i)}
+  function setCase(i){cl.forEach((l,k)=>l.classList.toggle('on',k===i));S&&S.set('case'+i)}
+  sl.forEach((l,i)=>l.addEventListener('pointerenter',()=>setSol(i)));
+  cl.forEach((l,i)=>l.addEventListener('pointerenter',()=>setCase(i)));
+  $$('#px-sg a[data-i]').forEach(a=>{a.addEventListener('pointerenter',()=>S&&S.seg(+a.dataset.i));a.addEventListener('pointerleave',()=>S&&S.seg(-1))});
+
+  if(!HAS||reduce){done();return}
+  gsap.registerPlugin(ScrollTrigger);
+  const EO='expo.out';
+
+  let lenis=null;
+  if(window.Lenis){lenis=new Lenis({duration:1.2,wheelMultiplier:.9});lenis.on('scroll',ScrollTrigger.update);gsap.ticker.add(t=>lenis.raf(t*1000));gsap.ticker.lagSmoothing(0)}
+  $$('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{const id=a.getAttribute('href');const tg=id==='#top'?0:document.querySelector(id);if(tg===null||!lenis)return;e.preventDefault();lenis.scrollTo(tg,{offset:0,duration:1.8})}));
+
+  /* chapters → camera */
+  $$('[data-view]').forEach(sec=>{const v=sec.dataset.view,n=+sec.dataset.n||0;
+    if(n){const fn=v==='sol'?setSol:setCase;
+      ScrollTrigger.create({trigger:sec,start:'top 55%',end:'bottom 45%',onToggle:s=>{if(s.isActive)fn(s.direction>0?0:n-1)}});
+      ScrollTrigger.create({trigger:sec,start:'top top',end:'bottom bottom',onUpdate:s=>{if(innerWidth>900)fn(Math.min(n-1,Math.floor(s.progress*n)))}});
+      const mm=gsap.matchMedia();mm.add('(max-width: 900px)',()=>{let id=0,i=0;const st=ScrollTrigger.create({trigger:sec,start:'top 60%',end:'bottom 40%',onToggle:x=>{clearInterval(id);if(x.isActive){fn(i=0);id=setInterval(()=>fn(i=(i+1)%n),3000)}}});return()=>{clearInterval(id);st.kill()}})}
+    else ScrollTrigger.create({trigger:sec,start:'top 55%',end:'bottom 45%',onToggle:s=>s.isActive&&S&&S.set(v)})});
+  const yrs=$('[data-view="years"]');if(yrs)ScrollTrigger.create({trigger:yrs,start:'top 70%',end:'center 40%',scrub:true,onUpdate:s=>{S&&S.years(s.progress);const tl=$('#px-tl');tl&&tl.style.setProperty('--p',s.progress)}});
+  S&&S.set('hero');
+
+  /* intro */
+  const intro=gsap.timeline({paused:true});
+  intro.from('.px .top',{yPercent:-100,duration:1,ease:EO,clearProps:'transform'},0)
+    .from('.px .map',{opacity:0,y:20,duration:1,ease:EO},.6);
+  [['.px .hero .lab',{opacity:0,x:-20,duration:1,ease:EO},.15],['#px-h1',{y:50,opacity:0,duration:1.4,ease:EO},.2],['.px .hero .lead',{y:24,opacity:0,duration:1,ease:EO},.45],
+   ['.px .hero .acts>*',{y:24,opacity:0,duration:1,ease:EO,stagger:.08},.55],['.px .hero .meta>span',{y:20,opacity:0,duration:.9,ease:EO,stagger:.08},.7],
+   ['.px .hero .ticks li',{x:-24,opacity:0,duration:.9,ease:EO,stagger:.08},.6],['.px .hero .fbox',{y:60,opacity:0,duration:1.2,ease:EO,clearProps:'transform'},.4]].forEach(([s,v,at])=>{if(page.querySelector(s))intro.from(s,v,at)});
+  intro.add(()=>$$('.px .hero [data-count]').forEach(b=>{const o={v:0},n=+b.dataset.count;gsap.to(o,{v:n,duration:1.6,ease:'power2.out',onUpdate(){b.textContent=Math.round(o.v)}})}),.7);
+  if(root.classList.contains('px-preload')&&loader){
+    lenis&&lenis.stop();const pct=document.getElementById('px-lpct'),bar=document.getElementById('px-lbar'),ls=[...document.querySelectorAll('#px-lls span')],o={p:0};
+    gsap.timeline({onComplete:()=>{done();lenis&&lenis.start();ScrollTrigger.refresh()}})
+      .to(o,{p:1,duration:1.8,ease:'power2.inOut',onUpdate(){pct.textContent=String(Math.round(o.p*100)).padStart(2,'0')+'%';bar.style.transform='scaleX('+o.p+')';ls.forEach((s,i)=>s.classList.toggle('ok',o.p>(i+1)/(ls.length+.4)))}})
+      .to(loader,{opacity:0,duration:.5,ease:'power2.in'},'+=.2')
+      .add(()=>intro.play(),'-=.3');
+  }else{done();intro.play()}
+
+  /* reading: headings wipe in, lists rise */
+  $$('.px main .ch h2').forEach(h=>gsap.fromTo(h,{clipPath:'inset(0 100% 0 0)',x:-24},{clipPath:'inset(0 0% 0 0)',x:0,duration:1.3,ease:'power3.out',scrollTrigger:{trigger:h,start:'top 82%'}}));
+  $$('.px main .ch:not(.hero) .lab,.px main .ch:not(.hero) .lead').forEach(l=>gsap.from(l,{opacity:0,y:20,duration:1,ease:EO,scrollTrigger:{trigger:l,start:'top 90%'}}));
+  const batch=(sel,v)=>ScrollTrigger.batch(sel,{start:'top 94%',once:true,onEnter:b=>gsap.from(b,Object.assign({opacity:0,duration:.9,ease:EO,stagger:.05,clearProps:'transform'},v))});
+  batch('.px .sl li',{x:-30});batch('.px .rl>div',{y:40});batch('.px .sg a',{y:24});batch('.px .cl a',{x:-30});batch('.px .bl a',{y:30});
+  gsap.from('.px .logos>div',{opacity:0,duration:.8,ease:'power2.out',stagger:{each:.03,from:'random'},scrollTrigger:{trigger:'.px .logos',start:'top 88%'}});
+  page.querySelector('.px #contato .fbox')&&gsap.from('.px #contato .fbox',{y:60,opacity:0,duration:1.2,ease:EO,clearProps:'transform',scrollTrigger:{trigger:'.px #contato .fbox',start:'top 92%'}});
+  ScrollTrigger.refresh();
+})();
+</script>
+</body>
+</html>
