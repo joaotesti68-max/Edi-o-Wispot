@@ -237,6 +237,10 @@ html:not(.px-preload) .px-load{opacity:0;visibility:hidden}
 @media (max-width:900px){.px .contact .grid{grid-template-columns:1fr}}
 @media (max-width:480px){.px .ff{grid-template-columns:1fr}}
 
+/* empty spot where the WebGL symbol assembles */
+.px .sym-spot{height:clamp(200px,22vw,300px);pointer-events:none}
+@media (max-width:900px){.px .contact .info .sym-spot{display:none}}
+
 /* footer */
 .px .ftr{background:linear-gradient(180deg,rgba(0,0,0,0),#000 30%);padding:80px 0 34px}
 .px .fg{display:grid;grid-template-columns:minmax(0,1.3fr) repeat(4,minmax(0,1fr));gap:30px;padding-top:44px;border-top:1px solid var(--line)}
@@ -261,3 +265,20 @@ html:not(.px-preload) .px-load{opacity:0;visibility:hidden}
 @media (max-width:560px){.px .hud.top .cta{padding:13px 18px;font-size:11px}.px .hud.top .cta .l{display:none}.px .hud.top .cta .s{display:inline}.px .hud.top .cta svg{display:none}}
 .px .fg{grid-template-columns:minmax(0,1fr) auto}
 @media (max-width:1000px){.px .fg{grid-template-columns:1fr}}
+
+/* landing page order (as on the Wispot LP): form beside the title, short page, closing CTA band */
+.px .hero.lp{display:block;text-align:left;padding:120px 0 90px;min-height:100vh;min-height:100svh;display:flex;align-items:center}
+.px .hgrid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:clamp(30px,5vw,80px);align-items:center}
+.px .hero.lp .lab{justify-content:flex-start}
+.px .hero.lp .lab::after{display:none}
+.px .hero.lp h1{font-size:clamp(30px,3.4vw,58px);margin-top:20px}
+.px .hero.lp .sub{margin:24px 0 0;max-width:50ch}
+.px .ticks{display:grid;gap:12px;margin-top:30px}
+.px .ticks li{display:flex;align-items:center;gap:12px;font-size:14px;font-weight:500;color:var(--mist)}
+.px .ticks li::before{content:"";flex:none;width:18px;height:18px;border-radius:50%;background:var(--grad) center/100% no-repeat;-webkit-mask:radial-gradient(circle,#000 0 3px,transparent 3.5px),radial-gradient(circle,transparent 7px,#000 7.5px 9px,transparent 9.5px);mask:radial-gradient(circle,#000 0 3px,transparent 3.5px),radial-gradient(circle,transparent 7px,#000 7.5px 9px,transparent 9.5px)}
+.px .hero.lp .fbox{box-shadow:0 30px 80px rgba(0,0,0,.45),0 0 0 1px rgba(104,197,219,.12)}
+@media (max-width:980px){.px .hgrid{grid-template-columns:1fr}.px .hero.lp{padding-top:110px}}
+.px .final .acts.c{display:flex;justify-content:center;margin-top:34px}
+.px .final .info{grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin-top:clamp(50px,7vw,90px);padding-top:34px;border-top:1px solid var(--line)}
+@media (max-width:860px){.px .final .info{grid-template-columns:1fr}}
+.px .final .sym-spot{height:clamp(200px,24vw,320px);margin-top:20px}

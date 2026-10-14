@@ -242,6 +242,10 @@ html:not(.px-preload) .px-load{opacity:0;visibility:hidden}
 @media (max-width:900px){.px .contact .grid{grid-template-columns:1fr}}
 @media (max-width:480px){.px .ff{grid-template-columns:1fr}}
 
+/* empty spot where the WebGL symbol assembles */
+.px .sym-spot{height:clamp(200px,22vw,300px);pointer-events:none}
+@media (max-width:900px){.px .contact .info .sym-spot{display:none}}
+
 /* footer */
 .px .ftr{background:linear-gradient(180deg,rgba(0,0,0,0),#000 30%);padding:80px 0 34px}
 .px .fg{display:grid;grid-template-columns:minmax(0,1.3fr) repeat(4,minmax(0,1fr));gap:30px;padding-top:44px;border-top:1px solid var(--line)}
@@ -420,6 +424,7 @@ body{margin:0;background:#000}
               <div><b>Endereço</b><span>Av. Queiroz Filho, 1700 · Conjunto 805, Sala 1 · Torre A · Condomínio Vila Lobos Office Park · Vila Hamburguesa · São Paulo · CEP 05319-000</span><a href="https://www.google.com/maps/search/?api=1&amp;query=Av.+Queiroz+Filho+1700+Vila+Lobos+Office+Park+Sao+Paulo" target="_blank" rel="noopener">Ver localização no mapa</a></div>
               <div><b>Telefone</b><span>+55 11 94719-8132 · +55 11 3646-2970</span></div>
               <div><b>E-mail</b><span>contato@proadvanced.com.br</span></div>
+              <div class="sym-spot" id="px-sym" aria-hidden="true"></div>
             </div>
           <div class="fbox glass" id="px-form">
             <h3>Fale com um especialista</h3>
@@ -585,12 +590,15 @@ body{margin:0;background:#000}
       C(st.z,pos);pos.x+=st.mx*.9;pos.y-=st.my*.7;cam.position.copy(pos);C(st.z-26,look);cam.lookAt(look);cam.rotation.z+=st.mx*.015;
       rings.forEach((r,i)=>{r.userData.inner.rotation.z=now/1000*(i%2?.08:-.08)});
       {const dz=st.z-hz;
-        /* keep the symbol in the free area of the contact section: left on wide screens, centred on narrow ones */
-        const wide=innerWidth>900;tmp.set(wide?-cam.aspect*11:0,wide?-6:-2,-46);sym.position.copy(cam.localToWorld(tmp));
-        sym.quaternion.copy(cam.quaternion);sym.rotateZ(Math.sin(now/3000)*.08);sym.visible=UA.uAsm.value>.001}
+        /* the symbol forms over an empty spot reserved in the page (.sym-spot), sized to it */
+        if(st.spot&&UA.uAsm.value>.001){const r=st.spot.getBoundingClientRect(),D=46;
+          tmp.set((r.left+r.width/2)/innerWidth*2-1,-((r.top+r.height/2)/innerHeight*2-1),.5).unproject(cam).sub(cam.position).normalize().multiplyScalar(D);
+          sym.position.copy(cam.position).add(tmp);
+          const vis=2*D*Math.tan(cam.fov*Math.PI/360);sym.scale.setScalar(Math.max(.35,Math.min(r.width,r.height)/innerHeight*vis/(R*1.5)))}
+        sym.quaternion.copy(cam.quaternion);sym.rotateZ(Math.sin(now/3000)*.08);sym.visible=UA.uAsm.value>.001&&!!st.spot&&st.spot.offsetHeight>0}
       renderer.render(scene,cam)}
     requestAnimationFrame(loop);
-    return{L,placeRings,asm(v){UA.uAsm.value=v},go(p){st.tz=12-p*(L-48)},zAt:p=>12-p*(L-48),get z(){return st.z}};
+    return{L,placeRings,asm(v){UA.uAsm.value=v},spot(el){st.spot=el},go(p){st.tz=12-p*(L-48)},zAt:p=>12-p*(L-48),get z(){return st.z}};
   }
 
   const HAS=!!(window.gsap&&window.ScrollTrigger);
@@ -615,7 +623,7 @@ body{margin:0;background:#000}
     ringZ=chs.map((s,i)=>i===0?-16:tun?tun.zAt(clamp(0,1,(s.getBoundingClientRect().top+scrollY-innerHeight*.35)/max)):0);
     tun&&tun.placeRings(ringZ)}
   ScrollTrigger.addEventListener('refresh',layout);
-  const ct=$('#contato');if(ct&&tun){const o={v:0};gsap.to(o,{v:1,ease:'none',onUpdate:()=>tun.asm(o.v),scrollTrigger:{trigger:ct,start:'top 85%',end:'top 15%',scrub:1}})}
+  const spot=$('#px-sym');if(spot&&tun){tun.spot(spot);const o={v:0};gsap.to(o,{v:1,ease:'none',onUpdate:()=>tun.asm(o.v),scrollTrigger:{trigger:spot,start:'top 100%',end:'center 60%',scrub:1}})}
   function which(){const y=innerHeight*.4;let k=0;chs.forEach((s,i)=>{if(s.getBoundingClientRect().top<=y)k=i});
     if(scrollY>=ScrollTrigger.maxScroll(window)-2)k=chs.length-1;setCh(k)}
   ScrollTrigger.create({start:0,end:'max',onUpdate:s=>{tun&&tun.go(s.progress);trk&&(trk.style.transform='scaleX('+s.progress+')');which()}});
@@ -627,9 +635,11 @@ body{margin:0;background:#000}
     .from('#px-h1 .ln>span',{yPercent:115,duration:1.3,ease:EO,stagger:.1},.2)
     .from('.px .hero .lab',{opacity:0,letterSpacing:'.8em',duration:1.4,ease:EO},.1)
     .from('.px .hero .sub',{y:24,opacity:0,duration:1,ease:EO},.6)
-    .from('.px .hero .acts>*',{y:24,opacity:0,duration:1,ease:EO,stagger:.08},.7)
-    .from('.px .hero .hint',{opacity:0,duration:1},1)
     .from('.px .hud',{opacity:0,duration:1,clearProps:'opacity'},.4);
+  /* optional hero parts (site: buttons + hint; landing page: highlights + form) */
+  [['.px .hero .acts>*',{y:24,opacity:0,duration:1,ease:EO,stagger:.08},.7],['.px .hero .hint',{opacity:0,duration:1},1],
+   ['.px .hero .ticks li',{x:-24,opacity:0,duration:.9,ease:EO,stagger:.08},.75],['.px .hero .fbox',{y:60,opacity:0,scale:.96,duration:1.3,ease:EO,clearProps:'transform'},.45]]
+    .forEach(([sel,v,at])=>{if(page.querySelector(sel))intro.from(sel,v,at)});
   if(root.classList.contains('px-preload')&&loader){
     lenis&&lenis.stop();const pct=document.getElementById('px-lpct'),bar=document.getElementById('px-lbar'),o={p:0};
     const fontsOk=(document.fonts&&document.fonts.ready)||Promise.resolve();
@@ -742,7 +752,7 @@ body{margin:0;background:#000}
   gsap.from('.px .verde',{y:30,opacity:0,duration:1,ease:EO,scrollTrigger:{trigger:'.px .verde',start:'top 92%'}});
   ScrollTrigger.batch('.px .post',{start:'top 92%',once:true,onEnter:b=>gsap.from(b,{y:70,opacity:0,duration:1.1,ease:EO,stagger:.08})});
   gsap.from('.px .info>*',{x:-30,opacity:0,duration:1,ease:EO,stagger:.08,scrollTrigger:{trigger:'.px .info',start:'top 88%'}});
-  gsap.from('.px .fbox',{y:80,opacity:0,scale:.96,duration:1.3,ease:EO,scrollTrigger:{trigger:'.px .fbox',start:'top 90%'}});
+  page.querySelector('.px .contact .fbox')&&gsap.from('.px .contact .fbox',{y:80,opacity:0,scale:.96,duration:1.3,ease:EO,scrollTrigger:{trigger:'.px .contact .fbox',start:'top 90%'}});
   (function(){const u=$('#px-url');if(!u)return;u.innerHTML=[...u.textContent].map(c=>'<span>'+c+'</span>').join('');
     gsap.from(u.children,{yPercent:100,opacity:0,duration:1,ease:EO,stagger:.025,scrollTrigger:{trigger:u,start:'top 98%'}})})();
   layout();ScrollTrigger.refresh();

@@ -12,7 +12,7 @@
   <header class="hud top" id="px-nav">
     <a href="#top" aria-label="Pro Advanced, início"><img src="{{LOGO_WHITE}}" alt="Pro Advanced IT Solutions"></a>
     
-    <a class="btn solid cta" href="#contato"><span class="l">Fale com um especialista</span><span class="s">Fale conosco</span> <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.8"/></svg></a>
+    <a class="btn solid cta" href="#form"><span class="l">Fale com um especialista</span><span class="s">Fale conosco</span> <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.8"/></svg></a>
     
   </header>
   <div class="hud bot" aria-hidden="true">
@@ -21,12 +21,28 @@
   </div>
 
   <main id="top">
-    <section class="hero" id="px-hero" data-ch="00" data-chl="Início">
-      <span class="lab">Proteção Digital</span>
-      <h1 id="px-h1"><span class="ln"><span>Gestão completa de TI</span></span><span class="ln"><span>e <b>Cibersegurança</b></span></span><span class="ln"><span class="thin">para empresas que</span></span><span class="ln"><span>não podem parar</span></span></h1>
-      <p class="sub wrap">Infraestrutura, segurança, cloud, backup, monitoramento e suporte especializado para manter sua operação protegida e disponível.</p>
-      <div class="acts"><a class="btn solid" href="#contato">Fale com um especialista <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.8"/></svg></a><a class="btn" href="#solucoes">Entrar no túnel</a></div>
-      <div class="hint" aria-hidden="true">Role para avançar<i></i></div>
+    <section class="hero lp" id="px-hero" data-ch="00" data-chl="Início">
+      <div class="wrap hgrid">
+        <div class="htx">
+          <span class="lab">Proteção Digital</span>
+          <h1 id="px-h1"><span class="ln"><span>Gestão completa de TI</span></span><span class="ln"><span>e <b>Cibersegurança</b></span></span><span class="ln"><span class="thin">para empresas que</span></span><span class="ln"><span>não podem parar</span></span></h1>
+          <p class="sub">Infraestrutura, segurança, cloud, backup, monitoramento e suporte especializado para manter sua operação protegida e disponível.</p>
+          <ul class="ticks"><li>Monitoramento 24×7 com NOC e SOC</li><li>27 anos de experiência em tecnologia e segurança</li><li>Parceiros líderes globais</li></ul>
+        </div>
+        <div class="fbox glass" id="form">
+            <h3>Fale com um especialista</h3>
+            <div role="main" id="gmk-forms-home-f6a9607991fe0a26527a"></div>
+            <form class="ff" id="px-fallback" novalidate hidden>
+              <div class="f"><label for="px-n">Nome*</label><input id="px-n" autocomplete="name" required></div>
+              <div class="f"><label for="px-e">E-mail corporativo*</label><input id="px-e" type="email" autocomplete="email" required></div>
+              <div class="f"><label for="px-t">Telefone*</label><input id="px-t" type="tel" autocomplete="tel" required></div>
+              <div class="f"><label for="px-c">Empresa*</label><input id="px-c" autocomplete="organization" required></div>
+              <div class="f full"><label for="px-m">Como podemos ajudar?</label><textarea id="px-m"></textarea></div>
+              <button class="btn solid" type="submit">Enviar <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.8"/></svg></button>
+              <p class="msg" role="status"></p>
+            </form>
+          </div>
+      </div>
     </section>
 
     <section class="sec" id="solucoes" data-ch="01" data-chl="Soluções">
@@ -37,9 +53,19 @@
       </div>
     </section>
 
-    <section class="sec why" id="sobre" data-ch="02" data-chl="Por que a Pro">
+    <section class="sec years" data-ch="02" data-chl="27 anos">
       <div class="wrap">
-        <div class="head"><span class="lab">02 · Por que a Pro Advanced</span><h2>Por que contar com a <b>Pro Advanced?</b></h2><p>Especialistas, tecnologia e acompanhamento contínuo para manter sua operação segura, disponível e preparada para evoluir.</p></div>
+        <span class="lab">02 · Desde 1999</span>
+        <div class="num"><canvas id="px-27" aria-hidden="true"></canvas><span class="sr">27 anos</span></div>
+        <h2>27 anos de experiência em <b>tecnologia e segurança</b></h2>
+        <p>Há quase três décadas, ajudamos empresas a proteger seus ambientes, manter suas operações disponíveis e evoluir sua infraestrutura de TI.</p>
+        <div class="tl" aria-hidden="true"><span>1999</span><i id="px-tl"></i><span>2026</span></div>
+      </div>
+    </section>
+
+    <section class="sec why" id="sobre" data-ch="03" data-chl="Por que a Pro">
+      <div class="wrap">
+        <div class="head"><span class="lab">03 · Por que a Pro Advanced</span><h2>Por que contar com a <b>Pro Advanced?</b></h2><p>Especialistas, tecnologia e acompanhamento contínuo para manter sua operação segura, disponível e preparada para evoluir.</p></div>
         <div class="grid">
           <ol class="steps" id="px-steps">
             <li class="on"><div class="h"><span>01</span><h3>Proteção e prevenção contínuas</h3></div><p>Tecnologias e estratégias de segurança para identificar vulnerabilidades, antecipar ameaças e reduzir riscos antes que afetem sua operação.</p></li>
@@ -99,35 +125,11 @@
       </div>
     </section>
 
-    <section class="sec years" data-ch="03" data-chl="27 anos">
-      <div class="wrap">
-        <span class="lab">03 · Desde 1999</span>
-        <div class="num"><canvas id="px-27" aria-hidden="true"></canvas><span class="sr">27 anos</span></div>
-        <h2>27 anos de experiência em <b>tecnologia e segurança</b></h2>
-        <p>Há quase três décadas, ajudamos empresas a proteger seus ambientes, manter suas operações disponíveis e evoluir sua infraestrutura de TI.</p>
-        <div class="tl" aria-hidden="true"><span>1999</span><i id="px-tl"></i><span>2026</span></div>
-      </div>
-    </section>
+    
 
-    <section class="sec" id="segmentos" data-ch="04" data-chl="Segmentos">
+    <section class="sec" id="parceiros" data-ch="04" data-chl="Parceiros">
       <div class="wrap">
-        <div class="head"><span class="lab">04 · Segmentos</span><h2>Soluções para <b>o seu segmento</b></h2><p>Tecnologia e cibersegurança aplicadas às necessidades, riscos e desafios de diferentes setores.</p></div>
-        <div class="segs" id="px-segs"><a class="seg glass" href="https://proadvanced.com.br/cartorios/"><span class="k">01</span><h3>Cartórios</h3><span class="ar">→</span></a><a class="seg glass" href="https://proadvanced.com.br/contabilidade/"><span class="k">02</span><h3>Contabilidade</h3><span class="ar">→</span></a><a class="seg glass" href="https://proadvanced.com.br/logistica/"><span class="k">03</span><h3>Logística</h3><span class="ar">→</span></a><a class="seg glass" href="https://proadvanced.com.br/advocacia/"><span class="k">04</span><h3>Advocacia</h3><span class="ar">→</span></a><a class="seg glass" href="https://proadvanced.com.br/fintechs-e-instituicoes-financeiras/"><span class="k">05</span><h3>Fintechs e Instituições Financeiras</h3><span class="ar">→</span></a><a class="seg glass" href="https://proadvanced.com.br/saude/"><span class="k">06</span><h3>Saúde</h3><span class="ar">→</span></a><a class="seg glass" href="https://proadvanced.com.br/hotelaria/"><span class="k">07</span><h3>Hotelaria</h3><span class="ar">→</span></a><a class="seg glass" href="https://proadvanced.com.br/varejo/"><span class="k">08</span><h3>Varejo</h3><span class="ar">→</span></a><a class="seg glass" href="https://proadvanced.com.br/empresas-de-servicos/"><span class="k">09</span><h3>Empresas de Serviços</h3><span class="ar">→</span></a><a class="seg glass" href="https://proadvanced.com.br/midias-e-entretenimento/"><span class="k">10</span><h3>Mídias e Entretenimento</h3><span class="ar">→</span></a><a class="seg glass" href="https://proadvanced.com.br/setor-publico/"><span class="k">11</span><h3>Setor Público</h3><span class="ar">→</span></a><a class="seg glass" href="https://proadvanced.com.br/construcao/"><span class="k">12</span><h3>Construção</h3><span class="ar">→</span></a><a class="seg wide glass" href="#contato"><span class="k">Soluções personalizadas +</span><div><h3>Não encontrou seu segmento?</h3><p>Nossas soluções são desenvolvidas de acordo com os desafios e necessidades de cada operação.</p></div><span class="ar">→</span></a><a class="seg wide glass" href="https://proadvanced.com.br/segmentos/"><span class="k">Todos</span><h3>Ver todos os segmentos</h3><span class="ar">→</span></a></div>
-      </div>
-    </section>
-
-    <section class="sec cases" id="cases" data-ch="05" data-chl="Cases">
-      <div class="wrap">
-        <div class="head"><span class="lab">05 · Cases</span><h2>Tecnologia aplicada a <b>desafios reais</b></h2><p>Desenvolvemos projetos de infraestrutura, segurança e gestão de TI para empresas de diferentes segmentos e níveis de complexidade.</p></div>
-      </div>
-      <div class="track" id="px-track"><a class="case glass" href="https://proadvanced.com.br/cases/"><span class="orb" aria-hidden="true"></span><span class="n">01</span><small>Mídia e Entretenimento</small><h3>Tecnologia e infraestrutura para uma operação de alta performance</h3><p>Infraestrutura de rede desenvolvida para atender uma operação de alta demanda, com foco em conectividade, estabilidade e segurança.</p><span class="lk">Conheça o case →</span></a><a class="case glass" href="https://proadvanced.com.br/cases/"><span class="orb" aria-hidden="true"></span><span class="n">02</span><small>Fintechs e Instituições Financeiras</small><h3>Infraestrutura e segurança para uma operação mais robusta</h3><p>Modernização da rede, conectividade e cibersegurança, com alta disponibilidade, monitoramento e gestão do ambiente de TI.</p><span class="lk">Conheça o case →</span></a><a class="case glass" href="https://proadvanced.com.br/cases/"><span class="orb" aria-hidden="true"></span><span class="n">03</span><small>Saúde</small><h3>Mais maturidade e controle em Segurança da Informação</h3><p>Projeto para fortalecer a segurança do ambiente, com avaliação de vulnerabilidades, monitoramento e proteção dos acessos remotos.</p><span class="lk">Conheça o case →</span></a><a class="case glass" href="https://proadvanced.com.br/cases/"><span class="orb" aria-hidden="true"></span><span class="n">04</span><small>Varejo</small><h3>Uma jornada estruturada de adequação à LGPD</h3><p>Mapeamento de dados, gestão de riscos, organização de fornecedores e políticas para fortalecer a proteção de dados e a conformidade.</p><span class="lk">Conheça o case →</span></a><a class="case glass" href="https://proadvanced.com.br/cases/"><span class="orb" aria-hidden="true"></span><span class="n">05</span><small>Mídia e Entretenimento</small><h3>Segurança e infraestrutura para conquistar a certificação TPN</h3><p>Evolução dos processos, controles e infraestrutura de segurança para atender aos requisitos e concluir com êxito a certificação TPN.</p><span class="lk">Conheça o case →</span></a></div>
-      <div class="cdots" id="px-cdots" aria-hidden="true"></div>
-      <div class="wrap"><div class="more"><a class="btn" href="https://proadvanced.com.br/cases/">Ver todos os cases <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.8"/></svg></a></div></div>
-    </section>
-
-    <section class="sec" id="parceiros" data-ch="06" data-chl="Parceiros">
-      <div class="wrap">
-        <div class="head"><span class="lab">06 · Parceiros</span><h2>Tecnologia de líderes do mercado. <b>Expertise Pro Advanced</b></h2><p>Trabalhamos com parceiros reconhecidos globalmente para entregar soluções alinhadas às necessidades de cada operação.</p></div>
+        <div class="head"><span class="lab">04 · Parceiros</span><h2>Tecnologia de líderes do mercado. <b>Expertise Pro Advanced</b></h2><p>Trabalhamos com parceiros reconhecidos globalmente para entregar soluções alinhadas às necessidades de cada operação.</p></div>
         <div class="logos glass" id="px-logos">{{PARTNER_CELLS}}</div>
         <div class="verde glass">
           <span class="s"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 2 4.2 2 8 0 5.5-4.8 10-10 10z"/><path d="M2 21c0-3 1.9-5.4 5.2-6.1C9.5 14.5 12 13 13 12"/></svg></span>
@@ -136,29 +138,16 @@
       </div>
     </section>
 
-    <section class="sec contact" id="contato" data-ch="07" data-chl="Contato">
+    <section class="sec contact final" id="contato" data-ch="05" data-chl="Contato">
       <div class="wrap">
-        <div class="head"><span class="lab">07 · Contato</span><h2>Vamos falar sobre a tecnologia da <b>sua empresa?</b></h2><p>Conte-nos um pouco sobre sua operação. Nossos especialistas entrarão em contato para entender suas necessidades e como podemos ajudar.</p></div>
-        <div class="grid">
-          <div class="info">
+        <div class="head c"><span class="lab">05 · Contato</span><h2>Vamos falar sobre a tecnologia da <b>sua empresa?</b></h2><p>Conte-nos um pouco sobre sua operação. Nossos especialistas entrarão em contato para entender suas necessidades e como podemos ajudar.</p></div>
+        <div class="acts c"><a class="btn solid" href="#form">Fale com um especialista <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.8"/></svg></a></div>
+        <div class="sym-spot" id="px-sym" aria-hidden="true"></div>
+        <div class="info">
               <div><b>Endereço</b><span>Av. Queiroz Filho, 1700 · Conjunto 805, Sala 1 · Torre A · Condomínio Vila Lobos Office Park · Vila Hamburguesa · São Paulo · CEP 05319-000</span><a href="https://www.google.com/maps/search/?api=1&amp;query=Av.+Queiroz+Filho+1700+Vila+Lobos+Office+Park+Sao+Paulo" target="_blank" rel="noopener">Ver localização no mapa</a></div>
               <div><b>Telefone</b><span>+55 11 94719-8132 · +55 11 3646-2970</span></div>
               <div><b>E-mail</b><span>contato@proadvanced.com.br</span></div>
             </div>
-          <div class="fbox glass" id="px-form">
-            <h3>Fale com um especialista</h3>
-            <div role="main" id="gmk-forms-home-f6a9607991fe0a26527a"></div>
-            <form class="ff" id="px-fallback" novalidate hidden>
-              <div class="f"><label for="px-n">Nome*</label><input id="px-n" autocomplete="name" required></div>
-              <div class="f"><label for="px-e">E-mail corporativo*</label><input id="px-e" type="email" autocomplete="email" required></div>
-              <div class="f"><label for="px-t">Telefone*</label><input id="px-t" type="tel" autocomplete="tel" required></div>
-              <div class="f"><label for="px-c">Empresa*</label><input id="px-c" autocomplete="organization" required></div>
-              <div class="f full"><label for="px-m">Como podemos ajudar?</label><textarea id="px-m"></textarea></div>
-              <button class="btn solid" type="submit">Enviar <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.8"/></svg></button>
-              <p class="msg" role="status"></p>
-            </form>
-          </div>
-        </div>
       </div>
     </section>
   </main>

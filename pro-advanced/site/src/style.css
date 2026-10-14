@@ -234,6 +234,10 @@ html:not(.px-preload) .px-load{opacity:0;visibility:hidden}
 @media (max-width:900px){.px .contact .grid{grid-template-columns:1fr}}
 @media (max-width:480px){.px .ff{grid-template-columns:1fr}}
 
+/* empty spot where the WebGL symbol assembles */
+.px .sym-spot{height:clamp(200px,22vw,300px);pointer-events:none}
+@media (max-width:900px){.px .contact .info .sym-spot{display:none}}
+
 /* footer */
 .px .ftr{background:linear-gradient(180deg,rgba(0,0,0,0),#000 30%);padding:80px 0 34px}
 .px .fg{display:grid;grid-template-columns:minmax(0,1.3fr) repeat(4,minmax(0,1fr));gap:30px;padding-top:44px;border-top:1px solid var(--line)}
