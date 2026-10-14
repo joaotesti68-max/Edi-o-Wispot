@@ -11,7 +11,8 @@ nm=lambda p:NAMES.get(p,p.replace('-',' ').title())
 cells=''.join(f'<div><img src="{b64(f"{d}/assets/partners/{p}.png")}" alt="{nm(p)}" loading="lazy"></div>' for p in parts)
 def fill(s):
     return s.replace('{{LOGO_COLOR}}',b64(d+'/assets/logo-color-sm.png')).replace('{{LOGO_WHITE}}',b64(d+'/assets/logo-white-sm.png')).replace('{{ICON_MASK}}',b64(d+'/assets/icon-mask.png')).replace('{{PARTNER_CELLS}}',cells)
-libs='''<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+libs='''<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>'''
 RDFIX='''/* RD Station wraps blocks in a 960px flex column: keep the page full width */
@@ -20,7 +21,7 @@ html,body{overflow-x:clip}
 '''
 page=fill(body);script=fill(js)
 assert '{{' not in page and '{{' not in script
-open(out+'/preview.html','w').write(f'<title>Pro Advanced · Landing Page</title>\n<style>\n{css}\nbody{{margin:0;background:#fff}}\n</style>\n{page}\n{libs}\n<script>\n{script}</script>\n')
+open(out+'/preview.html','w').write(f'<title>Pro Advanced · Landing Page</title>\n<style>\n{css}\nbody{{margin:0;background:#000}}\n</style>\n{page}\n{libs}\n<script>\n{script}</script>\n')
 os.makedirs(out+'/rd-station',exist_ok=True)
 open(out+'/rd-station/tudo-em-um-bloco-html.html','w').write(f'<style>\n{RDFIX}{css}\n</style>\n{page}\n{libs}\n<script>\n{script}</script>\n')
 open(out+'/rd-station/1-bloco-html.html','w').write(page)

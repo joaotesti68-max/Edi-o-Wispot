@@ -16,9 +16,10 @@ def render(embed):
             k=os.path.basename(f)[:-4];s=s.replace('{{BLOG_'+k+'}}',src('assets/blog/'+k+'.jpg','image/jpeg'))
         return s
     return fill(body),fill(js)
-libs='''<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+libs='''<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>'''
 page,script=render(False)
-open(d+'/index.html','w').write(f'<!doctype html>\n<html lang="pt-BR">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n<title>Pro Advanced | Gestão de TI e Cibersegurança</title>\n<meta name="description" content="Gestão completa de TI e Cibersegurança para empresas que não podem parar.">\n<style>\n{css}\nbody{{margin:0;background:#fff}}\n</style>\n</head>\n<body>\n{page}\n{libs}\n<script>\n{script}</script>\n</body>\n</html>\n')
+open(d+'/index.html','w').write(f'<!doctype html>\n<html lang="pt-BR">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n<title>Pro Advanced | Gestão de TI e Cibersegurança</title>\n<meta name="description" content="Gestão completa de TI e Cibersegurança para empresas que não podem parar.">\n<style>\n{css}\nbody{{margin:0;background:#000}}\n</style>\n</head>\n<body>\n{page}\n{libs}\n<script>\n{script}</script>\n</body>\n</html>\n')
 print('built')

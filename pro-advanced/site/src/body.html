@@ -1,64 +1,47 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap">
-<script>(function(){var r=document.documentElement,s=false;try{s=sessionStorage.getItem('px-intro')==='1'}catch(e){}if(!s&&!matchMedia('(prefers-reduced-motion: reduce)').matches){r.classList.add('px-preload');setTimeout(function(){if(r.classList.contains('px-preload')&&!window.gsap)r.classList.remove('px-preload')},5000)}})();</script>
-<div class="px-load" aria-hidden="true"><canvas id="px-lcv"></canvas><div class="t"><b id="px-lpct">00</b><span>Pro Advanced · IT Solutions</span></div></div>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700&display=swap">
+<script>(function(){var r=document.documentElement;if(!matchMedia('(prefers-reduced-motion: reduce)').matches){r.classList.add('px-preload');setTimeout(function(){r.classList.remove('px-preload')},6000)}})();</script>
+<div class="px-load" aria-hidden="true"><i class="bar" id="px-lbar"></i><b id="px-lpct">00<small>%</small></b><span class="t">Pro Advanced · IT Solutions</span></div>
 
 <div class="px" id="px">
-  <header class="nav" id="px-nav">
-    <a href="#top" aria-label="Pro Advanced, início"><img src="{{LOGO_COLOR}}" alt="Pro Advanced IT Solutions"></a>
-    <ul id="px-menu">
-      <li><a href="#solucoes">Soluções</a></li>
-      <li><a href="#sobre">Sobre</a></li>
-      <li><a href="#segmentos">Segmentos</a></li>
-      <li><a href="#cases">Cases</a></li>
-      <li><a href="#blog">Blog</a></li>
-      <li><a href="#contato">Contato</a></li>
-    </ul>
-    <a class="btn solid" href="#contato">Fale com um especialista</a>
-    <button class="burger" id="px-burger" aria-label="Abrir menu" aria-expanded="false" aria-controls="px-menu"><i></i><i></i><i></i></button>
+  <canvas class="gl" id="px-gl" aria-hidden="true"></canvas>
+  <div class="vig" aria-hidden="true"></div>
+  <div class="flash" id="px-flash" aria-hidden="true"></div>
+
+  <header class="hud top" id="px-nav">
+    <a href="#top" aria-label="Pro Advanced, início"><img src="{{LOGO_WHITE}}" alt="Pro Advanced IT Solutions"></a>
+    <!--MENU--><nav class="menu" id="px-menu" aria-label="Principal">
+      <a href="#solucoes">Soluções</a><a href="#sobre">Sobre</a><a href="#segmentos">Segmentos</a><a href="#cases">Cases</a><a href="#blog">Blog</a><a href="#contato">Contato</a>
+    </nav><!--/MENU-->
+    <a class="btn solid cta" href="#contato">Fale com um especialista <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.8"/></svg></a>
+    <!--BURGER--><button class="burger" id="px-burger" aria-label="Abrir menu" aria-expanded="false" aria-controls="px-menu"><i></i><i></i><i></i></button><!--/BURGER-->
   </header>
+  <div class="hud bot" aria-hidden="true">
+    <span class="live"><i></i>24×7 · NOC + SOC · <span id="px-clock">São Paulo</span></span>
+    <span class="chp"><b id="px-chn">00</b><span id="px-chl">Início</span><span class="trk"><i id="px-trk"></i></span></span>
+  </div>
 
   <main id="top">
-    <!-- HERO -->
-    <section class="hero" id="px-hero">
-      <canvas id="px-mosaic" aria-hidden="true"></canvas>
-      <div class="stat" aria-hidden="true"><b>24×7</b><span>Monitoramento NOC e SOC</span><span id="px-clock">São Paulo · --:--:--</span></div>
-      <div class="wrap">
-        <div class="kick"><i></i>Proteção Digital</div>
-        <h1 id="px-h1"><span class="ln"><span>Gestão completa de TI</span></span><span class="ln"><span>e Cibersegurança</span></span><span class="ln"><span class="thin">para empresas que</span></span><span class="ln"><span>não podem parar</span></span></h1>
-        <div class="row">
-          <p>Infraestrutura, segurança, cloud, backup, monitoramento e suporte especializado para manter sua operação protegida e disponível.</p>
-          <div class="acts">
-            <a class="btn solid" href="#contato">Fale com um especialista <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.8"/></svg></a>
-            <a class="btn white" href="#solucoes">Soluções</a>
-          </div>
-        </div>
-      </div>
+    <section class="hero" id="px-hero" data-ch="00" data-chl="Início">
+      <span class="lab">Proteção Digital</span>
+      <h1 id="px-h1"><span class="ln"><span>Gestão completa de TI</span></span><span class="ln"><span>e <b>Cibersegurança</b></span></span><span class="ln"><span class="thin">para empresas que</span></span><span class="ln"><span>não podem parar</span></span></h1>
+      <p class="sub wrap">Infraestrutura, segurança, cloud, backup, monitoramento e suporte especializado para manter sua operação protegida e disponível.</p>
+      <div class="acts"><a class="btn solid" href="#contato">Fale com um especialista <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.8"/></svg></a><a class="btn" href="#solucoes">Entrar no túnel</a></div>
+      <div class="hint" aria-hidden="true">Role para avançar<i></i></div>
     </section>
 
-    <!-- 01 SOLUTIONS -->
-    <section class="sec" id="solucoes">
+    <section class="sec" id="solucoes" data-ch="01" data-chl="Soluções">
       <div class="wrap">
-        <div class="chap"><div class="num"><span data-n="01">01</span>.</div><div class="ttl"><small>Soluções</small><h2>Tecnologia para sustentar <b>toda a sua operação</b></h2><div class="rule"></div></div></div>
-        <p class="intro">Da infraestrutura à cibersegurança, a Pro Advanced reúne soluções e especialistas para proteger, monitorar e manter o ambiente de TI da sua empresa funcionando.</p>
-        <ol class="rows">
-          <li class="rowi"><a href="https://proadvanced.com.br/infraestrutura-de-ti/"><span class="fill"></span><span class="k">01</span><h3>Infraestrutura de TI</h3><p>Redes, servidores, storage, virtualização e Wi-Fi corporativo para manter sua operação conectada, estável e preparada para crescer.</p><span class="go"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8h12M9 3l5 5-5 5" stroke="currentColor" stroke-width="1.8"/></svg></span></a></li>
-          <li class="rowi"><a href="https://proadvanced.com.br/ciberseguranca/"><span class="fill"></span><span class="k">02</span><h3>Cibersegurança</h3><p>Firewall, proteção de endpoints, SOC/MDR, controle de acessos e gestão de vulnerabilidades para proteger sua empresa em diferentes camadas.</p><span class="go"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8h12M9 3l5 5-5 5" stroke="currentColor" stroke-width="1.8"/></svg></span></a></li>
-          <li class="rowi"><a href="https://proadvanced.com.br/backup-e-continuidade/"><span class="fill"></span><span class="k">03</span><h3>Backup e Continuidade</h3><p>Proteção, recuperação e disponibilidade dos dados para reduzir impactos e acelerar a retomada diante de falhas ou incidentes.</p><span class="go"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8h12M9 3l5 5-5 5" stroke="currentColor" stroke-width="1.8"/></svg></span></a></li>
-          <li class="rowi"><a href="https://proadvanced.com.br/cloud-e-data-center/"><span class="fill"></span><span class="k">04</span><h3>Cloud e Data Center</h3><p>Soluções em nuvem, data center e ambientes híbridos com segurança, disponibilidade e escalabilidade para sua operação.</p><span class="go"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8h12M9 3l5 5-5 5" stroke="currentColor" stroke-width="1.8"/></svg></span></a></li>
-          <li class="rowi"><a href="https://proadvanced.com.br/monitoramento-e-gestao-de-ti/"><span class="fill"></span><span class="k">05</span><h3>Monitoramento e Gestão de TI</h3><p>Monitoramento contínuo da infraestrutura, ativos e segurança para antecipar falhas e manter o ambiente sob controle.</p><span class="go"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8h12M9 3l5 5-5 5" stroke="currentColor" stroke-width="1.8"/></svg></span></a></li>
-          <li class="rowi"><a href="https://proadvanced.com.br/consultoria-e-governanca/"><span class="fill"></span><span class="k">06</span><h3>Consultoria e Governança</h3><p>LGPD, segurança da informação, análise de riscos, maturidade e projetos especializados para apoiar decisões e adequações.</p><span class="go"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8h12M9 3l5 5-5 5" stroke="currentColor" stroke-width="1.8"/></svg></span></a></li>
-        </ol>
+        <div class="head"><span class="lab">01 · Soluções</span><h2>Tecnologia para sustentar <b>toda a sua operação</b></h2><p>Da infraestrutura à cibersegurança, a Pro Advanced reúne soluções e especialistas para proteger, monitorar e manter o ambiente de TI da sua empresa funcionando.</p></div>
+        <div class="sols"><a class="sol glass" href="https://proadvanced.com.br/infraestrutura-de-ti/"><span class="k">01</span><svg class="ic" viewBox="0 0 54 54" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="8" width="42" height="14" rx="2"/><rect x="6" y="30" width="42" height="14" rx="2"/><path d="M13 15h4M13 37h4M27 22v8"/></svg><h3>Infraestrutura de TI</h3><p>Redes, servidores, storage, virtualização e Wi-Fi corporativo para manter sua operação conectada, estável e preparada para crescer.</p><span class="go"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8h12M9 3l5 5-5 5" stroke="currentColor" stroke-width="1.6"/></svg></span></a><a class="sol glass" href="https://proadvanced.com.br/ciberseguranca/"><span class="k">02</span><svg class="ic" viewBox="0 0 54 54" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M27 5 46 12v13c0 13-8 21-19 25C16 46 8 38 8 25V12z"/><path d="m19 27 6 6 11-12"/></svg><h3>Cibersegurança</h3><p>Firewall, proteção de endpoints, SOC/MDR, controle de acessos e gestão de vulnerabilidades para proteger sua empresa em diferentes camadas.</p><span class="go"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8h12M9 3l5 5-5 5" stroke="currentColor" stroke-width="1.6"/></svg></span></a><a class="sol glass" href="https://proadvanced.com.br/backup-e-continuidade/"><span class="k">03</span><svg class="ic" viewBox="0 0 54 54" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 27a17 17 0 0 1 29-12l4 4"/><path d="M43 9v10H33"/><path d="M44 27a17 17 0 0 1-29 12l-4-4"/><path d="M11 45V35h10"/></svg><h3>Backup e Continuidade</h3><p>Proteção, recuperação e disponibilidade dos dados para reduzir impactos e acelerar a retomada diante de falhas ou incidentes.</p><span class="go"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8h12M9 3l5 5-5 5" stroke="currentColor" stroke-width="1.6"/></svg></span></a><a class="sol glass" href="https://proadvanced.com.br/cloud-e-data-center/"><span class="k">04</span><svg class="ic" viewBox="0 0 54 54" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 40h26a10 10 0 0 0 1-20 14 14 0 0 0-27-3A11 11 0 0 0 15 40z"/><path d="M27 30v14M21 38l6 6 6-6"/></svg><h3>Cloud e Data Center</h3><p>Soluções em nuvem, data center e ambientes híbridos com segurança, disponibilidade e escalabilidade para sua operação.</p><span class="go"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8h12M9 3l5 5-5 5" stroke="currentColor" stroke-width="1.6"/></svg></span></a><a class="sol glass" href="https://proadvanced.com.br/monitoramento-e-gestao-de-ti/"><span class="k">05</span><svg class="ic" viewBox="0 0 54 54" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="9" width="44" height="30" rx="2"/><path d="M11 30l9-9 7 6 8-10 8 7M19 47h16M27 39v8"/></svg><h3>Monitoramento e Gestão de TI</h3><p>Monitoramento contínuo da infraestrutura, ativos e segurança para antecipar falhas e manter o ambiente sob controle.</p><span class="go"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8h12M9 3l5 5-5 5" stroke="currentColor" stroke-width="1.6"/></svg></span></a><a class="sol glass" href="https://proadvanced.com.br/consultoria-e-governanca/"><span class="k">06</span><svg class="ic" viewBox="0 0 54 54" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="11" y="6" width="32" height="42" rx="2"/><path d="M18 17h18M18 26h18M18 35h11"/><path d="m33 38 4 4 7-8"/></svg><h3>Consultoria e Governança</h3><p>LGPD, segurança da informação, análise de riscos, maturidade e projetos especializados para apoiar decisões e adequações.</p><span class="go"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8h12M9 3l5 5-5 5" stroke="currentColor" stroke-width="1.6"/></svg></span></a></div>
         <div class="more"><a class="btn" href="https://proadvanced.com.br/solucoes/">Conheça todas as nossas soluções <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.8"/></svg></a></div>
       </div>
     </section>
 
-    <!-- 02 WHY -->
-    <section class="sec why ongray" id="sobre">
+    <section class="sec why" id="sobre" data-ch="02" data-chl="Por que a Pro">
       <div class="wrap">
-        <div class="chap"><div class="num"><span data-n="02">02</span>.</div><div class="ttl"><small>Por que a Pro Advanced</small><h2>Por que contar com a <b>Pro Advanced?</b></h2><div class="rule"></div></div></div>
-        <p class="intro">Especialistas, tecnologia e acompanhamento contínuo para manter sua operação segura, disponível e preparada para evoluir.</p>
+        <div class="head"><span class="lab">02 · Por que a Pro Advanced</span><h2>Por que contar com a <b>Pro Advanced?</b></h2><p>Especialistas, tecnologia e acompanhamento contínuo para manter sua operação segura, disponível e preparada para evoluir.</p></div>
         <div class="grid">
           <ol class="steps" id="px-steps">
             <li class="on"><div class="h"><span>01</span><h3>Proteção e prevenção contínuas</h3></div><p>Tecnologias e estratégias de segurança para identificar vulnerabilidades, antecipar ameaças e reduzir riscos antes que afetem sua operação.</p></li>
@@ -69,46 +52,46 @@
             <li><div class="h"><span>06</span><h3>Mais foco no seu negócio</h3></div><p>Enquanto a Pro Advanced cuida da tecnologia e da segurança, sua equipe pode concentrar esforços na operação, inovação e crescimento da empresa.</p></li>
           </ol>
           <div class="art" aria-hidden="true">
-            <svg id="px-art" viewBox="-200 -200 400 400" fill="none" stroke="#fff" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+            <svg id="px-art" viewBox="-200 -200 400 400" fill="none" stroke="#c9d6e4" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
               <!-- 1 shield + radar -->
               <g class="f" data-i="0">
                 <circle r="150" opacity=".35"/><circle r="105" opacity=".5"/><circle r="60" opacity=".7"/>
                 <path d="M0-95 70-65v45c0 52-30 88-70 105-40-17-70-53-70-105v-45z" stroke-width="2"/>
-                <line class="sweep" x1="0" y1="0" x2="0" y2="-150" stroke="#20a3d6" stroke-width="2.4"/>
-                <circle cx="70" cy="-90" r="5" fill="#20a3d6" stroke="none"/><circle cx="-110" cy="40" r="5" fill="#20a3d6" stroke="none"/><circle cx="40" cy="120" r="5" fill="#20a3d6" stroke="none"/>
+                <line class="sweep" x1="0" y1="0" x2="0" y2="-150" stroke="#68c5db" stroke-width="2.4"/>
+                <circle cx="70" cy="-90" r="5" fill="#68c5db" stroke="none"/><circle cx="-110" cy="40" r="5" fill="#68c5db" stroke="none"/><circle cx="40" cy="120" r="5" fill="#68c5db" stroke="none"/>
               </g>
               <!-- 2 integrated network -->
               <g class="f" data-i="1">
                 <path d="M0 0-120-80M0 0 120-80M0 0-130 70M0 0 130 70M0 0 0 140M-120-80 120-80M-130 70 0 140 130 70M-120-80-130 70M120-80 130 70" opacity=".55"/>
                 <rect x="-26" y="-26" width="52" height="52" stroke-width="2"/>
                 <rect x="-136" y="-96" width="32" height="32"/><rect x="104" y="-96" width="32" height="32"/><rect x="-146" y="54" width="32" height="32"/><rect x="114" y="54" width="32" height="32"/><rect x="-16" y="124" width="32" height="32"/>
-                <circle class="pulse" r="6" fill="#20a3d6" stroke="none"/>
+                <circle class="pulse" r="6" fill="#68c5db" stroke="none"/>
               </g>
               <!-- 3 tailored grid -->
               <g class="f" data-i="2">
                 <path d="M-160-160h320v320h-320z" opacity=".4"/>
                 <path d="M-80-160v320M0-160v320M80-160v320M-160-80h320M-160 0h320M-160 80h320" opacity=".3"/>
-                <path class="fit" d="M-160-80h80v-80h80v160h80v80h80v80h-160v-80h-80z" stroke="#20a3d6" stroke-width="3"/>
+                <path class="fit" d="M-160-80h80v-80h80v160h80v80h80v80h-160v-80h-80z" stroke="#68c5db" stroke-width="3"/>
               </g>
               <!-- 4 specialists -->
               <g class="f" data-i="3">
                 <circle cx="-95" cy="-40" r="34"/><path d="M-150 60c8-38 30-58 55-58s47 20 55 58"/>
                 <circle cx="95" cy="-40" r="34"/><path d="M40 60c8-38 30-58 55-58s47 20 55 58"/>
                 <path d="M-40 110h80M0 70v40" opacity=".6"/><rect x="-30" y="110" width="60" height="44" stroke-width="2"/>
-                <path class="link" d="M-60-40C-30-90 30-90 60-40" stroke="#20a3d6" stroke-width="2.4"/>
+                <path class="link" d="M-60-40C-30-90 30-90 60-40" stroke="#68c5db" stroke-width="2.4"/>
               </g>
               <!-- 5 compliance -->
               <g class="f" data-i="4">
                 <rect x="-120" y="-150" width="240" height="300" stroke-width="2"/>
                 <path d="M-70-90h150M-70-30h150M-70 30h150M-70 90h150" opacity=".45"/>
-                <path class="ck" d="M-100-92l8 8 16-18M-100-32l8 8 16-18M-100 28l8 8 16-18M-100 88l8 8 16-18" stroke="#20a3d6" stroke-width="2.6"/>
+                <path class="ck" d="M-100-92l8 8 16-18M-100-32l8 8 16-18M-100 28l8 8 16-18M-100 88l8 8 16-18" stroke="#68c5db" stroke-width="2.6"/>
               </g>
               <!-- 6 business focus -->
               <g class="f" data-i="5">
                 <path d="M-160 150h320M-160 150v-300" opacity=".5"/>
                 <path d="M-120 150v-40M-60 150v-80M0 150v-60M60 150v-130M120 150v-190" opacity=".35" stroke-width="10" stroke-linecap="butt"/>
-                <path class="up" d="M-150 110-90 60-30 80 30-10 90-40 150-130" stroke="#20a3d6" stroke-width="3"/>
-                <circle cx="150" cy="-130" r="7" fill="#20a3d6" stroke="none"/>
+                <path class="up" d="M-150 110-90 60-30 80 30-10 90-40 150-130" stroke="#68c5db" stroke-width="3"/>
+                <circle cx="150" cy="-130" r="7" fill="#68c5db" stroke="none"/>
               </g>
             </svg>
             <span class="cnt" id="px-artn">01 / 06</span>
@@ -118,104 +101,60 @@
       </div>
     </section>
 
-    <!-- 03 YEARS -->
-    <section class="sec years">
-      <div class="wrap grid">
-        <div class="big27" aria-label="27 anos"><span id="px-27">27</span>.</div>
-        <div>
-          <div class="ttl"><small>Desde 1999</small></div>
-          <h2>27 anos de experiência em tecnologia e segurança</h2>
-          <p class="intro">Há quase três décadas, ajudamos empresas a proteger seus ambientes, manter suas operações disponíveis e evoluir sua infraestrutura de TI.</p>
-          <div class="bars" id="px-bars" aria-hidden="true"></div>
-          <div class="barsx" aria-hidden="true"><span>1999</span><span>2026</span></div>
-        </div>
+    <section class="sec years" data-ch="03" data-chl="27 anos">
+      <div class="wrap">
+        <span class="lab">03 · Desde 1999</span>
+        <div class="num"><canvas id="px-27" aria-hidden="true"></canvas><span class="sr">27 anos</span></div>
+        <h2>27 anos de experiência em <b>tecnologia e segurança</b></h2>
+        <p>Há quase três décadas, ajudamos empresas a proteger seus ambientes, manter suas operações disponíveis e evoluir sua infraestrutura de TI.</p>
+        <div class="tl" aria-hidden="true"><span>1999</span><i id="px-tl"></i><span>2026</span></div>
       </div>
     </section>
 
-    <!-- 04 SEGMENTS -->
-    <section class="sec" id="segmentos" style="padding-top:0">
+    <section class="sec" id="segmentos" data-ch="04" data-chl="Segmentos">
       <div class="wrap">
-        <div class="chap"><div class="num"><span data-n="03">03</span>.</div><div class="ttl"><small>Segmentos</small><h2>Soluções para <b>o seu segmento</b></h2><div class="rule"></div></div></div>
-        <p class="intro">Tecnologia e cibersegurança aplicadas às necessidades, riscos e desafios de diferentes setores.</p>
-        <div class="tiles" id="px-tiles">
-          <a class="tile" href="https://proadvanced.com.br/cartorios/"><span class="k">01</span><h3>Cartórios</h3><span class="ar">→</span></a>
-          <a class="tile" href="https://proadvanced.com.br/contabilidade/"><span class="k">02</span><h3>Contabilidade</h3><span class="ar">→</span></a>
-          <a class="tile" href="https://proadvanced.com.br/logistica/"><span class="k">03</span><h3>Logística</h3><span class="ar">→</span></a>
-          <a class="tile" href="https://proadvanced.com.br/advocacia/"><span class="k">04</span><h3>Advocacia</h3><span class="ar">→</span></a>
-          <a class="tile" href="https://proadvanced.com.br/fintechs-e-instituicoes-financeiras/"><span class="k">05</span><h3>Fintechs e Instituições Financeiras</h3><span class="ar">→</span></a>
-          <a class="tile" href="https://proadvanced.com.br/saude/"><span class="k">06</span><h3>Saúde</h3><span class="ar">→</span></a>
-          <a class="tile" href="https://proadvanced.com.br/hotelaria/"><span class="k">07</span><h3>Hotelaria</h3><span class="ar">→</span></a>
-          <a class="tile" href="https://proadvanced.com.br/varejo/"><span class="k">08</span><h3>Varejo</h3><span class="ar">→</span></a>
-          <a class="tile" href="https://proadvanced.com.br/empresas-de-servicos/"><span class="k">09</span><h3>Empresas de Serviços</h3><span class="ar">→</span></a>
-          <a class="tile" href="https://proadvanced.com.br/midias-e-entretenimento/"><span class="k">10</span><h3>Mídias e Entretenimento</h3><span class="ar">→</span></a>
-          <a class="tile" href="https://proadvanced.com.br/setor-publico/"><span class="k">11</span><h3>Setor Público</h3><span class="ar">→</span></a>
-          <a class="tile" href="https://proadvanced.com.br/construcao/"><span class="k">12</span><h3>Construção</h3><span class="ar">→</span></a>
-          <a class="tile wide" href="#contato"><span class="k">Soluções personalizadas +</span><div><h3>Não encontrou seu segmento?</h3><p>Nossas soluções são desenvolvidas de acordo com os desafios e necessidades de cada operação.</p></div><span class="ar">→</span></a>
-          <a class="tile wide g" href="https://proadvanced.com.br/segmentos/"><span class="k">Todos</span><h3>Ver todos os segmentos</h3><span class="ar">→</span></a>
-        </div>
+        <div class="head"><span class="lab">04 · Segmentos</span><h2>Soluções para <b>o seu segmento</b></h2><p>Tecnologia e cibersegurança aplicadas às necessidades, riscos e desafios de diferentes setores.</p></div>
+        <div class="segs" id="px-segs"><a class="seg glass" href="https://proadvanced.com.br/cartorios/"><span class="k">01</span><h3>Cartórios</h3><span class="ar">→</span></a><a class="seg glass" href="https://proadvanced.com.br/contabilidade/"><span class="k">02</span><h3>Contabilidade</h3><span class="ar">→</span></a><a class="seg glass" href="https://proadvanced.com.br/logistica/"><span class="k">03</span><h3>Logística</h3><span class="ar">→</span></a><a class="seg glass" href="https://proadvanced.com.br/advocacia/"><span class="k">04</span><h3>Advocacia</h3><span class="ar">→</span></a><a class="seg glass" href="https://proadvanced.com.br/fintechs-e-instituicoes-financeiras/"><span class="k">05</span><h3>Fintechs e Instituições Financeiras</h3><span class="ar">→</span></a><a class="seg glass" href="https://proadvanced.com.br/saude/"><span class="k">06</span><h3>Saúde</h3><span class="ar">→</span></a><a class="seg glass" href="https://proadvanced.com.br/hotelaria/"><span class="k">07</span><h3>Hotelaria</h3><span class="ar">→</span></a><a class="seg glass" href="https://proadvanced.com.br/varejo/"><span class="k">08</span><h3>Varejo</h3><span class="ar">→</span></a><a class="seg glass" href="https://proadvanced.com.br/empresas-de-servicos/"><span class="k">09</span><h3>Empresas de Serviços</h3><span class="ar">→</span></a><a class="seg glass" href="https://proadvanced.com.br/midias-e-entretenimento/"><span class="k">10</span><h3>Mídias e Entretenimento</h3><span class="ar">→</span></a><a class="seg glass" href="https://proadvanced.com.br/setor-publico/"><span class="k">11</span><h3>Setor Público</h3><span class="ar">→</span></a><a class="seg glass" href="https://proadvanced.com.br/construcao/"><span class="k">12</span><h3>Construção</h3><span class="ar">→</span></a><a class="seg wide glass" href="#contato"><span class="k">Soluções personalizadas +</span><div><h3>Não encontrou seu segmento?</h3><p>Nossas soluções são desenvolvidas de acordo com os desafios e necessidades de cada operação.</p></div><span class="ar">→</span></a><a class="seg wide glass" href="https://proadvanced.com.br/segmentos/"><span class="k">Todos</span><h3>Ver todos os segmentos</h3><span class="ar">→</span></a></div>
       </div>
     </section>
 
-    <!-- 05 CASES -->
-    <section class="sec" id="cases" style="padding-top:0">
+    <section class="sec cases" id="cases" data-ch="05" data-chl="Cases">
       <div class="wrap">
-        <div class="chap"><div class="num"><span data-n="04">04</span>.</div><div class="ttl"><small>Cases</small><h2>Tecnologia aplicada a <b>desafios reais</b></h2><div class="rule"></div></div></div>
-        <p class="intro">Desenvolvemos projetos de infraestrutura, segurança e gestão de TI para empresas de diferentes segmentos e níveis de complexidade.</p>
-        <div class="stack" id="px-stack">
-          <a class="cs" style="--i:0" href="https://proadvanced.com.br/cases/"><div class="l"><span class="n">01</span><div class="pix" data-on="3,4,11,12,19,20,27,28,35,36"></div><small>Mídia e Entretenimento</small></div><div class="r"><h3>Tecnologia e infraestrutura para uma operação de alta performance</h3><p>Infraestrutura de rede desenvolvida para atender uma operação de alta demanda, com foco em conectividade, estabilidade e segurança.</p><span class="lk">Conheça o case →</span></div></a>
-          <a class="cs" style="--i:1" href="https://proadvanced.com.br/cases/"><div class="l"><span class="n">02</span><div class="pix" data-on="0,9,18,27,36,45,54,63,7,14,21,28"></div><small>Fintechs e Instituições Financeiras</small></div><div class="r"><h3>Infraestrutura e segurança para uma operação mais robusta</h3><p>Modernização da rede, conectividade e cibersegurança, com alta disponibilidade, monitoramento e gestão do ambiente de TI.</p><span class="lk">Conheça o case →</span></div></a>
-          <a class="cs" style="--i:2" href="https://proadvanced.com.br/cases/"><div class="l"><span class="n">03</span><div class="pix" data-on="3,4,10,13,17,22,25,30,33,38,42,45,51,52"></div><small>Saúde</small></div><div class="r"><h3>Mais maturidade e controle em Segurança da Informação</h3><p>Projeto para fortalecer a segurança do ambiente, com avaliação de vulnerabilidades, monitoramento e proteção dos acessos remotos.</p><span class="lk">Conheça o case →</span></div></a>
-          <a class="cs" style="--i:3" href="https://proadvanced.com.br/cases/"><div class="l"><span class="n">04</span><div class="pix" data-on="8,9,10,11,12,13,24,25,26,27,40,41,42,56"></div><small>Varejo</small></div><div class="r"><h3>Uma jornada estruturada de adequação à LGPD</h3><p>Mapeamento de dados, gestão de riscos, organização de fornecedores e políticas para fortalecer a proteção de dados e a conformidade.</p><span class="lk">Conheça o case →</span></div></a>
-          <a class="cs" style="--i:4" href="https://proadvanced.com.br/cases/"><div class="l"><span class="n">05</span><div class="pix" data-on="18,19,20,21,26,29,34,37,42,43,44,45"></div><small>Mídia e Entretenimento</small></div><div class="r"><h3>Segurança e infraestrutura para conquistar a certificação TPN</h3><p>Evolução dos processos, controles e infraestrutura de segurança para atender aos requisitos e concluir com êxito a certificação TPN.</p><span class="lk">Conheça o case →</span></div></a>
-        </div>
-        <div class="more"><a class="btn" href="https://proadvanced.com.br/cases/">Ver todos os cases <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.8"/></svg></a></div>
+        <div class="head"><span class="lab">05 · Cases</span><h2>Tecnologia aplicada a <b>desafios reais</b></h2><p>Desenvolvemos projetos de infraestrutura, segurança e gestão de TI para empresas de diferentes segmentos e níveis de complexidade.</p></div>
       </div>
+      <div class="track" id="px-track"><a class="case glass" href="https://proadvanced.com.br/cases/"><span class="orb" aria-hidden="true"></span><span class="n">01</span><small>Mídia e Entretenimento</small><h3>Tecnologia e infraestrutura para uma operação de alta performance</h3><p>Infraestrutura de rede desenvolvida para atender uma operação de alta demanda, com foco em conectividade, estabilidade e segurança.</p><span class="lk">Conheça o case →</span></a><a class="case glass" href="https://proadvanced.com.br/cases/"><span class="orb" aria-hidden="true"></span><span class="n">02</span><small>Fintechs e Instituições Financeiras</small><h3>Infraestrutura e segurança para uma operação mais robusta</h3><p>Modernização da rede, conectividade e cibersegurança, com alta disponibilidade, monitoramento e gestão do ambiente de TI.</p><span class="lk">Conheça o case →</span></a><a class="case glass" href="https://proadvanced.com.br/cases/"><span class="orb" aria-hidden="true"></span><span class="n">03</span><small>Saúde</small><h3>Mais maturidade e controle em Segurança da Informação</h3><p>Projeto para fortalecer a segurança do ambiente, com avaliação de vulnerabilidades, monitoramento e proteção dos acessos remotos.</p><span class="lk">Conheça o case →</span></a><a class="case glass" href="https://proadvanced.com.br/cases/"><span class="orb" aria-hidden="true"></span><span class="n">04</span><small>Varejo</small><h3>Uma jornada estruturada de adequação à LGPD</h3><p>Mapeamento de dados, gestão de riscos, organização de fornecedores e políticas para fortalecer a proteção de dados e a conformidade.</p><span class="lk">Conheça o case →</span></a><a class="case glass" href="https://proadvanced.com.br/cases/"><span class="orb" aria-hidden="true"></span><span class="n">05</span><small>Mídia e Entretenimento</small><h3>Segurança e infraestrutura para conquistar a certificação TPN</h3><p>Evolução dos processos, controles e infraestrutura de segurança para atender aos requisitos e concluir com êxito a certificação TPN.</p><span class="lk">Conheça o case →</span></a></div>
+      <div class="wrap"><div class="more"><a class="btn" href="https://proadvanced.com.br/cases/">Ver todos os cases <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.8"/></svg></a></div></div>
     </section>
 
-    <!-- 06 PARTNERS -->
-    <section class="sec onblue" id="parceiros">
+    <section class="sec" id="parceiros" data-ch="06" data-chl="Parceiros">
       <div class="wrap">
-        <div class="chap"><div class="num"><span data-n="05">05</span>.</div><div class="ttl"><small>Parceiros</small><h2>Tecnologia de líderes do mercado. <b>Expertise Pro Advanced</b></h2><div class="rule"></div></div></div>
-        <p class="intro">Trabalhamos com parceiros reconhecidos globalmente para entregar soluções alinhadas às necessidades de cada operação.</p>
-        <div class="logos" id="px-logos">{{PARTNER_CELLS}}</div>
-        <div class="verde">
+        <div class="head"><span class="lab">06 · Parceiros</span><h2>Tecnologia de líderes do mercado. <b>Expertise Pro Advanced</b></h2><p>Trabalhamos com parceiros reconhecidos globalmente para entregar soluções alinhadas às necessidades de cada operação.</p></div>
+        <div class="logos glass" id="px-logos">{{PARTNER_CELLS}}</div>
+        <div class="verde glass">
           <span class="s"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 2 4.2 2 8 0 5.5-4.8 10-10 10z"/><path d="M2 21c0-3 1.9-5.4 5.2-6.1C9.5 14.5 12 13 13 12"/></svg></span>
           <div><h3>Tecnologia e responsabilidade caminham juntas</h3><p>A Pro Advanced possui o Selo TI Verde, reforçando nosso compromisso com práticas mais responsáveis e sustentáveis no uso da tecnologia.</p></div>
         </div>
       </div>
     </section>
 
-    <!-- 07 BLOG -->
-    <section class="sec" id="blog">
+    <!--BLOG--><section class="sec" id="blog" data-ch="07" data-chl="Blog">
       <div class="wrap">
-        <div class="chap"><div class="num"><span data-n="06">06</span>.</div><div class="ttl"><small>Blog</small><h2>Conteúdos e <b>insights</b></h2><div class="rule"></div></div></div>
-        <div class="bl">
-          <a href="https://proadvanced.com.br/ti-para-cartorios-como-evitar-a-indisponibilidade-e-manter-os-servicos-em-funcionamento/"><div class="im"><img src="{{BLOG_cartorios-autenticacao}}" alt="" loading="lazy"></div><div><h3>TI para cartórios: como evitar a indisponibilidade e manter os serviços em funcionamento</h3><p>A transformação digital aumentou a dependência da tecnologia na rotina dos cartórios.</p></div><span class="go"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8h12M9 3l5 5-5 5" stroke="currentColor" stroke-width="1.8"/></svg></span></a>
-          <a href="https://proadvanced.com.br/lgpd-na-advocacia-tecnologia-ajuda-a-fortalecer-a-protecao-de-dados-nos-escritorios/"><div class="im"><img src="{{BLOG_lgpd-advocacia}}" alt="" loading="lazy"></div><div><h3>LGPD na advocacia: tecnologia ajuda a fortalecer a proteção de dados nos escritórios</h3><p>A discussão sobre LGPD na advocacia vai muito além da elaboração de documentos e políticas internas.</p></div><span class="go"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8h12M9 3l5 5-5 5" stroke="currentColor" stroke-width="1.8"/></svg></span></a>
-          <a href="https://proadvanced.com.br/backup-juridico-por-que-escritorios-de-advocacia-precisam-de-uma-estrategia-de-recuperacao-de-dados/"><div class="im"><img src="{{BLOG_backup-juridico-2}}" alt="" loading="lazy"></div><div><h3>Backup jurídico: por que escritórios de advocacia precisam de uma estratégia de recuperação de dados</h3><p>Imagine descobrir, às vésperas de um prazo importante, que documentos essenciais estão inacessíveis.</p></div><span class="go"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8h12M9 3l5 5-5 5" stroke="currentColor" stroke-width="1.8"/></svg></span></a>
-          <a href="https://proadvanced.com.br/seguranca-digital-para-escritorios-juridicos-quais-sao-os-principais-riscos-e-como-reduzi-los/"><div class="im"><img src="{{BLOG_seguranca-digital-juridicos}}" alt="" loading="lazy"></div><div><h3>Segurança digital para escritórios jurídicos: quais são os principais riscos e como reduzi-los</h3><p>A digitalização aumentou a eficiência dos escritórios jurídicos, mas também criou novos desafios de segurança.</p></div><span class="go"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8h12M9 3l5 5-5 5" stroke="currentColor" stroke-width="1.8"/></svg></span></a>
-          <a href="https://proadvanced.com.br/ti-para-escritorios-de-advocacia-como-proteger-informacoes-sigilosas-dos-clientes/"><div class="im"><img src="{{BLOG_ti-escritorios-advocacia}}" alt="" loading="lazy"></div><div><h3>TI para escritórios de advocacia: como proteger informações sigilosas dos clientes</h3><p>A transformação digital modificou a rotina dos escritórios de advocacia.</p></div><span class="go"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8h12M9 3l5 5-5 5" stroke="currentColor" stroke-width="1.8"/></svg></span></a>
-          <a href="https://proadvanced.com.br/data-center-para-logistica-como-a-pro-advanced-ajuda-a-garantir-disponibilidade-e-continuidade-operacional/"><div class="im"><img src="{{BLOG_data-center-logistica-1}}" alt="" loading="lazy"></div><div><h3>Data Center para logística: como a Pro Advanced ajuda a garantir disponibilidade e continuidade operacional</h3><p>A transformação digital mudou profundamente o setor de logística.</p></div><span class="go"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8h12M9 3l5 5-5 5" stroke="currentColor" stroke-width="1.8"/></svg></span></a>
-        </div>
+        <div class="head"><span class="lab">07 · Blog</span><h2>Conteúdos e <b>insights</b></h2></div>
+        <div class="posts"><a class="post glass" href="https://proadvanced.com.br/ti-para-cartorios-como-evitar-a-indisponibilidade-e-manter-os-servicos-em-funcionamento/"><div class="im"><img src="{{BLOG_cartorios-autenticacao}}" alt="" loading="lazy"></div><div class="tx"><h3>TI para cartórios: como evitar a indisponibilidade e manter os serviços em funcionamento</h3><p>A transformação digital aumentou a dependência da tecnologia na rotina dos cartórios.</p></div></a><a class="post glass" href="https://proadvanced.com.br/lgpd-na-advocacia-tecnologia-ajuda-a-fortalecer-a-protecao-de-dados-nos-escritorios/"><div class="im"><img src="{{BLOG_lgpd-advocacia}}" alt="" loading="lazy"></div><div class="tx"><h3>LGPD na advocacia: tecnologia ajuda a fortalecer a proteção de dados nos escritórios</h3><p>A discussão sobre LGPD na advocacia vai muito além da elaboração de documentos e políticas internas.</p></div></a><a class="post glass" href="https://proadvanced.com.br/backup-juridico-por-que-escritorios-de-advocacia-precisam-de-uma-estrategia-de-recuperacao-de-dados/"><div class="im"><img src="{{BLOG_backup-juridico-2}}" alt="" loading="lazy"></div><div class="tx"><h3>Backup jurídico: por que escritórios de advocacia precisam de uma estratégia de recuperação de dados</h3><p>Imagine descobrir, às vésperas de um prazo importante, que documentos essenciais estão inacessíveis.</p></div></a><a class="post glass" href="https://proadvanced.com.br/seguranca-digital-para-escritorios-juridicos-quais-sao-os-principais-riscos-e-como-reduzi-los/"><div class="im"><img src="{{BLOG_seguranca-digital-juridicos}}" alt="" loading="lazy"></div><div class="tx"><h3>Segurança digital para escritórios jurídicos: quais são os principais riscos e como reduzi-los</h3><p>A digitalização aumentou a eficiência dos escritórios jurídicos, mas também criou novos desafios de segurança.</p></div></a><a class="post glass" href="https://proadvanced.com.br/ti-para-escritorios-de-advocacia-como-proteger-informacoes-sigilosas-dos-clientes/"><div class="im"><img src="{{BLOG_ti-escritorios-advocacia}}" alt="" loading="lazy"></div><div class="tx"><h3>TI para escritórios de advocacia: como proteger informações sigilosas dos clientes</h3><p>A transformação digital modificou a rotina dos escritórios de advocacia.</p></div></a><a class="post glass" href="https://proadvanced.com.br/data-center-para-logistica-como-a-pro-advanced-ajuda-a-garantir-disponibilidade-e-continuidade-operacional/"><div class="im"><img src="{{BLOG_data-center-logistica-1}}" alt="" loading="lazy"></div><div class="tx"><h3>Data Center para logística: como a Pro Advanced ajuda a garantir disponibilidade e continuidade operacional</h3><p>A transformação digital mudou profundamente o setor de logística.</p></div></a></div>
         <div class="more"><a class="btn" href="https://proadvanced.com.br/blog/">Ver todos os conteúdos <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.8"/></svg></a></div>
       </div>
-    </section>
+    </section><!--/BLOG-->
 
-    <!-- 08 CONTACT -->
-    <section class="sec contact onblue" id="contato">
-      <canvas id="px-mosaic2" aria-hidden="true"></canvas>
+    <section class="sec contact" id="contato" data-ch="08" data-chl="Contato">
       <div class="wrap">
-        <div class="chap"><div class="num"><span data-n="07">07</span>.</div><div class="ttl"><small>Contato</small><h2>Vamos falar sobre a tecnologia da <b>sua empresa?</b></h2><div class="rule"></div></div></div>
+        <div class="head"><span class="lab">08 · Contato</span><h2>Vamos falar sobre a tecnologia da <b>sua empresa?</b></h2><p>Conte-nos um pouco sobre sua operação. Nossos especialistas entrarão em contato para entender suas necessidades e como podemos ajudar.</p></div>
         <div class="grid">
-          <div>
-            <p style="max-width:48ch;font-size:clamp(16px,1.2vw,18px)">Conte-nos um pouco sobre sua operação. Nossos especialistas entrarão em contato para entender suas necessidades e como podemos ajudar.</p>
-            <div class="info" style="margin-top:34px">
+          <div class="info">
               <div><b>Endereço</b><span>Av. Queiroz Filho, 1700 · Conjunto 805, Sala 1 · Torre A · Condomínio Vila Lobos Office Park · Vila Hamburguesa · São Paulo · CEP 05319-000</span><a href="https://www.google.com/maps/search/?api=1&amp;query=Av.+Queiroz+Filho+1700+Vila+Lobos+Office+Park+Sao+Paulo" target="_blank" rel="noopener">Ver localização no mapa</a></div>
               <div><b>Telefone</b><span>+55 11 94719-8132 · +55 11 3646-2970</span></div>
               <div><b>E-mail</b><span>contato@proadvanced.com.br</span></div>
             </div>
-          </div>
-          <div class="fbox" id="px-form">
+          <div class="fbox glass" id="px-form">
             <h3>Fale com um especialista</h3>
             <div role="main" id="gmk-forms-home-f6a9607991fe0a26527a"></div>
             <form class="ff" id="px-fallback" novalidate hidden>
@@ -236,22 +175,20 @@
   <footer class="ftr">
     <div class="wrap">
       <div class="fg">
-        <div>
-          <img src="{{LOGO_WHITE}}" alt="Pro Advanced IT Solutions">
-          <div class="soc">
+        <div><img src="{{LOGO_WHITE}}" alt="Pro Advanced IT Solutions"><div class="soc">
             <a href="https://www.linkedin.com/company/proadvanced/" target="_blank" rel="noopener" aria-label="LinkedIn"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM9 9h3.8v1.7h.1c.5-1 1.8-2 3.8-2 4 0 4.8 2.6 4.8 6V21h-4v-5.6c0-1.3 0-3-1.9-3s-2.1 1.4-2.1 2.9V21H9z"/></svg></a>
             <a href="https://www.instagram.com/proadvancedti/" target="_blank" rel="noopener" aria-label="Instagram"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></a>
             <a href="https://www.facebook.com/proadvancedti/" target="_blank" rel="noopener" aria-label="Facebook"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M14 8h3V4h-3c-2.8 0-4 1.8-4 4.3V10H7v4h3v8h4v-8h3l1-4h-4V8.6c0-.4.3-.6.6-.6z"/></svg></a>
             <a href="https://www.youtube.com/channel/UCrQDLjivNeU0e8b2aDd-XRQ" target="_blank" rel="noopener" aria-label="YouTube"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M23 7.2a3 3 0 0 0-2.1-2.1C19 4.6 12 4.6 12 4.6s-7 0-8.9.5A3 3 0 0 0 1 7.2 31 31 0 0 0 .5 12 31 31 0 0 0 1 16.8a3 3 0 0 0 2.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5a3 3 0 0 0 2.1-2.1 31 31 0 0 0 .5-4.8 31 31 0 0 0-.5-4.8zM9.8 15.1V8.9L15.6 12z"/></svg></a>
             <a href="https://twitter.com/proadvancedti" target="_blank" rel="noopener" aria-label="X"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 1.2h3.7l-8 9.2 9.4 12.4h-7.4l-5.8-7.6-6.6 7.6H.5l8.6-9.8L.1 1.2h7.6l5.2 6.9 6-6.9zm-1.3 19.4h2L6.5 3.3H4.3l13.3 17.3z"/></svg></a>
-          </div>
-        </div>
-        <div><h4>Institucional</h4><ul><li><a href="#top">Home</a></li><li><a href="#sobre">Sobre</a></li><li><a href="#cases">Cases</a></li><li><a href="#blog">Blog</a></li><li><a href="#contato">Contato</a></li></ul></div>
+          </div></div>
+        <!--FCOLS--><div><h4>Institucional</h4><ul><li><a href="#top">Home</a></li><li><a href="#sobre">Sobre</a></li><li><a href="#cases">Cases</a></li><li><a href="#blog">Blog</a></li><li><a href="#contato">Contato</a></li></ul></div>
         <div><h4>Soluções</h4><ul><li><a href="https://proadvanced.com.br/infraestrutura-de-ti/">Infraestrutura de TI</a></li><li><a href="https://proadvanced.com.br/ciberseguranca/">Cibersegurança</a></li><li><a href="https://proadvanced.com.br/backup-e-continuidade/">Backup e Continuidade</a></li><li><a href="https://proadvanced.com.br/cloud-e-data-center/">Cloud e Data Center</a></li><li><a href="https://proadvanced.com.br/monitoramento-e-gestao-de-ti/">Monitoramento e Gestão de TI</a></li><li><a href="https://proadvanced.com.br/consultoria-e-governanca/">Consultoria e Governança</a></li></ul></div>
         <div><h4>Segmentos</h4><ul><li><a href="https://proadvanced.com.br/cartorios/">Cartórios</a></li><li><a href="https://proadvanced.com.br/contabilidade/">Contabilidade</a></li><li><a href="https://proadvanced.com.br/logistica/">Logística</a></li><li><a href="https://proadvanced.com.br/advocacia/">Advocacia</a></li><li><a href="https://proadvanced.com.br/fintechs-e-instituicoes-financeiras/">Fintechs e Instituições Financeiras</a></li><li><a href="https://proadvanced.com.br/segmentos/">Ver todos os segmentos</a></li></ul></div>
+        <!--/FCOLS-->
         <div><h4>Contato</h4><ul><li>contato@proadvanced.com.br</li><li>+55 11 3646-2970</li><li>+55 11 94719-8132</li><li><a href="https://proadvanced.com.br/contato/">Trabalhe conosco</a></li></ul></div>
       </div>
-      <a class="url" href="https://proadvanced.com.br/" id="px-url">proadvanced.com.br</a>
+      <a class="big" href="https://proadvanced.com.br/" id="px-url">proadvanced.com.br</a>
       <div class="legal"><span>Pro Advanced | Todos os direitos reservados - 2026</span><span>Av. Queiroz Filho, 1700 – Vila Hamburguesa – São Paulo – CEP 05319-000</span></div>
     </div>
   </footer>

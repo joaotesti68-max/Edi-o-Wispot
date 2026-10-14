@@ -1,6 +1,6 @@
 # Landing page Pro Advanced no RD Station
 
-Mesmo passo a passo da landing page da Wispot. Versão 2: segue só as cores e a fonte do Manual de Marca 2026 (#3696CD, degradê #20A3D6→#3696CD, #676868, branco e Montserrat).
+Mesmo passo a passo da landing page da Wispot. Versão 3: fundo azul-escuro e preto (cores do site atual da Pro Advanced) com túnel de partículas em 3D (WebGL) que avança conforme a rolagem. Fonte Montserrat.
 
 1. Crie uma landing page no RD, apague as seções do modelo e deixe só uma, com largura total e margens internas em 0.
 2. Arraste um bloco **HTML** e cole o conteúdo de `tudo-em-um-bloco-html.html`.
@@ -13,6 +13,9 @@ A página usa o mesmo formulário do RD que está no site atual (`gmk-forms-home
 
 ## Editar
 O código-fonte está em `../src`. Depois de mudar `style.css`, `body.html` ou `script.js`, rode `python3 src/build.py` para gerar de novo estes arquivos e o `preview.html`.
+
+## Desempenho
+O túnel usa WebGL (three.js). Em celulares mais simples ele usa menos partículas automaticamente; se o navegador não tiver WebGL, a página aparece com o fundo azul-escuro estático e todo o conteúdo funciona normalmente.
 
 ## Imagens
 Logo, ícone e logos dos parceiros vão embutidos no código; não precisa subir nada.
