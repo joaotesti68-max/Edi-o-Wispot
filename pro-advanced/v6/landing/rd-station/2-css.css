@@ -230,6 +230,7 @@ html:not(.px-preload) .px-load{opacity:0;visibility:hidden}
 /* the mini-map stays out of the hero, where the title needs the space */
 .px .map{transition:opacity .5s}
 .px .map.off{opacity:0}
+.px .fbox [id^="gmk-forms"] div[style*="-5000"],.px .fbox [id^="gmk-forms"] div:has(>input[tabindex="-1"]),.px .fbox [id^="gmk-forms"] input[tabindex="-1"],.px .fbox [id^="gmk-forms"] input[name="emP7yF13ld"],.px .fbox [id^="gmk-forms"] input[name="sh0uldN07ch4ng3"],.px .fbox [id^="gmk-forms"] input[value="should_not_change"]{display:none!important}
 
 /* landing page: logo + CTA header, form right under the title, short page */
 .px .top .cta .s{display:none}
