@@ -210,16 +210,22 @@ html:not(.px-preload) .px-load{opacity:0;visibility:hidden}
 .px .cl{gap:14px}
 @media (max-width:900px){.px .ch.seq .pin{position:relative;min-height:0;padding:110px var(--gutter) 70px}.px .ch.seq .steps{display:none}}
 
-/* RD Station form: fill the card, inherit the page's look */
-.px .fbox [id^="gmk-forms"],.px .fbox [id^="gmk-forms"] form,.px .fbox .bricks-form,.px .fbox .bricks--section,.px .fbox .bricks--row,.px .fbox .bricks--column,.px .fbox .bricks--component,.px .fbox .bricks-form__fieldset{width:100%!important;max-width:100%!important;margin-left:0!important;margin-right:0!important;padding-left:0!important;padding-right:0!important;background:transparent!important;box-shadow:none!important;border:0!important}
-.px .fbox [id^="gmk-forms"] *{max-width:100%!important;box-sizing:border-box!important}
-.px .fbox .bricks-form__field{width:100%!important;margin-bottom:14px!important}
-.px .fbox .bricks-form__input,.px .fbox select{width:100%!important}
-.px .fbox [id^="gmk-forms"] p,.px .fbox [id^="gmk-forms"] .bricks--component-text,.px .fbox [id^="gmk-forms"] .bricks--component-text *{font-family:var(--font)!important;color:var(--mut)!important;font-size:12.5px!important;line-height:1.5!important;text-align:left!important}
-.px .fbox .bricks--component-button,.px .fbox button[type=submit]{max-width:100%!important;display:block!important}
+/* RD Station form: fill the card, inherit the page's look (RD styles its blocks by id, so these win with !important) */
+.px .fbox [id^="gmk-forms"] section,.px .fbox [id^="gmk-forms"] div,.px .fbox [id^="gmk-forms"] form,.px .fbox [id^="gmk-forms"] fieldset{background:transparent!important;background-color:transparent!important;background-image:none!important;padding-left:0!important;padding-right:0!important;margin-left:0!important;margin-right:0!important;max-width:100%!important;box-shadow:none!important;border:0!important;min-height:0!important}
+.px .fbox [id^="gmk-forms"] .bricks--row,.px .fbox [id^="gmk-forms"] .bricks--column,.px .fbox [id^="gmk-forms"] .bricks--column>div,.px .fbox [id^="gmk-forms"] .bricks-form,.px .fbox [id^="gmk-forms"] form,.px .fbox [id^="gmk-forms"] .bricks-form__fieldset,.px .fbox [id^="gmk-forms"] .bricks-form__field,.px .fbox [id^="gmk-forms"] .bricks--component{width:100%!important;flex:1 1 100%!important}
+.px .fbox [id^="gmk-forms"] *{box-sizing:border-box!important}
+.px .fbox [id^="gmk-forms"] .bricks-form__field{margin:0 0 14px!important;padding-top:0!important}
+.px .fbox [id^="gmk-forms"] input,.px .fbox [id^="gmk-forms"] select,.px .fbox [id^="gmk-forms"] textarea{width:100%!important;max-width:100%!important}
+.px .fbox [id^="gmk-forms"] p,.px .fbox [id^="gmk-forms"] .bricks--component-text,.px .fbox [id^="gmk-forms"] .bricks--component-text *{font-family:var(--font)!important;color:var(--mut)!important;font-size:12.5px!important;line-height:1.5!important;text-align:left!important;background:transparent!important}
+.px .fbox [id^="gmk-forms"] button,.px .fbox [id^="gmk-forms"] a.rd-button,.px .fbox [id^="gmk-forms"] input[type=submit]{display:block!important;width:100%!important;max-width:100%!important;height:auto!important;min-height:52px!important;margin:10px 0 12px!important;padding:16px 24px!important;border:0!important;border-radius:50px!important;background:linear-gradient(117deg,#2ba3db 0%,#68c5db 100%)!important;background-color:#2ba3db!important;color:#fff!important;font:600 14px var(--font)!important;letter-spacing:.01em!important;text-transform:none!important;line-height:1.2!important;white-space:normal!important;cursor:pointer;opacity:1!important;visibility:visible!important}
+.px .fbox [id^="gmk-forms"] button:hover{filter:brightness(1.08)}
 
 /* hidden means hidden, even for elements with their own display */
 .px [hidden]{display:none!important}
+
+/* the mini-map stays out of the hero, where the title needs the space */
+.px .map{transition:opacity .5s}
+.px .map.off{opacity:0}
 
 /* landing page: logo + CTA header, form right under the title, short page */
 .px .top .cta .s{display:none}
