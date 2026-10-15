@@ -211,6 +211,17 @@ html:not(.px-preload) .px-load{opacity:0;visibility:hidden}
 .px .cl{gap:14px}
 @media (max-width:900px){.px .ch.seq .pin{position:relative;min-height:0;padding:110px var(--gutter) 70px}.px .ch.seq .steps{display:none}}
 
+/* RD Station form: fill the card, inherit the page's look */
+.px .fbox [id^="gmk-forms"],.px .fbox [id^="gmk-forms"] form,.px .fbox .bricks-form,.px .fbox .bricks--section,.px .fbox .bricks--row,.px .fbox .bricks--column,.px .fbox .bricks--component,.px .fbox .bricks-form__fieldset{width:100%!important;max-width:100%!important;margin-left:0!important;margin-right:0!important;padding-left:0!important;padding-right:0!important;background:transparent!important;box-shadow:none!important;border:0!important}
+.px .fbox [id^="gmk-forms"] *{max-width:100%!important;box-sizing:border-box!important}
+.px .fbox .bricks-form__field{width:100%!important;margin-bottom:14px!important}
+.px .fbox .bricks-form__input,.px .fbox select{width:100%!important}
+.px .fbox [id^="gmk-forms"] p,.px .fbox [id^="gmk-forms"] .bricks--component-text,.px .fbox [id^="gmk-forms"] .bricks--component-text *{font-family:var(--font)!important;color:var(--mut)!important;font-size:12.5px!important;line-height:1.5!important;text-align:left!important}
+.px .fbox .bricks--component-button,.px .fbox button[type=submit]{max-width:100%!important;display:block!important}
+
+/* hidden means hidden, even for elements with their own display */
+.px [hidden]{display:none!important}
+
 /* landing page: logo + CTA header, form right under the title, short page */
 .px .top .cta .s{display:none}
 @media (max-width:1100px){.px .top .cta{display:inline-flex}}
@@ -237,9 +248,6 @@ html:not(.px-preload) .px-load{opacity:0;visibility:hidden}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700&display=swap">
-<script>(function(){var r=document.documentElement;if(!matchMedia('(prefers-reduced-motion: reduce)').matches){r.classList.add('px-preload');setTimeout(function(){r.classList.remove('px-preload')},6500)}})();</script>
-<div class="px-load" aria-hidden="true"><div class="in"><div class="st"><span>Mapeando a estrutura</span><b id="px-lpct">00%</b></div><div class="bar"><i id="px-lbar"></i></div>
-<div class="ls" id="px-lls"><span>Perímetro · firewall</span><span>Servidores · rede</span><span>Cloud · backup</span><span>SOC · monitoramento</span></div></div></div>
 
 <div class="px" id="px">
   <canvas class="scene" id="px-scene" aria-hidden="true"></canvas>
@@ -387,10 +395,12 @@ html:not(.px-preload) .px-load{opacity:0;visibility:hidden}
   /* RD Station form (same embed as proadvanced.com.br) with a static fallback */
   (function(){
     const host=document.getElementById('gmk-forms-home-f6a9607991fe0a26527a'),fb=document.getElementById('px-fallback');if(!host||!fb)return;
-    const showFb=()=>{if(!host.children.length){host.hidden=true;fb.hidden=false}};
+    /* the reserve form appears only if the RD script cannot load (local previews); once RD renders anything, it never shows */
+    let rd=false;const hideFb=()=>{rd=true;fb.hidden=true;host.hidden=false};
+    const showFb=()=>{if(rd||host.children.length)return;host.hidden=true;fb.hidden=false};
+    if('MutationObserver' in window)new MutationObserver(()=>{if(host.children.length)hideFb()}).observe(host,{childList:true,subtree:true});
     try{const s=document.createElement('script');s.src='https://d335luupugsy2.cloudfront.net/js/rdstation-forms/stable/rdstation-forms.min.js';s.async=true;
-      s.onload=()=>{try{new RDStationForms('gmk-forms-home-f6a9607991fe0a26527a','null').createForm()}catch(e){}setTimeout(showFb,2500)};s.onerror=showFb;document.head.appendChild(s)}catch(e){showFb()}
-    setTimeout(showFb,6000);
+      s.onload=()=>{rd=true;try{new RDStationForms('gmk-forms-home-f6a9607991fe0a26527a','null').createForm()}catch(e){rd=false;showFb()}};s.onerror=showFb;document.head.appendChild(s)}catch(e){showFb()}
     fb.addEventListener('submit',e=>{e.preventDefault();const msg=fb.querySelector('.msg');const miss=[...fb.querySelectorAll('[required]')].find(i=>!i.value.trim());
       if(miss){msg.textContent='Preencha os campos marcados com *.';miss.focus();return}
       msg.textContent='Prévia: o formulário oficial do RD Station aparece aqui na página publicada. Enquanto isso, escreva para contato@proadvanced.com.br.'});

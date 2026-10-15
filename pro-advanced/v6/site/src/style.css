@@ -206,3 +206,14 @@ html:not(.px-preload) .px-load{opacity:0;visibility:hidden}
 .px .sl a{padding:clamp(22px,3.4vh,34px) 0}
 .px .cl{gap:14px}
 @media (max-width:900px){.px .ch.seq .pin{position:relative;min-height:0;padding:110px var(--gutter) 70px}.px .ch.seq .steps{display:none}}
+
+/* RD Station form: fill the card, inherit the page's look */
+.px .fbox [id^="gmk-forms"],.px .fbox [id^="gmk-forms"] form,.px .fbox .bricks-form,.px .fbox .bricks--section,.px .fbox .bricks--row,.px .fbox .bricks--column,.px .fbox .bricks--component,.px .fbox .bricks-form__fieldset{width:100%!important;max-width:100%!important;margin-left:0!important;margin-right:0!important;padding-left:0!important;padding-right:0!important;background:transparent!important;box-shadow:none!important;border:0!important}
+.px .fbox [id^="gmk-forms"] *{max-width:100%!important;box-sizing:border-box!important}
+.px .fbox .bricks-form__field{width:100%!important;margin-bottom:14px!important}
+.px .fbox .bricks-form__input,.px .fbox select{width:100%!important}
+.px .fbox [id^="gmk-forms"] p,.px .fbox [id^="gmk-forms"] .bricks--component-text,.px .fbox [id^="gmk-forms"] .bricks--component-text *{font-family:var(--font)!important;color:var(--mut)!important;font-size:12.5px!important;line-height:1.5!important;text-align:left!important}
+.px .fbox .bricks--component-button,.px .fbox button[type=submit]{max-width:100%!important;display:block!important}
+
+/* hidden means hidden, even for elements with their own display */
+.px [hidden]{display:none!important}

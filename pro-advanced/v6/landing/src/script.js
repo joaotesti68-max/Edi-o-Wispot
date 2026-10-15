@@ -27,10 +27,12 @@
   /* RD Station form (same embed as proadvanced.com.br) with a static fallback */
   (function(){
     const host=document.getElementById('gmk-forms-home-f6a9607991fe0a26527a'),fb=document.getElementById('px-fallback');if(!host||!fb)return;
-    const showFb=()=>{if(!host.children.length){host.hidden=true;fb.hidden=false}};
+    /* the reserve form appears only if the RD script cannot load (local previews); once RD renders anything, it never shows */
+    let rd=false;const hideFb=()=>{rd=true;fb.hidden=true;host.hidden=false};
+    const showFb=()=>{if(rd||host.children.length)return;host.hidden=true;fb.hidden=false};
+    if('MutationObserver' in window)new MutationObserver(()=>{if(host.children.length)hideFb()}).observe(host,{childList:true,subtree:true});
     try{const s=document.createElement('script');s.src='https://d335luupugsy2.cloudfront.net/js/rdstation-forms/stable/rdstation-forms.min.js';s.async=true;
-      s.onload=()=>{try{new RDStationForms('gmk-forms-home-f6a9607991fe0a26527a','null').createForm()}catch(e){}setTimeout(showFb,2500)};s.onerror=showFb;document.head.appendChild(s)}catch(e){showFb()}
-    setTimeout(showFb,6000);
+      s.onload=()=>{rd=true;try{new RDStationForms('gmk-forms-home-f6a9607991fe0a26527a','null').createForm()}catch(e){rd=false;showFb()}};s.onerror=showFb;document.head.appendChild(s)}catch(e){showFb()}
     fb.addEventListener('submit',e=>{e.preventDefault();const msg=fb.querySelector('.msg');const miss=[...fb.querySelectorAll('[required]')].find(i=>!i.value.trim());
       if(miss){msg.textContent='Preencha os campos marcados com *.';miss.focus();return}
       msg.textContent='Prévia: o formulário oficial do RD Station aparece aqui na página publicada. Enquanto isso, escreva para contato@proadvanced.com.br.'});
