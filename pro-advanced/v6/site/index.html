@@ -107,12 +107,13 @@ html:not(.px-preload) .px-load{opacity:0;visibility:hidden}
 .px .sl a{display:grid;grid-template-columns:44px minmax(0,1fr) 36px;gap:14px;padding:20px 0;align-items:start}
 .px .sl .k{font-size:11.5px;font-weight:600;letter-spacing:.2em;color:var(--mut);padding-top:5px;transition:color .4s}
 .px .sl h3{font-size:clamp(19px,1.6vw,24px);color:rgba(255,255,255,.45);transition:color .4s}
-.px .sl p{max-height:0;opacity:0;overflow:hidden;font-size:14.5px;color:var(--mut);transition:max-height .6s,opacity .5s,margin-top .5s}
+.px .sl p{margin-top:10px;font-size:14.5px;color:var(--mut)}
 .px .sl .go{width:36px;height:36px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;color:#fff;opacity:.4;transition:opacity .4s,background .4s}
-.px .sl li.on .k{color:var(--cyan)}.px .sl li.on h3{color:#fff}.px .sl li.on p{max-height:120px;opacity:1;margin-top:10px}.px .sl li.on .go{opacity:1}
+.px .sl li{opacity:.42;transition:opacity .5s}.px .sl li.on{opacity:1}
+.px .sl li.on .k{color:var(--blue)}.px .sl li.on h3{color:#fff}.px .sl li.on .go{opacity:1;background:var(--grad);border-color:transparent}
 .px .sl a:hover .go{background:var(--grad);border-color:transparent}
 .px .sol-steps .stp{height:46vh}
-@media (max-width:900px){.px .sl p{max-height:none;opacity:1;margin-top:8px}.px .sl h3{color:#fff}.px .sol-steps{display:none}}
+@media (max-width:900px){.px .sl h3{color:#fff}}
 
 /* reasons */
 .px .rl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:40px}
@@ -143,9 +144,10 @@ html:not(.px-preload) .px-load{opacity:0;visibility:hidden}
 .px .cl .n{font-size:30px;font-weight:200;letter-spacing:-.04em;color:var(--mut);line-height:1;transition:color .4s}
 .px .cl small{display:block;font-size:10.5px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--cyan);margin-bottom:6px}
 .px .cl h3{font-size:17px}
-.px .cl p{font-size:13.5px;color:var(--mut);max-height:0;opacity:0;overflow:hidden;transition:max-height .6s,opacity .5s,margin-top .5s}
-.px .cl a.on{border-color:var(--blue);background:rgba(4,80,137,.4)}.px .cl a.on .n{color:#fff}.px .cl a.on p{max-height:110px;opacity:1;margin-top:8px}
-@media (max-width:900px){.px .cl p{max-height:none;opacity:1;margin-top:8px}}
+.px .cl p{font-size:13.5px;color:var(--mut);margin-top:8px}
+.px .cl a{opacity:.5;transition:opacity .5s,border-color .4s,background .4s}.px .cl a.on{opacity:1}
+.px .cl a.on{border-color:var(--blue);background:rgba(4,80,137,.4)}.px .cl a.on .n{color:#fff}
+
 
 /* partners */
 .px .logos{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:40px}
@@ -207,8 +209,10 @@ html:not(.px-preload) .px-load{opacity:0;visibility:hidden}
 
 /* sequenced chapters: the column holds still while the camera visits each part */
 .px .ch.seq{display:block;min-height:0;padding:0}
-.px .ch.seq .pin{position:sticky;top:0;min-height:100vh;padding:clamp(100px,12vh,150px) var(--gutter) 60px;display:flex;flex-direction:column;justify-content:center}
-.px .ch.seq .steps i{display:block;height:42vh}
+.px .ch.seq .pin{padding:clamp(110px,14vh,170px) var(--gutter) clamp(100px,14vh,160px)}
+.px .ch.seq .steps{display:none}
+.px .sl a{padding:clamp(22px,3.4vh,34px) 0}
+.px .cl{gap:14px}
 @media (max-width:900px){.px .ch.seq .pin{position:relative;min-height:0;padding:110px var(--gutter) 70px}.px .ch.seq .steps{display:none}}
 
 body{margin:0;background:#000c19}
@@ -648,13 +652,11 @@ body{margin:0;background:#000c19}
   /* chapters → camera */
   $$('[data-view]').forEach(sec=>{const v=sec.dataset.view,n=+sec.dataset.n||0;
     if(n){const fn=v==='sol'?setSol:setCase;
-      ScrollTrigger.create({trigger:sec,start:'top 55%',end:'bottom 45%',onToggle:s=>{if(s.isActive)fn(s.direction>0?0:n-1)}});
-      ScrollTrigger.create({trigger:sec,start:'top top',end:'bottom bottom',onUpdate:s=>{if(innerWidth>900)fn(Math.min(n-1,Math.floor(s.progress*n)))}});
-      const mm=gsap.matchMedia();mm.add('(max-width: 900px)',()=>{let id=0,i=0;const st=ScrollTrigger.create({trigger:sec,start:'top 60%',end:'bottom 40%',onToggle:x=>{clearInterval(id);if(x.isActive){fn(i=0);id=setInterval(()=>fn(i=(i+1)%n),3000)}}});return()=>{clearInterval(id);st.kill()}})}
+      /* natural scroll: the item crossing the middle of the screen is the active one, nothing changes height */
+      const items=v==='sol'?sl:cl;
+      const pick=()=>{const y=innerHeight*.62;let k=0;items.forEach((it,i)=>{if(it.getBoundingClientRect().top<=y)k=i});fn(k)};
+      ScrollTrigger.create({trigger:sec,start:'top 62%',end:'bottom 38%',onUpdate:pick,onToggle:s=>s.isActive&&pick()});}
     else ScrollTrigger.create({trigger:sec,start:'top 55%',end:'bottom 45%',onToggle:s=>s.isActive&&S&&S.set(v)})});
-  /* pinned chapters: if the column is taller than the screen, let it scroll before it holds */
-  const fitPins=()=>$$('.ch.seq .pin').forEach(p=>{p.style.top=innerWidth>900?Math.min(0,innerHeight-p.offsetHeight-8)+'px':''});
-  fitPins();ScrollTrigger.addEventListener('refreshInit',fitPins);addEventListener('resize',fitPins);
   const ct=$('#contato');if(ct)ScrollTrigger.create({trigger:ct,start:'top 75%',end:'top 5%',scrub:true,onUpdate:s=>S&&S.flat(s.progress),onLeaveBack:()=>S&&S.flat(0)});
   const yrs=$('[data-view="years"]');if(yrs)ScrollTrigger.create({trigger:yrs,start:'top 70%',end:'center 40%',scrub:true,onUpdate:s=>{S&&S.years(s.progress);const tl=$('#px-tl');tl&&tl.style.setProperty('--p',s.progress)}});
   S&&S.set('hero');
@@ -678,7 +680,7 @@ body{margin:0;background:#000c19}
   /* reading: headings wipe in, lists rise */
   $$('.px main .ch h2').forEach(h=>gsap.fromTo(h,{clipPath:'inset(0 100% 0 0)',x:-24},{clipPath:'inset(0 0% 0 0)',x:0,duration:1.3,ease:'power3.out',scrollTrigger:{trigger:h,start:'top 82%'}}));
   $$('.px main .ch:not(.hero) .lab,.px main .ch:not(.hero) .lead').forEach(l=>gsap.from(l,{opacity:0,y:20,duration:1,ease:EO,scrollTrigger:{trigger:l,start:'top 90%'}}));
-  const batch=(sel,v)=>ScrollTrigger.batch(sel,{start:'top 94%',once:true,onEnter:b=>gsap.from(b,Object.assign({opacity:0,duration:.9,ease:EO,stagger:.05,clearProps:'transform'},v))});
+  const batch=(sel,v)=>ScrollTrigger.batch(sel,{start:'top 94%',once:true,onEnter:b=>gsap.from(b,Object.assign({opacity:0,duration:.9,ease:EO,stagger:.05,clearProps:'transform,opacity'},v))});
   batch('.px .sl li',{x:-30});batch('.px .rl>div',{y:40});batch('.px .sg a',{y:24});batch('.px .cl a',{x:-30});batch('.px .bl a',{y:30});
   gsap.from('.px .logos>div',{opacity:0,duration:.8,ease:'power2.out',stagger:{each:.03,from:'random'},scrollTrigger:{trigger:'.px .logos',start:'top 88%'}});
   page.querySelector('.px #contato .fbox')&&gsap.from('.px #contato .fbox',{y:60,opacity:0,duration:1.2,ease:EO,clearProps:'transform',scrollTrigger:{trigger:'.px #contato .fbox',start:'top 92%'}});

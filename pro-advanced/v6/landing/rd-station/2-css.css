@@ -102,12 +102,13 @@ html:not(.px-preload) .px-load{opacity:0;visibility:hidden}
 .px .sl a{display:grid;grid-template-columns:44px minmax(0,1fr) 36px;gap:14px;padding:20px 0;align-items:start}
 .px .sl .k{font-size:11.5px;font-weight:600;letter-spacing:.2em;color:var(--mut);padding-top:5px;transition:color .4s}
 .px .sl h3{font-size:clamp(19px,1.6vw,24px);color:rgba(255,255,255,.45);transition:color .4s}
-.px .sl p{max-height:0;opacity:0;overflow:hidden;font-size:14.5px;color:var(--mut);transition:max-height .6s,opacity .5s,margin-top .5s}
+.px .sl p{margin-top:10px;font-size:14.5px;color:var(--mut)}
 .px .sl .go{width:36px;height:36px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;color:#fff;opacity:.4;transition:opacity .4s,background .4s}
-.px .sl li.on .k{color:var(--cyan)}.px .sl li.on h3{color:#fff}.px .sl li.on p{max-height:120px;opacity:1;margin-top:10px}.px .sl li.on .go{opacity:1}
+.px .sl li{opacity:.42;transition:opacity .5s}.px .sl li.on{opacity:1}
+.px .sl li.on .k{color:var(--blue)}.px .sl li.on h3{color:#fff}.px .sl li.on .go{opacity:1;background:var(--grad);border-color:transparent}
 .px .sl a:hover .go{background:var(--grad);border-color:transparent}
 .px .sol-steps .stp{height:46vh}
-@media (max-width:900px){.px .sl p{max-height:none;opacity:1;margin-top:8px}.px .sl h3{color:#fff}.px .sol-steps{display:none}}
+@media (max-width:900px){.px .sl h3{color:#fff}}
 
 /* reasons */
 .px .rl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:40px}
@@ -138,9 +139,10 @@ html:not(.px-preload) .px-load{opacity:0;visibility:hidden}
 .px .cl .n{font-size:30px;font-weight:200;letter-spacing:-.04em;color:var(--mut);line-height:1;transition:color .4s}
 .px .cl small{display:block;font-size:10.5px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--cyan);margin-bottom:6px}
 .px .cl h3{font-size:17px}
-.px .cl p{font-size:13.5px;color:var(--mut);max-height:0;opacity:0;overflow:hidden;transition:max-height .6s,opacity .5s,margin-top .5s}
-.px .cl a.on{border-color:var(--blue);background:rgba(4,80,137,.4)}.px .cl a.on .n{color:#fff}.px .cl a.on p{max-height:110px;opacity:1;margin-top:8px}
-@media (max-width:900px){.px .cl p{max-height:none;opacity:1;margin-top:8px}}
+.px .cl p{font-size:13.5px;color:var(--mut);margin-top:8px}
+.px .cl a{opacity:.5;transition:opacity .5s,border-color .4s,background .4s}.px .cl a.on{opacity:1}
+.px .cl a.on{border-color:var(--blue);background:rgba(4,80,137,.4)}.px .cl a.on .n{color:#fff}
+
 
 /* partners */
 .px .logos{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:40px}
@@ -202,8 +204,10 @@ html:not(.px-preload) .px-load{opacity:0;visibility:hidden}
 
 /* sequenced chapters: the column holds still while the camera visits each part */
 .px .ch.seq{display:block;min-height:0;padding:0}
-.px .ch.seq .pin{position:sticky;top:0;min-height:100vh;padding:clamp(100px,12vh,150px) var(--gutter) 60px;display:flex;flex-direction:column;justify-content:center}
-.px .ch.seq .steps i{display:block;height:42vh}
+.px .ch.seq .pin{padding:clamp(110px,14vh,170px) var(--gutter) clamp(100px,14vh,160px)}
+.px .ch.seq .steps{display:none}
+.px .sl a{padding:clamp(22px,3.4vh,34px) 0}
+.px .cl{gap:14px}
 @media (max-width:900px){.px .ch.seq .pin{position:relative;min-height:0;padding:110px var(--gutter) 70px}.px .ch.seq .steps{display:none}}
 
 /* landing page: logo + CTA header, form right under the title, short page */
