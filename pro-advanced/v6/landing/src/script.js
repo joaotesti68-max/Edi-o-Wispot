@@ -41,7 +41,7 @@
   const LOGO3D='{{LOGO_DARK_DATA}}';
   /* ---------- views: every chapter has its own place in the world, nothing repeats ---------- */
   const VIEWS={
-    hero:{p:[52,34,48],l:[0,4,0],z:null,name:'Superfície · visão geral',orbit:1},
+    hero:{p:[78,46,72],l:[0,8,0],z:null,name:'Superfície · visão geral',orbit:1},
     sol0:{p:[-1,12,10],l:[-15,3,-8],z:'servers',name:'Infraestrutura de TI'},
     sol1:{p:[53,12,-15],l:[29,6.3,0],z:'gateway',name:'Escudo · Cibersegurança'},
     sol2:{p:[29,10,27],l:[15.5,3,10],z:'backup',name:'Cofre · Backup'},
@@ -244,7 +244,7 @@
       cam.position.copy(cur.p);if(view!=='contact'){cam.position.x+=mx*4;cam.position.y-=my*3}cam.lookAt(cur.l);
       scene.fog.far+=((view==='contact'?420:175)-scene.fog.far)*(1-Math.exp(-dt*2));
       for(const k in zones){const zz=zones[k];
-        if(!focus)zz.target=k==='dome'?.22:k==='timeline'?.15:.75;
+        if(!focus)zz.target=k==='dome'?(view==='hero'?.85:.22):k==='timeline'?.15:.75;
         else if(focus==='logo')zz.target=k==='dome'?.9*(1-flatP*.85):(k==='ground'||k==='endpoints'||k==='core'||k==='perimeter')?.45:.1;
         else zz.target=(k===focus||k==='ground'||k==='shaft'||(focus==='dome'&&k==='perimeter')||(focus.startsWith('case')&&k==='corridor'))?1:k==='links'?.5:.22;
         zz.op+=(zz.target-zz.op)*(1-Math.exp(-dt*3));zz.mats.forEach(m=>m.opacity=m.userData.base*zz.op);if(zz.fw)zz.fw.uOp.value=zz.op}
