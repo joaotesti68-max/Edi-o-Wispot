@@ -44,7 +44,7 @@
     sol1:{p:[44,9,-12],l:[29,4,0],z:'gateway',name:'Gateway · Cibersegurança'},
     sol2:{p:[31,12,26],l:[15,3,9],z:'backup',name:'Backup e Continuidade'},
     sol3:{p:[27,22,6],l:[8,14,-14],z:'cloud',name:'Cloud e Data Center'},
-    sol4:{p:[11,15,15],l:[0,6,0],z:'core',name:'SOC · Monitoramento 24×7'},
+    sol4:{p:[11,15,15],l:[0,6,0],z:'core',name:'SOC · Monitoramento'},
     sol5:{p:[3,11,28],l:[-12,2,13],z:'gov',name:'Governança · Compliance'},
     why:{p:[-74,7,-30],l:[0,12,0],z:'dome',name:'Perímetro · escudo'},
     years:{p:[30,-12,0],l:[0,-16,0],z:'timeline',name:'Linha do tempo · 1999–2026',scrub:1},
@@ -58,9 +58,9 @@
     blog:{p:[-30,-186,30],l:[0,-196,0],z:'archive',name:'Arquivo de conteúdos'},
     contact:{p:[22,200,.01],l:[22,40,0],z:'logo',name:'A Pro Advanced'}};
   const TAGS={servers:['Infraestrutura','Servidores · rede · storage',[-15,6.2,-8]],gateway:['Cibersegurança','Firewall · SOC/MDR',[29,9.5,0]],
-    backup:['Backup','Cofre · replicação',[16,5,9]],cloud:['Cloud','Data center · híbrido',[8,17.5,-14]],core:['SOC 24×7','Monitoramento contínuo',[0,10.5,0]],
+    backup:['Backup','Cofre · replicação',[16,5,9]],cloud:['Cloud','Data center · híbrido',[8,17.5,-14]],core:['SOC','Monitoramento contínuo',[0,10.5,0]],
     gov:['Governança','LGPD · compliance',[-12,2.6,13]],dome:['Escudo','Ameaças bloqueadas no perímetro',[0,31,0]],
-    district:['Segmentos','12 setores atendidos',[0,-80,0]],hub:['Parceiros','22 integrações',[0,-152,0]],archive:['Blog','Conteúdos e insights',[0,-186,0]],
+    district:['Segmentos','12 setores atendidos',[0,-80,0]],hub:['Parceiros','Integrações tecnológicas',[0,-152,0]],archive:['Blog','Conteúdos e insights',[0,-186,0]],
     case0:['Case 01','Mídia e Entretenimento',[-40,-117,0]],case1:['Case 02','Fintechs',[-20,-117,0]],case2:['Case 03','Saúde',[0,-117,0]],case3:['Case 04','Varejo · LGPD',[20,-117,0]],case4:['Case 05','Certificação TPN',[40,-116,0]]};
   const LEVELS=[['Superfície',0],['Linha do tempo',-40],['Distrito',-88],['Projetos',-123],['Integrações',-160],['Arquivo',-196]];
 
