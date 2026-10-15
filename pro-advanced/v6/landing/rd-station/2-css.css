@@ -218,7 +218,16 @@ html:not(.px-preload) .px-load{opacity:0;visibility:hidden}
 .px .ticks{display:flex;flex-wrap:wrap;gap:10px 26px;margin-top:22px}
 .px .ticks li{display:flex;align-items:baseline;gap:8px;font-size:13px;color:var(--mist)}
 .px .ticks b{font-size:19px;font-weight:300;color:#fff}
-.px .hero.lp .fbox{margin-top:26px}
+
 .px .final .info{margin-top:44px;padding-top:26px;border-top:1px solid var(--line2)}
 .px .fg{grid-template-columns:minmax(0,1fr) auto}
 @media (max-width:1000px){.px .fg{grid-template-columns:1fr}}
+
+/* landing hero: form up on the left, title on the right over the structure */
+.px .hero.lp{padding-top:clamp(96px,12vh,130px)}
+.px .hero.lp .hl{display:grid;grid-template-columns:minmax(0,min(460px,40vw)) minmax(0,1fr);gap:clamp(40px,6vw,120px);align-items:center;width:100%}
+.px .hero.lp .fbox{margin-top:0}
+.px .hero.lp .htx{position:relative;max-width:640px;justify-self:end;width:100%}
+.px .hero.lp .htx::before{content:"";position:absolute;inset:-60px -80px;z-index:-1;background:radial-gradient(closest-side,rgba(0,8,17,.78),rgba(0,8,17,0));pointer-events:none}
+.px .hero.lp h1{font-size:clamp(34px,3.6vw,60px)}
+@media (max-width:900px){.px .hero.lp .hl{grid-template-columns:1fr;gap:26px}.px .hero.lp .htx{order:-1;justify-self:start}.px .hero.lp .htx::before{display:none}}
