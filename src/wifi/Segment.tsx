@@ -1,59 +1,57 @@
 import {
   AbsoluteFill,
   Audio,
+  Easing,
   Img,
   OffthreadVideo,
   Sequence,
   interpolate,
-  spring,
   staticFile,
   useCurrentFrame,
-  useVideoConfig,
 } from "remotion";
 import { brand } from "../brand";
-import type { Keyword, Part, Segment, Tone } from "./edit";
+import type { Keyword, Part, Segment } from "./edit";
 import { FPS, toSegmentFrame } from "./edit";
 
-const TONES: Record<Tone, { bg: string; fg: string }> = {
-  red: { bg: "#ff4d5e", fg: "#ffffff" },
-  amber: { bg: "#ffb020", fg: "#0b1a26" },
-  blue: { bg: brand.colors.primaryLight, fg: "#ffffff" },
-  green: { bg: "#2fd18b", fg: "#0b1a26" },
-};
-
-const KeywordChip: React.FC<{
-  keyword: Keyword;
-  index: number;
-  start: number;
-}> = ({ keyword, index, start }) => {
+// Clean lower-third label: white card, brand-blue accent, calm fade-in.
+const KeywordLabel: React.FC<{ keyword: Keyword; start: number }> = ({
+  keyword,
+  start,
+}) => {
   const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
-  const t = spring({
-    frame: frame - start,
-    fps,
-    config: { damping: 11, mass: 0.6 },
-  });
   if (frame < start) return null;
-  const tone = TONES[keyword.tone];
-  const tilt = index % 2 === 0 ? -3 : 3;
+  const t = interpolate(frame - start, [0, 12], [0, 1], {
+    extrapolateRight: "clamp",
+    easing: Easing.out(Easing.cubic),
+  });
   return (
     <div
       style={{
-        alignSelf: index % 2 === 0 ? "flex-start" : "flex-end",
-        transform: `scale(${t}) rotate(${interpolate(t, [0, 1], [tilt * 4, tilt])}deg)`,
-        background: tone.bg,
-        color: tone.fg,
+        alignSelf: "flex-start",
+        opacity: t,
+        transform: `translateX(${interpolate(t, [0, 1], [-24, 0])}px)`,
+        display: "flex",
+        alignItems: "center",
+        gap: 18,
+        background: "rgba(255,255,255,0.94)",
+        color: brand.colors.ink,
         fontFamily: brand.fontFamily,
-        fontWeight: 800,
-        fontSize: 44,
-        letterSpacing: 0.5,
-        padding: "12px 30px",
-        borderRadius: 999,
-        border: "5px solid #0b1a26",
-        boxShadow: "0 10px 0 rgba(11,26,38,0.75)",
+        fontWeight: 700,
+        fontSize: 42,
+        padding: "18px 32px 18px 22px",
+        borderRadius: 16,
+        boxShadow: "0 10px 30px rgba(0,0,0,0.18)",
         whiteSpace: "nowrap",
       }}
     >
+      <div
+        style={{
+          width: 6,
+          height: 40,
+          borderRadius: 3,
+          background: brand.colors.primary,
+        }}
+      />
       {keyword.text}
     </div>
   );
@@ -63,8 +61,8 @@ const KeywordChip: React.FC<{
 const softSrc = (src: string) =>
   src.replace("videos/clips/", "videos/clips-soft/");
 
-// One surviving stretch of a talking take. Every other part sits a little
-// tighter so the jump cuts read as deliberate punch-ins.
+// One surviving stretch of a talking take. Every other part sits slightly
+// tighter so the jump cuts read as deliberate.
 const TalkPart: React.FC<{
   src: string;
   part: Part;
@@ -72,13 +70,10 @@ const TalkPart: React.FC<{
   index: number;
 }> = ({ src, part, zoom, index }) => {
   const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
-  const settle = spring({ frame, fps, config: { damping: 18, mass: 0.6 } });
   const scale =
     zoom *
-    (index % 2 === 1 ? 1.08 : 1) *
-    interpolate(settle, [0, 1], [1.05, 1]) *
-    interpolate(frame, [0, part.durationInFrames], [1, 1.025]);
+    (index % 2 === 1 ? 1.05 : 1) *
+    interpolate(frame, [0, part.durationInFrames], [1, 1.02]);
   return (
     <AbsoluteFill
       style={{ transform: `scale(${scale})`, transformOrigin: "50% 30%" }}
@@ -101,11 +96,8 @@ export const SegmentView: React.FC<{ segment: Segment }> = ({ segment }) => {
     // Off-camera reading: keep the voice, show the animation instead. The
     // animation is timed to the original take, so it is cut at the same points.
     const mgOrigin = Math.round(clip.trimIn * FPS);
-    const flash = interpolate(frame, [0, 6], [1, 0], {
-      extrapolateRight: "clamp",
-    });
     return (
-      <AbsoluteFill style={{ background: "#0b1a26" }}>
+      <AbsoluteFill style={{ background: "#f4f7fa" }}>
         {parts.map((part) => (
           <Sequence
             key={part.from}
@@ -127,7 +119,6 @@ export const SegmentView: React.FC<{ segment: Segment }> = ({ segment }) => {
             />
           </Sequence>
         ))}
-        <AbsoluteFill style={{ background: "#ffffff", opacity: flash * 0.8 }} />
       </AbsoluteFill>
     );
   }
@@ -174,14 +165,13 @@ export const SegmentView: React.FC<{ segment: Segment }> = ({ segment }) => {
           right: 56,
           display: "flex",
           flexDirection: "column",
-          gap: 16,
+          gap: 14,
         }}
       >
-        {keywords.map((k, i) => (
-          <KeywordChip
+        {keywords.map((k) => (
+          <KeywordLabel
             key={k.text}
             keyword={k}
-            index={i}
             start={toSegmentFrame(segment, k.at)}
           />
         ))}

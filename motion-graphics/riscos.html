@@ -5,246 +5,119 @@
 <title>Riscos na rede</title>
 <link rel="stylesheet" href="common.css">
 <style>
-  .router { left: 390px; top: 380px; width: 300px; height: 230px; }
-  .waves { left: 340px; top: 200px; width: 400px; height: 260px; }
-  #cards { position: absolute; inset: 0; }
-  .pw-field {
-    width: 360px; height: 74px; border-radius: 18px; border: 4px solid var(--ink);
-    background: #f2f6f9; display: flex; align-items: center; padding: 0 22px;
-    font-weight: 800; font-size: 40px; letter-spacing: 6px;
+  #doorWrap { left: 350px; top: 760px; width: 380px; height: 600px; perspective: 1600px; }
+  .frame {
+    position: absolute; inset: 0; border: 6px solid var(--navy); border-bottom: none;
+    border-radius: 22px 22px 0 0; background: #ffffff; overflow: hidden;
   }
-  .meter { display: flex; gap: 10px; width: 360px; }
-  .meter div { flex: 1; height: 16px; border-radius: 8px; background: #dfe7ee; }
-  .caret { display: inline-block; width: 4px; height: 42px; background: var(--ink); margin-left: 4px; }
-  #doorWrap { left: 290px; top: 520px; width: 500px; height: 760px; perspective: 1400px; }
-  .door-frame {
-    position: absolute; inset: 0; border-radius: 30px 30px 0 0; background: #07121b;
-    border: 14px solid #e8eef3; box-shadow: 0 16px 0 rgba(0,0,0,0.4);
-    overflow: hidden;
+  #glow { position: absolute; inset: 0; background: linear-gradient(180deg, var(--risk-soft), #f1c9c4); opacity: 0; }
+  #panel {
+    position: absolute; left: 0; top: 0; right: 0; bottom: 0; background: #ffffff;
+    border-right: 6px solid var(--navy); transform-origin: left center;
   }
-  .door-light { position: absolute; inset: 0; background: radial-gradient(circle at 50% 55%, #ff7a86 0%, #ff4d5e 35%, #7a0f1d 100%); }
-  .door-panel {
-    position: absolute; left: 14px; top: 14px; right: 14px; bottom: 0;
-    background: linear-gradient(180deg, #3696cd, #1f6e9c); border-radius: 18px 18px 0 0;
-    transform-origin: left center; border: 5px solid var(--ink);
-  }
-  .door-panel .inset { position: absolute; left: 50px; right: 50px; border: 5px solid rgba(11,26,38,0.45); border-radius: 14px; }
-  .knob { position: absolute; right: 40px; top: 380px; width: 40px; height: 40px; border-radius: 50%; background: var(--amber); border: 5px solid var(--ink); }
-  .threat { position: absolute; left: 540px; top: 900px; width: 170px; height: 170px; margin-left: -85px; margin-top: -85px; }
-  #stamp {
-    left: 50%; top: 1060px; transform: translate(-50%, -50%) rotate(-8deg);
-    font-weight: 800; font-size: 120px; color: #fff; background: var(--red);
-    padding: 10px 46px; border-radius: 26px; border: 8px solid var(--ink);
-    box-shadow: 0 16px 0 rgba(0,0,0,0.45); letter-spacing: 2px;
-  }
-  #flash { position: absolute; inset: 0; background: radial-gradient(circle at 50% 50%, rgba(255,77,94,0) 30%, rgba(255,77,94,0.65) 100%); opacity: 0; }
+  #panel .inset { position: absolute; left: 44px; right: 44px; border: 4px solid var(--line); border-radius: 12px; }
+  #panel .knob { position: absolute; right: 36px; top: 300px; width: 22px; height: 22px; border-radius: 50%; background: var(--navy); }
+  .floor { left: 250px; top: 1360px; width: 580px; height: 6px; border-radius: 3px; background: var(--navy); }
+  .dot { position: absolute; left: 540px; top: 1080px; width: 18px; height: 18px; margin: -9px 0 0 -9px; border-radius: 50%; background: var(--risk); opacity: 0; }
+  #doorLabel { left: 90px; right: 90px; top: 1440px; text-align: center; font-weight: 800; font-size: 46px; color: var(--risk); }
+  #doorLabel span { display: block; width: 120px; height: 4px; border-radius: 2px; background: var(--risk); margin: 22px auto 0; }
 </style>
 </head>
 <body>
 <div id="stage">
   <div class="bg"></div>
-  <div class="dots" id="dots"></div>
-  <div id="particles"></div>
-  <div id="flash"></div>
 
-  <div class="chip" id="chip" style="background: var(--red);">
-    <svg width="42" height="42" viewBox="0 0 24 24"><path d="M12 2.5 L22.5 20.5 H1.5 Z" fill="#fff" stroke="#0b1a26" stroke-width="1.6" stroke-linejoin="round"/><rect x="11" y="8.5" width="2" height="6.5" rx="1" fill="#ff4d5e"/><circle cx="12" cy="17.6" r="1.25" fill="#ff4d5e"/></svg>
-    RISCOS NA SUA REDE
+  <div class="head" id="head1" style="top: 380px;">
+    <div class="overline">ATENÇÃO</div>
+    <div class="title">Riscos comuns<br>na rede Wi-Fi</div>
   </div>
 
-  <!-- router + wifi waves -->
-  <div id="routerGroup" class="abs" style="left:0;top:0;width:1080px;height:700px;">
-    <svg class="abs waves" viewBox="0 0 400 260">
-      <path class="wave" d="M60 190 A200 200 0 0 1 340 190" fill="none" stroke="#ff4d5e" stroke-width="22" stroke-linecap="round"/>
-      <path class="wave" d="M110 215 A130 130 0 0 1 290 215" fill="none" stroke="#ffb020" stroke-width="22" stroke-linecap="round"/>
-      <path class="wave" d="M160 238 A60 60 0 0 1 240 238" fill="none" stroke="#ffffff" stroke-width="22" stroke-linecap="round"/>
-    </svg>
-    <svg class="abs router" id="router" viewBox="0 0 300 230">
-      <rect x="62" y="0" width="16" height="110" rx="8" fill="#e8eef3" stroke="#0b1a26" stroke-width="5"/>
-      <rect x="222" y="0" width="16" height="110" rx="8" fill="#e8eef3" stroke="#0b1a26" stroke-width="5"/>
-      <rect x="10" y="96" width="280" height="118" rx="30" fill="#ffffff" stroke="#0b1a26" stroke-width="6"/>
-      <rect x="10" y="176" width="280" height="38" rx="0" fill="#dfe7ee"/>
-      <rect x="10" y="96" width="280" height="118" rx="30" fill="none" stroke="#0b1a26" stroke-width="6"/>
-      <circle class="led" cx="70" cy="146" r="11" fill="#ff4d5e"/>
-      <circle class="led" cx="112" cy="146" r="11" fill="#ffb020"/>
-      <circle class="led" cx="154" cy="146" r="11" fill="#ff4d5e"/>
-      <rect x="190" y="138" width="70" height="16" rx="8" fill="#0b1a26"/>
-    </svg>
-  </div>
-
-  <div id="cards">
-    <!-- 1. senha fraca -->
-    <div class="card" id="c1" style="left:70px; top:720px;">
-      <div class="pw-field"><span id="pwText"></span><span class="caret" id="caret"></span></div>
-      <div class="meter"><div id="m1"></div><div></div><div></div><div></div></div>
-      <div class="label" style="color: var(--red);">SENHA FRACA</div>
+  <div id="rows">
+    <div class="row" id="r1" style="top: 700px;">
+      <div class="ico"><svg width="54" height="54" viewBox="0 0 24 24" fill="none" stroke="#3696cd" stroke-width="1.8" stroke-linecap="round"><rect x="2.5" y="7" width="19" height="10" rx="2.5"/><circle cx="7.5" cy="12" r="1" fill="#3696cd"/><circle cx="12" cy="12" r="1" fill="#3696cd"/><circle cx="16.5" cy="12" r="1" fill="#3696cd"/></svg></div>
+      <div class="txt"><div class="name">Senhas fracas</div><div class="sub">Fáceis de adivinhar</div></div>
+      <div class="mark" style="background: var(--risk-soft);"><svg width="30" height="30" viewBox="0 0 24 24"><rect x="10.8" y="4" width="2.4" height="10.5" rx="1.2" fill="#c8574f"/><circle cx="12" cy="19" r="1.6" fill="#c8574f"/></svg></div>
     </div>
-    <!-- 2. rede aberta -->
-    <div class="card" id="c2" style="left:570px; top:720px;">
-      <svg width="170" height="170" viewBox="0 0 120 120" style="overflow: visible;">
-        <path id="shackle" d="M34 56 V38 A26 26 0 0 1 86 38 V56" fill="none" stroke="#0b1a26" stroke-width="12" stroke-linecap="round"/>
-        <rect x="18" y="54" width="84" height="60" rx="14" fill="#ffb020" stroke="#0b1a26" stroke-width="6"/>
-        <circle cx="60" cy="80" r="8" fill="#0b1a26"/><rect x="56" y="82" width="8" height="18" rx="4" fill="#0b1a26"/>
-      </svg>
-      <div class="label" style="color: var(--red);">REDE ABERTA</div>
+    <div class="row" id="r2" style="top: 886px;">
+      <div class="ico"><svg width="54" height="54" viewBox="0 0 24 24" fill="none" stroke="#3696cd" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="11" width="15" height="10" rx="2.2"/><path id="shackle" d="M8 11 V7.5 A4 4 0 0 1 16 7.5 V8.5"/><circle cx="12" cy="16" r="1.2" fill="#3696cd"/></svg></div>
+      <div class="txt"><div class="name">Redes abertas</div><div class="sub">Qualquer um conecta</div></div>
+      <div class="mark" style="background: var(--risk-soft);"><svg width="30" height="30" viewBox="0 0 24 24"><rect x="10.8" y="4" width="2.4" height="10.5" rx="1.2" fill="#c8574f"/><circle cx="12" cy="19" r="1.6" fill="#c8574f"/></svg></div>
     </div>
-    <!-- 3. sem segmentação -->
-    <div class="card" id="c3" style="left:70px; top:1030px;">
-      <svg width="320" height="170" viewBox="0 0 320 170" id="tangle">
-        <g fill="none" stroke="#ff4d5e" stroke-width="5" stroke-linecap="round">
-          <path class="tl" d="M40 40 L280 130"/><path class="tl" d="M40 130 L280 40"/><path class="tl" d="M160 20 L40 130"/>
-          <path class="tl" d="M160 20 L280 130"/><path class="tl" d="M40 40 L160 150"/><path class="tl" d="M280 40 L160 150"/>
-          <path class="tl" d="M40 40 L280 40"/><path class="tl" d="M40 130 L280 130"/>
-        </g>
-        <g stroke="#0b1a26" stroke-width="5">
-          <circle class="nd" cx="40" cy="40" r="20" fill="#3696cd"/><circle class="nd" cx="280" cy="40" r="20" fill="#ffb020"/>
-          <circle class="nd" cx="160" cy="20" r="18" fill="#2fd18b"/><circle class="nd" cx="40" cy="130" r="20" fill="#ff4d5e"/>
-          <circle class="nd" cx="280" cy="130" r="20" fill="#3696cd"/><circle class="nd" cx="160" cy="150" r="18" fill="#ffb020"/>
-        </g>
-      </svg>
-      <div class="label" style="color: var(--red);">SEM SEGMENTAÇÃO</div>
+    <div class="row" id="r3" style="top: 1072px;">
+      <div class="ico"><svg width="54" height="54" viewBox="0 0 24 24" fill="none" stroke="#3696cd" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="5" r="2.2"/><circle cx="5" cy="18" r="2.2"/><circle cx="19" cy="18" r="2.2"/><path d="M10.9 7 L6.1 16 M13.1 7 L17.9 16 M7.2 18 H16.8"/></svg></div>
+      <div class="txt"><div class="name">Sem segmentação</div><div class="sub">Tudo na mesma rede</div></div>
+      <div class="mark" style="background: var(--risk-soft);"><svg width="30" height="30" viewBox="0 0 24 24"><rect x="10.8" y="4" width="2.4" height="10.5" rx="1.2" fill="#c8574f"/><circle cx="12" cy="19" r="1.6" fill="#c8574f"/></svg></div>
     </div>
-    <!-- 4. dispositivos sem controle -->
-    <div class="card" id="c4" style="left:570px; top:1030px;">
-      <svg width="360" height="170" viewBox="0 0 360 170">
-        <g class="dev">
-          <rect x="14" y="52" width="110" height="72" rx="10" fill="#3696cd" stroke="#0b1a26" stroke-width="6"/>
-          <rect x="0" y="122" width="138" height="16" rx="8" fill="#e8eef3" stroke="#0b1a26" stroke-width="5"/>
-        </g>
-        <g class="dev">
-          <rect x="152" y="40" width="58" height="100" rx="12" fill="#2fd18b" stroke="#0b1a26" stroke-width="6"/>
-          <circle cx="181" cy="124" r="5" fill="#0b1a26"/>
-        </g>
-        <g class="dev">
-          <rect x="236" y="70" width="100" height="58" rx="14" fill="#ffb020" stroke="#0b1a26" stroke-width="6"/>
-          <circle cx="286" cy="99" r="17" fill="#fff" stroke="#0b1a26" stroke-width="6"/>
-        </g>
-        <g font-family="Montserrat" font-weight="800" font-size="40" text-anchor="middle">
-          <g class="q"><circle cx="110" cy="40" r="26" fill="#ff4d5e" stroke="#0b1a26" stroke-width="5"/><text x="110" y="54" fill="#fff">?</text></g>
-          <g class="q"><circle cx="212" cy="30" r="26" fill="#ff4d5e" stroke="#0b1a26" stroke-width="5"/><text x="212" y="44" fill="#fff">?</text></g>
-          <g class="q"><circle cx="330" cy="54" r="26" fill="#ff4d5e" stroke="#0b1a26" stroke-width="5"/><text x="330" y="68" fill="#fff">?</text></g>
-        </g>
-      </svg>
-      <div class="label" style="color: var(--red);">SEM CONTROLE</div>
+    <div class="row" id="r4" style="top: 1258px;">
+      <div class="ico"><svg width="54" height="54" viewBox="0 0 24 24" fill="none" stroke="#3696cd" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="5" width="13" height="9" rx="1.5"/><path d="M1 17 H17"/><rect x="17" y="8" width="6" height="11" rx="1.5"/></svg></div>
+      <div class="txt"><div class="name">Dispositivos sem controle</div><div class="sub">Ninguém sabe quem está conectado</div></div>
+      <div class="mark" style="background: var(--risk-soft);"><svg width="30" height="30" viewBox="0 0 24 24"><rect x="10.8" y="4" width="2.4" height="10.5" rx="1.2" fill="#c8574f"/><circle cx="12" cy="19" r="1.6" fill="#c8574f"/></svg></div>
     </div>
   </div>
 
-  <!-- door -->
+  <div class="head" id="head2" style="top: 380px;">
+    <div class="overline">O RESULTADO</div>
+    <div class="title">A rede vira uma<br>porta aberta</div>
+  </div>
+
   <div class="abs" id="doorWrap">
-    <div class="door-frame">
-      <div class="door-light" id="doorLight"></div>
-      <div class="door-panel" id="doorPanel">
-        <div class="inset" style="top:50px; height:250px;"></div>
-        <div class="inset" style="top:350px; height:330px;"></div>
+    <div class="frame">
+      <div id="glow"></div>
+      <div id="panel">
+        <div class="inset" style="top: 46px; height: 200px;"></div>
+        <div class="inset" style="top: 290px; height: 260px;"></div>
         <div class="knob"></div>
       </div>
     </div>
   </div>
+  <div class="abs floor" id="floor"></div>
+  <div id="dots"></div>
 
-  <!-- threats -->
-  <svg class="threat" viewBox="0 0 120 120" id="t1">
-    <ellipse cx="60" cy="66" rx="30" ry="38" fill="#ff4d5e" stroke="#0b1a26" stroke-width="6"/>
-    <circle cx="60" cy="26" r="18" fill="#ff4d5e" stroke="#0b1a26" stroke-width="6"/>
-    <g stroke="#0b1a26" stroke-width="6" stroke-linecap="round"><path d="M30 52 L10 42"/><path d="M90 52 L110 42"/><path d="M30 76 L8 80"/><path d="M90 76 L112 80"/><path d="M34 96 L18 112"/><path d="M86 96 L102 112"/><path d="M52 10 L44 0"/><path d="M68 10 L76 0"/></g>
-    <circle cx="53" cy="24" r="4" fill="#fff"/><circle cx="67" cy="24" r="4" fill="#fff"/>
-  </svg>
-  <svg class="threat" viewBox="0 0 120 120" id="t2">
-    <path d="M60 10 C30 10 14 32 14 56 C14 72 22 82 32 88 V104 H88 V88 C98 82 106 72 106 56 C106 32 90 10 60 10 Z" fill="#fff" stroke="#0b1a26" stroke-width="6"/>
-    <circle cx="42" cy="56" r="12" fill="#0b1a26"/><circle cx="78" cy="56" r="12" fill="#0b1a26"/>
-    <path d="M56 78 L60 70 L64 78 Z" fill="#0b1a26"/>
-    <g stroke="#0b1a26" stroke-width="5"><path d="M48 92 V104"/><path d="M60 92 V104"/><path d="M72 92 V104"/></g>
-  </svg>
-  <svg class="threat" viewBox="0 0 120 120" id="t3">
-    <g stroke="#0b1a26" stroke-width="6" stroke-linecap="round"><path d="M60 6 V24"/><path d="M60 96 V114"/><path d="M6 60 H24"/><path d="M96 60 H114"/><path d="M22 22 L35 35"/><path d="M98 98 L85 85"/><path d="M98 22 L85 35"/><path d="M22 98 L35 85"/></g>
-    <circle cx="60" cy="60" r="36" fill="#a35cff" stroke="#0b1a26" stroke-width="6"/>
-    <circle cx="48" cy="52" r="7" fill="#0b1a26"/><circle cx="72" cy="52" r="7" fill="#0b1a26"/>
-    <path d="M44 76 Q60 66 76 76" fill="none" stroke="#0b1a26" stroke-width="6" stroke-linecap="round"/>
-  </svg>
-  <svg class="threat" viewBox="0 0 120 120" id="t4">
-    <path d="M60 8 C34 8 22 30 22 52 V112 H98 V52 C98 30 86 8 60 8 Z" fill="#1b2a36" stroke="#0b1a26" stroke-width="6"/>
-    <ellipse cx="60" cy="58" rx="24" ry="28" fill="#0b1a26"/>
-    <rect x="42" y="50" width="14" height="6" rx="3" fill="#2fd18b"/><rect x="64" y="50" width="14" height="6" rx="3" fill="#2fd18b"/>
-  </svg>
-
-  <div class="abs" id="stamp">INVASÃO!</div>
+  <div class="abs" id="doorLabel">Para qualquer tipo de invasão<span></span></div>
 </div>
 
 <script src="node_modules/gsap/dist/gsap.min.js"></script>
 <script src="common.js"></script>
 <script>
   const D = 9.8;
-  const tl = gsap.timeline({ paused: true });
-  addParticles(document.getElementById("particles"), tl, D, { color: "#ff4d5e", seed: 3 });
-  tl.to("#dots", { y: 54, duration: D, ease: "none" }, 0);
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
+  const rise = (sel, at, dur = 0.7) => tl.fromTo(sel, { autoAlpha: 0, y: 40 }, { autoAlpha: 1, y: 0, duration: dur }, at);
 
-  // intro
-  tl.from("#chip", { y: -160, opacity: 0, duration: 0.5, ease: "back.out(2)" }, 0);
-  tl.from("#router", { scale: 0, transformOrigin: "50% 80%", duration: 0.55, ease: "back.out(2.2)" }, 0.05);
-  // waves flicker: unstable signal
-  const waves = gsap.utils.toArray(".wave").reverse();
-  waves.forEach((w, i) => {
-    tl.from(w, { opacity: 0, scale: 0.6, transformOrigin: "50% 100%", duration: 0.3, ease: "back.out(2)" }, 0.25 + i * 0.1);
+  rise("#head1", 0);
+  rise("#r1", 0.15);
+  rise("#r2", 0.75);
+  tl.to("#shackle", { attr: { d: "M8 11 V7.5 A4 4 0 0 1 16 7.5 V6" }, y: -2, duration: 0.5 }, 1.2);
+  rise("#r3", 1.75);
+  rise("#r4", 3.55);
+  ["#r1", "#r2", "#r3", "#r4"].forEach((r, i) => {
+    tl.fromTo(`${r} .mark`, { scale: 0.6, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: 0.5 }, [0.45, 1.1, 2.4, 4.8][i]);
   });
-  for (let t = 1.0; t < 5.3; t += 0.55) {
-    const i = Math.round(t * 10) % 3;
-    tl.to(waves[2 - i] ?? waves[2], { opacity: 0.15, duration: 0.08, yoyo: true, repeat: 1 }, t);
+
+  // "transformam a rede em uma porta aberta" (5.46)
+  tl.to(["#head1", "#rows"], { autoAlpha: 0, y: -40, duration: 0.5, ease: "power2.in" }, 5.3);
+  rise("#head2", 5.8);
+  tl.fromTo("#doorWrap", { autoAlpha: 0, y: 40 }, { autoAlpha: 1, y: 0, duration: 0.8 }, 5.95);
+  tl.fromTo("#floor", { scaleX: 0 }, { scaleX: 1, duration: 0.8 }, 6.0);
+
+  // door opens (7.26)
+  tl.to("#panel", { rotationY: -72, duration: 1.1, ease: "power2.inOut" }, 7.1);
+  tl.to("#glow", { opacity: 1, duration: 0.8 }, 7.4);
+
+  // "qualquer tipo de invasão" (8.31): small dots drift out of the doorway
+  const rand = seeded(4);
+  const dots = document.getElementById("dots");
+  for (let i = 0; i < 14; i++) {
+    const d = document.createElement("div");
+    d.className = "dot";
+    dots.appendChild(d);
+    const at = 7.9 + i * 0.1;
+    const x = (rand() - 0.5) * 760;
+    const y = (rand() - 0.5) * 520;
+    tl.fromTo(d, { x: (rand() - 0.5) * 120, y: (rand() - 0.5) * 300, opacity: 0, scale: 0.5 },
+      { x, y, opacity: 0.85, scale: 1, duration: 1.4, ease: "power2.out" }, at);
   }
-  gsap.utils.toArray(".led").forEach((led, i) => {
-    tl.to(led, { opacity: 0.2, duration: 0.12, repeat: 18, yoyo: true, ease: "steps(1)" }, 0.4 + i * 0.13);
-  });
-
-  const pop = (sel, at) => tl.from(sel, { scale: 0, rotation: -12, opacity: 0, duration: 0.5, ease: "back.out(1.9)" }, at);
-
-  // 1. senha fraca (0.21)
-  pop("#c1", 0.12);
-  const pw = "123456";
-  for (let i = 1; i <= pw.length; i++) tl.set("#pwText", { textContent: pw.slice(0, i) }, 0.4 + i * 0.07);
-  tl.to("#caret", { opacity: 0, duration: 0.01, repeat: 20, yoyo: true, repeatDelay: 0.22 }, 0.4);
-  tl.to("#m1", { backgroundColor: "#ff4d5e", duration: 0.2 }, 0.9);
-  tl.to("#c1", { rotation: -3, duration: 0.08, yoyo: true, repeat: 3 }, 0.95);
-
-  // 2. rede aberta (0.83)
-  pop("#c2", 0.72);
-  tl.to("#shackle", { y: -14, duration: 0.2, ease: "power2.out" }, 1.4);
-  tl.to("#shackle", { rotation: -35, svgOrigin: "86 42", duration: 0.35, ease: "back.out(3)" }, 1.58);
-
-  // 3. sem segmentação (1.83)
-  pop("#c3", 1.75);
-  tl.from("#tangle .tl", { scale: 0, transformOrigin: "50% 50%", opacity: 0, duration: 0.35, stagger: 0.06, ease: "power2.out" }, 2.1);
-  tl.from("#tangle .nd", { scale: 0, transformOrigin: "50% 50%", duration: 0.35, stagger: 0.05, ease: "back.out(3)" }, 1.95);
-  tl.to("#tangle .nd", { x: "random(-8, 8)", y: "random(-8, 8)", duration: 0.25, repeat: 9, yoyo: true, ease: "sine.inOut" }, 2.7);
-
-  // 4. dispositivos sem controle (3.62 / 4.84)
-  pop("#c4", 3.5);
-  tl.from("#c4 .dev", { y: 50, opacity: 0, duration: 0.35, stagger: 0.12, ease: "back.out(2.5)" }, 3.7);
-  tl.from("#c4 .q", { scale: 0, transformOrigin: "50% 50%", duration: 0.35, stagger: 0.1, ease: "back.out(3)" }, 4.75);
-  tl.to("#c4 .q", { rotation: 14, transformOrigin: "50% 50%", duration: 0.12, repeat: 5, yoyo: true }, 5.1);
-
-  // transition to the door (5.46 "transformam")
-  tl.to("#cards .card", { scale: 0, opacity: 0, rotation: 15, duration: 0.4, stagger: 0.06, ease: "back.in(1.8)" }, 5.4);
-  tl.to("#routerGroup", { scale: 0.55, y: -110, transformOrigin: "50% 40%", duration: 0.5, ease: "power3.inOut" }, 5.45);
-  tl.to("#chip", { y: -200, opacity: 0, duration: 0.35, ease: "back.in(2)" }, 5.5);
-  tl.fromTo("#doorWrap", { y: 1000, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.6, ease: "back.out(1.5)" }, 5.75);
-
-  // door opens (7.26 "porta aberta")
-  tl.to("#doorPanel", { rotationY: -78, duration: 0.8, ease: "back.out(1.4)" }, 7.15);
-  tl.to("#doorLight", { scale: 1.08, duration: 0.25, repeat: 6, yoyo: true, ease: "sine.inOut" }, 7.6);
-
-  // threats rush out (8.31 "qualquer tipo de invasão")
-  const threats = ["#t1", "#t2", "#t3", "#t4"];
-  const targets = [[-330, -330], [320, -250], [-300, 260], [330, 280]];
-  threats.forEach((t, i) => {
-    const at = 7.9 + i * 0.16;
-    tl.fromTo(t, { scale: 0.1, opacity: 0, x: 0, y: 0, rotation: 0 },
-      { scale: 1.35, opacity: 1, x: targets[i][0], y: targets[i][1], rotation: (i % 2 ? 1 : -1) * 20, duration: 0.6, ease: "back.out(1.6)" }, at);
-    tl.to(t, { y: `+=${i % 2 ? 18 : -18}`, rotation: `+=${i % 2 ? -10 : 10}`, duration: 0.22, repeat: 6, yoyo: true, ease: "sine.inOut" }, at + 0.6);
-  });
-
-  // stamp (9.12 "invasão")
-  tl.fromTo("#stamp", { scale: 3, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.28, ease: "power4.in" }, 8.95);
-  tl.to("#flash", { opacity: 1, duration: 0.1 }, 9.22);
-  tl.to("#flash", { opacity: 0.4, duration: 0.4 }, 9.32);
-  shake(tl, "#stage", 9.23, 22, 9);
+  rise("#doorLabel", 8.3);
+  tl.fromTo("#doorLabel span", { scaleX: 0 }, { scaleX: 1, duration: 0.7 }, 8.7);
 
   tl.set({}, {}, D);
   mountTimeline(tl);

@@ -4,8 +4,7 @@ export const FPS = 30;
 export const OUTRO_FRAMES = 75;
 export const OUTRO_FADE = 10;
 
-export type Tone = "red" | "amber" | "blue" | "green";
-export type Keyword = { text: string; at: number; tone: Tone };
+export type Keyword = { text: string; at: number };
 
 // A stretch of the source clip that survives the silence cuts.
 export type Part = { srcStart: number; from: number; durationInFrames: number };
@@ -28,46 +27,46 @@ const plan: Record<
 > = {
   img8734: {
     zoom: 1,
-    keywords: [{ text: "WI-FI CORPORATIVO", at: 0.6, tone: "blue" }],
+    keywords: [{ text: "Wi-Fi corporativo", at: 0.6 }],
   },
   img8740: {
-    zoom: 1.12,
+    zoom: 1.06,
     keywords: [
-      { text: "QUEDAS", at: 1.82, tone: "red" },
-      { text: "LENTIDÃO", at: 2.93, tone: "red" },
-      { text: "INTERFERÊNCIA", at: 3.86, tone: "red" },
+      { text: "Quedas", at: 1.82 },
+      { text: "Lentidão", at: 2.93 },
+      { text: "Interferência", at: 3.86 },
     ],
   },
   img8743: {
-    zoom: 1.25,
-    keywords: [{ text: "OPERAÇÃO TRAVADA", at: 0.55, tone: "red" }],
+    zoom: 1.1,
+    keywords: [{ text: "Operação travada", at: 0.55 }],
   },
   img8745: { zoom: 1, keywords: [], motionGraphic: "videos/mg/riscos.mp4" },
   img8747: {
     zoom: 1,
     keywords: [
-      { text: "PRODUTIVIDADE", at: 3.38, tone: "amber" },
-      { text: "CONTINUIDADE", at: 4.19, tone: "amber" },
+      { text: "Produtividade", at: 3.38 },
+      { text: "Continuidade", at: 4.19 },
     ],
   },
   img8748: { zoom: 1, keywords: [], motionGraphic: "videos/mg/solucao.mp4" },
   img8750: {
-    zoom: 1.12,
-    keywords: [{ text: "WI-FI SEGURO E ESTÁVEL", at: 3.2, tone: "green" }],
+    zoom: 1.06,
+    keywords: [{ text: "Wi-Fi seguro e estável", at: 3.2 }],
   },
   img8751: {
     zoom: 1,
     keywords: [
-      { text: "SEGMENTAÇÃO", at: 0.32, tone: "blue" },
-      { text: "INFRA DE TI", at: 1.58, tone: "blue" },
-      { text: "SUPORTE 24H", at: 3.96, tone: "blue" },
+      { text: "Segmentação", at: 0.32 },
+      { text: "Infraestrutura de TI", at: 1.58 },
+      { text: "Suporte 24 horas", at: 3.96 },
     ],
   },
   img8752: {
-    zoom: 1.15,
+    zoom: 1.08,
     keywords: [
-      { text: "RISCO PARA A OPERAÇÃO", at: 1.81, tone: "red" },
-      { text: "FALE CONOSCO", at: 3.59, tone: "green" },
+      { text: "Risco para a operação", at: 1.81 },
+      { text: "Fale conosco", at: 3.59 },
     ],
   },
 };
