@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Rede bem estruturada</title>
+<link rel="stylesheet" href="common.css">
+<style>
+  #net { position: absolute; inset: 0; }
+  .zone {
+    position: absolute; top: 790px; width: 300px; height: 480px; border-radius: 36px;
+    border: 5px dashed; display: flex; justify-content: center;
+  }
+  .zone span {
+    position: absolute; top: -30px; padding: 8px 22px; border-radius: 999px; border: 4px solid var(--ink);
+    font-weight: 800; font-size: 28px; color: var(--ink); white-space: nowrap; z-index: 5;
+  }
+  .device {
+    position: absolute; width: 130px; height: 110px; margin-left: -65px; margin-top: -55px;
+    border-radius: 26px; background: #fff; border: 5px solid var(--ink);
+    box-shadow: 0 10px 0 rgba(0,0,0,0.35); display: flex; align-items: center; justify-content: center;
+  }
+  .device .tick {
+    position: absolute; right: -14px; top: -14px; width: 42px; height: 42px; border-radius: 50%;
+    background: var(--green); border: 4px solid var(--ink); display: flex; align-items: center; justify-content: center;
+  }
+  #radar {
+    position: absolute; left: 540px; top: 560px; width: 620px; height: 620px; margin-left: -310px; margin-top: -310px;
+    border-radius: 50%; background: conic-gradient(from 0deg, rgba(32,163,214,0) 0deg, rgba(32,163,214,0) 280deg, rgba(32,163,214,0.55) 360deg);
+    border: 4px solid rgba(32,163,214,0.5);
+  }
+  .ring { position: absolute; left: 540px; top: 560px; border-radius: 50%; border: 3px solid rgba(32,163,214,0.35); }
+  #eye {
+    left: 700px; top: 360px; padding: 14px 24px; z-index: 6; border-radius: 999px; background: var(--cyan);
+    border: 4px solid var(--ink); font-weight: 800; font-size: 30px; color: var(--ink);
+    display: flex; gap: 12px; align-items: center; box-shadow: 0 8px 0 rgba(0,0,0,0.35);
+  }
+  .benefit {
+    position: absolute; left: 90px; width: 900px; border-radius: 36px; background: #fff; color: var(--ink);
+    border: 5px solid var(--ink); box-shadow: 0 14px 0 rgba(0,0,0,0.35);
+    display: flex; align-items: center; gap: 30px; padding: 0 40px;
+  }
+  .benefit .icon {
+    width: 140px; height: 140px; border-radius: 30px; border: 5px solid var(--ink); flex: none;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .benefit h3 { font-weight: 800; font-size: 46px; line-height: 1.02; letter-spacing: -0.5px; }
+  .benefit p { font-weight: 700; font-size: 26px; color: #4c5b66; margin-top: 8px; }
+  .avatar {
+    position: relative; width: 74px; height: 74px; border-radius: 50%; border: 4px solid var(--ink);
+    display: flex; align-items: flex-end; justify-content: center; overflow: visible;
+  }
+  .badge {
+    position: absolute; right: -12px; bottom: -8px; width: 36px; height: 36px; border-radius: 50%;
+    border: 4px solid var(--ink); display: flex; align-items: center; justify-content: center;
+  }
+  .thing {
+    position: relative; width: 74px; height: 74px; border-radius: 18px; border: 4px solid var(--ink); background: #e8f4fb;
+    display: flex; align-items: center; justify-content: center;
+  }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="bg"></div>
+  <div class="dots" id="dots"></div>
+  <div id="particles"></div>
+
+  <div class="chip" id="chip1" style="background: var(--cyan); color: var(--ink);">
+    <svg width="42" height="42" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#fff" stroke="#0b1a26" stroke-width="1.8"/><path d="M7.5 12.3 L10.6 15.2 L16.6 8.8" fill="none" stroke="#0b1a26" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    REDE BEM ESTRUTURADA
+  </div>
+  <div class="chip" id="chip2" style="background: var(--green); color: var(--ink);">
+    <svg width="42" height="42" viewBox="0 0 24 24"><path d="M3 17 L9.5 10.5 L13.5 14.5 L21 7" fill="none" stroke="#0b1a26" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M15 7 H21 V13" fill="none" stroke="#0b1a26" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    O QUE A EMPRESA GANHA
+  </div>
+
+  <div id="net">
+    <div class="ring" style="width:420px;height:420px;margin:-210px 0 0 -210px;"></div>
+    <div class="ring" style="width:260px;height:260px;margin:-130px 0 0 -130px;"></div>
+    <div id="radar"></div>
+
+    <div class="zone" id="z1" style="left:60px; border-color: var(--cyan); background: rgba(32,163,214,0.12);"><span style="background: var(--cyan);">EQUIPE</span></div>
+    <div class="zone" id="z2" style="left:390px; border-color: var(--amber); background: rgba(255,176,32,0.12);"><span style="background: var(--amber);">VISITANTES</span></div>
+    <div class="zone" id="z3" style="left:720px; border-color: var(--green); background: rgba(47,209,139,0.12);"><span style="background: var(--green);">IoT</span></div>
+
+    <svg class="abs" style="left:0;top:0" width="1080" height="1920" id="links">
+      <g fill="none" stroke="#20a3d6" stroke-width="6" stroke-linecap="round" id="lines"></g>
+      <g id="pulses"></g>
+    </svg>
+
+    <svg class="abs" id="waves" style="left:340px; top:300px;" width="400" height="200" viewBox="0 0 400 200">
+      <path class="wave" d="M60 190 A200 200 0 0 1 340 190" fill="none" stroke="#20a3d6" stroke-width="22" stroke-linecap="round"/>
+      <path class="wave" d="M110 200 A130 130 0 0 1 290 200" fill="none" stroke="#3696cd" stroke-width="22" stroke-linecap="round" transform="translate(0,-6)"/>
+      <path class="wave" d="M160 200 A60 60 0 0 1 240 200" fill="none" stroke="#ffffff" stroke-width="22" stroke-linecap="round" transform="translate(0,-8)"/>
+    </svg>
+    <svg class="abs" id="router" style="left:390px; top:450px;" width="300" height="230" viewBox="0 0 300 230">
+      <rect x="62" y="0" width="16" height="110" rx="8" fill="#e8eef3" stroke="#0b1a26" stroke-width="5"/>
+      <rect x="222" y="0" width="16" height="110" rx="8" fill="#e8eef3" stroke="#0b1a26" stroke-width="5"/>
+      <rect x="10" y="96" width="280" height="118" rx="30" fill="#ffffff" stroke="#0b1a26" stroke-width="6"/>
+      <circle class="led" cx="70" cy="146" r="11" fill="#2fd18b"/>
+      <circle class="led" cx="112" cy="146" r="11" fill="#2fd18b"/>
+      <circle class="led" cx="154" cy="146" r="11" fill="#2fd18b"/>
+      <rect x="190" y="138" width="70" height="16" rx="8" fill="#0b1a26"/>
+    </svg>
+
+    <div class="abs" id="eye">
+      <svg width="40" height="40" viewBox="0 0 24 24"><path d="M1.5 12 C4.5 6.5 8 4.5 12 4.5 C16 4.5 19.5 6.5 22.5 12 C19.5 17.5 16 19.5 12 19.5 C8 19.5 4.5 17.5 1.5 12 Z" fill="#fff" stroke="#0b1a26" stroke-width="1.8"/><circle cx="12" cy="12" r="4" fill="#0b1a26"/></svg>
+      MONITORADA
+    </div>
+    <div id="devices"></div>
+  </div>
+
+  <!-- benefits -->
+  <div class="benefit" id="b1" style="top:420px; height:230px;">
+    <div class="icon" style="background: var(--green);">
+      <svg width="100" height="100" viewBox="0 0 100 100"><g fill="#fff" stroke="#0b1a26" stroke-width="5"><rect x="10" y="62" width="16" height="28" rx="4"/><rect x="32" y="46" width="16" height="44" rx="4"/><rect x="54" y="30" width="16" height="60" rx="4"/><rect x="76" y="12" width="16" height="78" rx="4"/></g></svg>
+    </div>
+    <div style="flex:1;">
+      <h3>ESTABILIDADE</h3>
+      <svg width="560" height="60" viewBox="0 0 560 60" style="margin-top:10px; overflow:visible;"><path id="steady" d="M0 30 H170 L195 8 L220 52 L245 30 H560" fill="none" stroke="#2fd18b" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+  </div>
+
+  <div class="benefit" id="b2" style="top:690px; height:230px;">
+    <div class="icon" style="background: var(--amber);">
+      <svg width="100" height="100" viewBox="0 0 100 100" style="overflow:visible;"><path id="growArrow" d="M12 78 L40 50 L58 64 L88 26" fill="none" stroke="#0b1a26" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><path id="growHead" d="M66 24 H90 V48" fill="none" stroke="#0b1a26" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <div style="flex:1;">
+      <h3>CAPACIDADE<br>DE CRESCER</h3>
+    </div>
+    <svg width="190" height="160" viewBox="0 0 190 160"><g stroke="#0b1a26" stroke-width="5"><rect class="bar" x="8" y="100" width="34" height="56" rx="6" fill="#3696cd"/><rect class="bar" x="54" y="72" width="34" height="84" rx="6" fill="#3696cd"/><rect class="bar" x="100" y="42" width="34" height="114" rx="6" fill="#20a3d6"/><rect class="bar" x="146" y="8" width="34" height="148" rx="6" fill="#2fd18b"/></g></svg>
+  </div>
+
+  <div class="benefit" id="b3" style="top:960px; height:300px; align-items: center;">
+    <div class="icon" style="background: var(--cyan);">
+      <svg width="100" height="100" viewBox="0 0 24 24"><path d="M12 2.5 L4.5 5.5 V11 C4.5 16 7.8 20 12 21.5 C16.2 20 19.5 16 19.5 11 V5.5 Z" fill="#fff" stroke="#0b1a26" stroke-width="1.6" stroke-linejoin="round"/><path d="M8.3 12.2 L10.8 14.7 L15.7 9.3" fill="none" stroke="#0b1a26" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <div style="flex:1;">
+      <h3>CONTROLE REAL</h3>
+      <div style="display:flex; gap:22px; margin-top:22px; align-items:center;">
+        <div class="avatar who" style="background:#3696cd;"><svg width="60" height="60" viewBox="0 0 60 60"><circle cx="30" cy="22" r="12" fill="#fff"/><path d="M8 60 C8 44 18 38 30 38 C42 38 52 44 52 60 Z" fill="#fff"/></svg><div class="badge" style="background:var(--green);"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M5 12.5 L10 17 L19 7" fill="none" stroke="#0b1a26" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+        <div class="avatar who" style="background:#ffb020;"><svg width="60" height="60" viewBox="0 0 60 60"><circle cx="30" cy="22" r="12" fill="#fff"/><path d="M8 60 C8 44 18 38 30 38 C42 38 52 44 52 60 Z" fill="#fff"/></svg><div class="badge" style="background:var(--green);"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M5 12.5 L10 17 L19 7" fill="none" stroke="#0b1a26" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+        <div class="avatar who" style="background:#1b2a36;"><svg width="60" height="60" viewBox="0 0 60 60"><circle cx="30" cy="22" r="12" fill="#5d6b76"/><path d="M8 60 C8 44 18 38 30 38 C42 38 52 44 52 60 Z" fill="#5d6b76"/></svg><div class="badge" style="background:var(--red);"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M6 6 L18 18 M18 6 L6 18" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round"/></svg></div></div>
+        <div style="width:4px; height:60px; background:#c9d4dc; border-radius:2px; margin:0 4px;" class="what"></div>
+        <div class="thing what"><svg width="48" height="48" viewBox="0 0 48 48"><rect x="6" y="10" width="36" height="24" rx="4" fill="#3696cd" stroke="#0b1a26" stroke-width="4"/><rect x="2" y="34" width="44" height="6" rx="3" fill="#0b1a26"/></svg><div class="badge" style="background:var(--green);"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M5 12.5 L10 17 L19 7" fill="none" stroke="#0b1a26" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+        <div class="thing what"><svg width="48" height="48" viewBox="0 0 48 48"><rect x="10" y="10" width="28" height="28" rx="6" fill="#ffb020" stroke="#0b1a26" stroke-width="4"/><circle cx="24" cy="24" r="6" fill="#fff" stroke="#0b1a26" stroke-width="3"/></svg><div class="badge" style="background:var(--red);"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M6 6 L18 18 M18 6 L6 18" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round"/></svg></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="node_modules/gsap/dist/gsap.min.js"></script>
+<script src="common.js"></script>
+<script>
+  const D = 10.0;
+  const tl = gsap.timeline({ paused: true });
+  addParticles(document.getElementById("particles"), tl, D, { color: "#20a3d6", seed: 11 });
+  tl.to("#dots", { y: 54, duration: D, ease: "none" }, 0);
+
+  // devices: 3 columns (zones) x 3 rows
+  const ROUTER = [540, 640];
+  const icons = {
+    laptop: '<svg width="80" height="60" viewBox="0 0 80 60"><rect x="10" y="6" width="60" height="38" rx="6" fill="COLOR" stroke="#0b1a26" stroke-width="5"/><rect x="2" y="44" width="76" height="10" rx="5" fill="#0b1a26"/></svg>',
+    phone: '<svg width="50" height="76" viewBox="0 0 50 76"><rect x="6" y="4" width="38" height="68" rx="9" fill="COLOR" stroke="#0b1a26" stroke-width="5"/><circle cx="25" cy="60" r="4" fill="#0b1a26"/></svg>',
+    camera: '<svg width="80" height="60" viewBox="0 0 80 60"><rect x="6" y="12" width="68" height="40" rx="10" fill="COLOR" stroke="#0b1a26" stroke-width="5"/><circle cx="40" cy="32" r="12" fill="#fff" stroke="#0b1a26" stroke-width="5"/></svg>',
+  };
+  const layout = [
+    { x: 210, color: "#20a3d6", kinds: ["laptop", "laptop", "phone"] },
+    { x: 540, color: "#ffb020", kinds: ["phone", "laptop", "phone"] },
+    { x: 870, color: "#2fd18b", kinds: ["camera", "camera", "laptop"] },
+  ];
+  const rows = [890, 1040, 1190];
+  // messy start positions so the network visibly "gets organised"
+  const rand = seeded(5);
+  const devEls = [];
+  const lineEls = [];
+  layout.forEach((col, ci) => {
+    col.kinds.forEach((kind, ri) => {
+      const d = document.createElement("div");
+      d.className = "device";
+      d.style.left = `${col.x}px`;
+      d.style.top = `${rows[ri]}px`;
+      d.innerHTML = icons[kind].replace("COLOR", "#c9d4dc") + '<div class="tick"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M5 12.5 L10 17 L19 7" fill="none" stroke="#0b1a26" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>';
+      document.getElementById("devices").appendChild(d);
+      d.dataset.color = col.color;
+      devEls.push({ el: d, ci, ri, x: col.x, y: rows[ri], dx: (rand() - 0.5) * 260, dy: (rand() - 0.5) * 200, rot: (rand() - 0.5) * 50 });
+      const ln = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      ln.setAttribute("d", `M${ROUTER[0]} ${ROUTER[1]} L${col.x} ${rows[ri]}`);
+      document.getElementById("lines").appendChild(ln);
+      lineEls.push(ln);
+    });
+  });
+
+  // intro: chip + router (0.15 "Com uma rede sem fio")
+  tl.from("#chip1", { y: -160, opacity: 0, duration: 0.5, ease: "back.out(2)" }, 0);
+  tl.from("#router", { scale: 0, transformOrigin: "50% 80%", duration: 0.55, ease: "back.out(2.2)" }, 0.05);
+  gsap.utils.toArray("#waves .wave").reverse().forEach((w, i) => {
+    tl.from(w, { opacity: 0, scale: 0.5, transformOrigin: "50% 100%", duration: 0.35, ease: "back.out(2.5)" }, 0.3 + i * 0.1);
+    tl.to(w, { opacity: 0.35, duration: 0.3, repeat: 13, yoyo: true, ease: "sine.inOut" }, 0.9 + i * 0.12);
+  });
+
+  // devices pop in messy, then snap into a tidy grid ("bem estruturada" 1.3–1.5)
+  devEls.forEach((d, i) => {
+    tl.fromTo(d.el, { scale: 0, x: d.dx, y: d.dy, rotation: d.rot }, { scale: 1, duration: 0.35, ease: "back.out(2.5)" }, 0.4 + i * 0.05);
+    tl.to(d.el, { x: 0, y: 0, rotation: 0, duration: 0.45, ease: "back.out(1.8)" }, 1.25 + (i % 3) * 0.04);
+  });
+  lineEls.forEach((ln, i) => {
+    const len = ln.getTotalLength();
+    tl.fromTo(ln, { attr: { "stroke-dasharray": len, "stroke-dashoffset": len } }, { attr: { "stroke-dashoffset": 0 }, duration: 0.4, ease: "power2.out" }, 1.55 + i * 0.03);
+  });
+  tl.from(".device .tick", { scale: 0, duration: 0.3, stagger: 0.04, ease: "back.out(3)" }, 1.85);
+
+  // segmentada (2.29): zones + recolor
+  ["#z1", "#z2", "#z3"].forEach((z, i) => {
+    tl.from(z, { scaleY: 0, opacity: 0, transformOrigin: "50% 0%", duration: 0.45, ease: "back.out(1.6)" }, 2.15 + i * 0.1);
+    tl.from(`${z} span`, { y: -40, opacity: 0, duration: 0.3, ease: "back.out(3)" }, 2.35 + i * 0.1);
+  });
+  devEls.forEach((d) => {
+    const body = d.el.querySelector("rect");
+    tl.to(body, { attr: { fill: d.el.dataset.color }, duration: 0.25 }, 2.35 + d.ci * 0.1);
+    tl.to(d.el, { scale: 1.12, duration: 0.12, yoyo: true, repeat: 1 }, 2.35 + d.ci * 0.1);
+  });
+  lineEls.forEach((ln, i) => tl.to(ln, { attr: { stroke: layout[Math.floor(i / 3)].color }, duration: 0.25 }, 2.35 + Math.floor(i / 3) * 0.1));
+
+  // monitorada (3.01): radar sweep, eye badge, data pulses
+  tl.from("#radar", { scale: 0, opacity: 0, duration: 0.4, ease: "back.out(1.6)" }, 2.9);
+  tl.from(".ring", { scale: 0, opacity: 0, duration: 0.4, stagger: 0.08, ease: "back.out(1.6)" }, 2.95);
+  tl.to("#radar", { rotation: 360 * 1.6, duration: 1.4, ease: "none" }, 2.9);
+  tl.from("#eye", { scale: 0, rotation: 20, duration: 0.4, ease: "back.out(2.6)" }, 3.0);
+  const pulses = document.getElementById("pulses");
+  lineEls.forEach((ln, i) => {
+    const c = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    c.setAttribute("r", "11"); c.setAttribute("fill", "#fff"); c.setAttribute("stroke", "#0b1a26"); c.setAttribute("stroke-width", "4");
+    c.setAttribute("cx", ROUTER[0]); c.setAttribute("cy", ROUTER[1]); c.setAttribute("opacity", "0");
+    pulses.appendChild(c);
+    const d = devEls[i];
+    tl.set(c, { attr: { opacity: 1 } }, 3.05 + (i % 3) * 0.12);
+    tl.to(c, { attr: { cx: d.x, cy: d.y }, duration: 0.5, ease: "power1.inOut", repeat: 1 }, 3.05 + (i % 3) * 0.12);
+  });
+
+  // switch to benefits (≈4.1 "a empresa ganha")
+  tl.to("#net", { scale: 0.4, y: -500, opacity: 0, duration: 0.5, ease: "power3.in" }, 4.05);
+  tl.to("#chip1", { y: -200, opacity: 0, duration: 0.3, ease: "back.in(2)" }, 4.05);
+  tl.fromTo("#chip2", { y: -200, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: "back.out(2)" }, 4.35);
+
+  const slideIn = (sel, at) => tl.fromTo(sel, { x: 1100, rotation: 6 }, { x: 0, rotation: 0, duration: 0.55, ease: "back.out(1.5)" }, at);
+
+  // estabilidade (4.88)
+  slideIn("#b1", 4.6);
+  const steady = document.getElementById("steady");
+  const sl = steady.getTotalLength();
+  tl.fromTo(steady, { attr: { "stroke-dasharray": sl, "stroke-dashoffset": sl } }, { attr: { "stroke-dashoffset": 0 }, duration: 0.9, ease: "power2.out" }, 4.95);
+  tl.from("#b1 rect", { scaleY: 0, transformOrigin: "50% 100%", duration: 0.3, stagger: 0.07, ease: "back.out(2.5)" }, 4.95);
+
+  // capacidade de crescer (6.13 / 6.95)
+  slideIn("#b2", 5.85);
+  tl.from("#b2 .bar", { scaleY: 0, transformOrigin: "50% 100%", duration: 0.45, stagger: 0.12, ease: "back.out(2)" }, 6.4);
+  tl.from(["#growArrow", "#growHead"], { opacity: 0, x: -20, y: 20, duration: 0.4, ease: "back.out(2.5)" }, 6.9);
+  tl.to("#b2 .icon", { rotation: -8, scale: 1.08, duration: 0.15, yoyo: true, repeat: 1 }, 7.0);
+
+  // controle real (7.44) — quem acessa (8.34) e o quê (9.19)
+  slideIn("#b3", 7.15);
+  tl.from("#b3 .who", { scale: 0, duration: 0.35, stagger: 0.12, ease: "back.out(2.6)" }, 8.2);
+  tl.from("#b3 .who .badge", { scale: 0, duration: 0.25, stagger: 0.12, ease: "back.out(3)" }, 8.5);
+  tl.from("#b3 .what", { scale: 0, duration: 0.35, stagger: 0.1, ease: "back.out(2.6)" }, 9.05);
+  tl.from("#b3 .what .badge", { scale: 0, duration: 0.25, stagger: 0.1, ease: "back.out(3)" }, 9.35);
+  tl.to("#b3 .icon", { scale: 1.1, duration: 0.15, yoyo: true, repeat: 1 }, 7.5);
+
+  tl.set({}, {}, D);
+  mountTimeline(tl);
+</script>
+</body>
+</html>
