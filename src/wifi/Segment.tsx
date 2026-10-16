@@ -86,7 +86,7 @@ export const SegmentView: React.FC<{ segment: Segment }> = ({ segment }) => {
     // animation is timed to the original take, so it is cut at the same points.
     const mgOrigin = Math.round(clip.trimIn * FPS);
     return (
-      <AbsoluteFill style={{ background: brand.colors.white }}>
+      <AbsoluteFill style={{ background: brand.colors.primary }}>
         {parts.map((part) => (
           <Sequence
             key={part.from}

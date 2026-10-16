@@ -1,9 +1,22 @@
-import { AbsoluteFill, Img, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
+import {
+  AbsoluteFill,
+  Img,
+  interpolate,
+  spring,
+  staticFile,
+  useCurrentFrame,
+  useVideoConfig,
+} from "remotion";
 import { brand } from "./brand";
 
-export const EndCard: React.FC<{ background?: string; siteColor?: string }> = ({
+export const EndCard: React.FC<{
+  background?: string;
+  siteColor?: string;
+  siteBackground?: string;
+}> = ({
   background = brand.gradient,
   siteColor = brand.colors.ink,
+  siteBackground = brand.colors.white,
 }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
@@ -21,14 +34,23 @@ export const EndCard: React.FC<{ background?: string; siteColor?: string }> = ({
   const siteScale = interpolate(siteIn, [0, 1], [0.94, 1]);
 
   return (
-    <AbsoluteFill style={{ background, alignItems: "center", justifyContent: "center" }}>
+    <AbsoluteFill
+      style={{ background, alignItems: "center", justifyContent: "center" }}
+    >
       <AbsoluteFill
         style={{
           backgroundImage:
             "radial-gradient(circle at 50% 38%, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 55%)",
         }}
       />
-      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 44 }}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: 44,
+        }}
+      >
         <Img
           src={staticFile(brand.logo.white)}
           style={{
@@ -60,7 +82,7 @@ export const EndCard: React.FC<{ background?: string; siteColor?: string }> = ({
             fontWeight: 700,
             fontSize: 32,
             color: siteColor,
-            background: brand.colors.white,
+            background: siteBackground,
             borderRadius: 999,
             padding: "16px 40px",
           }}

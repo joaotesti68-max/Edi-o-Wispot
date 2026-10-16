@@ -61,7 +61,8 @@ export const WifiVideo: React.FC = () => {
         <OutroFade>
           <EndCard
             background={brand.manualGradient}
-            siteColor={brand.colors.primary}
+            siteColor={brand.colors.white}
+            siteBackground={brand.colors.gray}
           />
         </OutroFade>
       </Sequence>
