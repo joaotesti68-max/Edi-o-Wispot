@@ -3,6 +3,7 @@ import {
   Audio,
   Img,
   OffthreadVideo,
+  Sequence,
   interpolate,
   spring,
   staticFile,
@@ -10,8 +11,8 @@ import {
   useVideoConfig,
 } from "remotion";
 import { brand } from "../brand";
-import type { Keyword, Segment, Tone } from "./edit";
-import { FPS } from "./edit";
+import type { Keyword, Part, Segment, Tone } from "./edit";
+import { FPS, toSegmentFrame } from "./edit";
 
 const TONES: Record<Tone, { bg: string; fg: string }> = {
   red: { bg: "#ff4d5e", fg: "#ffffff" },
@@ -20,13 +21,13 @@ const TONES: Record<Tone, { bg: string; fg: string }> = {
   green: { bg: "#2fd18b", fg: "#0b1a26" },
 };
 
-const KeywordChip: React.FC<{ keyword: Keyword; index: number }> = ({
-  keyword,
-  index,
-}) => {
+const KeywordChip: React.FC<{
+  keyword: Keyword;
+  index: number;
+  start: number;
+}> = ({ keyword, index, start }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-  const start = Math.round(keyword.at * FPS);
   const t = spring({
     frame: frame - start,
     fps,
@@ -58,53 +59,94 @@ const KeywordChip: React.FC<{ keyword: Keyword; index: number }> = ({
   );
 };
 
-export const SegmentView: React.FC<{ segment: Segment }> = ({ segment }) => {
+// On-camera takes use the skin-smoothed renders (scripts/skin-smooth.sh).
+const softSrc = (src: string) =>
+  src.replace("videos/clips/", "videos/clips-soft/");
+
+// One surviving stretch of a talking take. Every other part sits a little
+// tighter so the jump cuts read as deliberate punch-ins.
+const TalkPart: React.FC<{
+  src: string;
+  part: Part;
+  zoom: number;
+  index: number;
+}> = ({ src, part, zoom, index }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-  const { clip, durationInFrames, motionGraphic, zoom, keywords } = segment;
-  const trimBefore = Math.round(clip.trimIn * FPS);
-  const trimAfter = trimBefore + durationInFrames;
+  const settle = spring({ frame, fps, config: { damping: 18, mass: 0.6 } });
+  const scale =
+    zoom *
+    (index % 2 === 1 ? 1.08 : 1) *
+    interpolate(settle, [0, 1], [1.05, 1]) *
+    interpolate(frame, [0, part.durationInFrames], [1, 1.025]);
+  return (
+    <AbsoluteFill
+      style={{ transform: `scale(${scale})`, transformOrigin: "50% 30%" }}
+    >
+      <OffthreadVideo
+        src={staticFile(src)}
+        trimBefore={part.srcStart}
+        trimAfter={part.srcStart + part.durationInFrames}
+        style={{ width: "100%", height: "100%", objectFit: "cover" }}
+      />
+    </AbsoluteFill>
+  );
+};
+
+export const SegmentView: React.FC<{ segment: Segment }> = ({ segment }) => {
+  const frame = useCurrentFrame();
+  const { clip, parts, motionGraphic, zoom, keywords } = segment;
 
   if (motionGraphic) {
-    // Off-camera reading: keep the voice, show the animation instead.
+    // Off-camera reading: keep the voice, show the animation instead. The
+    // animation is timed to the original take, so it is cut at the same points.
+    const mgOrigin = Math.round(clip.trimIn * FPS);
     const flash = interpolate(frame, [0, 6], [1, 0], {
       extrapolateRight: "clamp",
     });
     return (
       <AbsoluteFill style={{ background: "#0b1a26" }}>
-        <Audio
-          src={staticFile(clip.src)}
-          trimBefore={trimBefore}
-          trimAfter={trimAfter}
-        />
-        <OffthreadVideo muted src={staticFile(motionGraphic)} />
+        {parts.map((part) => (
+          <Sequence
+            key={part.from}
+            from={part.from}
+            durationInFrames={part.durationInFrames}
+          >
+            <Audio
+              src={staticFile(clip.src)}
+              trimBefore={part.srcStart}
+              trimAfter={part.srcStart + part.durationInFrames}
+            />
+            <OffthreadVideo
+              muted
+              src={staticFile(motionGraphic)}
+              trimBefore={Math.max(0, part.srcStart - mgOrigin)}
+              trimAfter={
+                Math.max(0, part.srcStart - mgOrigin) + part.durationInFrames
+              }
+            />
+          </Sequence>
+        ))}
         <AbsoluteFill style={{ background: "#ffffff", opacity: flash * 0.8 }} />
       </AbsoluteFill>
     );
   }
 
-  // Each cut lands with a short punch-in settle, then a slow push.
-  const settle = spring({ frame, fps, config: { damping: 18, mass: 0.6 } });
-  const scale =
-    zoom *
-    interpolate(settle, [0, 1], [1.06, 1]) *
-    interpolate(frame, [0, durationInFrames], [1, 1.035]);
   const watermark = interpolate(frame, [0, 10], [0, 0.9], {
     extrapolateRight: "clamp",
   });
 
   return (
     <AbsoluteFill style={{ background: "#000" }}>
-      <AbsoluteFill
-        style={{ transform: `scale(${scale})`, transformOrigin: "50% 30%" }}
-      >
-        <OffthreadVideo
-          src={staticFile(clip.src)}
-          trimBefore={trimBefore}
-          trimAfter={trimAfter}
-          style={{ width: "100%", height: "100%", objectFit: "cover" }}
-        />
-      </AbsoluteFill>
+      {parts.map((part, i) => (
+        <Sequence
+          key={part.from}
+          from={part.from}
+          durationInFrames={part.durationInFrames}
+        >
+          <TalkPart src={softSrc(clip.src)} part={part} zoom={zoom} index={i} />
+        </Sequence>
+      ))}
 
       <AbsoluteFill
         style={{
@@ -136,7 +178,12 @@ export const SegmentView: React.FC<{ segment: Segment }> = ({ segment }) => {
         }}
       >
         {keywords.map((k, i) => (
-          <KeywordChip key={k.text} keyword={k} index={i} />
+          <KeywordChip
+            key={k.text}
+            keyword={k}
+            index={i}
+            start={toSegmentFrame(segment, k.at)}
+          />
         ))}
       </div>
     </AbsoluteFill>
