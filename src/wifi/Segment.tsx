@@ -20,11 +20,18 @@ const TONES: Record<Tone, { bg: string; fg: string }> = {
   green: { bg: "#2fd18b", fg: "#0b1a26" },
 };
 
-const KeywordChip: React.FC<{ keyword: Keyword; index: number }> = ({ keyword, index }) => {
+const KeywordChip: React.FC<{ keyword: Keyword; index: number }> = ({
+  keyword,
+  index,
+}) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const start = Math.round(keyword.at * FPS);
-  const t = spring({ frame: frame - start, fps, config: { damping: 11, mass: 0.6 } });
+  const t = spring({
+    frame: frame - start,
+    fps,
+    config: { damping: 11, mass: 0.6 },
+  });
   if (frame < start) return null;
   const tone = TONES[keyword.tone];
   const tilt = index % 2 === 0 ? -3 : 3;
@@ -60,10 +67,16 @@ export const SegmentView: React.FC<{ segment: Segment }> = ({ segment }) => {
 
   if (motionGraphic) {
     // Off-camera reading: keep the voice, show the animation instead.
-    const flash = interpolate(frame, [0, 6], [1, 0], { extrapolateRight: "clamp" });
+    const flash = interpolate(frame, [0, 6], [1, 0], {
+      extrapolateRight: "clamp",
+    });
     return (
       <AbsoluteFill style={{ background: "#0b1a26" }}>
-        <Audio src={staticFile(clip.src)} trimBefore={trimBefore} trimAfter={trimAfter} />
+        <Audio
+          src={staticFile(clip.src)}
+          trimBefore={trimBefore}
+          trimAfter={trimAfter}
+        />
         <OffthreadVideo muted src={staticFile(motionGraphic)} />
         <AbsoluteFill style={{ background: "#ffffff", opacity: flash * 0.8 }} />
       </AbsoluteFill>
@@ -72,12 +85,19 @@ export const SegmentView: React.FC<{ segment: Segment }> = ({ segment }) => {
 
   // Each cut lands with a short punch-in settle, then a slow push.
   const settle = spring({ frame, fps, config: { damping: 18, mass: 0.6 } });
-  const scale = zoom * interpolate(settle, [0, 1], [1.06, 1]) * interpolate(frame, [0, durationInFrames], [1, 1.035]);
-  const watermark = interpolate(frame, [0, 10], [0, 0.9], { extrapolateRight: "clamp" });
+  const scale =
+    zoom *
+    interpolate(settle, [0, 1], [1.06, 1]) *
+    interpolate(frame, [0, durationInFrames], [1, 1.035]);
+  const watermark = interpolate(frame, [0, 10], [0, 0.9], {
+    extrapolateRight: "clamp",
+  });
 
   return (
     <AbsoluteFill style={{ background: "#000" }}>
-      <AbsoluteFill style={{ transform: `scale(${scale})`, transformOrigin: "50% 30%" }}>
+      <AbsoluteFill
+        style={{ transform: `scale(${scale})`, transformOrigin: "50% 30%" }}
+      >
         <OffthreadVideo
           src={staticFile(clip.src)}
           trimBefore={trimBefore}
@@ -95,7 +115,13 @@ export const SegmentView: React.FC<{ segment: Segment }> = ({ segment }) => {
 
       <Img
         src={staticFile(brand.logo.iconWhite)}
-        style={{ position: "absolute", top: 60, right: 52, width: 64, opacity: watermark }}
+        style={{
+          position: "absolute",
+          top: 60,
+          right: 52,
+          width: 64,
+          opacity: watermark,
+        }}
       />
 
       <div
