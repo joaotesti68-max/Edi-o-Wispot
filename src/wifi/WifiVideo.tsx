@@ -7,6 +7,7 @@ import {
   staticFile,
   useCurrentFrame,
 } from "remotion";
+import { brand } from "../brand";
 import { EndCard } from "../EndCard";
 import { fontFamily } from "../loadFont";
 import { SegmentView } from "./Segment";
@@ -58,7 +59,10 @@ export const WifiVideo: React.FC = () => {
 
       <Sequence from={outroStart} durationInFrames={OUTRO_FRAMES}>
         <OutroFade>
-          <EndCard />
+          <EndCard
+            background={brand.manualGradient}
+            siteColor={brand.colors.primary}
+          />
         </OutroFade>
       </Sequence>
     </AbsoluteFill>

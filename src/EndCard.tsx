@@ -1,7 +1,10 @@
 import { AbsoluteFill, Img, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
 import { brand } from "./brand";
 
-export const EndCard: React.FC = () => {
+export const EndCard: React.FC<{ background?: string; siteColor?: string }> = ({
+  background = brand.gradient,
+  siteColor = brand.colors.ink,
+}) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
@@ -18,7 +21,7 @@ export const EndCard: React.FC = () => {
   const siteScale = interpolate(siteIn, [0, 1], [0.94, 1]);
 
   return (
-    <AbsoluteFill style={{ background: brand.gradient, alignItems: "center", justifyContent: "center" }}>
+    <AbsoluteFill style={{ background, alignItems: "center", justifyContent: "center" }}>
       <AbsoluteFill
         style={{
           backgroundImage:
@@ -56,7 +59,7 @@ export const EndCard: React.FC = () => {
             fontFamily: brand.fontFamily,
             fontWeight: 700,
             fontSize: 32,
-            color: brand.colors.ink,
+            color: siteColor,
             background: brand.colors.white,
             borderRadius: 999,
             padding: "16px 40px",

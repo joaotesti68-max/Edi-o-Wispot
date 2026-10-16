@@ -3,16 +3,14 @@
 @font-face { font-family: "Montserrat"; font-weight: 800; src: url("../public/fonts/montserrat-latin-800-normal.woff2") format("woff2"); }
 @font-face { font-family: "Montserrat"; font-weight: 800; src: url("../public/fonts/montserrat-latin-ext-800-normal.woff2") format("woff2"); unicode-range: U+0100-024F; }
 
-/* Clean corporate look: light ground, brand blue + navy, one muted accent for risk. */
+/* Pro Advanced brand manual palette only: #3696CD, #20A3D6, #676868, white. */
 :root {
-  --bg: #f4f7fa;
-  --navy: #1c3f57;
+  --white: #ffffff;
   --blue: #3696cd;
-  --blue-soft: #e4f1f9;
-  --gray: #6b7a86;
-  --line: #dde5ec;
-  --risk: #c8574f;
-  --risk-soft: #f8e9e7;
+  --cyan: #20a3d6;
+  --gray: #676868;
+  --line: rgba(103, 104, 104, 0.16);
+  --grad: linear-gradient(135deg, #3696cd 0%, #20a3d6 100%);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -21,19 +19,15 @@ html, body {
   width: 1080px;
   height: 1920px;
   overflow: hidden;
-  background: var(--bg);
+  background: var(--white);
   font-family: "Montserrat", sans-serif;
-  color: var(--navy);
+  color: var(--gray);
 }
 
 #stage { position: absolute; inset: 0; overflow: hidden; }
 .abs { position: absolute; }
 
-.bg {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at 50% 40%, #ffffff 0%, #f4f7fa 55%, #eaf0f5 100%);
-}
+.bg { position: absolute; inset: 0; background: var(--white); }
 
 .head { position: absolute; left: 90px; right: 90px; top: 300px; }
 .overline {
@@ -46,7 +40,7 @@ html, body {
   gap: 18px;
 }
 .overline::before { content: ""; width: 56px; height: 4px; border-radius: 2px; background: var(--blue); }
-.title { font-weight: 800; font-size: 64px; line-height: 1.12; letter-spacing: -1px; margin-top: 18px; }
+.title { color: var(--blue); font-weight: 800; font-size: 64px; line-height: 1.12; letter-spacing: -1px; margin-top: 18px; }
 
 .row {
   position: absolute;
@@ -56,7 +50,7 @@ html, body {
   background: #ffffff;
   border: 2px solid var(--line);
   border-radius: 28px;
-  box-shadow: 0 18px 44px rgba(28, 63, 87, 0.08);
+  box-shadow: 0 18px 44px rgba(103, 104, 104, 0.10);
   display: flex;
   align-items: center;
   gap: 32px;
@@ -64,12 +58,12 @@ html, body {
 }
 .row .ico {
   width: 96px; height: 96px; border-radius: 50%; flex: none;
-  background: var(--blue-soft);
+  background: var(--white); border: 3px solid var(--blue);
   display: flex; align-items: center; justify-content: center;
 }
 .row .txt { flex: 1; }
 .row .name { font-weight: 800; font-size: 44px; letter-spacing: -0.5px; }
-.row .sub { font-weight: 700; font-size: 28px; color: var(--gray); margin-top: 6px; }
+.row .sub { font-weight: 700; font-size: 28px; color: var(--gray); opacity: 0.8; margin-top: 6px; }
 .row .mark {
   width: 56px; height: 56px; border-radius: 50%; flex: none;
   display: flex; align-items: center; justify-content: center;
@@ -77,4 +71,4 @@ html, body {
 
 /* Center the composition vertically now that there are no burned-in captions. */
 #stage { top: 120px; overflow: visible; }
-#stage > .bg { top: -120px; }
+#stage > .bg { position: absolute; inset: 0; background: var(--white); }

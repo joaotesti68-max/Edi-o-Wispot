@@ -13,7 +13,7 @@ import { brand } from "../brand";
 import type { Keyword, Part, Segment } from "./edit";
 import { FPS, toSegmentFrame } from "./edit";
 
-// Clean lower-third label: white card, brand-blue accent, calm fade-in.
+// Clean lower-third label in the brand manual gradient, calm fade-in.
 const KeywordLabel: React.FC<{ keyword: Keyword; start: number }> = ({
   keyword,
   start,
@@ -30,28 +30,17 @@ const KeywordLabel: React.FC<{ keyword: Keyword; start: number }> = ({
         alignSelf: "flex-start",
         opacity: t,
         transform: `translateX(${interpolate(t, [0, 1], [-24, 0])}px)`,
-        display: "flex",
-        alignItems: "center",
-        gap: 18,
-        background: "rgba(255,255,255,0.94)",
-        color: brand.colors.ink,
+        background: brand.manualGradient,
+        color: brand.colors.white,
         fontFamily: brand.fontFamily,
         fontWeight: 700,
         fontSize: 42,
-        padding: "18px 32px 18px 22px",
+        padding: "18px 32px",
         borderRadius: 16,
         boxShadow: "0 10px 30px rgba(0,0,0,0.18)",
         whiteSpace: "nowrap",
       }}
     >
-      <div
-        style={{
-          width: 6,
-          height: 40,
-          borderRadius: 3,
-          background: brand.colors.primary,
-        }}
-      />
       {keyword.text}
     </div>
   );
@@ -97,7 +86,7 @@ export const SegmentView: React.FC<{ segment: Segment }> = ({ segment }) => {
     // animation is timed to the original take, so it is cut at the same points.
     const mgOrigin = Math.round(clip.trimIn * FPS);
     return (
-      <AbsoluteFill style={{ background: "#f4f7fa" }}>
+      <AbsoluteFill style={{ background: brand.colors.white }}>
         {parts.map((part) => (
           <Sequence
             key={part.from}

@@ -7,25 +7,25 @@
 <style>
   #router {
     left: 460px; top: 660px; width: 160px; height: 160px; border-radius: 50%;
-    background: #ffffff; border: 2px solid var(--line); box-shadow: 0 18px 44px rgba(28,63,87,0.10);
+    background: #ffffff; border: 2px solid var(--line); box-shadow: 0 18px 44px rgba(103,104,104,0.12);
     display: flex; align-items: center; justify-content: center;
   }
   .ripple { position: absolute; left: 540px; top: 740px; width: 160px; height: 160px; margin: -80px 0 0 -80px; border-radius: 50%; border: 3px solid var(--blue); opacity: 0; }
   .group {
     position: absolute; top: 960px; width: 270px; height: 290px; border-radius: 28px;
-    background: #ffffff; border: 2px solid var(--line); box-shadow: 0 18px 44px rgba(28,63,87,0.08);
+    background: #ffffff; border: 2px solid var(--line); box-shadow: 0 18px 44px rgba(103,104,104,0.10);
   }
   .group .gname {
     position: absolute; left: 0; right: 0; top: 26px; text-align: center;
-    font-weight: 800; font-size: 34px; color: var(--navy);
+    font-weight: 800; font-size: 34px; color: var(--gray);
   }
   .group .gbar { position: absolute; left: 105px; width: 60px; top: 78px; height: 4px; border-radius: 2px; background: var(--blue); }
   .group .devs { position: absolute; left: 0; right: 0; bottom: 34px; display: flex; justify-content: center; gap: 22px; }
-  .dev { width: 84px; height: 84px; border-radius: 22px; background: var(--blue-soft); display: flex; align-items: center; justify-content: center; }
+  .dev { width: 84px; height: 84px; border-radius: 22px; background: var(--white); display: flex; align-items: center; justify-content: center; }
   #monitor {
     left: 50%; top: 1330px; transform: translateX(-50%); white-space: nowrap;
     display: flex; align-items: center; gap: 18px; padding: 20px 36px; border-radius: 999px;
-    background: #ffffff; border: 2px solid var(--line); box-shadow: 0 18px 44px rgba(28,63,87,0.08);
+    background: #ffffff; border: 2px solid var(--line); box-shadow: 0 18px 44px rgba(103,104,104,0.10);
     font-weight: 800; font-size: 34px;
   }
   #liveDot { width: 20px; height: 20px; border-radius: 50%; background: var(--blue); }
@@ -52,7 +52,7 @@
     </svg>
     <div class="ripple"></div><div class="ripple"></div>
     <div class="abs" id="router">
-      <svg width="84" height="84" viewBox="0 0 24 24" fill="none" stroke="#1c3f57" stroke-width="1.6" stroke-linecap="round"><path d="M5 10.5 A9.5 9.5 0 0 1 19 10.5"/><path d="M8 13 A5.5 5.5 0 0 1 16 13"/><rect x="3.5" y="15.5" width="17" height="5" rx="1.6"/><circle cx="7.5" cy="18" r="0.8" fill="#3696cd" stroke="none"/><circle cx="10.5" cy="18" r="0.8" fill="#3696cd" stroke="none"/></svg>
+      <svg width="84" height="84" viewBox="0 0 24 24" fill="none" stroke="#676868" stroke-width="1.6" stroke-linecap="round"><path d="M5 10.5 A9.5 9.5 0 0 1 19 10.5"/><path d="M8 13 A5.5 5.5 0 0 1 16 13"/><rect x="3.5" y="15.5" width="17" height="5" rx="1.6"/><circle cx="7.5" cy="18" r="0.8" fill="#3696cd" stroke="none"/><circle cx="10.5" cy="18" r="0.8" fill="#3696cd" stroke="none"/></svg>
     </div>
 
     <div class="group" id="g1" style="left: 90px;">
@@ -122,8 +122,8 @@
   tl.fromTo(".dev", { autoAlpha: 0, y: 20 }, { autoAlpha: 1, y: 0, duration: 0.6, stagger: 0.08 }, 0.9);
 
   // "segmentada" (2.29): the groups take shape around the devices
-  tl.fromTo(".group", { borderColor: "rgba(221,229,236,0)", backgroundColor: "rgba(255,255,255,0)", boxShadow: "0 18px 44px rgba(28,63,87,0)" },
-    { borderColor: "#dde5ec", backgroundColor: "#ffffff", boxShadow: "0 18px 44px rgba(28,63,87,0.08)", duration: 0.7, stagger: 0.12 }, 2.2);
+  tl.fromTo(".group", { borderColor: "rgba(103,104,104,0)", backgroundColor: "rgba(255,255,255,0)", boxShadow: "0 18px 44px rgba(103,104,104,0)" },
+    { borderColor: "rgba(103,104,104,0.16)", backgroundColor: "#ffffff", boxShadow: "0 18px 44px rgba(103,104,104,0.10)", duration: 0.7, stagger: 0.12 }, 2.2);
   tl.fromTo(".group .gname", { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.6, stagger: 0.12 }, 2.3);
   tl.fromTo(".group .gbar", { scaleX: 0 }, { scaleX: 1, duration: 0.6, stagger: 0.12 }, 2.45);
 
@@ -134,7 +134,7 @@
   const routes = [[[540, 820], [540, 880], [225, 880], [225, 960]], [[540, 820], [540, 960]], [[540, 820], [540, 880], [855, 880], [855, 960]]];
   routes.forEach((pts, i) => {
     const c = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-    c.setAttribute("r", "9"); c.setAttribute("fill", "#1c3f57"); c.setAttribute("opacity", "0");
+    c.setAttribute("r", "9"); c.setAttribute("fill", "#676868"); c.setAttribute("opacity", "0");
     c.setAttribute("cx", pts[0][0]); c.setAttribute("cy", pts[0][1]);
     packets.appendChild(c);
     const at = 3.15 + i * 0.12;
