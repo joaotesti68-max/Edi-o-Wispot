@@ -13,10 +13,12 @@ export const EndCard: React.FC<{
   background?: string;
   siteColor?: string;
   siteBackground?: string;
+  cta?: string;
 }> = ({
   background = brand.gradient,
   siteColor = brand.colors.ink,
   siteBackground = brand.colors.white,
+  cta = "Fale com a gente agora",
 }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
@@ -71,7 +73,7 @@ export const EndCard: React.FC<{
             transform: `translateY(${ctaShift}px)`,
           }}
         >
-          Fale com a gente agora
+          {cta}
         </div>
 
         <div

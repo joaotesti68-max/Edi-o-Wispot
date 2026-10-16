@@ -63,6 +63,7 @@ export const WifiVideo: React.FC = () => {
             background={brand.manualGradient}
             siteColor={brand.colors.white}
             siteBackground={brand.colors.gray}
+            cta="Fale Conosco"
           />
         </OutroFade>
       </Sequence>
