@@ -12,6 +12,7 @@ export const wsp = {
   font: "Montserrat",
   logoBlue: "wispot/logo-blue.png",
   logoWhite: "wispot/logo-white.png",
+  wifiSymbol: "wispot/wifi-symbol.png",
   site: "wispot.com.br",
 };
 

@@ -3,6 +3,7 @@ import {
   AbsoluteFill,
   Audio,
   Composition,
+  Easing,
   Img,
   Sequence,
   interpolate,
@@ -27,7 +28,7 @@ import {
 } from "./edit";
 import { QuestionCard } from "./QuestionCard";
 import { TalkScene } from "./TalkScene";
-import { WifiArcs, wsp } from "./theme";
+import { wsp } from "./theme";
 
 const { width, height } = { width: 1080, height: 1920 };
 
@@ -36,12 +37,11 @@ const EndCard: React.FC = () => {
   const { fps } = useVideoConfig();
   const logo = spring({ frame: frame - 4, fps, config: { damping: 11 } });
   const site = spring({ frame: frame - 18, fps, config: { damping: 14 } });
-  const arcs = [0, 1, 2].map((i) =>
-    interpolate(frame, [2 + i * 5, 14 + i * 5], [0, 1], {
-      extrapolateLeft: "clamp",
-      extrapolateRight: "clamp",
-    }),
-  ) as [number, number, number];
+  const reveal = interpolate(frame, [2, 24], [0, 1], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+    easing: Easing.out(Easing.cubic),
+  });
   return (
     <AbsoluteFill
       style={{
@@ -52,9 +52,18 @@ const EndCard: React.FC = () => {
         fontFamily: wsp.font,
       }}
     >
-      <div style={{ position: "absolute", top: 330, opacity: 0.14 }}>
-        <WifiArcs size={900} color={wsp.blue} progress={arcs} strokeWidth={1.6} />
-      </div>
+      {/* The Wi-Fi mark from the Wispot logo, revealed outward from its dot */}
+      <Img
+        src={staticFile(wsp.wifiSymbol)}
+        style={{
+          position: "absolute",
+          top: 470,
+          width: 1640,
+          opacity: 0.13,
+          clipPath: `circle(${reveal * 110}% at 50% 86%)`,
+          transform: `scale(${1 + frame * 0.0012})`,
+        }}
+      />
       <Img
         src={staticFile(wsp.logoBlue)}
         style={{
