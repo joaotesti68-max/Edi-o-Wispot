@@ -9,8 +9,6 @@ export type Clip = {
   out: number;
   // Punch-in for the jump cut; alternate takes sit tighter.
   zoom: number;
-  // "pip": João shrinks into a bubble while the news prints take the screen.
-  mode: "full" | "pip";
 };
 
 const clip = (
@@ -18,8 +16,7 @@ const clip = (
   inFrame: number,
   outFrame: number,
   zoom: number,
-  mode: Clip["mode"] = "full",
-): Clip => ({ id, in: inFrame, out: outFrame, zoom, mode });
+): Clip => ({ id, in: inFrame, out: outFrame, zoom });
 
 export const clips: Clip[] = [
   // A prefeitura de São Paulo admitiu um vazamento no Smart Sampa.
@@ -27,13 +24,14 @@ export const clips: Clip[] = [
   // E o problema não foi um hacker.
   clip("img9450", 3, 66, 1.14),
   // O Smart Sampa é um sistema de monitoramento e reconhecimento facial...
-  clip("img9452", 4, 186, 1.02),
+  // (covered by the city map)
+  clip("img9452", 4, 186, 1),
   // ...com mais de 50 mil câmeras.
-  clip("img9453", 2, 66, 1, "pip"),
+  clip("img9453", 2, 66, 1),
   // Um servidor publicou dados do sistema na internet de forma ilegal.
-  clip("img9457", 2, 127, 1, "pip"),
+  clip("img9457", 2, 127, 1.12),
   // A prefeitura diz que não houve falha na plataforma.
-  clip("img9459", 15, 104, 1, "pip"),
+  clip("img9459", 15, 104, 1),
   // E é exatamente isso que deveria preocupar a sua empresa.
   clip("img9461", 12, 102, 1.12),
   // Quando o vazamento vem de dentro, firewall nenhum resolve.

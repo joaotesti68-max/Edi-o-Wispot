@@ -21,17 +21,8 @@ import {
   talkFrames,
   totalDurationInFrames,
 } from "./edit";
-import {
-  CamLabel,
-  Chip,
-  FaceScan,
-  Flash,
-  GlitchBars,
-  Hook,
-  NotAHacker,
-  TopBar,
-  glitchShake,
-} from "./Opening";
+import { MonitorMap } from "./MonitorMap";
+import { Chip, Flash, GlitchBars, Hook, NotAHacker, glitchShake } from "./Opening";
 import {
   AccessLog,
   CompanyAlert,
@@ -40,7 +31,7 @@ import {
   NotJustOutside,
   Prepared,
 } from "./Panels";
-import { CountUp, PrintCard, SideNote, Stamp, noteBig, noteSmall } from "./Prints";
+import { Popup, Stamp, TopNote, noteBig, noteSmall } from "./Prints";
 import { TalkClip } from "./TalkClip";
 import { Sfx, pa } from "./theme";
 
@@ -49,12 +40,13 @@ const glitches = [
   at("img9448", 2.22),
   startOf("img9450"),
   at("img9450", 1.0),
+  startOf("img9452"),
   startOf("img9467"),
   at("img9467", 1.8),
 ];
 // White flash on the plain cuts.
 const flashes = [
-  startOf("img9452"),
+  startOf("img9453"),
   startOf("img9461"),
   startOf("img9468"),
   startOf("img9469"),
@@ -77,11 +69,7 @@ const Talk: React.FC = () => {
     <AbsoluteFill style={{ transform: `translate(${shake.x}px, ${shake.y}px)` }}>
       {clips.map((c, i) => (
         <Sequence key={c.id} from={clipStarts[i]} durationInFrames={c.out - c.in}>
-          <TalkClip clip={c} shrink={c.mode === "pip" && clips[i - 1]?.mode !== "pip"}>
-            {c.id === "img9452" ? (
-              <FaceScan match={Math.round(1.5 * FPS)} />
-            ) : null}
-          </TalkClip>
+          <TalkClip clip={c} />
         </Sequence>
       ))}
     </AbsoluteFill>
@@ -119,42 +107,47 @@ export const SmartSampaVideo: React.FC = () => {
       <Sfx name="pop" at={at("img9450", 0.3)} />
       <Sfx name="impact" at={at("img9450", 1.0)} volume={0.45} />
 
-      {/* 3 · reconhecimento facial */}
-      <CamLabel start={startOf("img9452")} end={endOf("img9452")} />
-      <Sfx name="beep" at={at("img9452", 0.2)} volume={0.25} />
-      <Sfx name="beep" at={at("img9452", 1.5)} volume={0.35} />
+      {/* 3 · mapa do monitoramento (cobre o João) */}
+      <MonitorMap
+        start={startOf("img9452")}
+        end={endOf("img9452")}
+        title={at("img9452", 0.4)}
+        monitoring={at("img9452", 2.38)}
+        faces={at("img9452", 3.56)}
+        city={at("img9452", 5.14)}
+      />
+      <Sfx name="whoosh" at={startOf("img9452")} volume={0.3} />
+      <Sfx name="beep" at={at("img9452", 0.5)} volume={0.2} />
       <Chip
         start={at("img9452", 2.3)}
         end={at("img9452", 3.5)}
         icon="camera"
         label="Monitoramento"
-        top={1500}
+        top={1765}
       />
       <Chip
         start={at("img9452", 3.5)}
-        end={at("img9452", 5.0)}
+        end={at("img9452", 5.1)}
         icon="face"
         label="Reconhecimento facial"
-        top={1500}
+        top={1765}
       />
-      <Chip
-        start={at("img9452", 5.0)}
-        end={endOf("img9452")}
-        icon="pin"
-        label="São Paulo"
-        top={1500}
-      />
-      {[2.3, 3.5, 5.0].map((t) => (
+      {[2.3, 3.5].map((t) => (
         <Sfx key={t} name="pop" at={at("img9452", t)} />
       ))}
+      {[0, 6, 12].map((d) => (
+        <Sfx key={d} name="beep" at={at("img9452", 3.56) + d} volume={0.3} />
+      ))}
+      <Sfx name="impact" at={at("img9452", 5.14)} volume={0.4} />
 
-      {/* 4–6 · as matérias */}
-      <PrintCard
+      {/* 4–6 · as matérias, em pop-ups sobre o João */}
+      <Popup
         src="smart/jovempan.jpg"
-        source="JOVEM PAN"
-        width={940}
-        viewport={1090}
-        dark={false}
+        url="jovempan.com.br"
+        crop={[380, 640]}
+        width={920}
+        top={1180}
+        rotate={-2}
         highlights={[
           {
             start: at("img9453", 0.9),
@@ -164,30 +157,40 @@ export const SmartSampaVideo: React.FC = () => {
             ],
           },
         ]}
-        focusY={600}
-        enter={s4 + 2}
-        exit={s5 + 8}
-        exitTo="left"
-        enterFrom="bottom"
+        enter={s4 + 1}
+        exit={s5 + 2}
       />
-      <SideNote start={at("img9453", 0.9)} end={s5} icon="camera">
-        <div style={{ ...noteBig, fontSize: 92 }}>
-          +<CountUp start={at("img9453", 0.95)} to={50000} />
-        </div>
-        <div style={noteSmall}>câmeras na cidade</div>
-      </SideNote>
-      <Sfx name="whoosh" at={s4} volume={0.3} />
-      <Sfx name="beep" at={at("img9453", 1.5)} volume={0.2} />
+      <TopNote start={at("img9453", 0.9)} end={s5} icon="camera">
+        <div style={noteBig}>+50 mil câmeras</div>
+        <div style={noteSmall}>espalhadas pela cidade</div>
+      </TopNote>
+      <Sfx name="pop" at={s4 + 1} volume={0.4} />
+      <Sfx name="pop" at={at("img9453", 0.9)} />
 
-      <PrintCard
+      <Popup
         src="smart/g1.jpg"
-        source="g1"
-        width={860}
-        viewport={1100}
+        url="g1.globo.com"
+        crop={[0, 840]}
+        width={820}
+        top={1130}
+        x={-50}
+        rotate={-3}
+        dark
+        enter={s5}
+        exit={e6}
+      />
+      <Popup
+        src="smart/g1.jpg"
+        url="g1.globo.com"
+        crop={[930, 570]}
+        width={900}
+        top={1310}
+        x={40}
+        rotate={2}
         dark
         highlights={[
           {
-            start: at("img9457", 0.35),
+            start: at("img9457", 1.75),
             lines: [
               [350, 1340, 730, 72],
               [80, 1420, 230, 72],
@@ -201,26 +204,23 @@ export const SmartSampaVideo: React.FC = () => {
             ],
           },
         ]}
-        focusY={1360}
-        enter={s5}
+        enter={at("img9457", 1.5)}
         exit={e6}
-        exitTo="fade"
-        enterFrom="right"
       />
-      <Sfx name="whoosh" at={s5} volume={0.3} />
-      <SideNote start={at("img9457", 0.5)} end={s6} icon="user" tone="red">
+      <Sfx name="pop" at={s5} volume={0.4} />
+      <Sfx name="pop" at={at("img9457", 1.5)} volume={0.4} />
+      <TopNote start={at("img9457", 0.5)} end={s6} icon="user" tone="red">
         <div style={noteBig}>Um servidor</div>
         <div style={noteSmall}>publicou os dados na internet</div>
-      </SideNote>
-      <Sfx name="pop" at={at("img9457", 0.5)} />
-      <Stamp start={at("img9457", 3.65)} end={s6 + 20} label="ILEGAL" />
+      </TopNote>
+      <Stamp start={at("img9457", 3.65)} end={s6 + 20} label="ILEGAL" top={1380} />
       <Sfx name="impact" at={at("img9457", 3.65)} volume={0.5} />
-      <SideNote start={at("img9459", 1.2)} end={e6} icon="building">
-        <div style={{ ...noteBig, fontSize: 50, textTransform: "none" }}>
+      <TopNote start={at("img9459", 1.2)} end={e6} icon="building">
+        <div style={{ ...noteBig, fontSize: 52, textTransform: "none" }}>
           “Não houve falha na plataforma”
         </div>
         <div style={noteSmall}>— Prefeitura de SP</div>
-      </SideNote>
+      </TopNote>
       <Sfx name="pop" at={at("img9459", 1.2)} />
 
       {/* 7 · sua empresa */}
@@ -281,7 +281,6 @@ export const SmartSampaVideo: React.FC = () => {
       <Sfx name="riser" at={endOf("img9471") - 28} volume={0.3} />
       <Sfx name="pop" at={at("img9471", 0.75)} volume={0.4} />
 
-      <TopBar end={talkFrames} />
       <GlitchBars hits={glitches} />
       <Flash at={flashes} />
 
