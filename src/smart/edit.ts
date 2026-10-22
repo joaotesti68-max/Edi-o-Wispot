@@ -39,15 +39,9 @@ export const clips: Clip[] = [
   },
   // Segurança não é só proteger quem está de fora.
   { id: "img9468", parts: [[0.38, 3.4]], zoom: 1.12 },
-  // É saber quem lá dentro está acessando o quê.
-  {
-    id: "img9469",
-    parts: [
-      [0.0, 0.34],
-      [0.74, 3.84],
-    ],
-    zoom: 1,
-  },
+  // É saber quem lá dentro está acessando o quê. (The quiet voice before
+  // 0.7 s is off-camera, not João.)
+  { id: "img9469", parts: [[0.72, 3.84]], zoom: 1 },
   // Quer saber se a sua empresa está preparada?
   { id: "img9470", parts: [[0.02, 2.1]], zoom: 1.12 },
   // Fale com a Pro Advanced.

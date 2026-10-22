@@ -46,7 +46,7 @@ export const captions: Record<string, CaptionWord[][]> = {
     [["resolve", 2.42]],
   ],
   img9469: [
-    [["É", 0.06], ["saber", 0.79]],
+    [["É", 0.76], ["saber", 0.9]],
     [["quem", 1.44], ["lá", 1.72], ["dentro", 1.98]],
     [["está", 2.54], ["acessando", 2.92]],
     [["o", 3.48], ["quê?", 3.58]],
