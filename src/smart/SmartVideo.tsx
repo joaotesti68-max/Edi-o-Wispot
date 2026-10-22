@@ -23,7 +23,6 @@ import {
   talkFrames,
   totalDurationInFrames,
 } from "./edit";
-import { Captions } from "./Captions";
 import { MonitorMap } from "./MonitorMap";
 import { Chip, Flash, GlitchBars, Hook, NotAHacker, glitchShake } from "./Opening";
 import {
@@ -53,7 +52,6 @@ const flashes = [
   startOf("img9461"),
   startOf("img9468"),
   startOf("img9469"),
-  startOf("img9470"),
 ];
 
 // Music sits under the voice and lifts on the end card.
@@ -276,15 +274,13 @@ export const SmartSampaVideo: React.FC = () => {
 
       {/* 11 · preparada? */}
       <Prepared start={at("img9470", 0.7)} prepared={at("img9470", 1.4)} end={endOf("img9470")} />
-      <Sfx name="pop" at={at("img9470", 0.7)} />
-      <Sfx name="impact" at={at("img9470", 1.4)} volume={0.35} />
+      <Sfx name="pop" at={at("img9470", 0.7)} volume={0.18} />
 
       {/* 12 · fale com a Pro Advanced */}
       <LogoPill start={at("img9471", 0.75)} end={endOf("img9471") + 2} />
-      <Sfx name="riser" at={endOf("img9471") - 28} volume={0.3} />
+      <Sfx name="riser" at={endOf("img9471") - 28} volume={0.12} />
       <Sfx name="pop" at={at("img9471", 0.75)} volume={0.4} />
 
-      <Captions />
       <GlitchBars hits={glitches} />
       <Flash at={flashes} />
 
@@ -296,7 +292,7 @@ export const SmartSampaVideo: React.FC = () => {
           cta="Sua empresa está preparada?"
         />
       </Sequence>
-      <Sfx name="impact" at={talkFrames} volume={0.4} />
+      <Sfx name="whoosh" at={talkFrames - 4} volume={0.18} />
     </AbsoluteFill>
   );
 };
