@@ -14,6 +14,8 @@ import {
   END_FRAMES,
   FPS,
   at,
+  clipDurations,
+  clipParts,
   clipStarts,
   clips,
   endOf,
@@ -21,6 +23,7 @@ import {
   talkFrames,
   totalDurationInFrames,
 } from "./edit";
+import { Captions } from "./Captions";
 import { MonitorMap } from "./MonitorMap";
 import { Chip, Flash, GlitchBars, Hook, NotAHacker, glitchShake } from "./Opening";
 import {
@@ -68,8 +71,8 @@ const Talk: React.FC = () => {
   return (
     <AbsoluteFill style={{ transform: `translate(${shake.x}px, ${shake.y}px)` }}>
       {clips.map((c, i) => (
-        <Sequence key={c.id} from={clipStarts[i]} durationInFrames={c.out - c.in}>
-          <TalkClip clip={c} />
+        <Sequence key={c.id} from={clipStarts[i]} durationInFrames={clipDurations[i]}>
+          <TalkClip clip={c} parts={clipParts[i]} />
         </Sequence>
       ))}
     </AbsoluteFill>
@@ -146,7 +149,7 @@ export const SmartSampaVideo: React.FC = () => {
         url="jovempan.com.br"
         crop={[380, 640]}
         width={920}
-        top={1180}
+        top={1215}
         rotate={-2}
         highlights={[
           {
@@ -171,8 +174,8 @@ export const SmartSampaVideo: React.FC = () => {
         src="smart/g1.jpg"
         url="g1.globo.com"
         crop={[0, 840]}
-        width={820}
-        top={1130}
+        width={780}
+        top={1205}
         x={-50}
         rotate={-3}
         dark
@@ -183,8 +186,8 @@ export const SmartSampaVideo: React.FC = () => {
         src="smart/g1.jpg"
         url="g1.globo.com"
         crop={[930, 570]}
-        width={900}
-        top={1310}
+        width={880}
+        top={1350}
         x={40}
         rotate={2}
         dark
@@ -213,7 +216,7 @@ export const SmartSampaVideo: React.FC = () => {
         <div style={noteBig}>Um servidor</div>
         <div style={noteSmall}>publicou os dados na internet</div>
       </TopNote>
-      <Stamp start={at("img9457", 3.65)} end={s6 + 20} label="ILEGAL" top={1380} />
+      <Stamp start={at("img9457", 3.65)} end={s6 + 20} label="ILEGAL" top={1420} />
       <Sfx name="impact" at={at("img9457", 3.65)} volume={0.5} />
       <TopNote start={at("img9459", 1.2)} end={e6} icon="building">
         <div style={{ ...noteBig, fontSize: 52, textTransform: "none" }}>
@@ -281,6 +284,7 @@ export const SmartSampaVideo: React.FC = () => {
       <Sfx name="riser" at={endOf("img9471") - 28} volume={0.3} />
       <Sfx name="pop" at={at("img9471", 0.75)} volume={0.4} />
 
+      <Captions />
       <GlitchBars hits={glitches} />
       <Flash at={flashes} />
 

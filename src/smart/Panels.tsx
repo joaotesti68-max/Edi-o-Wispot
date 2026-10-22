@@ -162,7 +162,7 @@ export const FirewallPanel: React.FC<{
     <div
       style={{
         position: "absolute",
-        top: 1200,
+        top: 1230,
         left: (1080 - W) / 2,
         width: W,
         height: H,
@@ -260,7 +260,7 @@ export const FirewallPanel: React.FC<{
           <span
             style={{
               display: "inline-block",
-              transform: `scale(${interpolate(verdictIn, [0, 1], [1.8, 1])})`,
+              transform: `scale(${interpolate(verdictIn, [0, 1], [1.3, 1])})`,
             }}
           >
             FIREWALL NENHUM RESOLVE
@@ -351,7 +351,7 @@ export const AccessLog: React.FC<{ start: number; rows: Row[]; end: number }> = 
     <div
       style={{
         position: "absolute",
-        top: 1150,
+        top: 1215,
         left: 50,
         right: 50,
         padding: "30px 34px 34px",
