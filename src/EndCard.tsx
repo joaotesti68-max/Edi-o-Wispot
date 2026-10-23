@@ -1,7 +1,25 @@
-import { AbsoluteFill, Img, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
+import {
+  AbsoluteFill,
+  Img,
+  interpolate,
+  spring,
+  staticFile,
+  useCurrentFrame,
+  useVideoConfig,
+} from "remotion";
 import { brand } from "./brand";
 
-export const EndCard: React.FC = () => {
+export const EndCard: React.FC<{
+  background?: string;
+  siteColor?: string;
+  siteBackground?: string;
+  cta?: string;
+}> = ({
+  background = brand.gradient,
+  siteColor = brand.colors.ink,
+  siteBackground = brand.colors.white,
+  cta = "Fale com a gente agora",
+}) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
@@ -18,14 +36,23 @@ export const EndCard: React.FC = () => {
   const siteScale = interpolate(siteIn, [0, 1], [0.94, 1]);
 
   return (
-    <AbsoluteFill style={{ background: brand.gradient, alignItems: "center", justifyContent: "center" }}>
+    <AbsoluteFill
+      style={{ background, alignItems: "center", justifyContent: "center" }}
+    >
       <AbsoluteFill
         style={{
           backgroundImage:
             "radial-gradient(circle at 50% 38%, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0) 55%)",
         }}
       />
-      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 44 }}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: 44,
+        }}
+      >
         <Img
           src={staticFile(brand.logo.white)}
           style={{
@@ -46,7 +73,7 @@ export const EndCard: React.FC = () => {
             transform: `translateY(${ctaShift}px)`,
           }}
         >
-          Fale com a gente agora
+          {cta}
         </div>
 
         <div
@@ -56,8 +83,8 @@ export const EndCard: React.FC = () => {
             fontFamily: brand.fontFamily,
             fontWeight: 700,
             fontSize: 32,
-            color: brand.colors.ink,
-            background: brand.colors.white,
+            color: siteColor,
+            background: siteBackground,
             borderRadius: 999,
             padding: "16px 40px",
           }}

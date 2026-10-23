@@ -7,6 +7,8 @@ export const brand = {
     ink: "#111417",
   },
   gradient: "linear-gradient(135deg, #1c3f57 0%, #3696cd 55%, #20a3d6 100%)",
+  // Brand manual gradient: only #3696CD → #20A3D6.
+  manualGradient: "linear-gradient(135deg, #3696cd 0%, #20a3d6 100%)",
   fontFamily: "Montserrat",
   logo: {
     white: "brand/logo-white.png",
