@@ -48,8 +48,8 @@ html,body{overflow-x:clip}
 .wbf .giant{position:relative;font-weight:900;font-size:clamp(64px,10.6vw,168px);line-height:.84;letter-spacing:-.055em;text-transform:uppercase;margin:18px 0 28px;display:grid}
 .wbf .giant .ln{display:block;overflow:hidden;padding:.04em 0 .02em}
 .wbf .giant .w{display:inline-block}
-.wbf .giant .out{color:transparent;-webkit-text-stroke:2px #fff}
-.wbf .giant .ln.out{padding-top:.4em;margin-top:-.36em}
+.wbf .giant .out{color:transparent;-webkit-text-stroke:2px #fff;letter-spacing:.005em}
+.wbf .giant .ln:first-child{letter-spacing:-.035em}
 .wbf .sig-i{position:relative;display:inline-block}
 .wbf .sig{position:absolute;left:50%;bottom:84%;width:.62em;transform:translateX(-50%);overflow:visible}
 .wbf .sig path{fill:none;stroke:var(--blue);stroke-width:13;stroke-linecap:round;animation:wbf-sig 1.8s ease-in-out infinite}
@@ -224,9 +224,9 @@ html,body{overflow-x:clip}
 @media (max-width:560px){
   .wbf .bar .wrap{height:68px}
   .wbf .bar img{height:32px}
-  .wbf .giant{font-size:clamp(56px,19vw,100px)}
+  .wbf .giant{font-size:clamp(50px,16.5vw,96px)}
   .wbf .giant .out{-webkit-text-stroke:1.5px #fff}
-  .wbf .sticker{width:92px;top:auto;bottom:-4%;right:0}
+  .wbf .sticker{width:88px;top:-6%;bottom:auto;right:0}
   .wbf .sticker text{font-size:19px}
   .wbf .sticker small{display:none}
   .wbf .sticker b{margin-top:0;font-size:34px}
