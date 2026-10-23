@@ -6,7 +6,7 @@ OFERTA={
   'OFERTA_CURTA':'18 meses de contrato + 3 grátis',
   'OFERTA_ATE':'30/11',
   'OFERTA_FIM':'2026-11-30T23:59:59-03:00',   # fim do contador (horário de Brasília)
-  'STICKER':'21 meses pagando 18 · Black Friday · ',  # texto que gira no selo
+  'STICKER':'Meses grátis · 21 pagando 18 · ',  # texto que gira no selo
   'STICKER_MEIO':'+3',
   'STICKER_BAIXO':'meses grátis',
   'RASPADINHA':'3 meses grátis',
