@@ -38,5 +38,9 @@ O envio só acontece com a página publicada em `wispot.com.br` ou num domínio 
 
 **Antes de divulgar:** publique, faça uma conversão de teste com um e-mail seu e confira no RD se o lead chegou com a conversão `black-friday-wispot-2026`.
 
+## Identidade visual
+Segue o Manual de Identidade Wispot 2026: azul #25A8E0, degradê #25A8E0 → #0B91C1, branco e cinza #514D4B; a seção da oferta usa o cinza da marca como o "black" da Black Friday.
+Os títulos usam a Adineue Pro quando ela está instalada no computador de quem visita; como ela não tem versão gratuita para web, a página usa a Outfit (Google Fonts), que tem o mesmo desenho geométrico. Se a Wispot tiver a licença web da Adineue, dá para trocar.
+
 ## Imagens
-O logo, o ícone e os logos de clientes vão embutidos no código, então não precisa subir nada. Por isso o arquivo único tem uns 340 KB; se o RD reclamar do tamanho, use a opção B.
+O logo, o ícone de Wi-Fi (tirado do manual) e os logos de clientes vão embutidos no código, então não precisa subir nada. Por isso o arquivo único tem uns 450 KB; se o RD reclamar do tamanho, use a opção B.

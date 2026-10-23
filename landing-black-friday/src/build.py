@@ -22,15 +22,17 @@ CL=d+'/../../landing-monetize/src/clients/'
 ORDER=['carrefour','heineken','applebees','japan-house','johnny-rockets','bendito-cacao','ofner']
 logos=''.join(f'<div class="logo-card"><img src="{uri(CL+n+".png")}" alt="{n.replace("-"," ").title()}"></div>' for n in ORDER if os.path.exists(CL+n+'.png'))
 for k,v in OFERTA.items():body=body.replace('{{'+k+'}}',v)
-body=body.replace('{{LOGO}}',uri(d+'/assets/logo-white.png')).replace('{{LOGOS}}',logos)
-js=js.replace('{{ICON_DATA}}',uri(d+'/assets/icon-white.png'))
-assert '{{' not in body and '{{' not in js, 'token left'
+A=d+'/assets/'
+body=body.replace('{{LOGO_WHITE}}',uri(A+'logo-white.png')).replace('{{LOGO_COLOR}}',uri(A+'logo-color.png')).replace('{{WIFI_BLUE}}',uri(A+'wifi-blue.png')).replace('{{LOGOS}}',logos)
+css=css.replace('{{WIFI_BLUE}}',uri(A+'wifi-blue.png'))
+js=js.replace('{{WIFI_DATA}}',uri(A+'wifi-white.png')).replace('{{LOGO_DATA}}',uri(A+'logo-white.png'))
+assert '{{' not in body and '{{' not in js and '{{' not in css, 'token left'
 libs='''<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>'''
 out=d+'/..'
-open(out+'/preview.html','w').write(f'<!doctype html>\n<html lang="pt-BR">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n<title>Black Friday Wispot</title>\n<style>\n{css}\nbody{{margin:0;background:#031420}}\n</style>\n</head>\n<body>\n{body}\n{libs}\n<script>\n{js}</script>\n</body>\n</html>\n')
+open(out+'/preview.html','w').write(f'<!doctype html>\n<html lang="pt-BR">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n<title>Black Friday Wispot</title>\n<style>\n{css}\nbody{{margin:0;background:#fff}}\n</style>\n</head>\n<body>\n{body}\n{libs}\n<script>\n{js}</script>\n</body>\n</html>\n')
 rd=out+'/rd-station'
 open(rd+'/1-bloco-html.html','w').write(body)
 open(rd+'/2-css.css','w').write(css)

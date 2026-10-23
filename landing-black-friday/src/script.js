@@ -13,7 +13,7 @@
     thanks:'https://material.wispot.com.br/obrigado?event=leadBlackFriday',
     liveHosts:['wispot.com.br','rdstation.com','lp.rdstation.com.br'] // só envia leads quando a página está publicada
   };
-  const ICON='{{ICON_DATA}}';
+  const WIFI='{{WIFI_DATA}}',LOGO='{{LOGO_DATA}}';
 
   const page=document.getElementById('wbf');if(!page)return;
   const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -83,91 +83,107 @@
     for(let r=1;r<per*2;r++)base.forEach(c=>{const k=c.cloneNode(true);k.querySelector('img').alt='';k.setAttribute('aria-hidden','true');t.appendChild(k)});
   })();
 
-  /* ---------- particle field: one cloud that reshapes for each section ---------- */
+  /* ---------- particle field: one cloud that reshapes for each section ----------
+     Dots are white over blue pages and blue over white/gray pages; the color is picked per pixel,
+     so a dot crossing a page edge changes color right at the edge. */
   const gl=(function(){
     const canvas=page.querySelector('.wbf-gl');
     if(!canvas||!window.THREE)return null;
     let renderer;
     try{renderer=new THREE.WebGLRenderer({canvas,antialias:false,alpha:true,powerPreference:'high-performance'})}catch(e){return null}
+    renderer.setClearColor(0x000000,0);
     const mobile=()=>innerWidth<900;
     const N=mobile()?4200:9000;
     const scene=new THREE.Scene();
     const cam=new THREE.PerspectiveCamera(40,1,.1,100);cam.position.set(0,0,10);
-    let W=1,H=1,halfH=Math.tan(THREE.MathUtils.degToRad(20))*10,halfW=halfH;
+    let W=1,H=1,PR=1,halfH=Math.tan(THREE.MathUtils.degToRad(20))*10,halfW=halfH;
 
     const pos=new Float32Array(N*3),seed=new Float32Array(N),alpha=new Float32Array(N),k=new Float32Array(N);
     for(let i=0;i<N;i++){seed[i]=Math.random();k[i]=.025+Math.random()*.05;alpha[i]=0;
-      pos[i*3]=(Math.random()*2-1)*8;pos[i*3+1]=(Math.random()*2-1)*5;pos[i*3+2]=(Math.random()*2-1)*3}
+      pos[i*3]=(Math.random()*2-1)*8;pos[i*3+1]=-6-Math.random()*4;pos[i*3+2]=(Math.random()*2-1)*2}
     const geo=new THREE.BufferGeometry();
     geo.setAttribute('position',new THREE.BufferAttribute(pos,3));
     geo.setAttribute('aSeed',new THREE.BufferAttribute(seed,1));
     geo.setAttribute('aAlpha',new THREE.BufferAttribute(alpha,1));
-    const mat=new THREE.ShaderMaterial({transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,
-      uniforms:{uTime:{value:0},uPR:{value:1},uSize:{value:2.4},uOpacity:{value:1}},
-      vertexShader:`attribute float aSeed;attribute float aAlpha;uniform float uTime,uPR,uSize;varying float vA;varying float vS;
+    const V4=()=>new THREE.Vector4(1,1,1,0);
+    const mat=new THREE.ShaderMaterial({transparent:true,depthWrite:false,depthTest:false,
+      uniforms:{uTime:{value:0},uPR:{value:1},uSize:{value:2.4},uOpacity:{value:1},uE:{value:new THREE.Vector3(-1,-1,-1)},uC0:{value:V4()},uC1:{value:V4()},uC2:{value:V4()},uC3:{value:V4()}},
+      vertexShader:`attribute float aSeed;attribute float aAlpha;uniform float uTime,uPR,uSize;varying float vA;
         void main(){vec3 p=position;p.x+=sin(uTime*.7+aSeed*40.)*.03;p.y+=cos(uTime*.6+aSeed*31.)*.03;
           vec4 mv=modelViewMatrix*vec4(p,1.);gl_Position=projectionMatrix*mv;
-          gl_PointSize=uSize*uPR*(.55+aSeed*.9)*(10./-mv.z);
-          vA=aAlpha*(.7+.3*sin(uTime*2.2+aSeed*60.));vS=aSeed;}`,
-      fragmentShader:`uniform float uOpacity;varying float vA;varying float vS;
-        void main(){float d=length(gl_PointCoord-.5);if(d>.5)discard;float a=smoothstep(.5,0.,d);
-          vec3 c=mix(vec3(.145,.66,.88),vec3(.72,.93,1.),step(.8,vS));gl_FragColor=vec4(c,a*vA*uOpacity);}`});
+          gl_PointSize=uSize*uPR*(.6+aSeed*.85)*(10./-mv.z);
+          vA=aAlpha*(.75+.25*sin(uTime*2.2+aSeed*60.));}`,
+      fragmentShader:`uniform float uOpacity;uniform vec3 uE;uniform vec4 uC0,uC1,uC2,uC3;varying float vA;
+        void main(){float d=length(gl_PointCoord-.5);if(d>.5)discard;float a=smoothstep(.5,.15,d);
+          float y=gl_FragCoord.y;vec4 c=uC0;if(y<uE.x)c=uC1;if(y<uE.y)c=uC2;if(y<uE.z)c=uC3;
+          gl_FragColor=vec4(c.rgb,a*vA*uOpacity*c.a);}`});
     const pts=new THREE.Points(geo,mat);scene.add(pts);
 
+    /* page color under each band of the screen */
+    const DOT={'t-blue':[1,1,1,.92],'t-white':[.145,.659,.878,.85],'t-gray':[.32,.73,.9,.95]};
+    const pages=[...page.querySelectorAll(':scope>.ticker,:scope>section,:scope>footer')].map(el=>({el,c:DOT[['t-blue','t-white','t-gray'].find(t=>el.classList.contains(t))||'t-gray']}));
+    function bands(){
+      const vis=[];for(const p of pages){const r=p.el.getBoundingClientRect();if(r.bottom>0&&r.top<H)vis.push([r.bottom,p.c])}
+      const U=mat.uniforms,cs=[U.uC0,U.uC1,U.uC2,U.uC3],e=[-1,-1,-1];
+      for(let i=0;i<4;i++){const v=vis[Math.min(i,vis.length-1)];if(v)cs[i].value.set(...v[1])}
+      for(let i=0;i<3&&i<vis.length-1;i++)e[i]=(H-vis[i][0])*PR;
+      U.uE.value.set(e[0],e[1],e[2]);
+    }
+
     /* shapes: points sampled from a 2D drawing, alpha = keep probability */
-    function sample(draw,n){
-      const S=256,c=document.createElement('canvas');c.width=c.height=S;const x=c.getContext('2d');
-      x.clearRect(0,0,S,S);draw(x,S);
+    function sample(draw,n,S){
+      S=S||256;const c=document.createElement('canvas');c.width=c.height=S;const x=c.getContext('2d');
+      draw(x,S);
       const d=x.getImageData(0,0,S,S).data,cand=[];
       for(let y=0;y<S;y++)for(let xx=0;xx<S;xx++){const a=d[(y*S+xx)*4+3];if(a>8)cand.push(xx,y,a)}
       const out=new Float32Array(n*3);if(!cand.length)return out;
       let i=0,guard=0;const m=cand.length/3;
       while(i<n&&guard<n*60){guard++;const j=(Math.random()*m|0)*3;if(Math.random()*255>cand[j+2])continue;
-        out[i*3]=((cand[j]+Math.random())/S)*2-1;out[i*3+1]=1-((cand[j+1]+Math.random())/S)*2;out[i*3+2]=(Math.random()*2-1)*.12;i++}
+        out[i*3]=((cand[j]+Math.random())/S)*2-1;out[i*3+1]=1-((cand[j+1]+Math.random())/S)*2;out[i*3+2]=(Math.random()*2-1)*.1;i++}
       for(;i<n;i++){const j=(Math.random()*m|0)*3;out[i*3]=cand[j]/S*2-1;out[i*3+1]=1-cand[j+1]/S*2;out[i*3+2]=0}
       return out;
     }
+    const fit=(x,S,im,w)=>{const h=w*im.height/im.width;x.drawImage(im,(S-w)/2,(S-h)/2,w,h)};
     const SH={};
     SH.bag=sample((x,S)=>{const s=S/256;x.lineJoin='round';x.lineCap='round';
-      x.fillStyle='rgba(255,255,255,.22)';x.strokeStyle='#fff';x.lineWidth=9*s;
-      x.beginPath();x.moveTo(58*s,86*s);x.lineTo(198*s,86*s);x.lineTo(212*s,226*s);x.lineTo(44*s,226*s);x.closePath();x.fill();x.stroke();
-      x.beginPath();x.arc(128*s,88*s,40*s,Math.PI,0);x.stroke();
-      x.fillStyle='#fff';x.font=`900 ${96*s}px Montserrat,Arial,sans-serif`;x.textAlign='center';x.textBaseline='middle';x.fillText('%',128*s,160*s)},N);
-    SH.wifi=sample((x,S)=>{const s=S/256;x.strokeStyle='#fff';x.lineCap='round';x.lineWidth=17*s;
-      [[100,.92],[68,.92],[36,.9]].forEach(([r,o])=>{x.globalAlpha=o;x.beginPath();x.arc(128*s,190*s,r*s,Math.PI*1.22,Math.PI*1.78);x.stroke()});
-      x.globalAlpha=1;x.fillStyle='#fff';x.beginPath();x.arc(128*s,192*s,13*s,0,7);x.fill();
-      },N);
-    SH.pct=sample((x,S)=>{const s=S/256;x.fillStyle='#fff';x.font=`900 ${228*s}px Montserrat,Arial,sans-serif`;x.textAlign='center';x.textBaseline='middle';x.fillText('%',128*s,138*s);
-      x.globalAlpha=.12;x.beginPath();x.arc(128*s,128*s,124*s,0,7);x.fill()},N);
-    SH.field=(()=>{const o=new Float32Array(N*3);for(let i=0;i<N;i++){o[i*3]=(Math.random()*2-1)*1.6;o[i*3+1]=(Math.random()*2-1)*1.1;o[i*3+2]=(Math.random()*2-1)*2.2}return o})();
-    SH.icon=sample((x,S)=>{x.strokeStyle='#fff';x.lineWidth=5;x.beginPath();x.arc(S/2,S/2,S*.42,0,7);x.stroke();x.beginPath();x.arc(S/2,S/2,S*.2,0,7);x.stroke()},N);
-    if(ICON&&ICON.indexOf('data:')===0){const im=new Image();im.onload=()=>{SH.icon=sample((x,S)=>{x.drawImage(im,8,8,S-16,S-16)},N);if(cur==='icon')place()};im.src=ICON}
+      x.fillStyle='rgba(255,255,255,.2)';x.strokeStyle='#fff';x.lineWidth=10*s;
+      x.beginPath();x.moveTo(58*s,92*s);x.lineTo(198*s,92*s);x.lineTo(210*s,228*s);x.lineTo(46*s,228*s);x.closePath();x.fill();x.stroke();
+      x.lineWidth=12*s;x.beginPath();x.arc(128*s,94*s,38*s,Math.PI,0);x.stroke();
+      x.fillStyle='#fff';x.font=`600 ${92*s}px Outfit,Montserrat,Arial,sans-serif`;x.textAlign='center';x.textBaseline='middle';x.fillText('%',128*s,164*s)},N);
+    SH.pct=sample((x,S)=>{const s=S/256;x.fillStyle='#fff';x.font=`600 ${230*s}px Outfit,Montserrat,Arial,sans-serif`;x.textAlign='center';x.textBaseline='middle';x.fillText('%',128*s,136*s)},N);
+    SH.field=(()=>{const o=new Float32Array(N*3);for(let i=0;i<N;i++){o[i*3]=(Math.random()*2-1);o[i*3+1]=(Math.random()*2-1);o[i*3+2]=(Math.random()*2-1)*2.2}return o})();
+    /* the Wispot Wi-Fi icon and the logo come from the brand files */
+    SH.wifi=sample((x,S)=>{const s=S/256;x.strokeStyle='#fff';x.lineCap='round';x.lineWidth=26*s;
+      [[96,1.25,1.75],[56,1.27,1.73]].forEach(([r,a,b])=>{x.beginPath();x.arc(128*s,176*s,r*s,Math.PI*a,Math.PI*b);x.stroke()});
+      x.fillStyle='#fff';x.beginPath();x.arc(128*s,196*s,17*s,0,7);x.fill()},N);
+    SH.icon=SH.wifi;
+    function load(src,cb){if(!src||src.indexOf('data:')!==0)return;const im=new Image();im.onload=()=>cb(im);im.src=src}
+    load(WIFI,im=>{SH.wifi=sample((x,S)=>fit(x,S,im,S*.96),N);if(cur==='wifi')place()});
+    load(LOGO,im=>{SH.icon=sample((x,S)=>fit(x,S,im,S*.98),N,320);if(cur==='icon')place()});
 
-    /* where each shape sits: opposite the text on desktop, centered and dim on phones */
+    /* where each shape sits: opposite the text on desktop, centered and lighter on phones */
     const LAYOUT={
-      crowd:{x:0,y:0,s:1,op:1},
       bag:{x:.5,y:0,s:.8,op:1},
-      wifi:{x:-.5,y:.05,s:.86,op:1},
+      wifi:{x:-.48,y:.02,s:.9,op:1},
       pct:{x:.52,y:0,s:.82,op:1},
-      field:{x:0,y:0,s:1,op:.55},
-      icon:{x:0,y:0,s:1.18,op:.62}
+      field:{x:0,y:0,s:1,op:.5},
+      icon:{x:0,y:.52,s:.8,op:1,my:.66}
     };
-    const tgt=new Float32Array(N*3);let cur='crowd',opT=1;
+    const tgt=new Float32Array(N*3);let cur='waves',opT=1;
     function place(){
-      if(cur==='crowd')return;
-      const L=LAYOUT[cur],src=SH[cur],m=mobile();
-      const sc=(m?Math.min(halfW*.95,halfH*.62):Math.min(halfH*.88,halfW*.5))*L.s;
-      const cx=m?0:L.x*halfW,cy=m?(cur==='icon'?0:halfH*.08):L.y*halfH;
-      const zs=cur==='field'?1:sc;
-      for(let i=0;i<N;i++){tgt[i*3]=cx+src[i*3]*(cur==='field'?halfW:sc);tgt[i*3+1]=cy+src[i*3+1]*(cur==='field'?halfH:sc);tgt[i*3+2]=src[i*3+2]*zs*(cur==='field'?1:.8)}
-      opT=(m?.55:1)*L.op;
+      if(cur==='waves')return;
+      const L=LAYOUT[cur],src=SH[cur],m=mobile(),F=cur==='field';
+      const sc=(m?Math.min(halfW*.95,halfH*.62):Math.min(halfH*.88,halfW*.5))*L.s*(cur==='icon'?(m?1:1.5):1);
+      const cx=m?0:L.x*halfW,cy=m?(L.my!==undefined?L.my*halfH:halfH*.08):L.y*halfH;
+      for(let i=0;i<N;i++){tgt[i*3]=cx+src[i*3]*(F?halfW*1.1:sc);tgt[i*3+1]=cy+src[i*3+1]*(F?halfH*1.1:sc);tgt[i*3+2]=src[i*3+2]*(F?1:sc*.8)}
+      opT=(m&&cur!=='icon'?.55:1)*L.op;
     }
-    function set(name){if(!SH[name]&&name!=='crowd')return;if(name===cur)return;cur=name;place();if(name==='crowd')opT=mobile()?.5:1}
+    function set(name){if(name===cur||(!SH[name]&&name!=='waves'))return;cur=name;place();if(name==='waves')opT=1}
 
     function size(){
-      W=innerWidth;H=innerHeight;const pr=Math.min(2,devicePixelRatio||1);
-      renderer.setPixelRatio(pr);renderer.setSize(W,H,false);cam.aspect=W/H;cam.updateProjectionMatrix();
-      halfW=halfH*cam.aspect;mat.uniforms.uPR.value=pr;mat.uniforms.uSize.value=mobile()?2:2.2;place();
+      W=innerWidth;H=innerHeight;PR=Math.min(2,devicePixelRatio||1);
+      renderer.setPixelRatio(PR);renderer.setSize(W,H,false);cam.aspect=W/H;cam.updateProjectionMatrix();
+      halfW=halfH*cam.aspect;mat.uniforms.uPR.value=PR;mat.uniforms.uSize.value=mobile()?2.3:2.5;place();
     }
     size();addEventListener('resize',size);
 
@@ -176,27 +192,28 @@
     document.addEventListener('visibilitychange',()=>{running=!document.hidden;if(running){last=performance.now();requestAnimationFrame(loop)}});
     function loop(now){
       if(!running)return;
-      const dt=Math.min(.05,(now-last)/1000);last=now;const t=(now-t0)/1000;
+      const dt=Math.min(.1,(now-last)/1000);last=now;const t=(now-t0)/1000;
       mat.uniforms.uTime.value=t;
-      mat.uniforms.uOpacity.value+=(opT-mat.uniforms.uOpacity.value)*.05;
-      const f=Math.min(1,dt*60);
-      if(cur==='crowd'){
-        /* the opening: Wi-Fi signal waves rising from the bottom of the page, every dot a visitor */
-        const m=mobile(),R=halfW*1.25+halfH,ox=m?0:-halfW*.05,oy=-halfH*1.08;
-        for(let i=0;i<N;i++){const s=seed[i],ring=(i%14)/14;
-          const r=((ring+t*.045+s*.012)%1)*R;const a=Math.PI*(.12+.76*((i*.618034)%1));
-          tgt[i*3]=ox+Math.cos(a)*r;tgt[i*3+1]=oy+Math.sin(a)*r*.82;tgt[i*3+2]=(s-.5)*1.4;
+      mat.uniforms.uOpacity.value+=(opT-mat.uniforms.uOpacity.value)*Math.min(1,dt*3);
+      if(cur==='waves'){
+        /* the opening: Wi-Fi waves rising from the bottom of the blue cover, every dot a visitor */
+        const m=mobile(),R=halfW*1.25+halfH,ox=m?0:-halfW*.1,oy=-halfH*1.1;
+        for(let i=0;i<N;i++){const s=seed[i],ring=(i%12)/12;
+          const r=((ring+t*.04+s*.01)%1)*R;const a=Math.PI*(.14+.72*((i*.618034)%1));
+          tgt[i*3]=ox+Math.cos(a)*r;tgt[i*3+1]=oy+Math.sin(a)*r*.8;tgt[i*3+2]=(s-.5)*1.2;
           const fade=Math.min(1,r/(R*.08))*(1-r/R);
-          alpha[i]+=((.3+1.1*fade)*(.55+s*.45)-alpha[i])*.1*f;
+          alpha[i]+=((.15+.85*fade)*(.45+s*.55)-alpha[i])*Math.min(1,dt*6);
         }
       }else{
-        for(let i=0;i<N;i++)alpha[i]+=((.55+seed[i]*.45)-alpha[i])*.05*f;
+        for(let i=0;i<N;i++)alpha[i]+=((.55+seed[i]*.45)-alpha[i])*Math.min(1,dt*3);
       }
-      const fr=dt*60*(cur==='crowd'?2.2:1);for(let i=0;i<N;i++){const kk=1-Math.pow(1-k[i],fr);for(let j=i*3;j<i*3+3;j++)pos[j]+=(tgt[j]-pos[j])*kk}
+      const fr=dt*60*(cur==='waves'?2.2:1);
+      for(let i=0;i<N;i++){const kk=1-Math.pow(1-k[i],fr);for(let j=i*3;j<i*3+3;j++)pos[j]+=(tgt[j]-pos[j])*kk}
       geo.attributes.position.needsUpdate=true;geo.attributes.aAlpha.needsUpdate=true;
-      const sway=cur==='crowd'?0:Math.sin(t*.35)*.12;
-      pts.rotation.y+=((reduce?0:sway+mx*.12)-pts.rotation.y)*.04;
-      pts.rotation.x+=((reduce?0:my*.06)-pts.rotation.x)*.04;
+      const sway=(cur==='waves'||cur==='icon')?0:Math.sin(t*.35)*.12;
+      pts.rotation.y+=((reduce?0:sway+mx*.1)-pts.rotation.y)*.04;
+      pts.rotation.x+=((reduce?0:my*.05)-pts.rotation.x)*.04;
+      bands();
       renderer.render(scene,cam);
       requestAnimationFrame(loop);
     }
@@ -230,12 +247,12 @@
   if(reduce)return;
 
   /* hero intro */
-  const intro=page.querySelectorAll('.hero .eyebrow,.hero h1,.hero .lede,.hero .deal,.hero .count');
+  const intro=page.querySelectorAll('.hero h1,.hero .lede,.hero .deal,.hero .count');
   gsap.from(intro,{y:30,opacity:0,duration:1,ease:'power3.out',stagger:.09,delay:.1,clearProps:'transform,opacity'});
   gsap.from('#wbf-lead',{y:40,opacity:0,duration:1.1,ease:'power3.out',delay:.3,clearProps:'transform,opacity'});
 
   /* reveals */
-  const rv=page.querySelectorAll('.split .eyebrow,.split h2,.split p,.steps li,.perks li,.split .btn,.clients .head>*,.final .eyebrow,.final h2,.final .count,.final .btn');
+  const rv=page.querySelectorAll('.split .rule,.split h2,.split p,.steps li,.perks li,.split .btn,.clients .head>*,.final h2,.final .count,.final .btn');
   rv.forEach(el=>el.classList.add('rv'));
   const show=b=>gsap.to(b,{opacity:1,y:0,duration:.9,ease:'power3.out',stagger:.08,overwrite:true});
   ScrollTrigger.batch(rv,{start:'top 88%',onEnter:show,onEnterBack:show,onLeave:show});
