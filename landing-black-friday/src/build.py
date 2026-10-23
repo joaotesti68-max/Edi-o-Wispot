@@ -1,19 +1,21 @@
 # Builds the Black Friday LP: preview.html (opens in a browser) and the RD Station kit.
 # ▼ A OFERTA FICA AQUI: troque os textos e a data de fim, depois rode: python3 build.py
 OFERTA={
-  'OFERTA_TITULO':'Implantação grátis + 50% OFF por 3 meses',
-  'OFERTA_CURTA':'50% OFF + implantação grátis',
+  'OFERTA_TITULO':'18 meses de contrato + 3 meses grátis',
+  'OFERTA_SUB':'Você garante 21 meses de solução pagando apenas 18.',
+  'OFERTA_CURTA':'18 meses de contrato + 3 grátis',
   'OFERTA_ATE':'30/11',
   'OFERTA_FIM':'2026-11-30T23:59:59-03:00',   # fim do contador (horário de Brasília)
-  'STICKER':'Só até 30/11 · Vagas limitadas · ',  # texto que gira no selo
-  'STICKER_MEIO':'-50%',
-  'RASPADINHA':'50% OFF',
-  'RASPADINHA_SUB':'+ implantação grátis',
-  'REGRA':'Condição válida para novos contratos fechados até 30/11/2026. Desconto de 50% sobre a mensalidade nos 3 primeiros meses. Consulte as regras com um especialista.',
+  'STICKER':'21 meses pagando 18 · Black Friday · ',  # texto que gira no selo
+  'STICKER_MEIO':'+3',
+  'STICKER_BAIXO':'meses grátis',
+  'RASPADINHA':'3 meses grátis',
+  'RASPADINHA_SUB':'no contrato de 18 meses',
+  'REGRA':'Condição válida para novos contratos de 18 meses fechados até 30/11/2026: você ganha 3 meses grátis e garante 21 meses de solução pagando apenas 18. Consulte as regras com um especialista.',
 }
-TAPE1=['Black Friday Wispot','50% OFF','Implantação grátis','Só até 30/11']   # faixa azul
+TAPE1=['Black Friday Wispot','18 meses + 3 grátis','21 meses pagando 18','Só até 30/11']   # faixa azul
 TAPE2=['Seu Wi-Fi vende','Cada visita vira contato','Black Friday Wispot']     # faixa branca
-RECIBO=[('Implantação','GRÁTIS'),('Mensalidade (3 meses)','-50%'),('Portal com a sua marca','INCLUSO'),('Base de contatos da Black Friday','SUA')]
+RECIBO=[('Contrato','18 MESES'),('Bônus Black Friday','+3 MESES'),('Meses de solução','21'),('Meses que você paga','18')]
 import os,base64,html
 d=os.path.dirname(os.path.abspath(__file__))
 css=open(d+'/style.css').read(); body=open(d+'/body.html').read(); js=open(d+'/script.js').read()

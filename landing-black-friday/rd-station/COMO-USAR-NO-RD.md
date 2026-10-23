@@ -3,7 +3,7 @@
 ## Antes de tudo: confira a oferta
 Os textos da oferta ficam no topo de `src/build.py`: o bloco `OFERTA` (título, data, selo, raspadinha, regra), as faixas `TAPE1`/`TAPE2` e as linhas da nota (`RECIBO`).
 Depois de mudar, rode `python3 src/build.py` para gerar de novo os arquivos desta pasta.
-Hoje estão com um exemplo (confirme com o comercial antes de publicar): implantação grátis + 50% OFF nos 3 primeiros meses, até 30/11/2026 às 23:59.
+Oferta atual: 18 meses de contrato + 3 meses grátis (21 meses de solução pagando 18). O prazo de 30/11/2026 às 23:59 ainda é provisório: confirme a data real.
 
 ## Arquivos
 - `tudo-em-um-bloco-html.html`: a página inteira em um arquivo só. **Comece por este.**

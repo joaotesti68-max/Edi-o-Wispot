@@ -58,9 +58,14 @@ html,body{overflow-x:clip}
 .wbf .sticker{position:absolute;right:-2%;top:-14%;width:clamp(110px,12vw,170px);aspect-ratio:1;display:grid;place-items:center;border-radius:50%;background:var(--blue);color:#fff;transform:rotate(12deg);box-shadow:0 0 0 4px var(--ink),0 0 0 6px var(--blue)}
 .wbf .sticker svg{position:absolute;inset:0;width:100%;height:100%;animation:wbf-spin 14s linear infinite}
 .wbf .sticker text{font:800 17px var(--font);letter-spacing:.22em;fill:#fff;text-transform:uppercase}
-.wbf .sticker b{font:900 clamp(26px,3vw,40px)/1 var(--font);letter-spacing:-.04em;-webkit-text-stroke:0;color:#fff}
+.wbf .sticker b{position:relative;display:grid;justify-items:center;font:900 clamp(34px,3.6vw,52px)/.9 var(--font);letter-spacing:-.05em;-webkit-text-stroke:0;color:#fff}
+.wbf .sticker small{position:absolute;top:61%;left:0;right:0;text-align:center;font:800 clamp(9px,.8vw,11px)/1 var(--font);letter-spacing:.08em;text-transform:uppercase;color:#fff;-webkit-text-stroke:0}
+.wbf .sticker b{margin-top:-14%}
 @keyframes wbf-spin{to{transform:rotate(360deg)}}
-.wbf .lede{font-size:clamp(16px,1.35vw,20px);max-width:44ch;color:#d6dde3;font-weight:500}
+.wbf .lede{font-size:clamp(16px,1.35vw,20px);line-height:1.7;max-width:44ch;color:#d6dde3;font-weight:500}
+.wbf .deal-sub{text-wrap:balance;margin-top:16px;font:700 clamp(15px,1.25vw,18px)/1.4 var(--font);color:#fff;max-width:40ch}
+.wbf .deal-sub::before{content:"→ ";color:var(--blue)}
+.wbf .cp-sub{font:600 14px/1.45 var(--font);color:var(--gray);margin-top:-6px}
 .wbf .lede mark{font-weight:700}
 .wbf .deal{margin-top:22px;display:inline-block;background:#fff;color:var(--ink);font:900 clamp(18px,1.7vw,24px)/1.2 var(--font);letter-spacing:-.02em;text-transform:uppercase;padding:12px 18px;transform:rotate(-1.5deg);box-shadow:6px 6px 0 var(--blue)}
 
@@ -73,7 +78,8 @@ html,body{overflow-x:clip}
 .wbf .count-n b{font:900 clamp(28px,2.6vw,40px)/1 var(--font);font-variant-numeric:tabular-nums;letter-spacing:-.03em;display:inline-block}
 .wbf .count-n b.tick{animation:wbf-tick .45s cubic-bezier(.2,.9,.3,1.3)}
 @keyframes wbf-tick{from{transform:translateY(-40%);opacity:0}}
-.wbf .count-n small{font:700 13px var(--mono);color:var(--blue)}
+.wbf .count-n small{font:700 12px var(--mono);color:var(--mute);margin-left:3px;text-transform:lowercase}
+.wbf .count-n i{transform:translateY(-.08em)}
 .wbf .count.over .count-n{opacity:.4}
 .wbf .count.big{justify-content:center;margin:40px 0 46px}
 .wbf .count.big .count-n{gap:clamp(6px,1.4vw,18px)}
@@ -113,7 +119,7 @@ html,body{overflow-x:clip}
 .wbf .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
 
 /* crossing tapes */
-.wbf .tapes{position:relative;height:clamp(120px,14vw,190px);margin-top:calc(clamp(60px,7vw,100px)*-1);z-index:4;pointer-events:none;overflow:hidden}
+.wbf .tapes{position:relative;height:clamp(130px,14vw,190px);margin-top:calc(clamp(60px,7vw,100px)*-1);z-index:4;pointer-events:none;overflow-x:clip;overflow-y:visible}
 .wbf .tape{position:absolute;left:-5%;width:110%;top:50%;overflow:hidden;white-space:nowrap;padding:14px 0;border-block:3px solid var(--ink)}
 .wbf .tape.t1{background:var(--blue);transform:translateY(-50%) rotate(-4deg)}
 .wbf .tape.t2{background:#fff;color:var(--ink);transform:translateY(-50%) rotate(3deg)}
@@ -132,13 +138,13 @@ html,body{overflow-x:clip}
 /* scratch card (blue block) */
 .wbf .scratch-sec{background:var(--blue);color:var(--ink);padding-block:clamp(80px,10vw,140px);border-block:3px solid var(--ink)}
 .wbf .sc-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(32px,5vw,80px);align-items:center}
-.wbf .sc-copy h2{font:900 clamp(40px,5.4vw,86px)/.92 var(--font);letter-spacing:-.05em;text-transform:uppercase;margin:18px 0 22px;color:var(--ink)}
+.wbf .sc-copy h2{font:900 clamp(40px,5.4vw,86px)/1.02 var(--font);letter-spacing:-.05em;text-transform:uppercase;margin:18px 0 22px;color:var(--ink)}
 .wbf .sc-copy p{font-size:clamp(16px,1.3vw,19px);font-weight:500;max-width:40ch;margin-bottom:26px}
 .wbf .card-wrap{display:grid;place-items:center}
 .wbf .scard{position:relative;width:min(100%,460px);aspect-ratio:1.6;border:3px solid var(--ink);background:#fff;box-shadow:12px 12px 0 var(--ink);transform:rotate(-2deg);user-select:none;-webkit-user-select:none;touch-action:none}
 .wbf .prize{position:absolute;inset:0;display:grid;place-content:center;justify-items:center;text-align:center;gap:6px;padding:18px;background:repeating-linear-gradient(-45deg,#fff 0 14px,#f1f9fd 14px 28px)}
 .wbf .pz-k{font:700 12px var(--mono);letter-spacing:.24em;text-transform:uppercase;color:var(--gray)}
-.wbf .prize strong{font:900 clamp(40px,6vw,76px)/.9 var(--font);letter-spacing:-.05em;color:var(--blue);text-transform:uppercase}
+.wbf .prize strong{font:900 clamp(32px,4.4vw,60px)/1 var(--font);letter-spacing:-.05em;color:var(--blue);text-transform:uppercase}
 .wbf .pz-s{font:800 clamp(14px,1.4vw,18px) var(--font);text-transform:uppercase;color:var(--ink)}
 .wbf .scard canvas{position:absolute;inset:0;width:100%;height:100%;cursor:crosshair;transition:opacity .6s}
 .wbf .scard.done canvas{opacity:0;pointer-events:none}
@@ -148,8 +154,8 @@ html,body{overflow-x:clip}
 /* how: neo-brutal cards on white */
 .wbf .how{background:#fff;color:var(--ink);padding-block:clamp(90px,11vw,150px)}
 .wbf .how-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-bottom:clamp(36px,5vw,64px)}
-.wbf .how h2{font:900 clamp(40px,5.6vw,92px)/.9 var(--font);letter-spacing:-.05em;text-transform:uppercase}
-.wbf .how-head p{font:700 14px var(--mono);max-width:26ch;color:var(--gray)}
+.wbf .how h2{font:900 clamp(40px,5.6vw,92px)/1 var(--font);letter-spacing:-.05em;text-transform:uppercase}
+.wbf .how-head p{font:700 15px/1.5 var(--mono);max-width:26ch;color:var(--gray);padding-bottom:10px}
 .wbf .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,2vw,28px)}
 .wbf .cards li{border:3px solid var(--ink);background:#fff;padding:26px 24px 30px;box-shadow:10px 10px 0 var(--blue);transition:transform .2s,box-shadow .2s}
 .wbf .cards li:nth-child(2){transform:translateY(28px)}
@@ -162,8 +168,8 @@ html,body{overflow-x:clip}
 /* receipt */
 .wbf .receipt-sec{padding-block:clamp(110px,12vw,170px) clamp(90px,10vw,140px)}
 .wbf .rc-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.9fr);gap:clamp(32px,5vw,80px);align-items:center}
-.wbf .rc-copy h2{font:900 clamp(38px,4.8vw,76px)/.95 var(--font);letter-spacing:-.05em;text-transform:uppercase;margin:18px 0 22px}
-.wbf .rc-copy .fine{font:400 12.5px/1.6 var(--mono);color:var(--mute);max-width:46ch;margin-bottom:30px}
+.wbf .rc-copy h2{font:900 clamp(38px,4.8vw,76px)/1.02 var(--font);letter-spacing:-.05em;text-transform:uppercase;margin:18px 0 22px}
+.wbf .rc-copy .fine{font:400 13.5px/1.65 var(--mono);color:var(--mute);max-width:46ch;margin-bottom:30px}
 .wbf .receipt-wrap{display:grid;justify-items:center}
 .wbf .receipt{position:relative;width:min(100%,420px);background:#f7f7f2;color:#111;font:400 14px/1.5 var(--mono);padding:28px 26px 40px;transform:rotate(2deg);box-shadow:0 30px 60px -20px rgba(0,0,0,.7);--zig:linear-gradient(-45deg,transparent 8px,#f7f7f2 0),linear-gradient(45deg,transparent 8px,#f7f7f2 0)}
 .wbf .receipt::after{content:"";position:absolute;left:0;right:0;bottom:-12px;height:12px;background:linear-gradient(-45deg,transparent 8px,#f7f7f2 0) 0 0/16px 12px repeat-x,linear-gradient(45deg,transparent 8px,#f7f7f2 0) 0 0/16px 12px repeat-x}
@@ -193,7 +199,8 @@ html,body{overflow-x:clip}
 .wbf .final{padding-block:clamp(100px,12vw,180px);text-align:center;overflow:clip}
 .wbf .final::before{content:"";position:absolute;width:110vmax;height:110vmax;left:50%;bottom:-80vmax;transform:translateX(-50%);background:radial-gradient(closest-side,rgba(37,168,224,.3),transparent 70%);pointer-events:none}
 .wbf .final .wrap{display:grid;justify-items:center}
-.wbf .final h2{font:900 clamp(40px,7vw,120px)/.92 var(--font);letter-spacing:-.055em;text-transform:uppercase}
+.wbf .final h2{font:900 clamp(40px,7vw,120px)/1.02 var(--font);letter-spacing:-.055em;text-transform:uppercase}
+.wbf .final h2 mark,.wbf .rc-copy h2 mark,.wbf .how h2 mark{display:inline-block;padding:.04em .12em .02em;margin-top:.1em;line-height:.95}
 
 /* footer */
 .wbf .foot{border-top:1px solid rgba(255,255,255,.12)}
@@ -208,7 +215,7 @@ html,body{overflow-x:clip}
   .wbf .hero-grid,.wbf .sc-grid,.wbf .rc-grid{grid-template-columns:1fr}
   .wbf .hero-copy{display:contents}
   .wbf .hero-grid{gap:0}
-  .wbf .hero .kicker{order:1}.wbf .giant{order:2}.wbf .deal{order:3;justify-self:start}.wbf .fcol{order:4;margin-top:34px}.wbf .lede{order:5;margin-top:40px}.wbf .hero .count{order:6}
+  .wbf .hero .kicker{order:1}.wbf .giant{order:2}.wbf .deal{order:3;justify-self:start}.wbf .deal-sub{order:3}.wbf .fcol{order:4;margin-top:34px}.wbf .lede{order:5;margin-top:40px}.wbf .hero .count{order:6}
   .wbf .cards{grid-template-columns:1fr}
   .wbf .cards li:nth-child(n){transform:none}
   .wbf .bar-mid{display:none}
@@ -219,8 +226,11 @@ html,body{overflow-x:clip}
   .wbf .bar img{height:32px}
   .wbf .giant{font-size:clamp(56px,19vw,100px)}
   .wbf .giant .out{-webkit-text-stroke:1.5px #fff}
-  .wbf .sticker{width:96px;top:-22%;right:-4px}
+  .wbf .sticker{width:92px;top:auto;bottom:-4%;right:0}
   .wbf .sticker text{font-size:19px}
+  .wbf .sticker small{display:none}
+  .wbf .sticker b{margin-top:0;font-size:34px}
+  .wbf .fcol{margin-right:8px}
   .wbf .form-grid{grid-template-columns:1fr}
   .wbf .coupon{transform:none;box-shadow:8px 8px 0 var(--blue)}
   .wbf .cp-bar{display:none}
