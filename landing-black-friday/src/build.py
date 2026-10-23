@@ -1,38 +1,38 @@
 # Builds the Black Friday LP: preview.html (opens in a browser) and the RD Station kit.
 # ▼ A OFERTA FICA AQUI: troque os textos e a data de fim, depois rode: python3 build.py
 OFERTA={
-  'OFERTA_TITULO':'Implantação grátis + 50% OFF nos 3 primeiros meses',
-  'OFERTA_SUB':'Para contratos fechados até 30/11. Vagas de implantação limitadas.',
-  'OFERTA_CURTA':'Implantação grátis + 50% OFF por 3 meses',
+  'OFERTA_TITULO':'Implantação grátis + 50% OFF por 3 meses',
+  'OFERTA_CURTA':'50% OFF + implantação grátis',
   'OFERTA_ATE':'30/11',
   'OFERTA_FIM':'2026-11-30T23:59:59-03:00',   # fim do contador (horário de Brasília)
-  'BENEFICIO_1':'Implantação grátis',
-  'BENEFICIO_1_TXT':'A equipe Wispot configura o portal com a sua marca e deixa tudo funcionando, sem custo de setup.',
-  'BENEFICIO_2':'50% OFF nos 3 primeiros meses',
-  'BENEFICIO_2_TXT':'Metade do valor da mensalidade no começo, enquanto sua base de contatos cresce.',
-  'BENEFICIO_3':'Pronto para as vendas de fim de ano',
-  'BENEFICIO_3_TXT':'Comece a capturar contatos no período de maior movimento e chame esses clientes de volta em janeiro.',
-  'REGRA':'Condição válida para novos contratos fechados até 30/11/2026. Consulte as regras com um especialista.',
+  'STICKER':'Só até 30/11 · Vagas limitadas · ',  # texto que gira no selo
+  'STICKER_MEIO':'-50%',
+  'RASPADINHA':'50% OFF',
+  'RASPADINHA_SUB':'+ implantação grátis',
+  'REGRA':'Condição válida para novos contratos fechados até 30/11/2026. Desconto de 50% sobre a mensalidade nos 3 primeiros meses. Consulte as regras com um especialista.',
 }
-import os,glob,base64
+TAPE1=['Black Friday Wispot','50% OFF','Implantação grátis','Só até 30/11']   # faixa azul
+TAPE2=['Seu Wi-Fi vende','Cada visita vira contato','Black Friday Wispot']     # faixa branca
+RECIBO=[('Implantação','GRÁTIS'),('Mensalidade (3 meses)','-50%'),('Portal com a sua marca','INCLUSO'),('Base de contatos da Black Friday','SUA')]
+import os,base64,html
 d=os.path.dirname(os.path.abspath(__file__))
 css=open(d+'/style.css').read(); body=open(d+'/body.html').read(); js=open(d+'/script.js').read()
 uri=lambda p:'data:image/png;base64,'+base64.b64encode(open(p,'rb').read()).decode()
 CL=d+'/../../landing-monetize/src/clients/'
 ORDER=['carrefour','heineken','applebees','japan-house','johnny-rockets','bendito-cacao','ofner']
 logos=''.join(f'<div class="logo-card"><img src="{uri(CL+n+".png")}" alt="{n.replace("-"," ").title()}"></div>' for n in ORDER if os.path.exists(CL+n+'.png'))
+tape=lambda items:''.join(f'<span>{html.escape(t)}</span>' for t in items*3)
+recibo=''.join(f'<li><span>{html.escape(a)}</span><i></i><b>{html.escape(b)}</b></li>' for a,b in RECIBO)
 for k,v in OFERTA.items():body=body.replace('{{'+k+'}}',v)
 A=d+'/assets/'
-body=body.replace('{{LOGO_WHITE}}',uri(A+'logo-white.png')).replace('{{LOGO_COLOR}}',uri(A+'logo-color.png')).replace('{{WIFI_BLUE}}',uri(A+'wifi-blue.png')).replace('{{LOGOS}}',logos)
-css=css.replace('{{WIFI_BLUE}}',uri(A+'wifi-blue.png'))
-js=js.replace('{{WIFI_DATA}}',uri(A+'wifi-white.png')).replace('{{LOGO_DATA}}',uri(A+'logo-white.png'))
+body=(body.replace('{{LOGO_WHITE}}',uri(A+'logo-white.png')).replace('{{LOGO_DARK}}',uri(A+'logo-color.png'))
+      .replace('{{LOGOS}}',logos).replace('{{TAPE1}}',tape(TAPE1)).replace('{{TAPE2}}',tape(TAPE2)).replace('{{RECIBO}}',recibo))
 assert '{{' not in body and '{{' not in js and '{{' not in css, 'token left'
-libs='''<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+libs='''<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>'''
 out=d+'/..'
-open(out+'/preview.html','w').write(f'<!doctype html>\n<html lang="pt-BR">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n<title>Black Friday Wispot</title>\n<style>\n{css}\nbody{{margin:0;background:#fff}}\n</style>\n</head>\n<body>\n{body}\n{libs}\n<script>\n{js}</script>\n</body>\n</html>\n')
+open(out+'/preview.html','w').write(f'<!doctype html>\n<html lang="pt-BR">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n<title>Black Friday Wispot</title>\n<style>\n{css}\nbody{{margin:0;background:#050608}}\n</style>\n</head>\n<body>\n{body}\n{libs}\n<script>\n{js}</script>\n</body>\n</html>\n')
 rd=out+'/rd-station'
 open(rd+'/1-bloco-html.html','w').write(body)
 open(rd+'/2-css.css','w').write(css)

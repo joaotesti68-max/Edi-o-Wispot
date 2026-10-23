@@ -1,136 +1,157 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,900&family=Space+Mono:wght@400;700&display=swap">
 <div class="wbf" id="wbf" data-end="{{OFERTA_FIM}}">
-  <canvas class="wbf-gl" aria-hidden="true"></canvas>
 
-  <div class="ticker" aria-label="Black Friday Wispot: {{OFERTA_CURTA}}">
-    <div class="tk" aria-hidden="true">
-      <span>Black Friday Wispot</span><i></i><span>{{OFERTA_CURTA}}</span><i></i><span>Válido até {{OFERTA_ATE}}</span><i></i>
-      <span>Black Friday Wispot</span><i></i><span>{{OFERTA_CURTA}}</span><i></i><span>Válido até {{OFERTA_ATE}}</span><i></i>
-      <span>Black Friday Wispot</span><i></i><span>{{OFERTA_CURTA}}</span><i></i><span>Válido até {{OFERTA_ATE}}</span><i></i>
-      <span>Black Friday Wispot</span><i></i><span>{{OFERTA_CURTA}}</span><i></i><span>Válido até {{OFERTA_ATE}}</span><i></i>
-    </div>
-  </div>
-
-  <!-- HERO + FORM (blue, like the manual's cover) -->
-  <section class="hero t-blue" data-shape="waves">
-    <header class="bar wrap">
+  <header class="bar">
+    <div class="wrap">
       <img src="{{LOGO_WHITE}}" alt="Wispot smart data">
-      <span class="bar-r"><i></i>Black Friday</span>
-    </header>
+      <span class="bar-mid">Black Friday · 2026</span>
+      <a class="btn sm" href="#wbf-form">Pegar meu cupom</a>
+    </div>
+  </header>
+
+  <!-- HERO: giant type + coupon form -->
+  <section class="hero">
     <div class="wrap hero-grid">
       <div class="hero-copy">
-        <h1>O fim de ano vai lotar sua loja. <span class="box">Faça cada visita virar cliente.</span></h1>
-        <p class="lede">Quem entra e se conecta ao seu Wi-Fi deixa nome, e-mail e telefone. A Wispot transforma esse movimento em <b>campanhas, retorno e vendas</b>, e na Black Friday você começa com uma condição que não volta depois.</p>
-        <div class="deal">
-          <span class="deal-k">Condição Black Friday</span>
-          <strong class="deal-h">{{OFERTA_TITULO}}</strong>
-          <span class="deal-s">{{OFERTA_SUB}}</span>
-        </div>
+        <p class="kicker">A Wispot apresenta</p>
+        <h1 class="giant" aria-label="Black Friday">
+          <span class="ln"><span class="w">BLACK</span></span>
+          <span class="ln out"><span class="w">FR<span class="sig-i">I<svg class="sig" viewBox="0 0 120 70" aria-hidden="true"><path class="a2" d="M10 46a70 70 0 0 1 100 0"/><path class="a1" d="M32 60a40 40 0 0 1 56 0"/></svg></span>DAY</span></span>
+          <span class="sticker" aria-hidden="true"><svg viewBox="0 0 200 200"><defs><path id="wbf-c" d="M100 100m-74 0a74 74 0 1 1 148 0a74 74 0 1 1-148 0"/></defs><text><textPath href="#wbf-c">{{STICKER}}</textPath></text></svg><b>{{STICKER_MEIO}}</b></span>
+        </h1>
+        <p class="lede">O fim de ano vai lotar sua loja. Com a Wispot, <mark>cada visita que conecta no Wi-Fi vira contato</mark> para vender o ano inteiro.</p>
+        <div class="deal"><span>{{OFERTA_TITULO}}</span></div>
         <div class="count" data-count aria-label="Tempo até o fim da oferta">
-          <span class="count-k">A oferta termina em</span>
-          <div class="count-n"><span><b data-u="d">00</b><small>dias</small></span><span><b data-u="h">00</b><small>horas</small></span><span><b data-u="m">00</b><small>min</small></span><span><b data-u="s">00</b><small>seg</small></span></div>
+          <span class="count-k">Acaba em</span>
+          <div class="count-n"><span><b data-u="d">00</b><small>d</small></span><i>:</i><span><b data-u="h">00</b><small>h</small></span><i>:</i><span><b data-u="m">00</b><small>m</small></span><i>:</i><span><b data-u="s">00</b><small>s</small></span></div>
         </div>
       </div>
 
       <div class="fcol" id="wbf-form">
-        <form class="form-card" id="wbf-lead" novalidate>
-          <img class="fc-wifi" src="{{WIFI_BLUE}}" alt="">
-          <h2>Garanta a condição <b>Black Friday</b></h2>
-          <p class="sub">Preencha os dados e um especialista monta sua proposta já com o desconto.</p>
-          <div class="form-grid">
-            <div class="field full"><label for="wbf-email">E-mail corporativo*</label><input id="wbf-email" name="email" type="email" autocomplete="email" placeholder="voce@empresa.com.br" required></div>
-            <div class="field full"><label for="wbf-company">Empresa*</label><input id="wbf-company" name="company" type="text" autocomplete="organization" placeholder="Nome da empresa" required></div>
-            <div class="field"><label for="wbf-func">Nº de funcionários*</label>
-              <select id="wbf-func" name="cf_numero_de_funcionarios" required>
-                <option value="">Selecione</option><option>Individual/Autônomo</option><option>2-5</option><option>6-10</option><option>11-30</option><option>31-50</option><option>51-100</option><option>101 +</option>
-              </select></div>
-            <div class="field"><label for="wbf-seg">Segmento*</label>
-              <select id="wbf-seg" name="cf_segmento_da_empresa" required>
-                <option value="">Selecione</option><option>Contabilidade</option><option>Advocacia</option><option>Hotelaria</option><option>Saúde</option><option>Serviços</option><option>Varejo</option><option>Transporte e Logística</option><option>Instituição Financeira</option><option>Tecnologia</option><option>Governo</option><option>Outros</option>
-              </select></div>
-            <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <form class="coupon" id="wbf-lead" novalidate>
+          <div class="cp-head">
+            <span class="cp-k">Cupom Black Friday</span>
+            <strong>{{OFERTA_CURTA}}</strong>
+            <span class="cp-bar" aria-hidden="true"></span>
           </div>
-          <button class="btn" type="submit">Quero a oferta Black Friday <span class="arr"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1 6h10M7 2l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
-          <p class="form-msg" role="status" aria-live="polite"></p>
-          <p class="legal">Oferta válida até {{OFERTA_ATE}}. Seus dados são usados apenas para a Wispot entrar em contato sobre a solução, conforme a LGPD.</p>
+          <div class="cp-body">
+            <h2>Garanta antes que acabe</h2>
+            <div class="form-grid">
+              <div class="field full"><label for="wbf-email">E-mail corporativo*</label><input id="wbf-email" name="email" type="email" autocomplete="email" placeholder="voce@empresa.com.br" required></div>
+              <div class="field full"><label for="wbf-company">Empresa*</label><input id="wbf-company" name="company" type="text" autocomplete="organization" placeholder="Nome da empresa" required></div>
+              <div class="field"><label for="wbf-func">Nº de funcionários*</label>
+                <select id="wbf-func" name="cf_numero_de_funcionarios" required>
+                  <option value="">Selecione</option><option>Individual/Autônomo</option><option>2-5</option><option>6-10</option><option>11-30</option><option>31-50</option><option>51-100</option><option>101 +</option>
+                </select></div>
+              <div class="field"><label for="wbf-seg">Segmento*</label>
+                <select id="wbf-seg" name="cf_segmento_da_empresa" required>
+                  <option value="">Selecione</option><option>Contabilidade</option><option>Advocacia</option><option>Hotelaria</option><option>Saúde</option><option>Serviços</option><option>Varejo</option><option>Transporte e Logística</option><option>Instituição Financeira</option><option>Tecnologia</option><option>Governo</option><option>Outros</option>
+                </select></div>
+              <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+            </div>
+            <button class="btn" type="submit">Quero meu desconto <span aria-hidden="true">→</span></button>
+            <p class="form-msg" role="status" aria-live="polite"></p>
+            <p class="legal">Válido até {{OFERTA_ATE}}. Seus dados são usados só para a Wispot falar com você sobre a oferta, conforme a LGPD.</p>
+          </div>
         </form>
       </div>
     </div>
   </section>
 
-  <!-- MOMENT (white page) -->
-  <section class="sec split t-white" data-shape="bag">
+  <!-- crossing tapes -->
+  <div class="tapes" aria-hidden="true">
+    <div class="tape t1"><div class="tk">{{TAPE1}}</div></div>
+    <div class="tape t2"><div class="tk">{{TAPE2}}</div></div>
+  </div>
+
+  <!-- MANIFESTO: lights up word by word on scroll -->
+  <section class="manifesto">
     <div class="wrap">
-      <div class="txt">
-        <div class="rule"><i></i><b>01</b></div>
-        <h2>O dia mais cheio do ano <span class="box">não pode terminar no caixa.</span></h2>
-        <p>Na Black Friday e nas festas, entra na sua loja gente que nunca passou por lá. A maioria vai embora <b>sem deixar contato</b>.</p>
-        <p>Com a Wispot, quem se conecta ao Wi-Fi entra para a sua base, e você pode <b>chamar essa pessoa de volta</b> depois da data.</p>
-      </div>
+      <p class="mf" data-fill>Na Black Friday, todo mundo lota a loja. Quase ninguém sabe <em>quem entrou</em>. Seu Wi-Fi sabe. A Wispot transforma cada conexão em <em>nome, e-mail e telefone</em>, e em clientes que <em>voltam</em> depois do dia 30.</p>
     </div>
-    <div class="foot-rule wrap"><span>O momento</span><i></i></div>
   </section>
 
-  <!-- HOW (blue) -->
-  <section class="sec split right t-blue" data-shape="wifi">
-    <div class="wrap">
-      <div class="txt">
-        <div class="rule"><i></i><b>02</b></div>
-        <h2>Do Wi-Fi à <span class="box">próxima compra.</span></h2>
-        <ol class="steps">
-          <li><b>01</b><div><h3>O cliente se conecta</h3><p>Uma página de login com a sua marca recebe quem acessa o Wi-Fi por redes sociais, e-mail ou telefone.</p></div></li>
-          <li><b>02</b><div><h3>A conexão vira cadastro</h3><p>Nome, e-mail, telefone e preferências formam uma base qualificada de contatos.</p></div></li>
-          <li><b>03</b><div><h3>Ele volta a comprar</h3><p>Campanhas por SMS, e-mail ou WhatsApp com cupons e ofertas para trazer cada cliente de volta.</p></div></li>
-        </ol>
+  <!-- SCRATCH CARD -->
+  <section class="scratch-sec">
+    <div class="wrap sc-grid">
+      <div class="sc-copy">
+        <p class="kicker dark">Raspadinha Wispot</p>
+        <h2>Raspe e veja <br>o seu desconto.</h2>
+        <p>Passe o dedo ou o mouse no cartão. Sem pegadinha: <b>todo mundo ganha</b>, mas só até {{OFERTA_ATE}}.</p>
+        <a class="btn dark" href="#wbf-form" data-after hidden>Usar meu desconto agora <span aria-hidden="true">→</span></a>
+      </div>
+      <div class="card-wrap">
+        <div class="scard" data-scratch>
+          <div class="prize">
+            <span class="pz-k">Você ganhou</span>
+            <strong>{{RASPADINHA}}</strong>
+            <span class="pz-s">{{RASPADINHA_SUB}}</span>
+          </div>
+          <canvas aria-label="Área de raspar. O prêmio é: {{RASPADINHA}}, {{RASPADINHA_SUB}}"></canvas>
+          <span class="sc-hint" aria-hidden="true">Raspe aqui</span>
+        </div>
       </div>
     </div>
-    <div class="foot-rule wrap"><span>Como funciona</span><i></i></div>
   </section>
 
-  <!-- OFFER (brand gray: the "black" of this Black Friday) -->
-  <section class="sec split t-gray" data-shape="pct" id="wbf-oferta">
+  <!-- HOW: neo-brutal cards on white -->
+  <section class="how">
     <div class="wrap">
-      <div class="txt">
-        <div class="rule"><i></i><b>03</b></div>
-        <h2>Condição exclusiva de <span class="box">Black Friday.</span></h2>
-        <ul class="perks">
-          <li><span class="pk-i"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><div><h3>{{BENEFICIO_1}}</h3><p>{{BENEFICIO_1_TXT}}</p></div></li>
-          <li><span class="pk-i"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><div><h3>{{BENEFICIO_2}}</h3><p>{{BENEFICIO_2_TXT}}</p></div></li>
-          <li><span class="pk-i"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><div><h3>{{BENEFICIO_3}}</h3><p>{{BENEFICIO_3_TXT}}</p></div></li>
-        </ul>
+      <div class="how-head">
+        <h2>Como o Wi-Fi<br>vira <mark>venda</mark>.</h2>
+        <p>Três passos. Nenhum app para o cliente baixar.</p>
+      </div>
+      <ol class="cards">
+        <li><b>01</b><h3>Conecta</h3><p>O cliente entra no Wi-Fi por uma página de login com a sua marca, usando redes sociais, e-mail ou telefone.</p></li>
+        <li><b>02</b><h3>Cadastra</h3><p>Nome, e-mail, telefone e preferências entram na sua base, prontos para usar.</p></li>
+        <li><b>03</b><h3>Volta</h3><p>Campanhas por SMS, e-mail ou WhatsApp com cupons que trazem o cliente de novo.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- RECEIPT: the offer printed out -->
+  <section class="receipt-sec">
+    <div class="wrap rc-grid">
+      <div class="rc-copy">
+        <p class="kicker">A conta fecha assim</p>
+        <h2>Tudo isso,<br>com desconto de <mark>Black Friday</mark>.</h2>
         <p class="fine">{{REGRA}}</p>
-        <a class="btn" href="#wbf-form">Quero garantir a minha <span class="arr"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1 6h10M7 2l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+        <a class="btn" href="#wbf-form">Fechar minha conta <span aria-hidden="true">→</span></a>
+      </div>
+      <div class="receipt-wrap">
+        <div class="receipt">
+          <div class="rc-top"><img src="{{LOGO_DARK}}" alt="Wispot"><span>CUPOM NÃO FISCAL · BLACK FRIDAY</span></div>
+          <ul class="rc-lines">{{RECIBO}}</ul>
+          <div class="rc-total"><span>Desculpas para deixar para depois</span><b>0</b></div>
+          <div class="rc-foot">Obrigado pela preferência :)<br>Válido até {{OFERTA_ATE}}</div>
+          <div class="rc-code" aria-hidden="true"></div>
+        </div>
       </div>
     </div>
-    <div class="foot-rule wrap"><span>A oferta</span><i></i></div>
   </section>
 
-  <!-- CLIENTS (white) -->
-  <section class="clients t-white" data-shape="field">
-    <div class="wrap head">
-      <h2>Quem confia na <span class="box">Wispot</span></h2>
-      <p>Marcas que já transformam conexões em resultado.</p>
-    </div>
+  <!-- CLIENTS -->
+  <section class="clients">
+    <div class="wrap"><h2>Quem já transforma conexão em resultado</h2></div>
     <div class="crow"><div class="ctrack">{{LOGOS}}</div></div>
   </section>
 
-  <!-- FINAL (blue) -->
-  <section class="final t-blue" data-shape="icon">
+  <!-- FINAL -->
+  <section class="final">
     <div class="wrap">
-      <h2>A Black Friday passa.<br><span class="box">Os clientes ficam.</span></h2>
-      <div class="count center" data-count aria-label="Tempo até o fim da oferta">
-        <span class="count-k">A oferta termina em</span>
-        <div class="count-n"><span><b data-u="d">00</b><small>dias</small></span><span><b data-u="h">00</b><small>horas</small></span><span><b data-u="m">00</b><small>min</small></span><span><b data-u="s">00</b><small>seg</small></span></div>
+      <h2>A Black Friday passa.<br><mark>Os clientes ficam.</mark></h2>
+      <div class="count big" data-count aria-label="Tempo até o fim da oferta">
+        <div class="count-n"><span><b data-u="d">00</b><small>dias</small></span><i>:</i><span><b data-u="h">00</b><small>horas</small></span><i>:</i><span><b data-u="m">00</b><small>min</small></span><i>:</i><span><b data-u="s">00</b><small>seg</small></span></div>
       </div>
-      <a class="btn light big" href="#wbf-form">Garantir a condição Black Friday <span class="arr"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1 6h10M7 2l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+      <a class="btn huge" href="#wbf-form">Pegar meu cupom <span aria-hidden="true">→</span></a>
     </div>
   </section>
 
-  <footer class="foot t-white">
+  <footer class="foot">
     <div class="wrap">
-      <span class="sign"><img src="{{LOGO_COLOR}}" alt="Wispot smart data"><i aria-hidden="true"></i><span>wispot.com.br</span></span>
+      <span class="sign"><img src="{{LOGO_WHITE}}" alt="Wispot smart data"><i aria-hidden="true"></i><span>wispot.com.br</span></span>
       <small>© 2026 Wispot. Todos os direitos reservados.</small>
     </div>
   </footer>
