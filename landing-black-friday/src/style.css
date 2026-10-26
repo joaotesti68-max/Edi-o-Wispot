@@ -118,7 +118,7 @@ html,body{overflow-x:clip}
 /* how */
 .wbf .how{background:#fff;color:var(--ink);padding-block:clamp(90px,11vw,150px)}
 .wbf .how-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-bottom:clamp(36px,5vw,60px)}
-.wbf .how h2{font:600 clamp(36px,4.6vw,68px)/1.05 var(--title);letter-spacing:-.03em;color:var(--ink)}
+.wbf .how h2{font:600 clamp(32px,3.8vw,56px)/1.1 var(--title);letter-spacing:-.03em;color:var(--ink);max-width:18ch}
 .wbf .how-head p{font:400 16px/1.6 var(--font);max-width:28ch;color:var(--gray)}
 .wbf .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,2vw,24px)}
 .wbf .cards li{border:1px solid #e3e8ec;background:#fff;border-radius:22px;padding:28px 26px 30px;transition:transform .25s,box-shadow .25s,border-color .25s}
