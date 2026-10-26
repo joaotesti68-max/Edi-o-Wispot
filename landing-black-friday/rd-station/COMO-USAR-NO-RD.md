@@ -1,7 +1,7 @@
 # Landing page "Black Friday Wispot" no RD Station
 
 ## Antes de tudo: confira a oferta
-Os textos da oferta ficam no topo de `src/build.py`: o bloco `OFERTA` (título, data, selo, raspadinha, regra), as faixas `TAPE1`/`TAPE2` e as linhas da nota (`RECIBO`).
+Os textos da oferta ficam no topo de `src/build.py`, no bloco `OFERTA` (título, data, selo e regra).
 Depois de mudar, rode `python3 src/build.py` para gerar de novo os arquivos desta pasta.
 Oferta atual: 18 meses de contrato + 3 meses grátis (21 meses de solução pagando 18). O prazo de 30/11/2026 às 23:59 ainda é provisório: confirme a data real.
 
@@ -26,7 +26,7 @@ Oferta atual: 18 meses de contrato + 3 meses grátis (21 meses de solução paga
 O formulário envia o lead direto para o RD pela API de conversões, com:
 - o mesmo token público da LP "Monetize seu Wi-Fi";
 - o identificador de conversão `black-friday-wispot-2026` (separa estes leads dos outros);
-- os campos `email`, empresa, `cf_numero_de_funcionarios` e `cf_segmento_da_empresa`, mais as UTMs da URL.
+- os campos `email`, `mobile_phone` (telefone/WhatsApp, enviado como +55 com DDD), empresa, `cf_numero_de_funcionarios` e `cf_segmento_da_empresa`, mais as UTMs da URL.
 
 Depois do envio, a pessoa vai para `https://material.wispot.com.br/obrigado?event=leadBlackFriday`.
 Para mudar o identificador ou a página de obrigado, edite o bloco `RD` no começo de `src/script.js` e rode o build de novo.
@@ -36,9 +36,8 @@ O envio só acontece com a página publicada em `wispot.com.br` ou num domínio 
 **Antes de divulgar:** publique, faça uma conversão de teste com um e-mail seu e confira no RD se o lead chegou com a conversão `black-friday-wispot-2026`.
 
 ## Visual
-Fundo preto com o azul da Wispot (#25A8E0) como cor de destaque e branco; logo branco sobre preto, como na aplicação da camiseta do manual.
-Montserrat (fonte da marca) nos títulos gigantes e textos; Space Mono só no cupom e na "nota fiscal".
-Tem uma raspadinha: quem visita raspa o cartão e vê o desconto; depois aparece o botão que leva ao formulário.
+Fundo preto com o azul da Wispot (#25A8E0) e branco; logo branco sobre preto, como na aplicação da camiseta do manual.
+Títulos em Outfit (versão para web no lugar da Adineue Pro, que não tem licença gratuita para sites) e textos em Montserrat.
 
 ## Imagens
-O logo, o ícone de Wi-Fi (tirado do manual) e os logos de clientes vão embutidos no código, então não precisa subir nada. Por isso o arquivo único tem uns 390 KB; se o RD reclamar do tamanho, use a opção B.
+O logo e os logos de clientes vão embutidos no código, então não precisa subir nada. Por isso o arquivo único tem uns 310 KB; se o RD reclamar do tamanho, use a opção B.

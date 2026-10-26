@@ -1,12 +1,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,900&family=Space+Mono:wght@400;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap">
 <div class="wbf" id="wbf" data-end="{{OFERTA_FIM}}">
 
   <header class="bar">
     <div class="wrap">
       <img src="{{LOGO_WHITE}}" alt="Wispot smart data">
-      <span class="bar-mid">Black Friday · 2026</span>
       <a class="btn sm" href="#wbf-form">Pegar meu cupom</a>
     </div>
   </header>
@@ -19,7 +18,7 @@
         <h1 class="giant" aria-label="Black Friday">
           <span class="ln"><span class="w">BLACK</span></span>
           <span class="ln out"><span class="w">FRIDAY</span></span>
-          <span class="sticker" aria-hidden="true"><svg viewBox="0 0 200 200"><defs><path id="wbf-c" d="M100 100m-74 0a74 74 0 1 1 148 0a74 74 0 1 1-148 0"/></defs><text><textPath href="#wbf-c" textLength="458" lengthAdjust="spacing">{{STICKER}}</textPath></text></svg><b>{{STICKER_MEIO}}</b><small>{{STICKER_BAIXO}}</small></span>
+          <span class="sticker" aria-hidden="true"><svg viewBox="0 0 200 200"><defs><path id="wbf-c" d="M100 100m-74 0a74 74 0 1 1 148 0a74 74 0 1 1-148 0"/></defs><text><textPath href="#wbf-c" textLength="458" lengthAdjust="spacing">{{STICKER}}</textPath></text></svg><b>{{STICKER_MEIO}}</b></span>
         </h1>
         <p class="lede">O fim de ano vai lotar sua loja. Com a Wispot, <mark>cada visita que conecta no Wi-Fi vira contato</mark> para vender o ano inteiro.</p>
         <div class="deal"><span>{{OFERTA_TITULO}}</span></div>
@@ -35,13 +34,13 @@
           <div class="cp-head">
             <span class="cp-k">Cupom Black Friday</span>
             <strong>{{OFERTA_CURTA}}</strong>
-            <span class="cp-bar" aria-hidden="true"></span>
           </div>
           <div class="cp-body">
             <h2>Garanta antes que acabe</h2>
             <p class="cp-sub">{{OFERTA_SUB}}</p>
             <div class="form-grid">
               <div class="field full"><label for="wbf-email">E-mail corporativo*</label><input id="wbf-email" name="email" type="email" autocomplete="email" placeholder="voce@empresa.com.br" required></div>
+              <div class="field full"><label for="wbf-phone">Telefone / WhatsApp*</label><input id="wbf-phone" name="mobile_phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="(11) 99999-9999" required></div>
               <div class="field full"><label for="wbf-company">Empresa*</label><input id="wbf-company" name="company" type="text" autocomplete="organization" placeholder="Nome da empresa" required></div>
               <div class="field"><label for="wbf-func">Nº de funcionários*</label>
                 <select id="wbf-func" name="cf_numero_de_funcionarios" required>
@@ -55,45 +54,19 @@
             </div>
             <button class="btn" type="submit">Quero meus 3 meses grátis <span aria-hidden="true">→</span></button>
             <p class="form-msg" role="status" aria-live="polite"></p>
-            <p class="legal">Válido até {{OFERTA_ATE}}. Seus dados são usados só para a Wispot falar com você sobre a oferta, conforme a LGPD.</p>
           </div>
         </form>
       </div>
     </div>
   </section>
 
-  <!-- crossing tapes -->
-  <div class="tapes" aria-hidden="true">
-    <div class="tape t1"><div class="tk">{{TAPE1}}</div></div>
-    <div class="tape t2"><div class="tk">{{TAPE2}}</div></div>
-  </div>
-
-  <!-- MANIFESTO: lights up word by word on scroll -->
+  <!-- MANIFESTO -->
   <section class="manifesto">
     <div class="wrap">
-      <p class="mf" data-fill>Na Black Friday, todo mundo lota a loja. Quase ninguém sabe <em>quem entrou</em>. Seu Wi-Fi sabe. A Wispot transforma cada conexão em <em>nome, e-mail e telefone</em>, e em clientes que <em>voltam</em> depois do dia 30.</p>
-    </div>
-  </section>
-
-  <!-- SCRATCH CARD -->
-  <section class="scratch-sec">
-    <div class="wrap sc-grid">
-      <div class="sc-copy">
-        <p class="kicker dark">Raspadinha Wispot</p>
-        <h2>Raspe e veja <br>o que você ganha.</h2>
-        <p>Passe o dedo ou o mouse no cartão. Sem pegadinha: <b>todo mundo ganha</b>, mas só até {{OFERTA_ATE}}.</p>
-        <a class="btn dark" href="#wbf-form" data-after hidden>Garantir meus 3 meses grátis <span aria-hidden="true">→</span></a>
-      </div>
-      <div class="card-wrap">
-        <div class="scard" data-scratch>
-          <div class="prize">
-            <span class="pz-k">Você ganhou</span>
-            <strong>{{RASPADINHA}}</strong>
-            <span class="pz-s">{{RASPADINHA_SUB}}</span>
-          </div>
-          <canvas aria-label="Área de raspar. O prêmio é: {{RASPADINHA}}, {{RASPADINHA_SUB}}"></canvas>
-          <span class="sc-hint" aria-hidden="true">Raspe aqui</span>
-        </div>
+      <p class="mf" data-fill>Na Black Friday, todo mundo quer atrair mais clientes. <em>Mas você sabe quem visita sua loja?</em></p>
+      <div class="mf-more">
+        <p class="mf-lead">Com a Wispot, seu Wi-Fi vai muito além da conexão.</p>
+        <p>Transforme o acesso à internet em uma oportunidade para conhecer seu público, construir uma base de contatos e criar campanhas que mantêm o relacionamento mesmo depois da Black Friday.</p>
       </div>
     </div>
   </section>
@@ -113,24 +86,20 @@
     </div>
   </section>
 
-  <!-- RECEIPT: the offer printed out -->
-  <section class="receipt-sec">
-    <div class="wrap rc-grid">
-      <div class="rc-copy">
-        <p class="kicker">A conta fecha assim</p>
-        <h2>21 meses de Wispot,<br><mark>pagando só 18</mark>.</h2>
-        <p class="fine">{{REGRA}}</p>
-        <a class="btn" href="#wbf-form">Fechar minha conta <span aria-hidden="true">→</span></a>
+  <!-- OFFER: 18 + 3 = 21 -->
+  <section class="offer">
+    <div class="wrap">
+      <p class="kicker">A oferta</p>
+      <h2>Você garante <mark>21&nbsp;meses</mark> de solução pagando apenas 18.</h2>
+      <div class="eq" aria-label="18 meses de contrato mais 3 meses grátis é igual a 21 meses de solução">
+        <div class="eq-c"><b>18</b><span>meses de contrato</span></div>
+        <i aria-hidden="true">+</i>
+        <div class="eq-c hl"><b>3</b><span>meses grátis</span></div>
+        <i aria-hidden="true">=</i>
+        <div class="eq-c tot"><b>21</b><span>meses de Wispot</span></div>
       </div>
-      <div class="receipt-wrap">
-        <div class="receipt">
-          <div class="rc-top"><img src="{{LOGO_DARK}}" alt="Wispot"><span>CUPOM NÃO FISCAL · BLACK FRIDAY</span></div>
-          <ul class="rc-lines">{{RECIBO}}</ul>
-          <div class="rc-total"><span>Desculpas para deixar para depois</span><b>0</b></div>
-          <div class="rc-foot">Obrigado pela preferência :)<br>Válido até {{OFERTA_ATE}}</div>
-          <div class="rc-code" aria-hidden="true"></div>
-        </div>
-      </div>
+      <p class="fine">{{REGRA}}</p>
+      <a class="btn" href="#wbf-form">Quero meus 3 meses grátis <span aria-hidden="true">→</span></a>
     </div>
   </section>
 

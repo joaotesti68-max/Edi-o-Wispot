@@ -8,14 +8,8 @@ OFERTA={
   'OFERTA_FIM':'2026-11-30T23:59:59-03:00',   # fim do contador (horário de Brasília)
   'STICKER':'Meses grátis · 21 pagando 18 · ',  # texto que gira no selo
   'STICKER_MEIO':'+3',
-  'STICKER_BAIXO':'meses grátis',
-  'RASPADINHA':'3 meses grátis',
-  'RASPADINHA_SUB':'no contrato de 18 meses',
   'REGRA':'Condição válida para novos contratos de 18 meses fechados até 30/11/2026: você ganha 3 meses grátis e garante 21 meses de solução pagando apenas 18. Consulte as regras com um especialista.',
 }
-TAPE1=['Black Friday Wispot','18 meses + 3 grátis','21 meses pagando 18','Só até 30/11']   # faixa azul
-TAPE2=['Seu Wi-Fi vende','Cada visita vira contato','Black Friday Wispot']     # faixa branca
-RECIBO=[('Contrato','18 MESES'),('Bônus Black Friday','+3 MESES'),('Meses de solução','21'),('Meses que você paga','18')]
 import os,base64,html
 d=os.path.dirname(os.path.abspath(__file__))
 css=open(d+'/style.css').read(); body=open(d+'/body.html').read(); js=open(d+'/script.js').read()
@@ -23,12 +17,9 @@ uri=lambda p:'data:image/png;base64,'+base64.b64encode(open(p,'rb').read()).deco
 CL=d+'/../../landing-monetize/src/clients/'
 ORDER=['carrefour','heineken','applebees','japan-house','johnny-rockets','bendito-cacao','ofner']
 logos=''.join(f'<div class="logo-card"><img src="{uri(CL+n+".png")}" alt="{n.replace("-"," ").title()}"></div>' for n in ORDER if os.path.exists(CL+n+'.png'))
-tape=lambda items:''.join(f'<span>{html.escape(t)}</span>' for t in items*3)
-recibo=''.join(f'<li><span>{html.escape(a)}</span><i></i><b>{html.escape(b)}</b></li>' for a,b in RECIBO)
 for k,v in OFERTA.items():body=body.replace('{{'+k+'}}',v)
 A=d+'/assets/'
-body=(body.replace('{{LOGO_WHITE}}',uri(A+'logo-white.png')).replace('{{LOGO_DARK}}',uri(A+'logo-color.png'))
-      .replace('{{LOGOS}}',logos).replace('{{TAPE1}}',tape(TAPE1)).replace('{{TAPE2}}',tape(TAPE2)).replace('{{RECIBO}}',recibo))
+body=body.replace('{{LOGO_WHITE}}',uri(A+'logo-white.png')).replace('{{LOGOS}}',logos)
 assert '{{' not in body and '{{' not in js and '{{' not in css, 'token left'
 libs='''<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
