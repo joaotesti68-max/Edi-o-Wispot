@@ -1,0 +1,143 @@
+/* Pro Advanced LP · Certificação TPN
+   Needs (in this order, before this file):
+   https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js
+   https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js
+   https://unpkg.com/lenis@1.1.13/dist/lenis.min.js
+   Without them the page still works, just without the scroll motion. */
+(function(){
+  /* ---------- RD Station settings (the same as the current TPN page) ---------- */
+  const RD={
+    publicToken:'8642f7d78d8931170d08ae3c51495718',   // token público da conta Pro Advanced
+    conversion:'lp-tpn',                              // identificador da conversão
+    thanks:'',                                        // página de obrigado; vazio = mensagem no próprio formulário
+    liveHosts:['proadvanced.com.br','rdstation.com','lp.rdstation.com.br']
+  };
+
+  const page=document.getElementById('ptpn');if(!page)return;
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const HAS=!!(window.gsap&&window.ScrollTrigger);
+
+  /* ---------- full width inside RD Station's 960px column ---------- */
+  function bleed(){
+    const st=page.style;st.setProperty('margin-left','0px','important');st.setProperty('width','auto','important');
+    const left=page.getBoundingClientRect().left,w=document.documentElement.clientWidth;
+    st.setProperty('width',w+'px','important');st.setProperty('max-width',w+'px','important');st.setProperty('margin-left',(-left)+'px','important');
+  }
+  bleed();addEventListener('resize',()=>{bleed();if(window.ScrollTrigger)ScrollTrigger.refresh()});addEventListener('load',bleed);
+
+  /* ---------- form → RD Station conversion ---------- */
+  (function(){
+    const form=document.getElementById('ptpn-lead');if(!form)return;
+    const msg=form.querySelector('.form-msg'),btn=form.querySelector('button[type=submit]');
+    const live=RD.liveHosts.some(h=>location.hostname===h||location.hostname.endsWith('.'+h));
+    function say(t,cls){msg.className='form-msg'+(cls?' '+cls:'');msg.textContent=t}
+    function utm(k){try{return new URLSearchParams(location.search).get(k)||undefined}catch(e){return undefined}}
+    function trackId(){try{const m=document.cookie.match(/(?:^|; )rdtrk=([^;]+)/);return m?JSON.parse(decodeURIComponent(m[1])).id:undefined}catch(e){return undefined}}
+    form.addEventListener('submit',async e=>{
+      e.preventDefault();
+      form.querySelectorAll('.field').forEach(f=>f.classList.remove('err'));
+      if(form.website.value)return; // bot
+      const miss=[...form.querySelectorAll('[required]')].find(el=>!el.value.trim());
+      if(miss){miss.closest('.field').classList.add('err');say('Preencha todos os campos marcados com *.','bad');miss.focus();return}
+      const email=form.email.value.trim();
+      if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){form.email.closest('.field').classList.add('err');say('Confira o e-mail: falta o @ ou o domínio.','bad');form.email.focus();return}
+      if(!live){say('Prévia: tudo certo com o preenchimento. Na página publicada no RD Station, o lead é enviado para a conversão "lp-tpn".','ok');return}
+      btn.disabled=true;say('Enviando…');
+      const payload={conversion_identifier:RD.conversion,name:form.name.value.trim(),email,company_name:form.company.value.trim(),
+        cf_cargoselecao:form.cf_cargoselecao.value,
+        traffic_source:utm('utm_source'),traffic_medium:utm('utm_medium'),traffic_campaign:utm('utm_campaign'),traffic_value:utm('utm_term'),
+        client_tracking_id:trackId()};
+      try{
+        const r=await fetch('https://api.rd.services/platform/conversions?api_key='+RD.publicToken,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({event_type:'CONVERSION',event_family:'CDP',payload})});
+        if(!r.ok)throw new Error(r.status);
+        if(RD.thanks){location.href=RD.thanks;return}
+        form.reset();btn.disabled=false;say('Recebemos seus dados. Um especialista da Pro Advanced vai entrar em contato.','ok');
+      }catch(err){
+        btn.disabled=false;say('Não conseguimos enviar agora. Tente de novo em alguns segundos.','bad');
+      }
+    });
+  })();
+
+  /* ---------- running timecode (24 fps) ---------- */
+  (function(){
+    const tc=page.querySelector('[data-tc]');if(!tc)return;
+    const t0=performance.now()-((Date.now()/1000)%3600)*1000,p=n=>String(n).padStart(2,'0');
+    function tick(){const f=Math.floor((performance.now()-t0)/1000*24);tc.textContent=`${p(Math.floor(f/86400)%24)}:${p(Math.floor(f/1440)%60)}:${p(Math.floor(f/24)%60)}:${p(f%24)}`;if(!reduce)requestAnimationFrame(tick)}
+    tick();
+  })();
+
+  /* ---------- hero footage: soft out-of-focus light drifting behind grain ---------- */
+  (function(){
+    const c=page.querySelector('.footage');if(!c)return;const x=c.getContext('2d');let w,h,blobs=[],grain;
+    function size(){const r=c.getBoundingClientRect();w=Math.max(1,r.width/2|0);h=Math.max(1,r.height/2|0);c.width=w;c.height=h;
+      blobs=Array.from({length:9},(_,i)=>({x:Math.random()*w,y:Math.random()*h,r:(.12+Math.random()*.22)*Math.max(w,h),vx:(Math.random()-.5)*.25,vy:(Math.random()-.5)*.2,c:i%3?'43,163,219':'104,197,219',a:.10+Math.random()*.16}));
+      grain=document.createElement('canvas');grain.width=128;grain.height=128;const g=grain.getContext('2d'),d=g.createImageData(128,128);
+      for(let i=0;i<d.data.length;i+=4){const v=Math.random()*255;d.data[i]=d.data[i+1]=d.data[i+2]=v;d.data[i+3]=18}g.putImageData(d,0,0)}
+    size();addEventListener('resize',size);
+    let vis=true;new IntersectionObserver(e=>{vis=e[0].isIntersecting}).observe(c);
+    function draw(){
+      if(vis){x.clearRect(0,0,w,h);x.globalCompositeOperation='lighter';
+        for(const b of blobs){b.x+=b.vx;b.y+=b.vy;if(b.x<-b.r)b.x=w+b.r;if(b.x>w+b.r)b.x=-b.r;if(b.y<-b.r)b.y=h+b.r;if(b.y>h+b.r)b.y=-b.r;
+          const g=x.createRadialGradient(b.x,b.y,0,b.x,b.y,b.r);g.addColorStop(0,`rgba(${b.c},${b.a})`);g.addColorStop(1,`rgba(${b.c},0)`);x.fillStyle=g;x.fillRect(b.x-b.r,b.y-b.r,b.r*2,b.r*2)}
+        x.globalCompositeOperation='source-over';const o=Math.random()*128|0;x.fillStyle=x.createPattern(grain,'repeat');x.save();x.translate(-o,-o);x.fillRect(0,0,w+128,h+128);x.restore()}
+      if(!reduce)requestAnimationFrame(draw)}
+    draw();
+  })();
+
+  /* ---------- YouTube: load the player only on click ---------- */
+  page.querySelectorAll('.yt[data-yt]').forEach(b=>b.addEventListener('click',()=>{
+    const f=document.createElement('iframe');f.src=`https://www.youtube-nocookie.com/embed/${b.dataset.yt}?autoplay=1&rel=0`;f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';f.allowFullscreen=true;f.title='Vídeo sobre a Certificação TPN';
+    b.replaceChildren(f);b.style.cursor='default';
+  },{once:true}));
+
+  /* ---------- film strip: frames light up once they pass the TPN gate ---------- */
+  const strip=page.querySelector('.strip'),stage=page.querySelector('.strip-stage'),gate=page.querySelector('.gate');
+  const frames=strip?[...strip.querySelectorAll('.frm')]:[];
+  function gateCheck(){const gx=gate.getBoundingClientRect().left;frames.forEach(f=>{const r=f.getBoundingClientRect();f.classList.toggle('on',r.left+r.width*.5<gx)})}
+  function stripAt(p){if(!strip)return;const travel=strip.scrollWidth-stage.clientWidth*.15;strip.style.transform=`translate3d(${stage.clientWidth*.55-p*travel}px,-50%,0)`;gateCheck()}
+
+  /* ---------- final: dust in the projector beam ---------- */
+  (function(){
+    const c=page.querySelector('.dust');if(!c||reduce)return;const x=c.getContext('2d');let w,h,ps=[];
+    function size(){const r=c.getBoundingClientRect();w=c.width=r.width;h=c.height=r.height;ps=Array.from({length:70},()=>({x:w/2+(Math.random()-.5)*w*.5,y:Math.random()*h,r:Math.random()*1.6+.3,v:Math.random()*.25+.05,a:Math.random()*.5+.2}))}
+    size();addEventListener('resize',size);let vis=false;new IntersectionObserver(e=>{vis=e[0].isIntersecting}).observe(c);
+    (function loop(){if(vis){x.clearRect(0,0,w,h);for(const p of ps){p.y-=p.v;p.x+=Math.sin(p.y*.02)*.15;if(p.y<0){p.y=h;p.x=w/2+(Math.random()-.5)*w*.5}
+      const spread=(p.y/h)*w*.32+20,inBeam=Math.abs(p.x-w/2)<spread;x.fillStyle=`rgba(201,230,245,${inBeam?p.a:p.a*.15})`;x.beginPath();x.arc(p.x,p.y,p.r,0,7);x.fill()}}requestAnimationFrame(loop)})();
+  })();
+
+  if(!HAS||reduce){stripAt(.5);page.querySelectorAll('.slate').forEach(s=>s.classList.add('clapped'));return}
+  gsap.registerPlugin(ScrollTrigger);
+
+  /* smooth scroll */
+  let lenis=null;
+  if(window.Lenis){
+    lenis=new Lenis({lerp:.1,smoothWheel:true});
+    lenis.on('scroll',ScrollTrigger.update);
+    gsap.ticker.add(t=>lenis.raf(t*1000));gsap.ticker.lagSmoothing(0);
+  }
+  page.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{
+    const el=document.querySelector(a.getAttribute('href'));if(!el)return;e.preventDefault();
+    if(lenis)lenis.scrollTo(el,{offset:-16,duration:1.3});else el.scrollIntoView({behavior:'smooth'});
+  }));
+
+  /* hero in */
+  gsap.from('.hero .kicker,.hero h1,.hero .lede',{y:34,opacity:0,duration:1.1,ease:'power3.out',stagger:.1,delay:.1,clearProps:'transform,opacity'});
+  gsap.from('.fcard',{y:50,opacity:0,duration:1.1,ease:'power3.out',delay:.3,clearProps:'transform,opacity'});
+  gsap.from('.hud',{opacity:0,duration:1.4,delay:.5});
+
+  /* reveals */
+  const rv=page.querySelectorAll('.what-copy>*,.video h2,.player,.safe-head>*,.why-head>*,.credits>div,.final h2,.final p,.final .btn');
+  rv.forEach(el=>el.classList.add('rv'));
+  const show=b=>gsap.to(b,{opacity:1,y:0,duration:.9,ease:'power3.out',stagger:.09,overwrite:true});
+  ScrollTrigger.batch(rv,{start:'top 88%',onEnter:show,onEnterBack:show,onLeave:show});
+  gsap.from('.seal',{scale:.6,rotate:-40,opacity:0,duration:1.2,ease:'back.out(1.4)',scrollTrigger:{trigger:'.what',start:'top 75%'}});
+  gsap.from('.seal-ck',{strokeDasharray:60,strokeDashoffset:60,duration:.8,ease:'power2.out',delay:.6,scrollTrigger:{trigger:'.what',start:'top 75%'}});
+
+  /* film strip scrubs with the scroll */
+  if(strip)ScrollTrigger.create({trigger:'.safe',start:'top bottom',end:'bottom top',onUpdate:s=>stripAt(s.progress),onRefresh:s=>stripAt(s.progress)});
+
+  /* slates: drop in, then the clapper closes */
+  page.querySelectorAll('.slate').forEach((s,i)=>gsap.from(s,{y:60,opacity:0,duration:.9,ease:'power3.out',delay:(i%2)*.12,clearProps:'transform,opacity',
+    scrollTrigger:{trigger:s,start:'top 88%'},onComplete:()=>s.classList.add('clapped')}));
+  ScrollTrigger.refresh();
+})();
