@@ -67,7 +67,7 @@ html,body{overflow-x:clip}
 .ptpn .ticks svg{flex:none;width:26px;height:26px;padding:5px;border-radius:50%;background:rgba(43,163,219,.14);color:var(--cyan)}
 
 /* form: like the site's contact form */
-.ptpn .fcard{display:grid;gap:14px;padding:clamp(24px,2.6vw,34px);background:linear-gradient(180deg,rgba(14,42,63,.45),rgba(8,18,31,.78));backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.ptpn .fcard{display:grid;gap:14px;padding:clamp(24px,2.6vw,34px);background:linear-gradient(180deg,rgba(14,42,63,.4),rgba(8,18,31,.7));backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px)}
 .ptpn .fcard h2{font-size:clamp(20px,1.7vw,24px);margin-bottom:4px}
 .ptpn .field{display:grid;gap:6px}
 .ptpn .field label{font:500 13px var(--font);color:var(--mist)}
