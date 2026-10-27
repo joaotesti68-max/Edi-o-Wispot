@@ -1,5 +1,6 @@
 /* Pro Advanced LP · Certificação TPN
    Needs (in this order, before this file):
+   https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js
    https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js
    https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js
    https://unpkg.com/lenis@1.1.13/dist/lenis.min.js
@@ -64,56 +65,100 @@
     b.replaceChildren(f);b.style.cursor='default';
   },{once:true}));
 
-  /* ---------- background: video frames get certified (lock) as the page scrolls ----------
-     Exposed frames are dim and leak little dots; a scan beam sweeps across and protects every frame
-     whose turn has come. The share of protected frames follows the scroll: about 20% at the top, 100% at the end. */
+  /* ---------- background: the TPN shield ----------
+     A hexagonal shield dome turns slowly behind the page with video frames orbiting inside it (the content).
+     Threats fly in from outside: where the shield is already active they hit it and send a ripple across the
+     hexagons; where it is not, they slip through and fade in red. The active share of hexagons follows the
+     scroll (about 20% at the top, 100% at the end) and the badge in the corner shows it. */
   (function(){
-    const c=page.querySelector('.vault');if(!c)return;const x=c.getContext('2d');
+    const c=page.querySelector('.vault');if(!c||!window.THREE)return;
+    let R;try{R=new THREE.WebGLRenderer({canvas:c,antialias:true,alpha:true,powerPreference:'high-performance'})}catch(e){return}
+    R.setClearColor(0x000000,0);
     const pctEl=page.querySelector('[data-pct]'),bar=page.querySelector('[data-bar]');
-    let W,H,DPR,cw,ch,gap,cols,rows,cells=[],leaks=[],beam=-.2,goal=.2,shown=0,lastT=performance.now();
-    function size(){
-      DPR=Math.min(2,devicePixelRatio||1);W=innerWidth;H=innerHeight;c.width=W*DPR;c.height=H*DPR;x.setTransform(DPR,0,0,DPR,0,0);
-      const m=W<700;cw=m?58:84;ch=m?34:48;gap=m?14:20;cols=Math.ceil(W/(cw+gap))+1;rows=Math.ceil(H/(ch+gap))+2;
-      const old=cells;cells=[];
-      for(let r=0;r<rows;r++)for(let k=0;k<cols;k++){const i=r*cols+k;cells.push({k,r,rank:old[i]?old[i].rank:Math.random(),p:old[i]?old[i].p:0,flash:0,seed:Math.random()})}
-    }
-    function progress(){const max=document.documentElement.scrollHeight-innerHeight;const pr=max>0?Math.min(1,Math.max(0,scrollY/max)):1;return .2+.8*pr}
-    function lock(cx,cy,s,a){x.strokeStyle=`rgba(104,197,219,${a})`;x.lineWidth=1.4;x.beginPath();x.arc(cx,cy-s*.35,s*.32,Math.PI,0);x.stroke();x.fillStyle=`rgba(104,197,219,${a})`;x.fillRect(cx-s*.45,cy-s*.35,s*.9,s*.7)}
-    function draw(now){
-      const dt=Math.min(.05,(now-lastT)/1000);lastT=now;
-      goal=progress();
-      if(!reduce){beam+=dt*.16;if(beam>1.25)beam=-.25}
-      x.clearRect(0,0,W,H);
-      const off=reduce?0:(scrollY*.12)%(ch+gap),bx=beam*W;
-      for(const e of cells){
-        const px=e.k*(cw+gap)-(e.r%2)*(cw+gap)/2,py=e.r*(ch+gap)-off;
-        if(py>H||py+ch<0)continue;
-        /* the beam certifies the frames whose turn has come */
-        if(e.p<1&&e.rank<goal&&(reduce||Math.abs(px+cw/2-bx)<cw)){if(e.p===0)e.flash=1;e.p=1}
-        if(e.flash>0)e.flash=Math.max(0,e.flash-dt*1.6);
-        if(e.p){
-          x.fillStyle=`rgba(43,163,219,${.03+e.flash*.18})`;x.fillRect(px,py,cw,ch);
-          x.strokeStyle=`rgba(43,163,219,${.2+e.flash*.45})`;x.lineWidth=1;x.strokeRect(px+.5,py+.5,cw-1,ch-1);
-          lock(px+cw/2,py+ch/2+2,ch*.3,.24+e.flash*.5);
-        }else{
-          x.strokeStyle='rgba(201,214,228,.06)';x.lineWidth=1;x.strokeRect(px+.5,py+.5,cw-1,ch-1);
-          x.fillStyle='rgba(201,214,228,.025)';for(let l=py+6;l<py+ch-4;l+=6)x.fillRect(px+5,l,(cw-10)*(.4+.6*((e.seed*97+l)%1)),1.5);
-          if(!reduce&&Math.random()<dt*.35*e.seed)leaks.push({x:px+Math.random()*cw,y:py+Math.random()*ch,vx:(Math.random()-.5)*30,vy:-12-Math.random()*26,life:1});
-        }
-      }
-      /* leaking dots from exposed frames */
-      for(let i=leaks.length-1;i>=0;i--){const l=leaks[i];l.x+=l.vx*dt;l.y+=l.vy*dt;l.life-=dt*.7;if(l.life<=0){leaks.splice(i,1);continue}
-        x.fillStyle=`rgba(249,109,100,${.42*l.life})`;x.fillRect(l.x,l.y,2,2)}
-      if(leaks.length>160)leaks.splice(0,leaks.length-160);
-      /* scan beam */
-      if(!reduce&&beam>-.1&&beam<1.1){const g=x.createLinearGradient(bx-120,0,bx+4,0);g.addColorStop(0,'rgba(43,163,219,0)');g.addColorStop(1,'rgba(104,197,219,.14)');x.fillStyle=g;x.fillRect(bx-120,0,124,H);x.fillStyle='rgba(104,197,219,.4)';x.fillRect(bx,0,1.5,H)}
-      /* meter */
-      const vis=cells.filter(e=>{const py=e.r*(ch+gap)-off;return py<H&&py+ch>0});
-      const real=vis.length?vis.filter(e=>e.p).length/vis.length:0;shown+=(real-shown)*Math.min(1,dt*4);
+    const scene=new THREE.Scene(),cam=new THREE.PerspectiveCamera(36,1,.1,100);cam.position.set(0,0,9);
+    const root=new THREE.Group();scene.add(root);
+    const RAD=2.2;
+
+    /* shield: hex grid on a sphere, fresnel rim, cells switch on below uCover, ripples from hits */
+    const HITS=6,hitPos=[],hitT=[];for(let i=0;i<HITS;i++){hitPos.push(new THREE.Vector3(0,0,0));hitT.push(-99)}
+    const sMat=new THREE.ShaderMaterial({transparent:true,depthWrite:false,side:THREE.DoubleSide,blending:THREE.AdditiveBlending,
+      uniforms:{uTime:{value:0},uCover:{value:.2},uHitP:{value:hitPos},uHitT:{value:hitT}},
+      vertexShader:`varying vec2 vUv;varying vec3 vN;varying vec3 vP;varying vec3 vV;
+        void main(){vUv=uv;vec4 w=modelMatrix*vec4(position,1.);vP=position;vN=normalize(normalMatrix*normal);vec4 mv=viewMatrix*w;vV=normalize(-mv.xyz);gl_Position=projectionMatrix*mv;}`,
+      fragmentShader:`uniform float uTime,uCover;uniform vec3 uHitP[${HITS}];uniform float uHitT[${HITS}];
+        varying vec2 vUv;varying vec3 vN;varying vec3 vP;varying vec3 vV;
+        vec4 hexCoord(vec2 p){vec2 r=vec2(1.,1.732);vec2 h=r*.5;vec2 a=mod(p,r)-h;vec2 b=mod(p-h,r)-h;vec2 g=dot(a,a)<dot(b,b)?a:b;return vec4(g,p-g);}
+        float hexDist(vec2 p){p=abs(p);return max(dot(p,normalize(vec2(1.,1.732))),p.x);}
+        float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
+        void main(){
+          vec4 h=hexCoord(vec2(vUv.x*42.,vUv.y*21.));
+          float id=hash(floor(h.zw*10.)+.5);
+          float on=smoothstep(uCover,uCover-.06,id);
+          float edge=smoothstep(.40,.47,hexDist(h.xy));
+          float fres=pow(1.-abs(dot(normalize(vN),normalize(vV))),2.2);
+          float rip=0.;for(int i=0;i<${HITS};i++){float age=uTime-uHitT[i];if(age>0.&&age<1.6){float d=distance(normalize(vP),normalize(uHitP[i]))*2.2;rip+=smoothstep(.22,0.,abs(d-age*1.6))*(1.-age/1.6);}}
+          float pulse=.5+.5*sin(uTime*1.6-vUv.y*12.+id*6.28);
+          float a=on*(edge*(.32+.35*pulse)+.05)+fres*(.10+.30*on)+rip*(.9*edge+.25)*(.4+.6*on);
+          vec3 col=mix(vec3(.17,.64,.86),vec3(.41,.77,.86),pulse*.6+rip);
+          gl_FragColor=vec4(col,a*.62);
+        }`});
+    const shield=new THREE.Mesh(new THREE.SphereGeometry(RAD,96,64),sMat);root.add(shield);
+    /* soft core glow */
+    const glowTex=(()=>{const cv=document.createElement('canvas');cv.width=cv.height=128;const g=cv.getContext('2d');const gr=g.createRadialGradient(64,64,0,64,64,64);gr.addColorStop(0,'rgba(104,197,219,.55)');gr.addColorStop(.4,'rgba(43,163,219,.18)');gr.addColorStop(1,'rgba(43,163,219,0)');g.fillStyle=gr;g.fillRect(0,0,128,128);return new THREE.CanvasTexture(cv)})();
+    const glow=new THREE.Sprite(new THREE.SpriteMaterial({map:glowTex,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending}));glow.scale.set(RAD*3.2,RAD*3.2,1);root.add(glow);
+
+    /* content: video frames orbiting inside the shield */
+    function still(i){const cv=document.createElement('canvas');cv.width=256;cv.height=144;const g=cv.getContext('2d');
+      const pal=[['#0e2a3f','#2ba3db'],['#045089','#68c5db'],['#08121f','#488ab7'],['#0e2a3f','#68c5db'],['#045089','#2ba3db'],['#08121f','#2ba3db']][i%6];
+      const gr=g.createLinearGradient(0,0,256,144);gr.addColorStop(0,pal[0]);gr.addColorStop(1,pal[1]);g.fillStyle=gr;g.fillRect(0,0,256,144);
+      g.globalAlpha=.35;g.fillStyle='#000c19';
+      if(i%3===0){g.beginPath();g.moveTo(0,144);g.lineTo(70,70);g.lineTo(120,110);g.lineTo(180,50);g.lineTo(256,120);g.lineTo(256,144);g.fill()}
+      else if(i%3===1){for(let k=0;k<9;k++){const w=18+((k*37)%20),hh=30+((k*53)%60);g.fillRect(k*29,144-hh,w,hh)}}
+      else{g.beginPath();g.arc(128,150,70,Math.PI,0);g.fill();g.beginPath();g.arc(128,62,26,0,7);g.fill()}
+      g.globalAlpha=1;g.strokeStyle='rgba(255,255,255,.55)';g.lineWidth=3;g.strokeRect(1.5,1.5,253,141);
+      g.fillStyle='rgba(255,255,255,.85)';g.beginPath();g.moveTo(118,58);g.lineTo(118,86);g.lineTo(142,72);g.fill();
+      g.font='600 13px Montserrat,Arial';g.fillStyle='rgba(255,255,255,.8)';g.fillText(['ROTEIRO','CAPTAÇÃO','EDIÇÃO','VFX','FINALIZAÇÃO','DISTRIBUIÇÃO'][i%6],12,24);
+      const t=new THREE.CanvasTexture(cv);t.anisotropy=4;return t}
+    const frames=[];
+    for(let i=0;i<6;i++){const m=new THREE.Mesh(new THREE.PlaneGeometry(.96,.54),new THREE.MeshBasicMaterial({map:still(i),transparent:true,opacity:.9,side:THREE.DoubleSide,depthWrite:false}));
+      m.userData={a:i/6*Math.PI*2,y:(i%2?.35:-.35)*(1+(i%3)*.2),r:1.25+(i%2)*.15};root.add(m);frames.push(m)}
+
+    /* threats */
+    const T=[];const tGeo=new THREE.SphereGeometry(.035,8,8);
+    function spawn(){const u=Math.random()*2-1,th=Math.random()*Math.PI*2,q=Math.sqrt(1-u*u);const d=new THREE.Vector3(q*Math.cos(th),u,q*Math.sin(th));const m=new THREE.Mesh(tGeo,new THREE.MeshBasicMaterial({color:0xf96d64,transparent:true,opacity:.9,depthWrite:false}));
+      m.position.copy(d).multiplyScalar(RAD*2.6+Math.random()*1.5);root.add(m);
+      T.push({m,v:d.clone().negate().multiplyScalar(1.3+Math.random()*.6),state:0,life:1})}
+    let hitIx=0;
+    function hit(p,t){hitPos[hitIx].copy(p);hitT[hitIx]=t;hitIx=(hitIx+1)%HITS}
+
+    /* layout: the shield sits on the right (behind the form at the top), centered and smaller on phones */
+    let W=1,H=1,halfW=1,halfH=Math.tan(THREE.MathUtils.degToRad(18))*9;
+    function size(){W=innerWidth;H=innerHeight;R.setPixelRatio(Math.min(2,devicePixelRatio||1));R.setSize(W,H,false);cam.aspect=W/H;cam.updateProjectionMatrix();halfW=halfH*cam.aspect}
+    size();addEventListener('resize',size);
+    function scrollP(){const max=document.documentElement.scrollHeight-innerHeight;return max>0?Math.min(1,Math.max(0,scrollY/max)):1}
+
+    let shown=0,last=performance.now(),acc=0,vis=true;
+    document.addEventListener('visibilitychange',()=>{vis=!document.hidden;if(vis){last=performance.now();requestAnimationFrame(loop)}});
+    function loop(now){
+      if(!vis)return;const dt=Math.min(.05,(now-last)/1000);last=now;const t=now/1000;
+      const sp=scrollP(),cover=.2+.8*sp,mob=W<900;
+      sMat.uniforms.uTime.value=t;sMat.uniforms.uCover.value+=(cover-sMat.uniforms.uCover.value)*Math.min(1,dt*3);
+      const s=mob?Math.min(1,halfW/2.6):1;root.scale.setScalar(s);
+      const tx=mob?halfW*.25:halfW*(.42+.2*sp),ty=mob?-halfH*.25:(.15-.3*sp);
+      root.position.x+=(tx-root.position.x)*Math.min(1,dt*2);root.position.y+=(ty-root.position.y)*Math.min(1,dt*2);
+      shield.rotation.y=reduce?0:t*.06+sp*2.2;shield.rotation.x=.25;
+      frames.forEach((f,i)=>{const u=f.userData,a=u.a+(reduce?0:t*.25)+sp*1.5;f.position.set(Math.cos(a)*u.r,u.y+Math.sin(t*.8+i)*.06,Math.sin(a)*u.r);f.lookAt(f.position.x*3,f.position.y,f.position.z*3+4);f.material.opacity=.55+.4*Math.max(0,f.position.z/u.r)});
+      if(!reduce){acc+=dt;const every=mob?.7:.38;while(acc>every){acc-=every;if(T.length<40)spawn()}}
+      for(let i=T.length-1;i>=0;i--){const o=T[i];o.m.position.addScaledVector(o.v,dt);const d=o.m.position.length();
+        if(o.state===0&&d<RAD){if(Math.random()<sMat.uniforms.uCover.value){hit(o.m.position.clone(),t);o.state=2}else{o.state=1}}
+        if(o.state===1){o.life-=dt*.9;o.m.material.opacity=.9*o.life}
+        if(o.state===2){o.life-=dt*4;o.m.scale.setScalar(1+(1-o.life)*3);o.m.material.color.setHex(0x68c5db);o.m.material.opacity=Math.max(0,o.life)}
+        if(o.life<=0||d<.2){root.remove(o.m);o.m.material.dispose();T.splice(i,1)}}
+      shown+=(sMat.uniforms.uCover.value-shown)*Math.min(1,dt*4);
       const pct=Math.round(shown*100)+'%';if(pctEl&&pctEl.textContent!==pct){pctEl.textContent=pct;if(bar)bar.style.width=pct}
-      requestAnimationFrame(draw);
+      R.render(scene,cam);requestAnimationFrame(loop);
     }
-    size();addEventListener('resize',size);requestAnimationFrame(draw);
+    requestAnimationFrame(loop);
   })();
 
   if(!HAS||reduce)return;

@@ -34,6 +34,8 @@ html,body{overflow-x:clip}
 
 /* background: a library of video frames that get certified as you scroll */
 .ptpn .vault{position:fixed;inset:0;width:100vw;height:100vh;z-index:-1;pointer-events:none;display:block}
+.ptpn .scrim{position:fixed;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(90deg,rgba(0,12,25,.82) 0%,rgba(0,12,25,.55) 38%,rgba(0,12,25,0) 62%)}
+@media (max-width:900px){.ptpn .scrim{background:rgba(0,12,25,.55)}}
 .ptpn .meter{position:fixed;left:clamp(12px,2vw,24px);bottom:clamp(12px,2vw,24px);z-index:15;display:flex;align-items:center;gap:10px;padding:9px 14px 9px 12px;border-radius:999px;background:rgba(0,12,25,.85);border:1px solid var(--line2);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);font:500 12px var(--font);color:var(--mist);box-shadow:0 10px 30px -12px rgba(0,0,0,.8)}
 .ptpn .meter svg{color:var(--cyan);flex:none}
 .ptpn .meter b{font-weight:700;color:#fff;min-width:3.2ch;text-align:right;font-variant-numeric:tabular-nums}
@@ -41,7 +43,7 @@ html,body{overflow-x:clip}
 .ptpn .meter em{display:block;height:100%;width:0;background:var(--grad);border-radius:4px;transition:width .3s}
 
 /* cards */
-.ptpn .card{background:linear-gradient(180deg,rgba(14,42,63,.38),rgba(8,18,31,.92));border:1px solid var(--line);border-radius:12px}
+.ptpn .card{background:linear-gradient(180deg,rgba(10,30,46,.9),rgba(8,18,31,.95));border:1px solid var(--line);border-radius:12px}
 
 /* buttons: the site's gradient pill */
 .ptpn .btn{display:inline-flex;align-items:center;justify-content:center;font:600 15px/1.2 var(--font);padding:14px 30px;border-radius:999px;border:0;cursor:pointer;text-decoration:none;background:var(--grad);color:#fff;transition:filter .2s,transform .2s,box-shadow .2s}
@@ -65,7 +67,7 @@ html,body{overflow-x:clip}
 .ptpn .ticks svg{flex:none;width:26px;height:26px;padding:5px;border-radius:50%;background:rgba(43,163,219,.14);color:var(--cyan)}
 
 /* form: like the site's contact form */
-.ptpn .fcard{display:grid;gap:14px;padding:clamp(24px,2.6vw,34px)}
+.ptpn .fcard{display:grid;gap:14px;padding:clamp(24px,2.6vw,34px);background:linear-gradient(180deg,rgba(14,42,63,.45),rgba(8,18,31,.78));backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
 .ptpn .fcard h2{font-size:clamp(20px,1.7vw,24px);margin-bottom:4px}
 .ptpn .field{display:grid;gap:6px}
 .ptpn .field label{font:500 13px var(--font);color:var(--mist)}

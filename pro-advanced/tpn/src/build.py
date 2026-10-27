@@ -5,7 +5,8 @@ css=open(d+'/style.css').read(); body=open(d+'/body.html').read(); js=open(d+'/s
 uri=lambda p:'data:image/png;base64,'+base64.b64encode(open(p,'rb').read()).decode()
 body=body.replace('{{LOGO}}',uri(d+'/assets/logo-dark-sm.png'))
 assert '{{' not in body and '{{' not in js, 'token left'
-libs='''<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+libs='''<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>'''
 out=d+'/..'
