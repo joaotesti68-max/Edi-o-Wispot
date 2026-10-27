@@ -1,6 +1,6 @@
 # Landing page "Certificação TPN" no RD Station
 
-Mesmo conteúdo da LP atual (lps.proadvanced.com.br/lp-tpn), com um novo visual no estilo do site da Pro Advanced.
+Mesmo conteúdo da LP atual (lps.proadvanced.com.br/lp-tpn), no mesmo layout do site proadvanced.com.br (cores, cards, ícones e botões).
 
 ## Arquivos
 - `tudo-em-um-bloco-html.html`: a página inteira em um arquivo só. **Comece por este.**

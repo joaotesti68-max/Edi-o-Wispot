@@ -1,143 +1,135 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap">
 <div class="ptpn" id="ptpn">
 
-  <!-- HERO: a protected dailies monitor -->
-  <section class="hero">
-    <canvas class="footage" aria-hidden="true"></canvas>
-    <div class="wm" aria-hidden="true"><span>CONFIDENCIAL · PROADVANCED · CONFIDENCIAL · PROADVANCED · CONFIDENCIAL · PROADVANCED ·</span><span>CONFIDENCIAL · PROADVANCED · CONFIDENCIAL · PROADVANCED · CONFIDENCIAL · PROADVANCED ·</span><span>CONFIDENCIAL · PROADVANCED · CONFIDENCIAL · PROADVANCED · CONFIDENCIAL · PROADVANCED ·</span><span>CONFIDENCIAL · PROADVANCED · CONFIDENCIAL · PROADVANCED · CONFIDENCIAL · PROADVANCED ·</span></div>
-    <div class="hud" aria-hidden="true">
-      <i class="cn c1"></i><i class="cn c2"></i><i class="cn c3"></i><i class="cn c4"></i>
-      <span class="h-tl"><b class="dot"></b>Conteúdo protegido</span>
-      <span class="h-tr">TC <b data-tc>00:00:00:00</b></span>
-      <span class="h-bl">CAM A · 4K · 23.976 fps</span>
-      <span class="h-br">TPN <b>✓</b> Trusted Partner Network</span>
-    </div>
-
-    <header class="bar wrap">
+  <header class="top">
+    <div class="wrap bar">
       <img src="{{LOGO}}" alt="Pro Advanced IT Solutions">
-      <span class="bar-r">Certificação TPN</span>
-    </header>
+      <a class="btn sm" href="#ptpn-form">Fale com um especialista</a>
+    </div>
+  </header>
 
+  <!-- HERO + FORM -->
+  <section class="hero">
     <div class="wrap hero-grid">
       <div class="hero-copy">
-        <p class="kicker">Certificação TPN</p>
-        <h1>Segurança para suas <em>produções audiovisuais</em></h1>
-        <p class="lede">Preencha o formulário e descubra como a Certificação TPN pode proteger seu conteúdo.</p>
+        <span class="tag">Certificação TPN</span>
+        <h1>Segurança para suas <span class="hl">produções audiovisuais</span></h1>
+        <p class="lead">Preencha o formulário e descubra como a Certificação TPN pode proteger seu conteúdo.</p>
+        <ul class="ticks">
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Proteção contra pirataria e vazamentos</li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Segurança em todas as etapas da produção</li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Acompanhamento da Pro Advanced do início ao fim</li>
+        </ul>
       </div>
 
       <div class="fcol" id="ptpn-form">
-        <form class="fcard" id="ptpn-lead" novalidate>
-          <div class="fc-top"><span class="fc-lock" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span><span>Fale com um especialista em TPN</span></div>
-          <div class="field"><label for="ptpn-name">Nome*</label><input id="ptpn-name" name="name" type="text" autocomplete="name" placeholder="Seu nome" required></div>
-          <div class="field"><label for="ptpn-email">E-mail corporativo*</label><input id="ptpn-email" name="email" type="email" autocomplete="email" placeholder="voce@empresa.com.br" required></div>
-          <div class="field"><label for="ptpn-company">Empresa*</label><input id="ptpn-company" name="company" type="text" autocomplete="organization" placeholder="Nome da empresa" required></div>
+        <form class="card fcard" id="ptpn-lead" novalidate>
+          <h2>Fale com um especialista</h2>
+          <div class="field"><label for="ptpn-name">Nome*</label><input id="ptpn-name" name="name" type="text" autocomplete="name" required></div>
+          <div class="field"><label for="ptpn-email">E-mail corporativo*</label><input id="ptpn-email" name="email" type="email" autocomplete="email" required></div>
+          <div class="field"><label for="ptpn-company">Empresa*</label><input id="ptpn-company" name="company" type="text" autocomplete="organization" required></div>
           <div class="field"><label for="ptpn-role">Cargo*</label>
             <select id="ptpn-role" name="cf_cargoselecao" required>
               <option value="">Selecione</option><option>Sócio/Proprietário(a)</option><option>Gerente/ Coordenador(a) de TI</option><option>Gerente de Segurança da Informação</option><option>Supervisor(a) de TI</option><option>Analista de TI</option><option>Analista de Segurança da Informação</option><option>Administrativo</option><option>Marketing</option><option>Jurídico</option><option>Compras</option><option>Estagiário(a)</option><option>Outros</option>
             </select></div>
           <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
-          <button class="btn" type="submit">Quero proteger minhas produções <span aria-hidden="true">→</span></button>
+          <button class="btn" type="submit">Falar com um especialista</button>
           <p class="form-msg" role="status" aria-live="polite"></p>
+          <p class="legal">Prometemos não utilizar suas informações de contato para enviar qualquer tipo de SPAM.</p>
         </form>
       </div>
     </div>
   </section>
 
   <!-- WHAT IS TPN -->
-  <section class="what">
-    <div class="wrap what-grid">
-      <div class="seal" aria-hidden="true">
-        <svg viewBox="0 0 220 220"><defs><path id="ptpn-ring" d="M110 110m-86 0a86 86 0 1 1 172 0a86 86 0 1 1-172 0"/><linearGradient id="ptpn-g" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#2ba3db"/><stop offset="1" stop-color="#68c5db"/></linearGradient></defs>
-          <circle cx="110" cy="110" r="104" fill="none" stroke="url(#ptpn-g)" stroke-width="1.5"/>
-          <circle cx="110" cy="110" r="68" fill="none" stroke="rgba(104,197,219,.35)" stroke-width="1"/>
-          <g class="seal-ring"><text><textPath href="#ptpn-ring" textLength="530" lengthAdjust="spacing">TRUSTED PARTNER NETWORK · CERTIFICAÇÃO TPN · </textPath></text></g>
-          <path d="M110 70l30 12v22c0 20-13 34-30 40-17-6-30-20-30-40V82z" fill="url(#ptpn-g)"/>
-          <path class="seal-ck" d="M97 108l9 9 18-20" fill="none" stroke="#000c19" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </div>
-      <div class="what-copy">
-        <p class="kicker">O que é</p>
+  <section class="sec">
+    <div class="wrap what">
+      <div>
+        <p class="kicker">Certificação TPN</p>
         <h2>O que é a Certificação TPN?</h2>
-        <p>A <b>Trusted Partner Network</b> é um selo internacional que assegura que sua produção audiovisual segue os mais altos padrões de segurança digital. Ao obter a certificação, você <b>evita vazamentos</b> e demonstra aos seus parceiros que sua empresa está comprometida com a proteção dos conteúdos.</p>
+        <p class="lead">A Trusted Partner Network é um selo internacional que assegura que sua produção audiovisual segue os mais altos padrões de segurança digital. Ao obter a certificação, você evita vazamentos e demonstra aos seus parceiros que sua empresa está comprometida com a proteção dos conteúdos.</p>
+      </div>
+      <div class="card seal-card" aria-hidden="true">
+        <svg class="seal" viewBox="0 0 220 220"><defs><path id="ptpn-ring" d="M110 110m-84 0a84 84 0 1 1 168 0a84 84 0 1 1-168 0"/><linearGradient id="ptpn-g" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#2ba3db"/><stop offset="1" stop-color="#68c5db"/></linearGradient></defs>
+          <circle cx="110" cy="110" r="104" fill="none" stroke="rgba(43,163,219,.35)" stroke-width="1"/>
+          <circle cx="110" cy="110" r="66" fill="rgba(43,163,219,.06)" stroke="rgba(43,163,219,.3)" stroke-width="1"/>
+          <g class="seal-ring"><text><textPath href="#ptpn-ring" textLength="518" lengthAdjust="spacing">TRUSTED PARTNER NETWORK · CERTIFICAÇÃO TPN · </textPath></text></g>
+          <path d="M110 72l28 11v21c0 19-12 32-28 38-16-6-28-19-28-38V83z" fill="url(#ptpn-g)"/>
+          <path class="seal-ck" d="M98 108l8 8 17-18" fill="none" stroke="#000c19" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
       </div>
     </div>
   </section>
 
   <!-- VIDEO -->
-  <section class="video">
+  <section class="sec">
     <div class="wrap">
-      <h2>Assista ao nosso vídeo e entenda mais sobre a <em>Certificação TPN</em></h2>
-      <div class="player">
-        <div class="sprockets" aria-hidden="true"></div>
+      <div class="head center">
+        <p class="kicker">Vídeo</p>
+        <h2>Assista ao nosso vídeo e entenda mais sobre a Certificação TPN</h2>
+      </div>
+      <div class="card player">
         <button class="yt" type="button" data-yt="7Vt1_PHt0eE" aria-label="Assistir ao vídeo sobre a Certificação TPN">
           <img src="https://i.ytimg.com/vi/7Vt1_PHt0eE/hqdefault.jpg" alt="" loading="lazy" onerror="this.remove()">
           <span class="play" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
         </button>
-        <div class="sprockets" aria-hidden="true"></div>
       </div>
     </div>
   </section>
 
-  <!-- IS IT SAFE: film strip through the protection gate -->
-  <section class="safe">
-    <div class="wrap safe-head">
-      <p class="kicker">Sua produção</p>
-      <h2>Sua produção audiovisual está segura?</h2>
-      <p>Vazamentos podem destruir anos de trabalho em um instante. Com a <b>Certificação TPN (Trusted Partner Network)</b>, você protege suas produções contra pirataria e vazamentos, garantindo a segurança em todas as etapas.</p>
-    </div>
-    <div class="strip-stage" aria-hidden="true">
-      <div class="gate"><span>TPN</span></div>
-      <div class="strip">
-        <div class="frm"><span>Roteiro</span></div><div class="frm"><span>Captação</span></div><div class="frm"><span>Edição</span></div><div class="frm"><span>VFX</span></div><div class="frm"><span>Finalização</span></div><div class="frm"><span>Distribuição</span></div>
-        <div class="frm"><span>Roteiro</span></div><div class="frm"><span>Captação</span></div><div class="frm"><span>Edição</span></div><div class="frm"><span>VFX</span></div><div class="frm"><span>Finalização</span></div><div class="frm"><span>Distribuição</span></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- BENEFITS: four slates -->
-  <section class="benefits">
+  <!-- IS IT SAFE + 4 BENEFITS -->
+  <section class="sec">
     <div class="wrap">
-      <ol class="slates">
-        <li class="slate"><div class="clap" aria-hidden="true"><i></i></div><div class="sl-body"><span class="sl-k">Cena 01</span><h3>Evite perdas irreparáveis</h3><p><b>Minimize o risco</b> de vazamentos que podem comprometer a integridade do seu trabalho, garantindo segurança em cada fase da produção.</p></div></li>
-        <li class="slate"><div class="clap" aria-hidden="true"><i></i></div><div class="sl-body"><span class="sl-k">Cena 02</span><h3>Certificação reconhecida</h3><p>A Certificação TPN valida suas <b>práticas de segurança</b>, reforçando o compromisso da sua empresa com a <b>proteção de dados sensíveis</b>.</p></div></li>
-        <li class="slate"><div class="clap" aria-hidden="true"><i></i></div><div class="sl-body"><span class="sl-k">Cena 03</span><h3>Destaque no setor</h3><p>Torne-se um <b>parceiro confiável no mercado audiovisual</b>, mostrando que sua produção segue as diretrizes exigidas pelos principais players da indústria.</p></div></li>
-        <li class="slate"><div class="clap" aria-hidden="true"><i></i></div><div class="sl-body"><span class="sl-k">Cena 04</span><h3>Apoio completo da Pro Advanced</h3><p>A Pro Advanced oferece um <b>acompanhamento contínuo</b>, assegurando que sua empresa navegue pelo processo de certificação com facilidade e eficiência.</p></div></li>
+      <div class="head">
+        <p class="kicker">Proteção do conteúdo</p>
+        <h2>Sua produção audiovisual está segura?</h2>
+        <p class="lead">Vazamentos podem destruir anos de trabalho em um instante. Com a Certificação TPN (Trusted Partner Network), você protege suas produções contra pirataria e vazamentos, garantindo a segurança em todas as etapas.</p>
+      </div>
+      <ol class="grid g4">
+        <li class="card item"><span class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span><span class="n">01</span><h3>Evite perdas irreparáveis</h3><p><b>Minimize o risco</b> de vazamentos que podem comprometer a integridade do seu trabalho, garantindo segurança em cada fase da produção.</p></li>
+        <li class="card item"><span class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="6"/><path d="M8.5 14 7 22l5-3 5 3-1.5-8"/></svg></span><span class="n">02</span><h3>Certificação reconhecida</h3><p>A Certificação TPN valida suas <b>práticas de segurança</b>, reforçando o compromisso da sua empresa com a <b>proteção de dados sensíveis</b>.</p></li>
+        <li class="card item"><span class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3 6.5 7 .9-5.2 4.8 1.4 7-6.2-3.6-6.2 3.6 1.4-7L2 9.4l7-.9z"/></svg></span><span class="n">03</span><h3>Destaque no setor</h3><p>Torne-se um <b>parceiro confiável no mercado audiovisual</b>, mostrando que sua produção segue as diretrizes exigidas pelos principais players da indústria.</p></li>
+        <li class="card item"><span class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></svg></span><span class="n">04</span><h3>Apoio completo da Pro Advanced</h3><p>A Pro Advanced oferece um <b>acompanhamento contínuo</b>, assegurando que sua empresa navegue pelo processo de certificação com facilidade e eficiência.</p></li>
       </ol>
     </div>
   </section>
 
-  <!-- WHY: end credits -->
-  <section class="why">
-    <div class="wrap why-grid">
-      <div class="why-head">
-        <p class="kicker">Por que nós</p>
+  <!-- WHY PRO ADVANCED -->
+  <section class="sec">
+    <div class="wrap">
+      <div class="head">
+        <p class="kicker">Por que a Pro Advanced</p>
         <h2>Por que escolher a Pro Advanced?</h2>
-        <p>A Pro Advanced facilita sua certificação TPN, oferecendo:</p>
+        <p class="lead">A Pro Advanced facilita sua certificação TPN, oferecendo:</p>
       </div>
-      <dl class="credits">
-        <div><dt>Gap Analysis</dt><dd>Identificação e preenchimento de lacunas.</dd></div>
-        <div><dt>Conformidade total</dt><dd>Garantia de conformidade com os padrões internacionais.</dd></div>
-        <div><dt>Suporte especializado</dt><dd>Acompanhamento em todas as etapas do processo de certificação.</dd></div>
-      </dl>
+      <ul class="grid g3">
+        <li class="card item"><span class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3M8 11h6"/></svg></span><h3>Gap Analysis</h3><p>Identificação e preenchimento de lacunas.</p></li>
+        <li class="card item"><span class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m8 12 3 3 5-6"/></svg></span><h3>Conformidade total</h3><p>Garantia de conformidade com os padrões internacionais.</p></li>
+        <li class="card item"><span class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1v-6h3zM3 19a2 2 0 0 0 2 2h1v-6H3z"/></svg></span><h3>Suporte especializado</h3><p>Acompanhamento em todas as etapas do processo de certificação.</p></li>
+      </ul>
     </div>
   </section>
 
-  <!-- FINAL: projector beam -->
-  <section class="final">
-    <canvas class="dust" aria-hidden="true"></canvas>
+  <!-- FINAL CTA -->
+  <section class="sec">
     <div class="wrap">
-      <h2>Proteja suas produções e <em>garanta competitividade</em></h2>
-      <p>Com a Pro Advanced, sua empresa estará em conformidade com os mais rigorosos padrões de segurança. Fale conosco e assegure a proteção que você precisa para atuar com confiança no mercado global.</p>
-      <a class="btn" href="#ptpn-form">Falar com um especialista <span aria-hidden="true">→</span></a>
+      <div class="card cta">
+        <div>
+          <h2>Proteja suas produções e garanta competitividade</h2>
+          <p class="lead">Com a Pro Advanced, sua empresa estará em conformidade com os mais rigorosos padrões de segurança. Fale conosco e assegure a proteção que você precisa para atuar com confiança no mercado global.</p>
+        </div>
+        <a class="btn" href="#ptpn-form">Fale com um especialista</a>
+      </div>
     </div>
   </section>
 
   <footer class="foot">
     <div class="wrap">
       <img src="{{LOGO}}" alt="Pro Advanced IT Solutions">
-      <small>© 2026 Pro Advanced. Todos os direitos reservados.</small>
+      <div class="contact"><a href="mailto:contato@proadvanced.com.br">contato@proadvanced.com.br</a><span>+55 11 94719-8132</span></div>
+      <small>Pro Advanced | Todos os direitos reservados - 2026</small>
     </div>
   </footer>
 </div>
