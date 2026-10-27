@@ -5,152 +5,162 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Certificação TPN</title>
 <style>
-/* Pro Advanced LP · Certificação TPN — follows the layout of proadvanced.com.br:
-   navy page with a dotted sky, small blue kicker + bold heading + muted lead, dark cards with a thin blue
-   border and a line icon, gradient pill buttons. Montserrat. Scoped under .ptpn for RD Station. */
+/* Pro Advanced LP · Certificação TPN.
+   Brand from proadvanced.com.br: navy #000c19, surfaces #08121f / #0e2a3f, accent #2ba3db (gradient to #68c5db only on the
+   primary button, as on the site), Montserrat. Type scale 1.25 on 16px; spacing on a 4px scale.
+   Each section has its own shape: reading statement, split video, lead benefit + ruled list, a 3-step path, a plain closing band.
+   Scoped under .ptpn for RD Station. */
 html,body{overflow-x:clip}
 .ptpn{width:100vw!important;max-width:100vw!important;min-width:0!important;margin-left:calc(50% - 50vw)!important;margin-right:0!important;flex:none!important;align-self:flex-start!important;box-sizing:border-box}
 .ptpn h1,.ptpn h2,.ptpn h3,.ptpn p,.ptpn span,.ptpn a,.ptpn b,.ptpn small,.ptpn label,.ptpn li,.ptpn div,.ptpn section,.ptpn header,.ptpn footer,.ptpn form,.ptpn input,.ptpn select,.ptpn button{font-family:inherit}
 .ptpn{
-  --bg:#000c19;--card:#08121f;--line:rgba(43,163,219,.14);--line2:rgba(43,163,219,.34);
-  --blue:#2ba3db;--cyan:#68c5db;--deep:#045089;--navy:#0e2a3f;--mist:#c9d6e4;--mut:#a8b6c6;
-  --grad:linear-gradient(117deg,#2ba3db 0%,#68c5db 100%);
+  --bg:#000c19;--s1:#08121f;--s2:#0e2a3f;--line:rgba(201,214,228,.14);
+  --ink:#ffffff;--ink2:#c9d6e4;--ink3:#a8b6c6;
+  --accent:#2ba3db;--accent2:#68c5db;--danger:#f96d64;
   --font:"Montserrat",system-ui,sans-serif;--max:1200px;--gutter:clamp(16px,4vw,48px);
-  color-scheme:dark;background:var(--bg);color:#fff;font-family:var(--font);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:clip;position:relative;isolation:isolate
+  --t-sm:.8rem;--t-base:1rem;--t-md:1.25rem;--t-lg:1.5625rem;--t-xl:clamp(1.75rem,2.6vw,2.44rem);--t-2xl:clamp(2.25rem,4.2vw,3.8rem);
+  color-scheme:dark;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:clip;position:relative;isolation:isolate
 }
-/* the site's dotted night sky */
-.ptpn::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:.5;
-  background-image:radial-gradient(1px 1px at 20px 30px,rgba(201,214,228,.5) 50%,transparent 51%),radial-gradient(1px 1px at 140px 90px,rgba(201,214,228,.35) 50%,transparent 51%),radial-gradient(1.5px 1.5px at 90px 160px,rgba(104,197,219,.45) 50%,transparent 51%),radial-gradient(1px 1px at 200px 210px,rgba(201,214,228,.3) 50%,transparent 51%);background-size:240px 240px}
 .ptpn *,.ptpn *::before,.ptpn *::after{box-sizing:border-box}
 .ptpn a{color:inherit}
 .ptpn img{max-width:100%;display:block}
 .ptpn h1,.ptpn h2,.ptpn h3,.ptpn p,.ptpn ol,.ptpn ul{margin:0;padding:0}
 .ptpn ol,.ptpn ul{list-style:none}
-.ptpn h1,.ptpn h2,.ptpn h3{font-weight:700;text-wrap:balance;letter-spacing:-.01em;color:#fff}
-.ptpn b{font-weight:600;color:#fff}
+.ptpn h1,.ptpn h2,.ptpn h3{font-weight:600;color:var(--ink);text-wrap:balance;letter-spacing:-.015em}
+.ptpn p{text-wrap:pretty}
+.ptpn b{font-weight:600;color:var(--ink)}
 .ptpn [hidden]{display:none!important}
-.ptpn :focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
+.ptpn :focus-visible{outline:2px solid var(--accent2);outline-offset:2px}
 .ptpn .wrap{max-width:var(--max);margin-inline:auto;padding-inline:var(--gutter);position:relative}
-.ptpn section{position:relative;scroll-margin-top:12px}
-.ptpn .kicker{font:700 11.5px var(--font);letter-spacing:.16em;text-transform:uppercase;color:var(--blue);margin-bottom:10px}
-.ptpn h2{font-size:clamp(26px,2.5vw,34px);line-height:1.2}
-.ptpn .lead{color:var(--mut);font-size:clamp(15px,1.1vw,16.5px);line-height:1.7;max-width:62ch}
-.ptpn .head{margin-bottom:clamp(28px,3.4vw,44px)}
-.ptpn .head h2{margin-bottom:14px}
-.ptpn .head.center{text-align:center;display:grid;justify-items:center}
+.ptpn section{position:relative;scroll-margin-top:96px}
+.ptpn h2{font-size:var(--t-xl);line-height:1.15}
+.ptpn .lead{color:var(--ink2);font-size:var(--t-base);line-height:1.7;max-width:60ch}
 
-/* background: a library of video frames that get certified as you scroll */
+/* background: film strip through the TPN gate (canvas drawn by the script) */
 .ptpn .vault{position:fixed;inset:0;width:100vw;height:100vh;z-index:-1;pointer-events:none;display:block}
-.ptpn .scrim{position:fixed;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(90deg,rgba(0,12,25,.82) 0%,rgba(0,12,25,.55) 38%,rgba(0,12,25,0) 62%)}
-@media (max-width:900px){.ptpn .scrim{background:rgba(0,12,25,.55)}}
+.ptpn .scrim{position:fixed;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(90deg,rgba(0,12,25,.86) 0%,rgba(0,12,25,.62) 45%,rgba(0,12,25,.3) 80%,rgba(0,12,25,.12) 100%)}
+/* text that sits over the film on the right keeps a soft shadow for contrast */
+.ptpn .statement,.ptpn .why-head .lead,.ptpn .path li,.ptpn .final p,.ptpn .rows li{text-shadow:0 1px 14px rgba(0,12,25,.95),0 0 2px rgba(0,12,25,.8)}
 
-/* cards */
-.ptpn .card{background:linear-gradient(180deg,rgba(10,30,46,.9),rgba(8,18,31,.95));border:1px solid var(--line);border-radius:12px}
+/* buttons: the site's pill */
+.ptpn .btn{display:inline-flex;align-items:center;justify-content:center;font:600 var(--t-base)/1.2 var(--font);padding:16px 32px;border-radius:999px;border:0;cursor:pointer;text-decoration:none;background:linear-gradient(117deg,var(--accent),var(--accent2));color:#fff;transition:filter .2s,transform .2s}
+.ptpn .btn:hover{filter:brightness(1.08);transform:translateY(-1px)}
+.ptpn .btn.sm{padding:12px 24px;font-size:.875rem}
+.ptpn .tlink{display:inline-block;margin-top:24px;color:var(--accent2);font-weight:600;text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px}
+.ptpn .tlink:hover{color:var(--ink)}
 
-/* buttons: the site's gradient pill */
-.ptpn .btn{display:inline-flex;align-items:center;justify-content:center;font:600 15px/1.2 var(--font);padding:14px 30px;border-radius:999px;border:0;cursor:pointer;text-decoration:none;background:var(--grad);color:#fff;transition:filter .2s,transform .2s,box-shadow .2s}
-.ptpn .btn:hover{filter:brightness(1.08);transform:translateY(-1px);box-shadow:0 10px 26px -10px rgba(43,163,219,.8)}
-.ptpn .btn.sm{padding:11px 22px;font-size:14px}
-
-/* header */
-.ptpn .top{position:sticky;top:0;z-index:20;background:rgba(0,12,25,.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid rgba(43,163,219,.08)}
+/* header: sticky over the moving film, so it keeps a light blur */
+.ptpn .top{position:sticky;top:0;z-index:20;background:rgba(0,12,25,.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
 .ptpn .bar{display:flex;align-items:center;justify-content:space-between;gap:16px;height:76px}
 .ptpn .bar img{height:38px;width:auto}
 
-/* hero */
-.ptpn .hero{padding-block:clamp(48px,7vw,100px) clamp(64px,8vw,110px);background:radial-gradient(70% 80% at 85% 30%,rgba(4,80,137,.35),transparent 70%),radial-gradient(50% 60% at 10% 90%,rgba(14,42,63,.6),transparent 70%)}
-.ptpn .hero-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:clamp(32px,5vw,80px);align-items:center}
-.ptpn .tag{display:inline-block;font:500 12.5px var(--font);color:var(--mist);background:rgba(201,214,228,.12);border:1px solid rgba(201,214,228,.22);padding:5px 14px;border-radius:999px;margin-bottom:22px}
-.ptpn .hero h1{font-size:clamp(34px,4vw,54px);line-height:1.12}
-.ptpn .hero h1 .hl{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
-.ptpn .hero .lead{margin-top:20px;font-size:clamp(16px,1.25vw,18px);color:var(--mist)}
-.ptpn .ticks{display:grid;gap:12px;margin-top:28px}
-.ptpn .ticks li{display:flex;align-items:center;gap:12px;color:var(--mist);font-size:15px}
-.ptpn .ticks svg{flex:none;width:26px;height:26px;padding:5px;border-radius:50%;background:rgba(43,163,219,.14);color:var(--cyan)}
+/* hero: headline left, the working form right */
+.ptpn .hero{padding-block:64px 128px}
+.ptpn .hero-grid{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:64px;align-items:center}
+.ptpn .hero h1{font-size:var(--t-2xl);line-height:1.08;max-width:14ch}
+.ptpn .hero h1 .acc{color:var(--accent)}
+.ptpn .hero .lead{margin-top:24px;font-size:var(--t-md);max-width:34ch}
 
-/* form: like the site's contact form */
-.ptpn .fcard{display:grid;gap:14px;padding:clamp(24px,2.6vw,34px);background:linear-gradient(180deg,rgba(14,42,63,.4),rgba(8,18,31,.7));backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px)}
-.ptpn .fcard h2{font-size:clamp(20px,1.7vw,24px);margin-bottom:4px}
-.ptpn .field{display:grid;gap:6px}
-.ptpn .field label{font:500 13px var(--font);color:var(--mist)}
-.ptpn .field input,.ptpn .field select{width:100%;height:46px;border-radius:6px;border:1px solid rgba(43,163,219,.4);background:rgba(0,12,25,.6);color:#fff;padding:0 14px;font:500 15px var(--font);outline:none;transition:border-color .2s,box-shadow .2s;-webkit-appearance:none;appearance:none}
-.ptpn .field select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1.5l5 5 5-5' stroke='%23c9d6e4' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:34px}
-.ptpn .field select option{background:#08121f;color:#fff}
-.ptpn .field input:focus,.ptpn .field select:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(43,163,219,.2)}
-.ptpn .field.err input,.ptpn .field.err select{border-color:#f96d64}
-.ptpn .fcard .btn{width:100%;margin-top:8px;padding-block:15px}
-.ptpn .form-msg{font:500 13px var(--font);color:var(--mist)}
+/* form: opaque panel, like the site's contact form */
+.ptpn .fcard{display:grid;gap:16px;padding:32px;background:var(--s1);border:1px solid var(--line);border-radius:12px}
+.ptpn .fcard h2{font-size:var(--t-md);margin-bottom:4px}
+.ptpn .field{display:grid;gap:8px}
+.ptpn .field label{font:500 .8125rem var(--font);color:var(--ink2)}
+.ptpn .field input,.ptpn .field select{width:100%;height:48px;border-radius:6px;border:1px solid rgba(43,163,219,.42);background:var(--bg);color:var(--ink);padding:0 16px;font:500 var(--t-base) var(--font);transition:border-color .2s,box-shadow .2s;-webkit-appearance:none;appearance:none}
+.ptpn .field input::placeholder{color:#7d8ea1;font-weight:400}
+.ptpn .field select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1.5l5 5 5-5' stroke='%23c9d6e4' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center;padding-right:40px}
+.ptpn .field select option{background:var(--s1);color:var(--ink)}
+.ptpn .field input:focus-visible,.ptpn .field select:focus-visible{outline:2px solid var(--accent2);outline-offset:1px;border-color:var(--accent)}
+.ptpn .field.err input,.ptpn .field.err select{border-color:var(--danger)}
+.ptpn .fcard .btn{width:100%;margin-top:8px}
+.ptpn .form-msg{font:500 .8125rem var(--font);color:var(--ink2)}
 .ptpn .form-msg:empty{display:none}
-.ptpn .form-msg.bad{color:#f96d64}
-.ptpn .form-msg.ok{color:var(--cyan)}
-.ptpn .legal{font-size:11.5px;color:var(--mut);text-align:center}
+.ptpn .form-msg.bad{color:var(--danger)}
+.ptpn .form-msg.ok{color:var(--accent2)}
+.ptpn .legal{font-size:.75rem;color:var(--ink3);text-align:center}
 .ptpn .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
 
-/* sections */
-.ptpn .sec{padding-block:clamp(56px,7vw,96px)}
-.ptpn .what{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,.7fr);gap:clamp(28px,5vw,72px);align-items:center}
-.ptpn .what h2{margin-bottom:16px}
-.ptpn .seal-card{display:grid;place-items:center;padding:clamp(24px,3vw,40px);aspect-ratio:1;max-width:340px;justify-self:end;width:100%}
-.ptpn .seal{width:100%;height:auto;overflow:visible}
-.ptpn .seal text{font:600 12.5px var(--font);letter-spacing:.18em;fill:var(--mist)}
-.ptpn .seal-ring{transform-origin:110px 110px;animation:ptpn-spin 34s linear infinite}
-@keyframes ptpn-spin{to{transform:rotate(360deg)}}
+/* what: a reading statement, airy, no box */
+.ptpn .what{padding-block:128px}
+.ptpn .what-grid{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:64px;align-items:start;border-top:1px solid var(--line);padding-top:48px}
+.ptpn .statement{font-size:var(--t-lg);line-height:1.5;font-weight:500;color:var(--ink2);max-width:36ch}
 
-/* video */
-.ptpn .player{max-width:920px;margin:0 auto;padding:10px}
-.ptpn .yt{position:relative;display:block;width:100%;aspect-ratio:16/9;border:0;padding:0;margin:0;cursor:pointer;border-radius:8px;overflow:hidden;background:radial-gradient(80% 80% at 50% 40%,#0e2a3f,#000c19)}
-.ptpn .yt img{width:100%;height:100%;object-fit:cover;opacity:.8;transition:opacity .3s,transform .6s}
-.ptpn .yt:hover img{opacity:.95;transform:scale(1.02)}
-.ptpn .play{position:absolute;left:50%;top:50%;width:76px;height:76px;margin:-38px 0 0 -38px;border-radius:50%;display:grid;place-items:center;background:var(--grad);color:#fff;box-shadow:0 0 0 10px rgba(43,163,219,.18);transition:transform .25s}
+/* video: title beside a wide player */
+.ptpn .video{padding-block:48px 128px}
+.ptpn .video-grid{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:64px;align-items:end}
+.ptpn .video h2{font-size:var(--t-lg);line-height:1.3;max-width:16ch;padding-bottom:8px}
+.ptpn .yt{position:relative;display:block;width:100%;aspect-ratio:16/9;border:1px solid var(--line);padding:0;margin:0;cursor:pointer;border-radius:8px;overflow:hidden;background:var(--s2)}
+.ptpn .yt img{width:100%;height:100%;object-fit:cover;opacity:.85;transition:opacity .3s,transform .5s}
+.ptpn .yt:hover img{opacity:1;transform:scale(1.02)}
+.ptpn .play{position:absolute;left:50%;top:50%;width:72px;height:72px;margin:-36px 0 0 -36px;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:#fff;transition:transform .2s}
 .ptpn .play svg{margin-left:4px}
-.ptpn .yt:hover .play{transform:scale(1.07)}
+.ptpn .yt:hover .play{transform:scale(1.06)}
 .ptpn .yt iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 
-/* card grids with line icons (site style) */
-.ptpn .grid{display:grid;gap:clamp(14px,1.6vw,20px)}
-.ptpn .g4{grid-template-columns:repeat(4,minmax(0,1fr))}
-.ptpn .g3{grid-template-columns:repeat(3,minmax(0,1fr))}
-.ptpn .item{position:relative;padding:26px 24px 28px;transition:border-color .25s,transform .25s,box-shadow .25s}
-.ptpn .item:hover{border-color:var(--line2);transform:translateY(-3px);box-shadow:0 20px 40px -26px rgba(43,163,219,.6)}
-.ptpn .ico{display:inline-grid;place-items:center;width:40px;height:40px;border-radius:10px;color:var(--blue);background:rgba(43,163,219,.1);margin-bottom:20px}
-.ptpn .n{position:absolute;right:22px;top:24px;font:700 13px var(--font);color:rgba(104,197,219,.5)}
-.ptpn .item h3{font-size:17px;line-height:1.3;margin-bottom:10px}
-.ptpn .item p{font-size:14px;line-height:1.65;color:var(--mut)}
+/* safe: the risk in one line, then one lead benefit and three in a ruled list */
+.ptpn .safe{padding-block:96px 128px;background:linear-gradient(180deg,transparent,rgba(8,18,31,.85) 18%,rgba(8,18,31,.85) 82%,transparent)}
+.ptpn .safe-head{max-width:760px}
+.ptpn .pull{margin-top:24px;font-size:var(--t-lg);line-height:1.35;font-weight:600;color:var(--ink)}
+.ptpn .safe-head .lead{margin-top:16px}
+.ptpn .benefits{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:64px;margin-top:64px;align-items:start}
+.ptpn .lead-benefit{padding:32px;background:var(--s2);border-radius:12px}
+.ptpn .lead-benefit h3{font-size:var(--t-xl);line-height:1.15;margin-bottom:16px}
+.ptpn .lead-benefit p{font-size:var(--t-md);line-height:1.55;color:var(--ink2)}
+.ptpn .rows li{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,3fr);gap:32px;padding-block:24px;border-top:1px solid var(--line)}
+.ptpn .rows li:last-child{border-bottom:1px solid var(--line)}
+.ptpn .rows h3{font-size:var(--t-md);line-height:1.3}
+.ptpn .rows p{color:var(--ink2);line-height:1.65}
 
-/* final CTA */
-.ptpn .cta{display:flex;align-items:center;justify-content:space-between;gap:clamp(24px,4vw,60px);padding:clamp(28px,4vw,52px);background:radial-gradient(90% 140% at 100% 0%,rgba(43,163,219,.22),transparent 60%),linear-gradient(180deg,rgba(14,42,63,.5),rgba(8,18,31,.95));border-color:var(--line2)}
-.ptpn .cta h2{margin-bottom:12px}
-.ptpn .cta .btn{flex:none}
+/* why: the certification path, three steps on one line */
+.ptpn .why{padding-block:128px 96px}
+.ptpn .why-head{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,6fr);gap:64px;align-items:end}
+.ptpn .why-head .lead{padding-bottom:6px}
+.ptpn .path{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px;margin-top:64px;position:relative}
+.ptpn .path::before{content:"";position:absolute;left:20px;right:20px;top:20px;height:1px;background:var(--accent)}
+.ptpn .path li{position:relative}
+.ptpn .step{position:relative;display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:var(--bg);border:1px solid var(--accent);color:var(--accent2);font:600 var(--t-base) var(--font);margin-bottom:24px}
+.ptpn .path h3{font-size:var(--t-md);margin-bottom:8px}
+.ptpn .path p{color:var(--ink2);max-width:30ch}
+
+/* final: a plain band */
+.ptpn .final{padding-block:96px 128px}
+.ptpn .final-grid{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,6fr);gap:64px;align-items:end;border-top:1px solid var(--line);padding-top:48px}
+.ptpn .final h2{font-size:var(--t-xl)}
+.ptpn .final p{color:var(--ink2);line-height:1.7;margin-bottom:32px;max-width:52ch}
 
 /* footer */
-.ptpn .foot{border-top:1px solid var(--line);margin-top:clamp(20px,3vw,40px)}
-.ptpn .foot .wrap{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;padding-block:30px}
-.ptpn .foot img{height:34px;width:auto}
-.ptpn .contact{display:flex;gap:22px;flex-wrap:wrap;font-size:14px;color:var(--mist)}
+.ptpn .foot{border-top:1px solid var(--line);background:var(--bg)}
+.ptpn .foot .wrap{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;padding-block:32px}
+.ptpn .foot img{height:32px;width:auto}
+.ptpn .contact{display:flex;gap:24px;flex-wrap:wrap;font-size:.875rem;color:var(--ink2)}
 .ptpn .contact a{text-decoration:none}
-.ptpn .contact a:hover{color:var(--cyan)}
-.ptpn .foot small{color:var(--mut);font-size:12.5px}
+.ptpn .contact a:hover{color:var(--accent2)}
+.ptpn .foot small{color:var(--ink3);font-size:.8rem}
 
-/* reveal (JS adds .rv only when GSAP runs) */
-.ptpn .rv{opacity:0;transform:translateY(24px)}
+/* reveal (added by the script only when motion is allowed) */
+.ptpn .rv{opacity:0;transform:translateY(16px)}
 
-@media (max-width:1024px){
-  .ptpn .g4{grid-template-columns:repeat(2,minmax(0,1fr))}
-}
-@media (max-width:900px){
-  .ptpn .hero-grid,.ptpn .what{grid-template-columns:1fr}
-  .ptpn .seal-card{justify-self:center;max-width:260px}
-  .ptpn .g3{grid-template-columns:1fr}
-  .ptpn .cta{flex-direction:column;align-items:flex-start}
+@media (max-width:960px){
+  .ptpn .scrim{background:rgba(0,12,25,.62)}
+  .ptpn .hero{padding-block:40px 96px}
+  .ptpn .hero-grid,.ptpn .what-grid,.ptpn .video-grid,.ptpn .benefits,.ptpn .why-head,.ptpn .final-grid{grid-template-columns:1fr;gap:32px}
+  .ptpn .what,.ptpn .why{padding-block:80px}
+  .ptpn .path{grid-template-columns:1fr;gap:32px}
+  .ptpn .path::before{left:20px;right:auto;top:20px;bottom:20px;width:1px;height:auto}
+  .ptpn .path li{padding-left:64px}
+  .ptpn .step{position:absolute;left:0;top:0;margin:0}
+  .ptpn .rows li{grid-template-columns:1fr;gap:8px}
 }
 @media (max-width:560px){
-  .ptpn .bar{height:66px}
+  .ptpn .bar{height:64px}
   .ptpn .bar img{height:30px}
-  .ptpn .btn.sm{padding:9px 16px;font-size:12.5px}
-  .ptpn .g4{grid-template-columns:1fr}
-  .ptpn .play{width:62px;height:62px;margin:-31px 0 0 -31px}
-  }
-@media (prefers-reduced-motion:reduce){.ptpn .seal-ring{animation:none}}
+  .ptpn .btn.sm{padding:10px 16px;font-size:.8rem}
+  .ptpn .fcard,.ptpn .lead-benefit{padding:24px}
+  .ptpn .play{width:60px;height:60px;margin:-30px 0 0 -30px}
+}
+@media (prefers-reduced-motion:reduce){
+  .ptpn .btn,.ptpn .yt img,.ptpn .play{transition:none}
+}
 
 body{margin:0;background:#000c19}
 </style>
@@ -174,18 +184,12 @@ body{margin:0;background:#000c19}
   <section class="hero">
     <div class="wrap hero-grid">
       <div class="hero-copy">
-        <span class="tag">Certificação TPN</span>
-        <h1>Segurança para suas <span class="hl">produções audiovisuais</span></h1>
+        <h1>Segurança para suas <span class="acc">produções audiovisuais</span></h1>
         <p class="lead">Preencha o formulário e descubra como a Certificação TPN pode proteger seu conteúdo.</p>
-        <ul class="ticks">
-          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Proteção contra pirataria e vazamentos</li>
-          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Segurança em todas as etapas da produção</li>
-          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Acompanhamento da Pro Advanced do início ao fim</li>
-        </ul>
+        <a class="tlink" href="#ptpn-video">Assista ao vídeo sobre a TPN</a>
       </div>
-
       <div class="fcol" id="ptpn-form">
-        <form class="card fcard" id="ptpn-lead" novalidate>
+        <form class="fcard" id="ptpn-lead" novalidate>
           <h2>Fale com um especialista</h2>
           <div class="field"><label for="ptpn-name">Nome*</label><input id="ptpn-name" name="name" type="text" autocomplete="name" required></div>
           <div class="field"><label for="ptpn-email">E-mail corporativo*</label><input id="ptpn-email" name="email" type="email" autocomplete="email" required></div>
@@ -204,34 +208,19 @@ body{margin:0;background:#000c19}
     </div>
   </section>
 
-  <!-- WHAT IS TPN -->
-  <section class="sec">
-    <div class="wrap what">
-      <div>
-        <p class="kicker">Certificação TPN</p>
-        <h2>O que é a Certificação TPN?</h2>
-        <p class="lead">A Trusted Partner Network é um selo internacional que assegura que sua produção audiovisual segue os mais altos padrões de segurança digital. Ao obter a certificação, você evita vazamentos e demonstra aos seus parceiros que sua empresa está comprometida com a proteção dos conteúdos.</p>
-      </div>
-      <div class="card seal-card" aria-hidden="true">
-        <svg class="seal" viewBox="0 0 220 220"><defs><path id="ptpn-ring" d="M110 110m-84 0a84 84 0 1 1 168 0a84 84 0 1 1-168 0"/><linearGradient id="ptpn-g" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#2ba3db"/><stop offset="1" stop-color="#68c5db"/></linearGradient></defs>
-          <circle cx="110" cy="110" r="104" fill="none" stroke="rgba(43,163,219,.35)" stroke-width="1"/>
-          <circle cx="110" cy="110" r="66" fill="rgba(43,163,219,.06)" stroke="rgba(43,163,219,.3)" stroke-width="1"/>
-          <g class="seal-ring"><text><textPath href="#ptpn-ring" textLength="518" lengthAdjust="spacing">TRUSTED PARTNER NETWORK · CERTIFICAÇÃO TPN · </textPath></text></g>
-          <path d="M110 72l28 11v21c0 19-12 32-28 38-16-6-28-19-28-38V83z" fill="url(#ptpn-g)"/>
-          <path class="seal-ck" d="M98 108l8 8 17-18" fill="none" stroke="#000c19" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </div>
+  <!-- WHAT IS TPN: a reading statement, no box -->
+  <section class="what">
+    <div class="wrap what-grid">
+      <h2>O que é a Certificação TPN?</h2>
+      <p class="statement">A <b>Trusted Partner Network</b> é um selo internacional que assegura que sua produção audiovisual segue os mais altos padrões de segurança digital. Ao obter a certificação, você evita vazamentos e demonstra aos seus parceiros que sua empresa está comprometida com a proteção dos conteúdos.</p>
     </div>
   </section>
 
-  <!-- VIDEO -->
-  <section class="sec">
-    <div class="wrap">
-      <div class="head center">
-        <p class="kicker">Vídeo</p>
-        <h2>Assista ao nosso vídeo e entenda mais sobre a Certificação TPN</h2>
-      </div>
-      <div class="card player">
+  <!-- VIDEO: split, title beside the player -->
+  <section class="video" id="ptpn-video">
+    <div class="wrap video-grid">
+      <h2>Assista ao nosso vídeo e entenda mais sobre a Certificação TPN</h2>
+      <div class="player">
         <button class="yt" type="button" data-yt="7Vt1_PHt0eE" aria-label="Assistir ao vídeo sobre a Certificação TPN">
           <img src="https://i.ytimg.com/vi/7Vt1_PHt0eE/hqdefault.jpg" alt="" loading="lazy" onerror="this.remove()">
           <span class="play" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
@@ -240,48 +229,50 @@ body{margin:0;background:#000c19}
     </div>
   </section>
 
-  <!-- IS IT SAFE + 4 BENEFITS -->
-  <section class="sec">
+  <!-- IS IT SAFE: one lead benefit, three in a ruled list -->
+  <section class="safe">
     <div class="wrap">
-      <div class="head">
-        <p class="kicker">Proteção do conteúdo</p>
+      <div class="safe-head">
         <h2>Sua produção audiovisual está segura?</h2>
-        <p class="lead">Vazamentos podem destruir anos de trabalho em um instante. Com a Certificação TPN (Trusted Partner Network), você protege suas produções contra pirataria e vazamentos, garantindo a segurança em todas as etapas.</p>
+        <p class="pull">Vazamentos podem destruir anos de trabalho em um instante.</p>
+        <p class="lead">Com a Certificação TPN (Trusted Partner Network), você protege suas produções contra pirataria e vazamentos, garantindo a segurança em todas as etapas.</p>
       </div>
-      <ol class="grid g4">
-        <li class="card item"><span class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span><span class="n">01</span><h3>Evite perdas irreparáveis</h3><p><b>Minimize o risco</b> de vazamentos que podem comprometer a integridade do seu trabalho, garantindo segurança em cada fase da produção.</p></li>
-        <li class="card item"><span class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="6"/><path d="M8.5 14 7 22l5-3 5 3-1.5-8"/></svg></span><span class="n">02</span><h3>Certificação reconhecida</h3><p>A Certificação TPN valida suas <b>práticas de segurança</b>, reforçando o compromisso da sua empresa com a <b>proteção de dados sensíveis</b>.</p></li>
-        <li class="card item"><span class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3 6.5 7 .9-5.2 4.8 1.4 7-6.2-3.6-6.2 3.6 1.4-7L2 9.4l7-.9z"/></svg></span><span class="n">03</span><h3>Destaque no setor</h3><p>Torne-se um <b>parceiro confiável no mercado audiovisual</b>, mostrando que sua produção segue as diretrizes exigidas pelos principais players da indústria.</p></li>
-        <li class="card item"><span class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></svg></span><span class="n">04</span><h3>Apoio completo da Pro Advanced</h3><p>A Pro Advanced oferece um <b>acompanhamento contínuo</b>, assegurando que sua empresa navegue pelo processo de certificação com facilidade e eficiência.</p></li>
+      <div class="benefits">
+        <div class="lead-benefit">
+          <h3>Evite perdas irreparáveis</h3>
+          <p><b>Minimize o risco</b> de vazamentos que podem comprometer a integridade do seu trabalho, garantindo segurança em cada fase da produção.</p>
+        </div>
+        <ul class="rows">
+          <li><h3>Certificação reconhecida</h3><p>A Certificação TPN valida suas <b>práticas de segurança</b>, reforçando o compromisso da sua empresa com a <b>proteção de dados sensíveis</b>.</p></li>
+          <li><h3>Destaque no setor</h3><p>Torne-se um <b>parceiro confiável no mercado audiovisual</b>, mostrando que sua produção segue as diretrizes exigidas pelos principais players da indústria.</p></li>
+          <li><h3>Apoio completo da Pro Advanced</h3><p>A Pro Advanced oferece um <b>acompanhamento contínuo</b>, assegurando que sua empresa navegue pelo processo de certificação com facilidade e eficiência.</p></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY: the certification path, a real sequence -->
+  <section class="why">
+    <div class="wrap">
+      <div class="why-head">
+        <h2>Por que escolher a Pro Advanced?</h2>
+        <p class="lead">A Pro Advanced facilita sua certificação TPN, oferecendo:</p>
+      </div>
+      <ol class="path">
+        <li><span class="step">1</span><h3>Gap Analysis</h3><p>Identificação e preenchimento de lacunas.</p></li>
+        <li><span class="step">2</span><h3>Conformidade total</h3><p>Garantia de conformidade com os padrões internacionais.</p></li>
+        <li><span class="step">3</span><h3>Suporte especializado</h3><p>Acompanhamento em todas as etapas do processo de certificação.</p></li>
       </ol>
     </div>
   </section>
 
-  <!-- WHY PRO ADVANCED -->
-  <section class="sec">
-    <div class="wrap">
-      <div class="head">
-        <p class="kicker">Por que a Pro Advanced</p>
-        <h2>Por que escolher a Pro Advanced?</h2>
-        <p class="lead">A Pro Advanced facilita sua certificação TPN, oferecendo:</p>
-      </div>
-      <ul class="grid g3">
-        <li class="card item"><span class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3M8 11h6"/></svg></span><h3>Gap Analysis</h3><p>Identificação e preenchimento de lacunas.</p></li>
-        <li class="card item"><span class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m8 12 3 3 5-6"/></svg></span><h3>Conformidade total</h3><p>Garantia de conformidade com os padrões internacionais.</p></li>
-        <li class="card item"><span class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1v-6h3zM3 19a2 2 0 0 0 2 2h1v-6H3z"/></svg></span><h3>Suporte especializado</h3><p>Acompanhamento em todas as etapas do processo de certificação.</p></li>
-      </ul>
-    </div>
-  </section>
-
-  <!-- FINAL CTA -->
-  <section class="sec">
-    <div class="wrap">
-      <div class="card cta">
-        <div>
-          <h2>Proteja suas produções e garanta competitividade</h2>
-          <p class="lead">Com a Pro Advanced, sua empresa estará em conformidade com os mais rigorosos padrões de segurança. Fale conosco e assegure a proteção que você precisa para atuar com confiança no mercado global.</p>
-        </div>
-        <a class="btn" href="#ptpn-form">Fale com um especialista</a>
+  <!-- FINAL -->
+  <section class="final">
+    <div class="wrap final-grid">
+      <h2>Proteja suas produções e garanta competitividade</h2>
+      <div>
+        <p>Com a Pro Advanced, sua empresa estará em conformidade com os mais rigorosos padrões de segurança. Fale conosco e assegure a proteção que você precisa para atuar com confiança no mercado global.</p>
+        <a class="btn" href="#ptpn-form">Falar com um especialista em TPN</a>
       </div>
     </div>
   </section>
@@ -475,7 +466,7 @@ body{margin:0;background:#000c19}
         if(after&&f.userData.enc<.5&&target===1)U.uFlash.value=1;
         f.userData.enc+=(target-f.userData.enc)*Math.min(1,dt*(after?8:20));U.uEnc.value=f.userData.enc;
         U.uFlash.value=Math.max(0,U.uFlash.value-dt*2.2);
-        U.uFade.value=Math.min(1,u*8,(1-u)*6)*(mob?.55:.9);
+        U.uFade.value=Math.min(1,u*8,(1-u)*6)*(mob?.5:(sp<.04?.9:.5));
         if(u>.06&&u<.94){cnt++;if(after)enc++}
         if(!after&&!reduce&&Math.random()<dt*(mob?2:4)){const i=lIx;lIx=(lIx+1)%LP;lPos[i*3]=f.position.x+(Math.random()-.5)*FW;lPos[i*3+1]=f.position.y+(Math.random()-.5)*FH;lPos[i*3+2]=f.position.z;lVel[i].set((Math.random()-.5)*.6,.3+Math.random()*.5,(Math.random()-.5)*.4);lLife[i]=1}
       }
@@ -504,15 +495,13 @@ body{margin:0;background:#000c19}
   }));
 
   /* hero in */
-  gsap.from('.hero .tag,.hero h1,.hero .lead,.hero .ticks li',{y:26,opacity:0,duration:.9,ease:'power3.out',stagger:.08,delay:.1,clearProps:'transform,opacity'});
-  gsap.from('.fcard',{y:36,opacity:0,duration:1,ease:'power3.out',delay:.25,clearProps:'transform,opacity'});
+  gsap.from('.hero h1,.hero .lead,.hero .tlink',{y:16,opacity:0,duration:.5,ease:'power2.out',stagger:.08,delay:.05,clearProps:'transform,opacity'});
 
-  /* reveals */
-  const rv=page.querySelectorAll('.sec .kicker,.sec h2,.sec .lead,.seal-card,.player,.grid>li,.cta .btn');
+  /* one quiet entrance per block; the film strip is the page's signature motion */
+  const rv=page.querySelectorAll('.what-grid>*,.video-grid>*,.safe-head>*,.lead-benefit,.rows li,.why-head>*,.path li,.final-grid>*');
   rv.forEach(el=>el.classList.add('rv'));
-  const show=b=>gsap.to(b,{opacity:1,y:0,duration:.8,ease:'power3.out',stagger:.08,overwrite:true});
+  const show=b=>gsap.to(b,{opacity:1,y:0,duration:.4,ease:'power2.out',stagger:.08,overwrite:true});
   ScrollTrigger.batch(rv,{start:'top 90%',onEnter:show,onEnterBack:show,onLeave:show});
-  gsap.from('.seal-ck',{strokeDasharray:60,strokeDashoffset:60,duration:.8,ease:'power2.out',scrollTrigger:{trigger:'.seal-card',start:'top 80%'}});
   ScrollTrigger.refresh();
 })();
 </script>

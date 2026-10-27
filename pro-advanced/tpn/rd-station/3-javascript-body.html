@@ -178,7 +178,7 @@
         if(after&&f.userData.enc<.5&&target===1)U.uFlash.value=1;
         f.userData.enc+=(target-f.userData.enc)*Math.min(1,dt*(after?8:20));U.uEnc.value=f.userData.enc;
         U.uFlash.value=Math.max(0,U.uFlash.value-dt*2.2);
-        U.uFade.value=Math.min(1,u*8,(1-u)*6)*(mob?.55:.9);
+        U.uFade.value=Math.min(1,u*8,(1-u)*6)*(mob?.5:(sp<.04?.9:.5));
         if(u>.06&&u<.94){cnt++;if(after)enc++}
         if(!after&&!reduce&&Math.random()<dt*(mob?2:4)){const i=lIx;lIx=(lIx+1)%LP;lPos[i*3]=f.position.x+(Math.random()-.5)*FW;lPos[i*3+1]=f.position.y+(Math.random()-.5)*FH;lPos[i*3+2]=f.position.z;lVel[i].set((Math.random()-.5)*.6,.3+Math.random()*.5,(Math.random()-.5)*.4);lLife[i]=1}
       }
@@ -207,15 +207,13 @@
   }));
 
   /* hero in */
-  gsap.from('.hero .tag,.hero h1,.hero .lead,.hero .ticks li',{y:26,opacity:0,duration:.9,ease:'power3.out',stagger:.08,delay:.1,clearProps:'transform,opacity'});
-  gsap.from('.fcard',{y:36,opacity:0,duration:1,ease:'power3.out',delay:.25,clearProps:'transform,opacity'});
+  gsap.from('.hero h1,.hero .lead,.hero .tlink',{y:16,opacity:0,duration:.5,ease:'power2.out',stagger:.08,delay:.05,clearProps:'transform,opacity'});
 
-  /* reveals */
-  const rv=page.querySelectorAll('.sec .kicker,.sec h2,.sec .lead,.seal-card,.player,.grid>li,.cta .btn');
+  /* one quiet entrance per block; the film strip is the page's signature motion */
+  const rv=page.querySelectorAll('.what-grid>*,.video-grid>*,.safe-head>*,.lead-benefit,.rows li,.why-head>*,.path li,.final-grid>*');
   rv.forEach(el=>el.classList.add('rv'));
-  const show=b=>gsap.to(b,{opacity:1,y:0,duration:.8,ease:'power3.out',stagger:.08,overwrite:true});
+  const show=b=>gsap.to(b,{opacity:1,y:0,duration:.4,ease:'power2.out',stagger:.08,overwrite:true});
   ScrollTrigger.batch(rv,{start:'top 90%',onEnter:show,onEnterBack:show,onLeave:show});
-  gsap.from('.seal-ck',{strokeDasharray:60,strokeDashoffset:60,duration:.8,ease:'power2.out',scrollTrigger:{trigger:'.seal-card',start:'top 80%'}});
   ScrollTrigger.refresh();
 })();
 </script>
