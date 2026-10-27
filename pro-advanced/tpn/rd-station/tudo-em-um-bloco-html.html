@@ -37,11 +37,6 @@ html,body{overflow-x:clip}
 .ptpn .vault{position:fixed;inset:0;width:100vw;height:100vh;z-index:-1;pointer-events:none;display:block}
 .ptpn .scrim{position:fixed;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(90deg,rgba(0,12,25,.82) 0%,rgba(0,12,25,.55) 38%,rgba(0,12,25,0) 62%)}
 @media (max-width:900px){.ptpn .scrim{background:rgba(0,12,25,.55)}}
-.ptpn .meter{position:fixed;left:clamp(12px,2vw,24px);bottom:clamp(12px,2vw,24px);z-index:15;display:flex;align-items:center;gap:10px;padding:9px 14px 9px 12px;border-radius:999px;background:rgba(0,12,25,.85);border:1px solid var(--line2);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);font:500 12px var(--font);color:var(--mist);box-shadow:0 10px 30px -12px rgba(0,0,0,.8)}
-.ptpn .meter svg{color:var(--cyan);flex:none}
-.ptpn .meter b{font-weight:700;color:#fff;min-width:3.2ch;text-align:right;font-variant-numeric:tabular-nums}
-.ptpn .meter i{width:64px;height:4px;border-radius:4px;background:rgba(201,214,228,.15);overflow:hidden}
-.ptpn .meter em{display:block;height:100%;width:0;background:var(--grad);border-radius:4px;transition:width .3s}
 
 /* cards */
 .ptpn .card{background:linear-gradient(180deg,rgba(10,30,46,.9),rgba(8,18,31,.95));border:1px solid var(--line);border-radius:12px}
@@ -123,7 +118,7 @@ html,body{overflow-x:clip}
 
 /* footer */
 .ptpn .foot{border-top:1px solid var(--line);margin-top:clamp(20px,3vw,40px)}
-.ptpn .foot .wrap{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;padding-block:30px 84px}
+.ptpn .foot .wrap{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;padding-block:30px}
 .ptpn .foot img{height:34px;width:auto}
 .ptpn .contact{display:flex;gap:22px;flex-wrap:wrap;font-size:14px;color:var(--mist)}
 .ptpn .contact a{text-decoration:none}
@@ -148,8 +143,7 @@ html,body{overflow-x:clip}
   .ptpn .btn.sm{padding:9px 16px;font-size:12.5px}
   .ptpn .g4{grid-template-columns:1fr}
   .ptpn .play{width:62px;height:62px;margin:-31px 0 0 -31px}
-  .ptpn .meter span,.ptpn .meter i{display:none}
-}
+  }
 @media (prefers-reduced-motion:reduce){.ptpn .seal-ring{animation:none}}
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -158,7 +152,6 @@ html,body{overflow-x:clip}
 <div class="ptpn" id="ptpn">
   <canvas class="vault" aria-hidden="true"></canvas>
   <div class="scrim" aria-hidden="true"></div>
-  <div class="meter" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg><span>Conteúdo protegido</span><b data-pct>0%</b><i><em data-bar></em></i></div>
 
   <header class="top">
     <div class="wrap bar">
