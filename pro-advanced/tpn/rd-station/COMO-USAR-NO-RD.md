@@ -19,7 +19,7 @@ Mesmo conteúdo da LP atual (lps.proadvanced.com.br/lp-tpn), no mesmo layout do 
 Os leads vão para a mesma conversão da LP atual:
 - token público da conta Pro Advanced (o mesmo da página atual);
 - conversão `lp-tpn`;
-- campos `name`, `email`, empresa e `cf_cargoselecao` (mesmas opções de cargo), mais as UTMs da URL.
+- campos `name`, `email`, `mobile_phone` (telefone/WhatsApp, enviado como +55 com DDD), empresa e `cf_cargoselecao` (mesmas opções de cargo), mais as UTMs da URL.
 
 Depois do envio, aparece uma mensagem de confirmação no próprio formulário. Para mandar a pessoa para uma página de obrigado, preencha `thanks` no bloco `RD` no começo de `src/script.js` e rode `python3 src/build.py`.
 
