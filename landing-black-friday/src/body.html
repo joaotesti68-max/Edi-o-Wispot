@@ -61,7 +61,7 @@
   </section>
 
   <!-- ARTICLE: answer-first, one question per block -->
-  <article class="art" itemscope itemtype="https://schema.org/Article">
+  <article class="art">
     <div class="wrap art-grid">
       <aside class="toc" aria-label="Perguntas respondidas nesta página">
         <p class="toc-k">Nesta página</p>
@@ -81,11 +81,6 @@
       </aside>
 
       <div class="art-body">
-        <div class="byline">
-          <span>Por <b itemprop="author" itemscope itemtype="https://schema.org/Person"><span itemprop="name">{{AUTOR_NOME}}</span></b>, {{AUTOR_CARGO}}</span>
-          <span>Publicado em <time itemprop="datePublished" datetime="{{DATA_PUB}}">{{DATA_PUB_BR}}</time></span>
-          <span>Atualizado em <time itemprop="dateModified" datetime="{{DATA_ATU}}">{{DATA_ATU_BR}}</time></span>
-        </div>
 
         <section class="summary" id="resumo">
           <h2>Resumo</h2>
@@ -234,10 +229,6 @@
           </ol>
         </section>
 
-        <aside class="author" aria-label="Sobre o autor">
-          <p class="author-k">Sobre o autor</p>
-          <p><b>{{AUTOR_NOME}}</b>, {{AUTOR_CARGO}}. {{AUTOR_BIO}}</p>
-        </aside>
       </div>
     </div>
   </article>

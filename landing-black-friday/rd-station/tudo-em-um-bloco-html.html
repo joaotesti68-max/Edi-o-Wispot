@@ -184,8 +184,6 @@ html,body{overflow-x:clip}
 .wbf .toc a:hover{color:#fff}
 .wbf .toc a.on{color:#fff;border-left-color:var(--blue)}
 .wbf .art-body{max-width:760px;min-width:0}
-.wbf .byline{display:flex;flex-wrap:wrap;gap:8px 20px;font-size:13.5px;color:var(--mute);padding-bottom:22px;margin-bottom:40px;border-bottom:1px solid rgba(255,255,255,.1)}
-.wbf .byline b{color:#fff;font-weight:600}
 .wbf .summary{padding:28px 30px;border-radius:16px;background:rgba(37,168,224,.1);border:1px solid rgba(37,168,224,.4);margin-bottom:64px}
 .wbf .summary h2{font:600 15px var(--font);letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin-bottom:12px}
 .wbf .summary p{font-size:clamp(17px,1.35vw,19px);line-height:1.7;color:#fff;text-wrap:pretty}
@@ -217,9 +215,6 @@ html,body{overflow-x:clip}
 .wbf .sources ol{display:grid;gap:10px;list-style:decimal;padding-left:20px;font-size:13.5px;color:var(--mute);line-height:1.6}
 .wbf .sources a{color:var(--soft)}
 .wbf .sources li:target{color:#fff}
-.wbf .author{padding:22px 24px;border-radius:14px;border:1px solid rgba(255,255,255,.1);font-size:14.5px;color:var(--soft);line-height:1.6}
-.wbf .author-k{font:600 12px var(--font);letter-spacing:.14em;text-transform:uppercase;color:var(--mute);margin-bottom:8px}
-.wbf .author b{color:#fff}
 @media (max-width:980px){
   .wbf .art-grid{grid-template-columns:minmax(0,1fr)}
   .wbf .h1{order:2}
@@ -317,7 +312,7 @@ html,body{overflow-x:clip}
   </section>
 
   <!-- ARTICLE: answer-first, one question per block -->
-  <article class="art" itemscope itemtype="https://schema.org/Article">
+  <article class="art">
     <div class="wrap art-grid">
       <aside class="toc" aria-label="Perguntas respondidas nesta página">
         <p class="toc-k">Nesta página</p>
@@ -337,11 +332,6 @@ html,body{overflow-x:clip}
       </aside>
 
       <div class="art-body">
-        <div class="byline">
-          <span>Por <b itemprop="author" itemscope itemtype="https://schema.org/Person"><span itemprop="name">TODO: nome do(a) jornalista</span></b>, jornalista</span>
-          <span>Publicado em <time itemprop="datePublished" datetime="2026-10-29">29/10/2026</time></span>
-          <span>Atualizado em <time itemprop="dateModified" datetime="2026-10-29">29/10/2026</time></span>
-        </div>
 
         <section class="summary" id="resumo">
           <h2>Resumo</h2>
@@ -490,10 +480,6 @@ html,body{overflow-x:clip}
           </ol>
         </section>
 
-        <aside class="author" aria-label="Sobre o autor">
-          <p class="author-k">Sobre o autor</p>
-          <p><b>TODO: nome do(a) jornalista</b>, jornalista. TODO: uma frase sobre a experiência do autor com varejo e tecnologia.</p>
-        </aside>
       </div>
     </div>
   </article>
@@ -515,7 +501,7 @@ html,body{overflow-x:clip}
       <small>© 2026 Wispot. Todos os direitos reservados.</small>
     </div>
   </footer>
-  <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Article", "headline": "Black Friday Wispot 2026: Wi-Fi marketing com 3 meses grátis no contrato de 18 meses", "description": "A Black Friday Wispot 2026 dá 3 meses grátis para empresas que fecharem um contrato de 18 meses até 30 de novembro de 2026: são 21 meses de solução pagando 18. A Wispot transforma o Wi-Fi da sua loja em um canal de relacionamento: o visitante se conecta por um portal com a sua marca, autoriza o uso dos dados e entra na sua base de contatos, que depois recebe campanhas por e-mail e SMS pelo Sending. Na data de maior movimento do ano, isso significa sair da Black Friday com uma lista de clientes reais, e não só com o caixa do dia.", "inLanguage": "pt-BR", "author": {"@type": "Person", "name": "TODO: nome do(a) jornalista", "jobTitle": "jornalista"}, "datePublished": "2026-10-29", "dateModified": "2026-10-29", "publisher": {"@type": "Organization", "name": "Wispot", "url": "https://wispot.com.br"}}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "O que é a Black Friday Wispot 2026?", "acceptedAnswer": {"@type": "Answer", "text": "É uma condição especial para novos contratos: quem assina 18 meses de Wispot até 30 de novembro de 2026 ganha 3 meses grátis e usa a solução por 21 meses."}}, {"@type": "Question", "name": "Por que a Black Friday é o momento de captar contatos na loja física?", "acceptedAnswer": {"@type": "Answer", "text": "Porque a disputa por cada cliente fica mais acirrada: o comércio eletrônico cresce na data, enquanto o fluxo nos shoppings caiu em 2025. Cada visita presencial passa a valer mais, e quem não registra esse cliente perde a chance de chamá-lo de volta."}}, {"@type": "Question", "name": "Como a Wispot transforma o Wi-Fi da loja em contatos?", "acceptedAnswer": {"@type": "Answer", "text": "Em três passos: o visitante se conecta por um portal com a sua marca, a Wispot registra os dados que ele autoriza, e a sua empresa usa essa base para se relacionar com ele depois."}}, {"@type": "Question", "name": "A coleta de dados pelo Wi-Fi está de acordo com a LGPD?", "acceptedAnswer": {"@type": "Answer", "text": "A coleta acontece com autorização do visitante: antes de se conectar, ele vê os termos de uso e a política de privacidade e concorda com eles. O consentimento é uma das bases legais previstas na Lei Geral de Proteção de Dados."}}, {"@type": "Question", "name": "O que é o Sending e como ele traz o cliente de volta?", "acceptedAnswer": {"@type": "Answer", "text": "O Sending é a ferramenta de campanhas da Wispot: com a base captada pelo Wi-Fi, sua empresa envia mensagens segmentadas por e-mail e SMS para incentivar novas visitas."}}, {"@type": "Question", "name": "Por que investir em relacionamento com quem já visitou a loja?", "acceptedAnswer": {"@type": "Answer", "text": "Porque manter clientes costuma dar mais retorno do que buscar novos. Um estudo clássico da Bain & Company associa um aumento de 5% na retenção a um lucro de 25% a 95% maior, conforme o setor."}}, {"@type": "Question", "name": "Para quais tipos de negócio a Wispot serve?", "acceptedAnswer": {"@type": "Answer", "text": "Para qualquer negócio que recebe visitantes e oferece Wi-Fi: varejo, restaurantes, cafeterias, hotéis, eventos, aeroportos, centros comerciais e instituições de ensino, entre outros."}}, {"@type": "Question", "name": "Como garantir a condição de Black Friday?", "acceptedAnswer": {"@type": "Answer", "text": "Preencha o formulário desta página. Um especialista da Wispot entra em contato e monta a proposta com os 3 meses grátis, válida para contratos fechados até 30 de novembro de 2026."}}, {"@type": "Question", "name": "Preciso que o cliente baixe algum aplicativo?", "acceptedAnswer": {"@type": "Answer", "text": "Não. O visitante se conecta pelo portal da sua marca direto no navegador do celular."}}, {"@type": "Question", "name": "A oferta vale para quem já é cliente Wispot?", "acceptedAnswer": {"@type": "Answer", "text": "A condição é para novos contratos de 18 meses fechados até 30 de novembro de 2026. Para outros casos, fale com um especialista."}}, {"@type": "Question", "name": "Quais dados posso captar pelo Wi-Fi?", "acceptedAnswer": {"@type": "Answer", "text": "Dados como nome, e-mail e telefone, sempre com a autorização do visitante no portal de acesso."}}, {"@type": "Question", "name": "Por quanto tempo uso a Wispot com a oferta?", "acceptedAnswer": {"@type": "Answer", "text": "Por 21 meses: os 18 do contrato mais os 3 meses grátis da Black Friday."}}, {"@type": "Question", "name": "Como envio campanhas para os contatos captados?", "acceptedAnswer": {"@type": "Answer", "text": "Pelo Sending, a ferramenta de campanhas da Wispot, com mensagens segmentadas por e-mail e SMS."}}]}]}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Article", "headline": "Black Friday Wispot 2026: Wi-Fi marketing com 3 meses grátis no contrato de 18 meses", "description": "A Black Friday Wispot 2026 dá 3 meses grátis para empresas que fecharem um contrato de 18 meses até 30 de novembro de 2026: são 21 meses de solução pagando 18. A Wispot transforma o Wi-Fi da sua loja em um canal de relacionamento: o visitante se conecta por um portal com a sua marca, autoriza o uso dos dados e entra na sua base de contatos, que depois recebe campanhas por e-mail e SMS pelo Sending. Na data de maior movimento do ano, isso significa sair da Black Friday com uma lista de clientes reais, e não só com o caixa do dia.", "inLanguage": "pt-BR", "author": {"@type": "Organization", "name": "Wispot", "url": "https://wispot.com.br"}, "dateModified": "2026-10-29", "publisher": {"@type": "Organization", "name": "Wispot", "url": "https://wispot.com.br"}}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "O que é a Black Friday Wispot 2026?", "acceptedAnswer": {"@type": "Answer", "text": "É uma condição especial para novos contratos: quem assina 18 meses de Wispot até 30 de novembro de 2026 ganha 3 meses grátis e usa a solução por 21 meses."}}, {"@type": "Question", "name": "Por que a Black Friday é o momento de captar contatos na loja física?", "acceptedAnswer": {"@type": "Answer", "text": "Porque a disputa por cada cliente fica mais acirrada: o comércio eletrônico cresce na data, enquanto o fluxo nos shoppings caiu em 2025. Cada visita presencial passa a valer mais, e quem não registra esse cliente perde a chance de chamá-lo de volta."}}, {"@type": "Question", "name": "Como a Wispot transforma o Wi-Fi da loja em contatos?", "acceptedAnswer": {"@type": "Answer", "text": "Em três passos: o visitante se conecta por um portal com a sua marca, a Wispot registra os dados que ele autoriza, e a sua empresa usa essa base para se relacionar com ele depois."}}, {"@type": "Question", "name": "A coleta de dados pelo Wi-Fi está de acordo com a LGPD?", "acceptedAnswer": {"@type": "Answer", "text": "A coleta acontece com autorização do visitante: antes de se conectar, ele vê os termos de uso e a política de privacidade e concorda com eles. O consentimento é uma das bases legais previstas na Lei Geral de Proteção de Dados."}}, {"@type": "Question", "name": "O que é o Sending e como ele traz o cliente de volta?", "acceptedAnswer": {"@type": "Answer", "text": "O Sending é a ferramenta de campanhas da Wispot: com a base captada pelo Wi-Fi, sua empresa envia mensagens segmentadas por e-mail e SMS para incentivar novas visitas."}}, {"@type": "Question", "name": "Por que investir em relacionamento com quem já visitou a loja?", "acceptedAnswer": {"@type": "Answer", "text": "Porque manter clientes costuma dar mais retorno do que buscar novos. Um estudo clássico da Bain & Company associa um aumento de 5% na retenção a um lucro de 25% a 95% maior, conforme o setor."}}, {"@type": "Question", "name": "Para quais tipos de negócio a Wispot serve?", "acceptedAnswer": {"@type": "Answer", "text": "Para qualquer negócio que recebe visitantes e oferece Wi-Fi: varejo, restaurantes, cafeterias, hotéis, eventos, aeroportos, centros comerciais e instituições de ensino, entre outros."}}, {"@type": "Question", "name": "Como garantir a condição de Black Friday?", "acceptedAnswer": {"@type": "Answer", "text": "Preencha o formulário desta página. Um especialista da Wispot entra em contato e monta a proposta com os 3 meses grátis, válida para contratos fechados até 30 de novembro de 2026."}}, {"@type": "Question", "name": "Preciso que o cliente baixe algum aplicativo?", "acceptedAnswer": {"@type": "Answer", "text": "Não. O visitante se conecta pelo portal da sua marca direto no navegador do celular."}}, {"@type": "Question", "name": "A oferta vale para quem já é cliente Wispot?", "acceptedAnswer": {"@type": "Answer", "text": "A condição é para novos contratos de 18 meses fechados até 30 de novembro de 2026. Para outros casos, fale com um especialista."}}, {"@type": "Question", "name": "Quais dados posso captar pelo Wi-Fi?", "acceptedAnswer": {"@type": "Answer", "text": "Dados como nome, e-mail e telefone, sempre com a autorização do visitante no portal de acesso."}}, {"@type": "Question", "name": "Por quanto tempo uso a Wispot com a oferta?", "acceptedAnswer": {"@type": "Answer", "text": "Por 21 meses: os 18 do contrato mais os 3 meses grátis da Black Friday."}}, {"@type": "Question", "name": "Como envio campanhas para os contatos captados?", "acceptedAnswer": {"@type": "Answer", "text": "Pelo Sending, a ferramenta de campanhas da Wispot, com mensagens segmentadas por e-mail e SMS."}}]}]}</script>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
@@ -652,7 +638,7 @@ html,body{overflow-x:clip}
   /* section reveals */
   const pop=(sel,vars)=>page.querySelectorAll(sel).forEach(el=>gsap.from(el,Object.assign({scrollTrigger:{trigger:el,start:'top 88%'},duration:.9,ease:'power3.out',clearProps:'transform,opacity'},vars)));
   /* article blocks rise in once; the TOC marks the question being read */
-  pop('.summary,.qa,.faq,.sources,.author',{y:16,opacity:0,duration:.45,ease:'power2.out'});
+  pop('.summary,.qa,.faq,.sources',{y:16,opacity:0,duration:.45,ease:'power2.out'});
   const tocLinks=[...page.querySelectorAll('.toc a')];
   tocLinks.forEach(a=>{const el=page.querySelector(a.getAttribute('href'));if(el)ScrollTrigger.create({trigger:el,start:'top 40%',end:'bottom 40%',onToggle:s=>{if(s.isActive){tocLinks.forEach(x=>x.classList.remove('on'));a.classList.add('on')}}})});
   pop('.final h2',{y:60,opacity:0});

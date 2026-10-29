@@ -128,7 +128,7 @@
   /* section reveals */
   const pop=(sel,vars)=>page.querySelectorAll(sel).forEach(el=>gsap.from(el,Object.assign({scrollTrigger:{trigger:el,start:'top 88%'},duration:.9,ease:'power3.out',clearProps:'transform,opacity'},vars)));
   /* article blocks rise in once; the TOC marks the question being read */
-  pop('.summary,.qa,.faq,.sources,.author',{y:16,opacity:0,duration:.45,ease:'power2.out'});
+  pop('.summary,.qa,.faq,.sources',{y:16,opacity:0,duration:.45,ease:'power2.out'});
   const tocLinks=[...page.querySelectorAll('.toc a')];
   tocLinks.forEach(a=>{const el=page.querySelector(a.getAttribute('href'));if(el)ScrollTrigger.create({trigger:el,start:'top 40%',end:'bottom 40%',onToggle:s=>{if(s.isActive){tocLinks.forEach(x=>x.classList.remove('on'));a.classList.add('on')}}})});
   pop('.final h2',{y:60,opacity:0});

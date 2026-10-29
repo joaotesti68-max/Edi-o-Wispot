@@ -11,15 +11,8 @@ OFERTA={
   'REGRA':'Condição válida para novos contratos de 18 meses fechados até 30/11/2026: você ganha 3 meses grátis e garante 21 meses de solução pagando apenas 18. Consulte as regras com um especialista.',
   'OFERTA_ATE_LONGA':'30 de novembro de 2026',
 }
-# ▼ AUTOR E DATAS (o Google e as IAs valorizam autoria real e conteúdo atualizado; revise a cada 60 a 90 dias)
-AUTOR={
-  'AUTOR_NOME':'TODO: nome do(a) jornalista',
-  'AUTOR_CARGO':'jornalista',
-  'AUTOR_BIO':'TODO: uma frase sobre a experiência do autor com varejo e tecnologia.',
-  'AUTOR_URL':'',            # link do perfil do autor (LinkedIn ou página de autor), opcional
-  'DATA_PUB':'2026-10-29',
-  'DATA_ATU':'2026-10-29',
-}
+# ▼ DATA DA ÚLTIMA REVISÃO (vai só nos dados estruturados; atualize a cada 60 a 90 dias)
+DATA_ATU='2026-10-29'
 PAGINA_URL=''                 # URL publicada da LP (preencha depois de publicar no RD)
 import os,base64,html
 d=os.path.dirname(os.path.abspath(__file__))
@@ -30,19 +23,15 @@ ORDER=['carrefour','heineken','applebees','japan-house','johnny-rockets','bendit
 logos=''.join(f'<div class="logo-card"><img src="{uri(CL+n+".png")}" alt="{n.replace("-"," ").title()}"></div>' for n in ORDER if os.path.exists(CL+n+'.png'))
 import re,json,datetime
 br=lambda d:datetime.date.fromisoformat(d).strftime('%d/%m/%Y')
-AUTOR['DATA_PUB_BR']=br(AUTOR['DATA_PUB']);AUTOR['DATA_ATU_BR']=br(AUTOR['DATA_ATU'])
-for k,v in {**OFERTA,**AUTOR}.items():body=body.replace('{{'+k+'}}',v)
-if 'TODO' in AUTOR['AUTOR_NOME']:print('ATENÇÃO: preencha o nome do autor (AUTOR_NOME) antes de publicar')
+for k,v in OFERTA.items():body=body.replace('{{'+k+'}}',v)
 # structured data: Article + FAQPage built from the question blocks, so they always match the page
 txt=lambda h:re.sub(r'\s+',' ',html.unescape(re.sub(r'<[^>]+>','',h))).strip()
 qas=[(txt(q),txt(a)) for q,a in re.findall(r'<section class="qa"[^>]*>\s*<h2>(.*?)</h2>\s*<p class="qa-sum"><span>Resumo</span>(.*?)</p>',body,re.S)]
 qas+=[(txt(q),txt(a)) for q,a in re.findall(r'<details><summary>(.*?)</summary><p>(.*?)</p></details>',body,re.S)]
 summary=txt(re.search(r'<section class="summary"[^>]*>.*?<p>(.*?)</p>',body,re.S).group(1))
-author={'@type':'Person','name':AUTOR['AUTOR_NOME'],'jobTitle':AUTOR['AUTOR_CARGO']}
-if AUTOR['AUTOR_URL']:author['url']=AUTOR['AUTOR_URL']
 ld={'@context':'https://schema.org','@graph':[
   {'@type':'Article','headline':txt(re.search(r'<h1 class="h1">(.*?)</h1>',body,re.S).group(1)),'description':summary,'inLanguage':'pt-BR',
-   'author':author,'datePublished':AUTOR['DATA_PUB'],'dateModified':AUTOR['DATA_ATU'],
+   'author':{'@type':'Organization','name':'Wispot','url':'https://wispot.com.br'},'dateModified':DATA_ATU,
    'publisher':{'@type':'Organization','name':'Wispot','url':'https://wispot.com.br'},**({'url':PAGINA_URL} if PAGINA_URL else {})},
   {'@type':'FAQPage','mainEntity':[{'@type':'Question','name':q,'acceptedAnswer':{'@type':'Answer','text':a}} for q,a in qas]}]}
 body=body.replace('{{JSONLD}}',json.dumps(ld,ensure_ascii=False).replace('</','<\\/'))

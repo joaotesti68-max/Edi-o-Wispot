@@ -47,9 +47,6 @@ A página é organizada em blocos de pergunta e resposta para ser encontrada e c
 - abre com um **Resumo** da oferta;
 - cada bloco tem: pergunta como título, resumo de uma ou duas frases, "Principais pontos" e o texto completo;
 - dados com fonte numerada (seção Fontes no fim);
-- autor e datas de publicação e atualização visíveis;
 - dados estruturados (schema.org Article + FAQPage) gerados automaticamente a partir dos blocos.
 
-**Antes de publicar:** preencha o bloco `AUTOR` no topo de `src/build.py` (nome do jornalista, cargo, uma frase de bio e, se houver, o link do perfil) e rode `python3 src/build.py`. Enquanto isso não for feito, a página mostra "TODO" no lugar do autor.
-
-**Manutenção:** a cada 60 a 90 dias, revise os dados e atualize `DATA_ATU` no mesmo bloco. Conteúdo sem atualização perde espaço nas respostas das IAs.
+**Manutenção:** a cada 60 a 90 dias, revise os dados e atualize `DATA_ATU` no topo de `src/build.py`.

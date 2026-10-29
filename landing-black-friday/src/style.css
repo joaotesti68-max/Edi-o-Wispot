@@ -183,8 +183,6 @@ html,body{overflow-x:clip}
 .wbf .toc a:hover{color:#fff}
 .wbf .toc a.on{color:#fff;border-left-color:var(--blue)}
 .wbf .art-body{max-width:760px;min-width:0}
-.wbf .byline{display:flex;flex-wrap:wrap;gap:8px 20px;font-size:13.5px;color:var(--mute);padding-bottom:22px;margin-bottom:40px;border-bottom:1px solid rgba(255,255,255,.1)}
-.wbf .byline b{color:#fff;font-weight:600}
 .wbf .summary{padding:28px 30px;border-radius:16px;background:rgba(37,168,224,.1);border:1px solid rgba(37,168,224,.4);margin-bottom:64px}
 .wbf .summary h2{font:600 15px var(--font);letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin-bottom:12px}
 .wbf .summary p{font-size:clamp(17px,1.35vw,19px);line-height:1.7;color:#fff;text-wrap:pretty}
@@ -216,9 +214,6 @@ html,body{overflow-x:clip}
 .wbf .sources ol{display:grid;gap:10px;list-style:decimal;padding-left:20px;font-size:13.5px;color:var(--mute);line-height:1.6}
 .wbf .sources a{color:var(--soft)}
 .wbf .sources li:target{color:#fff}
-.wbf .author{padding:22px 24px;border-radius:14px;border:1px solid rgba(255,255,255,.1);font-size:14.5px;color:var(--soft);line-height:1.6}
-.wbf .author-k{font:600 12px var(--font);letter-spacing:.14em;text-transform:uppercase;color:var(--mute);margin-bottom:8px}
-.wbf .author b{color:#fff}
 @media (max-width:980px){
   .wbf .art-grid{grid-template-columns:minmax(0,1fr)}
   .wbf .h1{order:2}
