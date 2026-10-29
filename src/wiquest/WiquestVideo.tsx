@@ -5,15 +5,15 @@ import {
   Composition,
   Easing,
   Img,
+  Sequence,
   interpolate,
   spring,
   staticFile,
   useCurrentFrame,
   useVideoConfig,
 } from "remotion";
-import { TransitionSeries, linearTiming, springTiming } from "@remotion/transitions";
+import { TransitionSeries, linearTiming } from "@remotion/transitions";
 import { iris } from "@remotion/transitions/iris";
-import { slide } from "@remotion/transitions/slide";
 import { fontFamily } from "../loadFont";
 import {
   END_FRAMES,
@@ -117,6 +117,47 @@ const musicVolume = (f: number) => {
   });
 };
 
+const WIPE = 18;
+
+// Blue panel led and trailed by orange stripes sweeps right to left; it fully
+// covers the frame at `at`, where the hard cut sits.
+const BrandWipe: React.FC<{ at: number }> = ({ at }) => (
+  <Sequence from={at - WIPE / 2} durationInFrames={WIPE} layout="none">
+    <WipeBars />
+  </Sequence>
+);
+
+const WipeBars: React.FC = () => {
+  const frame = useCurrentFrame();
+  const p = interpolate(frame, [0, WIPE], [0, 1], { easing: Easing.inOut(Easing.cubic) });
+  const x = interpolate(p, [0, 1], [1.3 * width, -2.1 * width]);
+  const bar = (left: number, w: number, background: string): React.CSSProperties => ({
+    position: "absolute",
+    top: -200,
+    bottom: -200,
+    left: x + left * width,
+    width: w * width,
+    background,
+    transform: "skewX(-12deg)",
+  });
+  return (
+    <AbsoluteFill style={{ overflow: "hidden" }}>
+      <div style={bar(-0.22, 0.2, wq.orange)} />
+      <div style={bar(0, 1.8, wsp.grad)} />
+      <div style={bar(1.84, 0.14, wq.orange)} />
+      <Img
+        src={staticFile(wq.logoWhite)}
+        style={{
+          position: "absolute",
+          top: height / 2 - 70,
+          left: x + 0.9 * width - 260,
+          width: 520,
+        }}
+      />
+    </AbsoluteFill>
+  );
+};
+
 export const WiquestVideo: React.FC = () => {
   return (
     <AbsoluteFill style={{ fontFamily, background: wsp.blueDeep }}>
@@ -139,14 +180,6 @@ export const WiquestVideo: React.FC = () => {
                   presentation={iris({ width, height })}
                   timing={linearTiming({ durationInFrames: TRANSITION })}
                 />
-              ) : t === "slide" ? (
-                <TransitionSeries.Transition
-                  presentation={slide({ direction: "from-right" })}
-                  timing={springTiming({
-                    durationInFrames: TRANSITION,
-                    config: { damping: 200 },
-                  })}
-                />
               ) : null}
             </Fragment>
           );
@@ -157,8 +190,11 @@ export const WiquestVideo: React.FC = () => {
       </TransitionSeries>
 
       {scenes.map((scene, i) =>
-        i > 0 && transitionAfter(i - 1) !== "cut" ? (
-          <Sfx key={scene.id} at={sceneStarts[i] - 6} src="audio/sfx/whoosh.wav" volume={0.32} />
+        i > 0 ? (
+          <Fragment key={scene.id}>
+            <BrandWipe at={sceneStarts[i]} />
+            <Sfx at={sceneStarts[i] - 8} src="audio/sfx/whoosh.wav" volume={0.3} />
+          </Fragment>
         ) : null,
       )}
       <Sfx at={endStart - 6} src="audio/sfx/whoosh.wav" volume={0.32} />

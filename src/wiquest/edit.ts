@@ -135,14 +135,10 @@ export const scenes: Scene[] = [
   ),
 ];
 
-// Where a transition sits after scene i (none = hard cut).
-export const transitionAfter = (i: number): "slide" | "cut" | "end" => {
-  const scene = scenes[i];
-  const next = scenes[i + 1];
-  if (!next) return "end";
-  if (scene.kind === "howto" || next.kind === "howto") return "slide";
-  return "cut";
-};
+// Scenes butt-cut so her lines never overlap; a brand wipe drawn over each
+// cut is the transition. Only the end card overlaps (iris).
+export const transitionAfter = (i: number): "wipe" | "end" =>
+  i + 1 < scenes.length ? "wipe" : "end";
 
 // Absolute start frame of each scene, accounting for transition overlaps.
 export const sceneStarts: number[] = [];
@@ -151,7 +147,7 @@ export const sceneStarts: number[] = [];
   scenes.forEach((scene, i) => {
     sceneStarts.push(from);
     from += scene.durationInFrames;
-    if (transitionAfter(i) !== "cut") from -= TRANSITION;
+    if (transitionAfter(i) === "end") from -= TRANSITION;
   });
 }
 
