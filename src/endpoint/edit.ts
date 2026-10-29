@@ -1,18 +1,17 @@
-import type { IconKind } from "./theme";
-
 export const FPS = 30;
 export const END_FRAMES = 105;
 
 // A stretch of the source take that survives the silence cuts.
 export type Part = { srcStart: number; from: number; durationInFrames: number };
 
-// `at`/`until` are seconds in the source take.
+// Seconds in the source take. Each cue acts out what is being said
+// rather than spelling it out.
 export type Cue =
-  | { type: "sticker"; text: string; icon: IconKind; at: number; until?: number; dark?: boolean }
-  | { type: "places"; items: { text: string; icon: IconKind; at: number }[]; until: number }
-  | { type: "endpointCard"; at: number; reveal: number }
-  | { type: "risks"; items: { text: string; icon: IconKind; at: number }[]; until: number }
-  | { type: "riskBanner"; at: number }
+  | { type: "attack"; at: number; server: number; laptop: number; until: number }
+  | { type: "map"; at: number; stops: [number, number, number]; until: number }
+  | { type: "orbit"; at: number; endpoints: number }
+  | { type: "risk"; at: number; update: number; lost: number; spread: number }
+  | { type: "scan"; at: number; until: number }
   | { type: "cta"; at: number };
 
 export type Scene = {
@@ -60,11 +59,7 @@ export const scenes: Scene[] = [
       [4.32, 6.02],
       [6.22, 8.34],
     ],
-    [
-      { type: "sticker", text: "Ataque hacker", icon: "bug", at: 3.1, until: 4.6, dark: true },
-      { type: "sticker", text: "Não começa no servidor", icon: "server", at: 4.62, until: 6.25 },
-      { type: "sticker", text: "Começa no notebook", icon: "laptop", at: 6.3, dark: true },
-    ],
+    [{ type: "attack", at: 2.9, server: 4.62, laptop: 6.3, until: 8.34 }],
   ),
   scene(
     "v2",
@@ -75,16 +70,8 @@ export const scenes: Scene[] = [
       [8.82, 13.38],
     ],
     [
-      {
-        type: "places",
-        items: [
-          { text: "Café", icon: "coffee", at: 5.9 },
-          { text: "Casa", icon: "home", at: 6.95 },
-          { text: "Escritório", icon: "building", at: 7.9 },
-        ],
-        until: 9.3,
-      },
-      { type: "endpointCard", at: 9.35, reveal: 12.7 },
+      { type: "map", at: 4.0, stops: [5.9, 6.95, 7.9], until: 8.9 },
+      { type: "orbit", at: 8.95, endpoints: 12.7 },
     ],
   ),
   scene(
@@ -94,18 +81,7 @@ export const scenes: Scene[] = [
       [1.3, 8.22],
       [8.4, 9.66],
     ],
-    [
-      {
-        type: "risks",
-        items: [
-          { text: "Anexo aberto sem querer", icon: "clip", at: 1.9 },
-          { text: "Sistema desatualizado", icon: "refresh", at: 3.45 },
-          { text: "Equipamento perdido", icon: "lost", at: 5.3 },
-        ],
-        until: 7.5,
-      },
-      { type: "riskBanner", at: 7.6 },
-    ],
+    [{ type: "risk", at: 1.75, update: 3.4, lost: 5.25, spread: 7.55 }],
   ),
   scene("v4", "antivirus", [
     [1.55, 3.86],
@@ -126,7 +102,7 @@ export const scenes: Scene[] = [
       [3.83, 5.06],
     ],
     [
-      { type: "sticker", text: "Sua empresa está protegida?", icon: "shield", at: 1.2, until: 3.8 },
+      { type: "scan", at: 1.2, until: 3.8 },
       { type: "cta", at: 3.9 },
     ],
   ),

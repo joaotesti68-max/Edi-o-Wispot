@@ -40,7 +40,10 @@ export type IconKind =
   | "x"
   | "pin"
   | "pointer"
-  | "zap";
+  | "zap"
+  | "mail"
+  | "user"
+  | "wifi";
 
 const paths: Record<IconKind, React.ReactNode> = {
   laptop: (
@@ -169,6 +172,24 @@ const paths: Record<IconKind, React.ReactNode> = {
     <path d="M9 11V4.5a1.5 1.5 0 0 1 3 0V10m0-1.5a1.5 1.5 0 0 1 3 0V10m0-.5a1.5 1.5 0 0 1 3 0v4.5a7 7 0 0 1-7 7h-.5a6 6 0 0 1-5-2.7L3.6 14a1.6 1.6 0 0 1 2.6-1.9L9 15" />
   ),
   zap: <path d="M13 2.5 4 13.5h7l-1 8 9-11h-7Z" />,
+  mail: (
+    <>
+      <rect x="2.5" y="5" width="19" height="14" rx="2" />
+      <path d="m3 6.5 9 6.5 9-6.5" />
+    </>
+  ),
+  user: (
+    <>
+      <circle cx="12" cy="8" r="4" />
+      <path d="M4 21a8 8 0 0 1 16 0" />
+    </>
+  ),
+  wifi: (
+    <>
+      <path d="M2.5 9a14 14 0 0 1 19 0M5.5 12.5a9.5 9.5 0 0 1 13 0M8.7 16a5 5 0 0 1 6.6 0" />
+      <circle cx="12" cy="19.3" r="1" fill="currentColor" />
+    </>
+  ),
 };
 
 export const Icon: React.FC<{

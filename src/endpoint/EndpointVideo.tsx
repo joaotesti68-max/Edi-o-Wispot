@@ -95,7 +95,7 @@ export const EndpointVideo: React.FC = () => (
         ) : scene.mode === "isolate" ? (
           <MgIsolate scene={scene} />
         ) : (
-          <CameraScene scene={scene} first={i === 0} />
+          <CameraScene scene={scene} />
         )}
       </Sequence>
     ))}

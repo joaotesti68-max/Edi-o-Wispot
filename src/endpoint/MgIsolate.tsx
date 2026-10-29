@@ -1,7 +1,7 @@
 import { AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
 import type { Scene } from "./edit";
 import { toSceneFrame } from "./edit";
-import { Headline, MgShell } from "./MgShell";
+import { MgShell, Toasts } from "./MgShell";
 import { Sfx } from "./Overlays";
 import type { IconKind } from "./theme";
 import { Icon, pa } from "./theme";
@@ -277,12 +277,12 @@ export const MgIsolate: React.FC<{ scene: Scene }> = ({ scene }) => {
   const safe = f(7.0);
   return (
     <MgShell scene={scene}>
-      <Headline
-        lines={[
-          { from: 4, small: "E SE APARECER", text: "ALGO SUSPEITO?" },
-          { from: act, small: "PASSO 1", text: "AGIR RÁPIDO" },
-          { from: isolate, small: "PASSO 2", text: "ISOLAR A MÁQUINA" },
-          { from: safe, small: "AMEAÇA CONTIDA", text: "REDE PROTEGIDA" },
+      <Toasts
+        items={[
+          { from: suspect, icon: "alert", title: "Comportamento suspeito", sub: "NB-COMERCIAL-07", dark: true },
+          { from: act, icon: "zap", title: "Resposta automática", sub: "analisando processo…" },
+          { from: isolate, icon: "lock", title: "Dispositivo isolado", sub: "conexões bloqueadas" },
+          { from: safe, icon: "check", title: "Rede segura", sub: "5 de 6 dispositivos ok" },
         ]}
       />
       <Network suspect={suspect} act={act} isolate={isolate} spread={spread} safe={safe} />

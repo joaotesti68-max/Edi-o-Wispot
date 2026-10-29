@@ -10,7 +10,8 @@ import {
 } from "remotion";
 import type { Scene } from "./edit";
 import { Sfx } from "./Overlays";
-import { TileGrid, pa } from "./theme";
+import type { IconKind } from "./theme";
+import { Icon, TileGrid, pa } from "./theme";
 
 // Index of the last start at or before `frame`, -1 if none.
 export const lastStarted = (starts: number[], frame: number) =>
@@ -39,37 +40,66 @@ export const MgShell: React.FC<{ scene: Scene; children: React.ReactNode }> = ({
   </AbsoluteFill>
 );
 
-// Big headline that swaps with a spring each time `text` changes.
-export const Headline: React.FC<{
-  lines: { from: number; text: React.ReactNode; small?: string }[];
-  top?: number;
-}> = ({ lines, top = 250 }) => {
+// System notification that slides in from the top and is replaced by the
+// next one, the way a security console reports what it is doing.
+export const Toasts: React.FC<{
+  items: { from: number; icon: IconKind; title: string; sub: string; dark?: boolean }[];
+}> = ({ items }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-  const idx = lastStarted(lines.map((l) => l.from), frame);
+  const idx = lastStarted(
+    items.map((t) => t.from),
+    frame,
+  );
   if (idx < 0) return null;
-  const line = lines[idx];
-  const s = spring({ frame: frame - line.from, fps, config: { damping: 13 } });
+  const t = items[idx];
+  const s = spring({ frame: frame - t.from, fps, config: { damping: 14 } });
   return (
     <div
       style={{
         position: "absolute",
-        top,
-        left: 60,
-        right: 60,
-        textAlign: "center",
+        top: 230,
+        left: 70,
+        right: 70,
+        display: "flex",
+        alignItems: "center",
+        gap: 28,
+        padding: "26px 34px",
+        borderRadius: 34,
+        background: t.dark ? pa.deep : pa.white,
         fontFamily: pa.font,
-        color: pa.white,
-        transform: `translateY(${interpolate(s, [0, 1], [50, 0])}px)`,
-        opacity: s,
+        boxShadow: "0 24px 60px rgba(28,63,87,0.35)",
+        transform: `translateY(${interpolate(s, [0, 1], [-260, 0])}px)`,
       }}
     >
-      {line.small ? (
-        <div style={{ fontWeight: 700, fontSize: 40, letterSpacing: "0.12em", opacity: 0.85 }}>
-          {line.small}
-        </div>
-      ) : null}
-      <div style={{ fontWeight: 800, fontSize: 82, lineHeight: 1.05 }}>{line.text}</div>
+      <div
+        style={{
+          width: 100,
+          height: 100,
+          borderRadius: 28,
+          background: t.dark ? pa.light : pa.grad,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          flexShrink: 0,
+        }}
+      >
+        <Icon kind={t.icon} size={60} strokeWidth={2.4} />
+      </div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+        <span style={{ fontWeight: 800, fontSize: 44, color: t.dark ? pa.white : pa.deep }}>
+          {t.title}
+        </span>
+        <span
+          style={{
+            fontWeight: 700,
+            fontSize: 30,
+            color: t.dark ? "rgba(255,255,255,0.75)" : pa.gray,
+          }}
+        >
+          {t.sub}
+        </span>
+      </div>
     </div>
   );
 };

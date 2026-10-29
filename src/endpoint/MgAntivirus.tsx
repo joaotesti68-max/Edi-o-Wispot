@@ -1,13 +1,14 @@
 import { AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
 import type { Scene } from "./edit";
 import { toSceneFrame } from "./edit";
-import { Headline, MgShell, lastStarted } from "./MgShell";
+import { Console } from "./Console";
+import { MgShell } from "./MgShell";
 import { Sfx } from "./Overlays";
 import type { IconKind } from "./theme";
 import { Icon, pa } from "./theme";
 
 const CX = 540;
-const CY = 980;
+const CY = 940;
 const RING = 350;
 
 const DEVICES: { icon: IconKind; angle: number }[] = [
@@ -164,151 +165,13 @@ const AntivirusAlone: React.FC<{ fail: number; end: number }> = ({ fail, end }) 
   );
 };
 
-const PILLARS: { icon: IconKind; title: string; tag: string; at: number }[] = [
-  { icon: "list", title: "Saber quais equipamentos existem", tag: "INVENTÁRIO", at: 5.45 },
-  { icon: "refresh", title: "Manter tudo atualizado", tag: "ATUALIZAÇÕES", at: 7.45 },
-  { icon: "key", title: "Controlar quem acessa o quê", tag: "CONTROLE DE ACESSO", at: 8.95 },
-  { icon: "eye", title: "Acompanhar cada máquina", tag: "MONITORAMENTO", at: 10.45 },
-];
-
-// "Proteger os endpoints é…": four numbered cards, the current one in blue.
-const Pillars: React.FC<{ scene: Scene; start: number }> = ({ scene, start }) => {
-  const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
-  if (frame < start) return null;
-  const starts = PILLARS.map((p) => toSceneFrame(scene, p.at));
-  const where = toSceneFrame(scene, 12.7);
-  const active = lastStarted(starts, frame);
-  return (
-    <AbsoluteFill>
-      {PILLARS.map((p, i) => {
-        const s = spring({ frame: frame - starts[i], fps, config: { damping: 14 } });
-        const top = 560 + i * 260;
-        if (frame < starts[i]) {
-          // Empty slots show up with the title, so the four are expected.
-          const ghost = spring({ frame: frame - start - i * 3, fps, config: { damping: 14 } });
-          return (
-            <div
-              key={p.tag}
-              style={{
-                position: "absolute",
-                top,
-                left: 60,
-                right: 60,
-                height: 215,
-                borderRadius: 36,
-                border: "3px dashed rgba(255,255,255,0.45)",
-                display: "flex",
-                alignItems: "center",
-                padding: "0 28px",
-                fontFamily: pa.font,
-                fontSize: 120,
-                color: "rgba(255,255,255,0.35)",
-                letterSpacing: "-0.04em",
-                opacity: ghost,
-                transform: `scale(${interpolate(ghost, [0, 1], [0.9, 1])})`,
-              }}
-            >
-              0{i + 1}.
-            </div>
-          );
-        }
-        const on = i === active;
-        return (
-          <div
-            key={p.tag}
-            style={{
-              position: "absolute",
-              top,
-              left: 60,
-              right: 60,
-              height: 215,
-              borderRadius: 36,
-              background: on ? pa.white : "rgba(255,255,255,0.16)",
-              border: `3px solid rgba(255,255,255,${on ? 1 : 0.5})`,
-              display: "flex",
-              alignItems: "center",
-              gap: 26,
-              padding: "0 34px 0 28px",
-              fontFamily: pa.font,
-              transform: `translateX(${interpolate(s, [0, 1], [900, 0])}px) scale(${on ? 1 : 0.96})`,
-              boxShadow: on ? "0 24px 60px rgba(28,63,87,0.35)" : "none",
-            }}
-          >
-            <Sfx at={starts[i]} src="audio/sfx/whoosh.wav" volume={0.22} />
-            <div
-              style={{
-                fontWeight: 400,
-                fontSize: 120,
-                lineHeight: 1,
-                color: on ? pa.blue : pa.white,
-                width: 170,
-                letterSpacing: "-0.04em",
-              }}
-            >
-              0{i + 1}.
-            </div>
-            <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 8 }}>
-              <div
-                style={{
-                  fontWeight: 800,
-                  fontSize: 28,
-                  letterSpacing: "0.12em",
-                  color: on ? pa.light : "rgba(255,255,255,0.85)",
-                }}
-              >
-                {p.tag}
-              </div>
-              <div
-                style={{
-                  fontWeight: 800,
-                  fontSize: 42,
-                  lineHeight: 1.12,
-                  color: on ? pa.deep : pa.white,
-                }}
-              >
-                {p.title}
-                {i === 3 && frame >= where ? (
-                  <span style={{ color: on ? pa.blue : pa.white }}>, onde estiver</span>
-                ) : null}
-              </div>
-            </div>
-            <div
-              style={{
-                width: 110,
-                height: 110,
-                borderRadius: 28,
-                background: on ? pa.grad : "rgba(255,255,255,0.2)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                flexShrink: 0,
-                transform: `scale(${on ? 1 + 0.05 * Math.sin(frame / 5) : 1})`,
-              }}
-            >
-              <Icon kind={i === 3 && frame >= where ? "pin" : p.icon} size={64} />
-            </div>
-          </div>
-        );
-      })}
-    </AbsoluteFill>
-  );
-};
-
 export const MgAntivirus: React.FC<{ scene: Scene }> = ({ scene }) => {
   const f = (at: number) => toSceneFrame(scene, at);
   const phaseB = f(4.1);
   return (
     <MgShell scene={scene}>
-      <Headline
-        lines={[
-          { from: 4, small: "SÓ O", text: "ANTIVÍRUS?" },
-          { from: f(2.74), small: "O ANTIVÍRUS SOZINHO", text: "NÃO DÁ CONTA" },
-          { from: phaseB, small: "PROTEGER OS ENDPOINTS É", text: "4 PILARES" },
-        ]}
-      />
-      <AntivirusAlone fail={f(2.74)} end={phaseB} />
-      <Pillars scene={scene} start={phaseB} />
+      <AntivirusAlone fail={f(2.74)} end={phaseB + 6} />
+      <Console open={phaseB} tabs={[phaseB + 8, f(7.45), f(8.95), f(10.45)]} travel={f(12.7)} />
     </MgShell>
   );
 };
