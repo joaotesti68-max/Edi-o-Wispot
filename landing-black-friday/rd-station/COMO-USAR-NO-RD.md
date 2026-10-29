@@ -44,8 +44,7 @@ O logo e os logos de clientes vão embutidos no código, então não precisa sub
 
 ## Conteúdo para buscadores e IAs (GEO)
 A página é organizada em blocos de pergunta e resposta para ser encontrada e citada por buscadores e assistentes de IA:
-- abre com um **Resumo** da oferta;
-- cada bloco tem: pergunta como título, resumo de uma ou duas frases, "Principais pontos" e o texto completo;
+- cada bloco tem: pergunta como título, "Principais pontos" e o texto completo;
 - dados com fonte numerada (seção Fontes no fim);
 - dados estruturados (schema.org Article + FAQPage) gerados automaticamente a partir dos blocos.
 

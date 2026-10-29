@@ -26,9 +26,12 @@ br=lambda d:datetime.date.fromisoformat(d).strftime('%d/%m/%Y')
 for k,v in OFERTA.items():body=body.replace('{{'+k+'}}',v)
 # structured data: Article + FAQPage built from the question blocks, so they always match the page
 txt=lambda h:re.sub(r'\s+',' ',html.unescape(re.sub(r'<[^>]+>','',h))).strip()
-qas=[(txt(q),txt(a)) for q,a in re.findall(r'<section class="qa"[^>]*>\s*<h2>(.*?)</h2>\s*<p class="qa-sum"><span>Resumo</span>(.*?)</p>',body,re.S)]
+qas=[]
+for sec in re.findall(r'<section class="qa"[^>]*>(.*?)</section>',body,re.S):
+  q=re.search(r'<h2>(.*?)</h2>',sec,re.S);a=re.search(r'<div class="qa-text">.*?<p>(.*?)</p>',sec,re.S)
+  if q and a:qas.append((txt(q.group(1)),txt(a.group(1))))
 qas+=[(txt(q),txt(a)) for q,a in re.findall(r'<details><summary>(.*?)</summary><p>(.*?)</p></details>',body,re.S)]
-summary=txt(re.search(r'<section class="summary"[^>]*>.*?<p>(.*?)</p>',body,re.S).group(1))
+summary=OFERTA['OFERTA_SUB']
 ld={'@context':'https://schema.org','@graph':[
   {'@type':'Article','headline':txt(re.search(r'<h1 class="h1">(.*?)</h1>',body,re.S).group(1)),'description':summary,'inLanguage':'pt-BR',
    'author':{'@type':'Organization','name':'Wispot','url':'https://wispot.com.br'},'dateModified':DATA_ATU,
