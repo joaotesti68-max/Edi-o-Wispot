@@ -8,7 +8,6 @@ import {
   useCurrentFrame,
   useVideoConfig,
 } from "remotion";
-import { Captions } from "./Captions";
 import type { Part, Scene } from "./edit";
 import { toSceneFrame } from "./edit";
 import { Cta, EndpointCard, LogoPill, Places, RiskBanner, Risks, Sticker } from "./Overlays";
@@ -24,12 +23,13 @@ export const TalkPart: React.FC<{ src: string; part: Part; index: number }> = ({
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const settle = spring({ frame, fps, config: { damping: 18 } });
+  // Framed tight on the face: the source shows the speaker down to the knees.
   const scale =
-    (index % 2 === 1 ? 1.12 : 1) *
+    (index % 2 === 1 ? 1.55 : 1.42) *
     interpolate(settle, [0, 1], [1.05, 1]) *
     interpolate(frame, [0, part.durationInFrames], [1, 1.03]);
   return (
-    <AbsoluteFill style={{ transform: `scale(${scale})`, transformOrigin: "50% 30%" }}>
+    <AbsoluteFill style={{ transform: `scale(${scale})`, transformOrigin: "50% 24%" }}>
       <OffthreadVideo
         src={staticFile(src)}
         trimBefore={part.srcStart}
@@ -115,7 +115,6 @@ export const CameraScene: React.FC<{ scene: Scene; first: boolean }> = ({ scene,
         }
       })}
 
-      <Captions scene={scene} top={1500} />
     </AbsoluteFill>
   );
 };

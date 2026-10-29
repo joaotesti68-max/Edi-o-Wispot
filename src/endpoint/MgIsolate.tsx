@@ -7,7 +7,7 @@ import type { IconKind } from "./theme";
 import { Icon, pa } from "./theme";
 
 const CX = 540;
-const CY = 930;
+const CY = 1010;
 const R = 360;
 const NODE = 150;
 const INFECTED = 1;

@@ -77,7 +77,7 @@ const musicVolume = (f: number) =>
   interpolate(
     f,
     [0, 12, endStart, endStart + 10, totalDurationInFrames - 20, totalDurationInFrames],
-    [0.22, 0.08, 0.08, 0.3, 0.3, 0],
+    [0.12, 0.04, 0.04, 0.18, 0.18, 0],
     { extrapolateLeft: "clamp", extrapolateRight: "clamp" },
   );
 

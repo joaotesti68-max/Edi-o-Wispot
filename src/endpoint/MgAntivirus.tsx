@@ -7,7 +7,7 @@ import type { IconKind } from "./theme";
 import { Icon, pa } from "./theme";
 
 const CX = 540;
-const CY = 900;
+const CY = 980;
 const RING = 350;
 
 const DEVICES: { icon: IconKind; angle: number }[] = [
@@ -183,7 +183,7 @@ const Pillars: React.FC<{ scene: Scene; start: number }> = ({ scene, start }) =>
     <AbsoluteFill>
       {PILLARS.map((p, i) => {
         const s = spring({ frame: frame - starts[i], fps, config: { damping: 14 } });
-        const top = 470 + i * 245;
+        const top = 560 + i * 260;
         if (frame < starts[i]) {
           // Empty slots show up with the title, so the four are expected.
           const ghost = spring({ frame: frame - start - i * 3, fps, config: { damping: 14 } });
