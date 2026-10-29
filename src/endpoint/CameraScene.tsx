@@ -10,7 +10,7 @@ import {
 } from "remotion";
 import type { Part, Scene } from "./edit";
 import { toSceneFrame } from "./edit";
-import { AttackDemo, MapDemo, OrbitDemo, RiskDemo, ScanDemo } from "./Demos";
+import { AttackDemo, MapDemo, OrbitDemo, RiskDemo } from "./Demos";
 import { Cta } from "./Overlays";
 import { pa } from "./theme";
 
@@ -93,8 +93,6 @@ export const CameraScene: React.FC<{ scene: Scene }> = ({ scene }) => {
                 end={end + 1}
               />
             );
-          case "scan":
-            return <ScanDemo key={i} start={f(cue.at)} end={f(cue.until)} />;
           case "cta":
             return <Cta key={i} start={f(cue.at)} end={end} />;
           default:

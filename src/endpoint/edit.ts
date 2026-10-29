@@ -11,7 +11,6 @@ export type Cue =
   | { type: "map"; at: number; stops: [number, number, number]; until: number }
   | { type: "orbit"; at: number; endpoints: number }
   | { type: "risk"; at: number; update: number; lost: number; spread: number }
-  | { type: "scan"; at: number; until: number }
   | { type: "cta"; at: number };
 
 export type Scene = {
@@ -101,10 +100,7 @@ export const scenes: Scene[] = [
       [1.14, 3.54],
       [3.83, 5.06],
     ],
-    [
-      { type: "scan", at: 1.2, until: 3.8 },
-      { type: "cta", at: 3.9 },
-    ],
+    [{ type: "cta", at: 3.9 }],
   ),
 ];
 
