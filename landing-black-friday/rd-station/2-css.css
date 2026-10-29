@@ -169,6 +169,63 @@ html,body{overflow-x:clip}
 .wbf .sign span{font:400 17px var(--title)}
 .wbf .foot small{color:var(--mute);font-size:12.5px}
 
+
+/* descriptive H1 under the decorative BLACK FRIDAY type */
+.wbf .h1{font:600 clamp(20px,1.8vw,26px)/1.3 var(--title);color:#fff;max-width:30ch;margin:-6px 0 14px}
+
+/* ARTICLE: answer-first blocks, one question each */
+.wbf .art{padding-block:clamp(72px,9vw,120px);border-top:1px solid rgba(255,255,255,.08)}
+.wbf .art-grid{display:grid;grid-template-columns:minmax(0,260px) minmax(0,1fr);gap:clamp(32px,5vw,72px);align-items:start}
+.wbf .toc{position:sticky;top:24px;font-size:14px}
+.wbf .toc-k{font:600 12px var(--font);letter-spacing:.14em;text-transform:uppercase;color:var(--mute);margin-bottom:14px}
+.wbf .toc ol{display:grid;gap:2px;border-left:1px solid rgba(255,255,255,.12)}
+.wbf .toc a{display:block;padding:7px 0 7px 16px;margin-left:-1px;border-left:2px solid transparent;color:var(--soft);text-decoration:none;line-height:1.4;transition:color .2s,border-color .2s}
+.wbf .toc a:hover{color:#fff}
+.wbf .toc a.on{color:#fff;border-left-color:var(--blue)}
+.wbf .art-body{max-width:760px;min-width:0}
+.wbf .byline{display:flex;flex-wrap:wrap;gap:8px 20px;font-size:13.5px;color:var(--mute);padding-bottom:22px;margin-bottom:40px;border-bottom:1px solid rgba(255,255,255,.1)}
+.wbf .byline b{color:#fff;font-weight:600}
+.wbf .summary{padding:28px 30px;border-radius:16px;background:rgba(37,168,224,.1);border:1px solid rgba(37,168,224,.4);margin-bottom:64px}
+.wbf .summary h2{font:600 15px var(--font);letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin-bottom:12px}
+.wbf .summary p{font-size:clamp(17px,1.35vw,19px);line-height:1.7;color:#fff;text-wrap:pretty}
+.wbf .qa{padding-block:8px 56px;margin-bottom:56px;border-bottom:1px solid rgba(255,255,255,.08);scroll-margin-top:24px}
+.wbf .qa h2,.wbf .faq h2,.wbf .sources h2{font:600 clamp(26px,2.6vw,36px)/1.15 var(--title);letter-spacing:-.02em;color:#fff;margin-bottom:20px}
+.wbf .qa-sum{font-size:clamp(17px,1.3vw,19px);line-height:1.65;color:#fff;font-weight:500;text-wrap:pretty}
+.wbf .qa-sum span{display:block;font:600 12px var(--font);letter-spacing:.14em;text-transform:uppercase;color:var(--blue);margin-bottom:6px}
+.wbf .keys{display:grid;gap:10px;margin:24px 0 28px;padding:20px 22px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08)}
+.wbf .keys::before{content:"Principais pontos";font:600 12px var(--font);letter-spacing:.14em;text-transform:uppercase;color:var(--mute);margin-bottom:4px}
+.wbf .keys li{position:relative;padding-left:28px;font-size:15.5px;line-height:1.5;color:#fff}
+.wbf .keys li::before{content:"";position:absolute;left:0;top:.25em;width:16px;height:16px;border-radius:50%;background:var(--blue) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center no-repeat}
+.wbf .qa-text{display:grid;gap:16px}
+.wbf .qa-text p{color:var(--soft);font-size:16px;line-height:1.8;text-wrap:pretty}
+.wbf .qa-text b{color:#fff;font-weight:600}
+.wbf .qa-text h3{font:600 19px var(--title);color:#fff;margin-top:8px}
+.wbf .qa-text .btn{margin-top:8px}
+.wbf sup a{color:var(--blue);text-decoration:none;font-size:.75em;margin-left:2px}
+.wbf .qa .eq{justify-content:flex-start;margin:4px 0 28px}
+.wbf .qa .crow{margin-top:28px}
+.wbf .faq{margin-bottom:56px}
+.wbf .faq details{border-bottom:1px solid rgba(255,255,255,.1)}
+.wbf .faq summary{list-style:none;cursor:pointer;padding:18px 36px 18px 0;position:relative;font:600 17px/1.4 var(--title);color:#fff}
+.wbf .faq summary::-webkit-details-marker{display:none}
+.wbf .faq summary::after{content:"+";position:absolute;right:4px;top:14px;font:400 26px/1 var(--title);color:var(--blue);transition:transform .2s}
+.wbf .faq details[open] summary::after{transform:rotate(45deg)}
+.wbf .faq details p{padding:0 0 18px;color:var(--soft);line-height:1.7}
+.wbf .sources{margin-bottom:48px}
+.wbf .sources h2{font-size:22px}
+.wbf .sources ol{display:grid;gap:10px;list-style:decimal;padding-left:20px;font-size:13.5px;color:var(--mute);line-height:1.6}
+.wbf .sources a{color:var(--soft)}
+.wbf .sources li:target{color:#fff}
+.wbf .author{padding:22px 24px;border-radius:14px;border:1px solid rgba(255,255,255,.1);font-size:14.5px;color:var(--soft);line-height:1.6}
+.wbf .author-k{font:600 12px var(--font);letter-spacing:.14em;text-transform:uppercase;color:var(--mute);margin-bottom:8px}
+.wbf .author b{color:#fff}
+@media (max-width:980px){
+  .wbf .art-grid{grid-template-columns:minmax(0,1fr)}
+  .wbf .h1{order:2}
+  .wbf .toc{position:static;padding-bottom:8px}
+  .wbf .toc ol{grid-template-columns:1fr}
+}
+
 @media (max-width:980px){
   .wbf .hero-grid{grid-template-columns:1fr;gap:0}
   .wbf .hero-copy{display:contents}
