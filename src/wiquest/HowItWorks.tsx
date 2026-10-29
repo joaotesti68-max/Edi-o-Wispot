@@ -1,5 +1,6 @@
 import {
   AbsoluteFill,
+  Audio,
   Img,
   Sequence,
   interpolate,
@@ -9,7 +10,7 @@ import {
   useVideoConfig,
 } from "remotion";
 import type { HowTo } from "./edit";
-import { toSceneFrame } from "./edit";
+import { FUNCIONA_V2, toSceneFrame } from "./edit";
 import { Badge, TalkPart } from "./TalkScene";
 import { Icon, Sfx, Stars, WifiArcs, wq, wsp } from "./theme";
 
@@ -23,9 +24,14 @@ const words = {
   stars: 5.84, // "pesquisa rápida"
   choose: 6.9, // "perguntas que você escolhe"
   brand: 9.16, // "identidade da sua marca"
-  camera: 10.95, // "Você pode perguntar sobre"
-  topics: [11.94, 13.18, 14.04], // atendimento, produtos, experiência
-  live: 15.27, // "As respostas aparecem em tempo real"
+};
+
+// Same, in the re-recorded take (FUNCIONA_V2).
+const words2 = {
+  camera: 3.15, // "Você pode perguntar sobre"
+  topics: [4.5, 5.82, 6.7], // atendimento, produtos, experiência
+  live: 8.0, // "As respostas aparecem em tempo real"
+  panel: 10.14, // "em um painel fácil de acompanhar"
 };
 
 type Beats = {
@@ -38,6 +44,7 @@ type Beats = {
   camera: number;
   topics: number[];
   live: number;
+  panel: number;
 };
 
 const clamp = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
@@ -549,6 +556,7 @@ const Caption: React.FC<{ b: Beats }> = ({ b }) => {
   const lines = [
     { from: b.choose, to: b.brand - 2, text: "Perguntas que você escolhe" },
     { from: b.brand, to: b.camera, text: "Com a identidade da sua marca" },
+    { from: b.panel, to: b.panel + 300, text: "Num painel fácil de acompanhar" },
   ];
   return (
     <>
@@ -585,6 +593,7 @@ export const HowItWorks: React.FC<{ scene: HowTo }> = ({ scene }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const f = (at: number) => toSceneFrame(scene, at);
+  const f2 = (at: number) => toSceneFrame(scene, at, FUNCIONA_V2);
   const b: Beats = {
     connect: f(words.connect),
     tap: f(words.tap),
@@ -592,9 +601,10 @@ export const HowItWorks: React.FC<{ scene: HowTo }> = ({ scene }) => {
     stars: f(words.stars),
     choose: f(words.choose),
     brand: f(words.brand),
-    camera: f(words.camera),
-    topics: words.topics.map(f),
-    live: f(words.live),
+    camera: f2(words2.camera),
+    topics: words2.topics.map(f2),
+    live: f2(words2.live),
+    panel: f2(words2.panel),
   };
   const head = spring({ frame: frame - 2, fps, config: { damping: 13 } });
 
@@ -611,11 +621,19 @@ export const HowItWorks: React.FC<{ scene: HowTo }> = ({ scene }) => {
           transform: `rotate(${-8 + frame * 0.02}deg)`,
         }}
       />
-      {/* her take, hidden: only the voice is used */}
+      {/* her takes, hidden: only the voice is used */}
       <AbsoluteFill style={{ opacity: 0 }}>
         {scene.parts.map((part, i) => (
           <Sequence key={part.from} from={part.from} durationInFrames={part.durationInFrames}>
-            <TalkPart src={scene.src} part={part} index={i} />
+            {part.src ? (
+              <Audio
+                src={staticFile(part.src)}
+                trimBefore={part.srcStart}
+                trimAfter={part.srcStart + part.durationInFrames}
+              />
+            ) : (
+              <TalkPart src={scene.src} part={part} index={i} />
+            )}
           </Sequence>
         ))}
       </AbsoluteFill>

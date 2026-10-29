@@ -4,7 +4,13 @@ export const TRANSITION = 12;
 export const END_FRAMES = 90;
 
 // A stretch of the source take that survives the silence cuts.
-export type Part = { srcStart: number; from: number; durationInFrames: number };
+// `src` is set when a part comes from another take than the scene's own.
+export type Part = {
+  srcStart: number;
+  from: number;
+  durationInFrames: number;
+  src?: string;
+};
 
 export type IconKind =
   | "chat"
@@ -40,12 +46,16 @@ export type HowTo = Omit<Talk, "kind" | "cues"> & { kind: "howto" };
 
 export type Scene = Talk | HowTo;
 
-const talk = (id: string, speech: [number, number][], cues: Cue[]): Talk => {
+const talk = (
+  id: string,
+  speech: ([number, number] | [number, number, string])[],
+  cues: Cue[],
+): Talk => {
   const parts: Part[] = [];
   let local = 0;
-  for (const [a, b] of speech) {
+  for (const [a, b, src] of speech) {
     const durationInFrames = Math.round((b - a) * FPS);
-    parts.push({ srcStart: Math.round(a * FPS), from: local, durationInFrames });
+    parts.push({ srcStart: Math.round(a * FPS), from: local, durationInFrames, src });
     local += durationInFrames;
   }
   return {
@@ -61,7 +71,9 @@ const talk = (id: string, speech: [number, number][], cues: Cue[]): Talk => {
 // Speech ranges (source seconds) from the Whisper transcript and a silence
 // pass. Takes follow the "WiQuest na prática" script; the alternate takes
 // (IMG_9945/46/50/57/68/70 first half) are left out. IMG_9962 is cut off
-// mid "em um painel", so it ends on "em tempo real".
+// mid "em um painel", so its second half comes from the re-recorded take
+// (audio only, second "Você pode perguntar" attempt).
+export const FUNCIONA_V2 = "videos/wiquest/funciona-v2.m4a";
 export const scenes: Scene[] = [
   talk(
     "img9947",
@@ -84,9 +96,10 @@ export const scenes: Scene[] = [
         [1.25, 2.2],
         [2.4, 3.95],
         [4.2, 10.45],
-        [10.95, 12.75],
-        [13.0, 15.15],
-        [15.27, 17.17],
+        // the rest from the re-recorded take, which finishes the line
+        [3.15, 5.33, FUNCIONA_V2],
+        [5.5, 7.72, FUNCIONA_V2],
+        [8.0, 11.7, FUNCIONA_V2],
       ],
       [],
     ),
@@ -148,9 +161,15 @@ export const endStart =
 export const totalDurationInFrames = endStart + END_FRAMES;
 
 // Maps a time in the source take to a frame in the cut scene.
-export const toSceneFrame = (scene: Pick<Talk, "parts" | "durationInFrames">, at: number) => {
+// `take` picks the parts of one source when a scene mixes takes.
+export const toSceneFrame = (
+  scene: Pick<Talk, "parts" | "durationInFrames">,
+  at: number,
+  take?: string,
+) => {
   const src = at * FPS;
   for (const part of scene.parts) {
+    if (part.src !== take) continue;
     if (src < part.srcStart) return part.from;
     if (src < part.srcStart + part.durationInFrames)
       return part.from + Math.round(src - part.srcStart);
