@@ -25,7 +25,7 @@ import {
   totalDurationInFrames,
   transitionAfter,
 } from "./edit";
-import { Explainer } from "./Explainer";
+import { HowItWorks } from "./HowItWorks";
 import { TalkScene } from "./TalkScene";
 import { Sfx, wq, wsp } from "./theme";
 
@@ -104,19 +104,11 @@ const EndCard: React.FC = () => {
   );
 };
 
-// Music ducks under speech and lifts over the explainer and end card.
+// Music ducks under speech and lifts on the end card.
 const musicVolume = (f: number) => {
   const UNDER = 0.09;
-  const UP = 0.3;
   const keys: number[] = [0];
   const vals: number[] = [UNDER];
-  scenes.forEach((scene, i) => {
-    if (scene.kind !== "explainer") return;
-    const a = sceneStarts[i];
-    const b = a + scene.durationInFrames;
-    keys.push(a, a + 10, b - 14, b);
-    vals.push(UNDER, UP, UP, UNDER);
-  });
   keys.push(endStart, endStart + 10, totalDurationInFrames - 25, totalDurationInFrames);
   vals.push(UNDER, 0.34, 0.34, 0);
   return interpolate(f, keys, vals, {
@@ -139,7 +131,7 @@ export const WiquestVideo: React.FC = () => {
                 {scene.kind === "talk" ? (
                   <TalkScene scene={scene} first={i === 0} />
                 ) : (
-                  <Explainer />
+                  <HowItWorks scene={scene} />
                 )}
               </TransitionSeries.Sequence>
               {t === "end" ? (

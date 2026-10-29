@@ -16,7 +16,7 @@ import { wq, wsp } from "./theme";
 
 // One surviving stretch of a take, with a slow push-in. Later parts sit
 // tighter so a jump cut reads as a punch-in.
-const TalkPart: React.FC<{ src: string; part: Part; index: number }> = ({
+export const TalkPart: React.FC<{ src: string; part: Part; index: number }> = ({
   src,
   part,
   index,
@@ -46,7 +46,7 @@ const TalkPart: React.FC<{ src: string; part: Part; index: number }> = ({
 };
 
 // "WiQuest na prática" badge pinned to the top of the talking scenes.
-const Badge: React.FC<{ animateIn: boolean }> = ({ animateIn }) => {
+export const Badge: React.FC<{ animateIn: boolean }> = ({ animateIn }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const s = animateIn ? spring({ frame: frame - 4, fps, config: { damping: 13 } }) : 1;

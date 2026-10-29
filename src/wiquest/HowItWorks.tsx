@@ -8,24 +8,49 @@ import {
   useCurrentFrame,
   useVideoConfig,
 } from "remotion";
+import type { HowTo } from "./edit";
+import { toSceneFrame } from "./edit";
+import { Badge, TalkPart } from "./TalkScene";
 import { Icon, Sfx, Stars, WifiArcs, wq, wsp } from "./theme";
 
-// Covers the script lines that were not filmed: connect to the Wi-Fi, answer
-// a branded survey, answers land on the live dashboard.
-const STEP2 = 95;
-const STEP3 = 195;
+// "Funciona assim" (IMG_9962). Every beat is keyed to a word in the take,
+// in source seconds. Only her voice is used: the phone shows the Wi-Fi login
+// and the branded survey, topic chips join it, then the live dashboard.
+const words = {
+  connect: 2.4, // "ao acessar o Wi-Fi gratuito"
+  tap: 3.32,
+  survey: 4.2, // "o seu cliente pode responder"
+  stars: 5.84, // "pesquisa rápida"
+  choose: 6.9, // "perguntas que você escolhe"
+  brand: 9.16, // "identidade da sua marca"
+  camera: 10.95, // "Você pode perguntar sobre"
+  topics: [11.94, 13.18, 14.04], // atendimento, produtos, experiência
+  live: 15.27, // "As respostas aparecem em tempo real"
+};
+
+type Beats = {
+  connect: number;
+  tap: number;
+  survey: number;
+  stars: number;
+  choose: number;
+  brand: number;
+  camera: number;
+  topics: number[];
+  live: number;
+};
 
 const clamp = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
 
-const steps = [
-  { at: 0, text: "Conecta no Wi-Fi grátis" },
-  { at: STEP2, text: "Responde uma pesquisa rápida" },
-  { at: STEP3, text: "Você vê tudo em tempo real" },
-];
-
-const StepLabel: React.FC = () => {
+const StepLabel: React.FC<{ b: Beats }> = ({ b }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
+  const steps = [
+    { at: b.connect, text: "Conecta no Wi-Fi grátis" },
+    { at: b.survey, text: "Responde uma pesquisa rápida" },
+    { at: b.live, text: "Respostas em tempo real" },
+  ];
+  if (frame < b.connect) return null;
   const current = steps.filter((s) => frame >= s.at).length - 1;
   const step = steps[current];
   const s = spring({ frame: frame - step.at - 4, fps, config: { damping: 12 } });
@@ -33,7 +58,7 @@ const StepLabel: React.FC = () => {
     <div
       style={{
         position: "absolute",
-        top: 330,
+        top: 350,
         left: 0,
         right: 0,
         display: "flex",
@@ -98,13 +123,13 @@ const Tap: React.FC<{ at: number; x: number; y: number }> = ({ at, x, y }) => {
   );
 };
 
-const ConnectScreen: React.FC = () => {
+const ConnectScreen: React.FC<{ tap: number }> = ({ tap }) => {
   const frame = useCurrentFrame();
   const arcs = [0, 1, 2].map((i) =>
     interpolate((frame + i * 6) % 36, [0, 18], [0.2, 1], clamp),
   ) as [number, number, number];
-  const connected = frame >= 52;
-  const press = interpolate(frame, [46, 50, 54], [1, 0.92, 1], clamp);
+  const connected = frame >= tap + 4;
+  const press = interpolate(frame, [tap - 2, tap + 2, tap + 6], [1, 0.92, 1], clamp);
   return (
     <AbsoluteFill
       style={{
@@ -140,15 +165,26 @@ const ConnectScreen: React.FC = () => {
         {connected ? <Icon kind="check" size={40} /> : null}
         {connected ? "Conectado" : "Conectar"}
       </div>
-      <Tap at={48} x={208} y={690} />
+      <Tap at={tap} x={208} y={690} />
     </AbsoluteFill>
   );
 };
 
-const SurveyScreen: React.FC = () => {
+// Local frames: stars fill at `stars`, the venue header pulses at `brand`,
+// the comment types and is sent just before `end`.
+const SurveyScreen: React.FC<{ stars: number; brand: number; end: number }> = ({
+  stars: starsAt,
+  brand,
+  end,
+}) => {
   const frame = useCurrentFrame();
-  const stars = interpolate(frame, [42, 60], [0, 5], clamp);
-  const sent = frame >= 82;
+  const { fps } = useVideoConfig();
+  const stars = interpolate(frame, [starsAt, starsAt + 18], [0, 5], clamp);
+  const typeFrom = starsAt + 26;
+  const sendAt = end - 16;
+  const sent = frame >= sendAt + 2;
+  const pulse = spring({ frame: frame - brand, fps, config: { damping: 8 } });
+  const header = frame >= brand ? 1 + 0.08 * Math.sin(pulse * Math.PI) : 1;
   return (
     <AbsoluteFill style={{ background: wsp.white }}>
       {/* the venue's own colours and logo on the survey */}
@@ -159,6 +195,8 @@ const SurveyScreen: React.FC = () => {
           display: "flex",
           alignItems: "center",
           gap: 18,
+          transform: `scale(${header})`,
+          transformOrigin: "50% 0%",
         }}
       >
         <div
@@ -195,10 +233,13 @@ const SurveyScreen: React.FC = () => {
             fontWeight: 700,
             fontSize: 28,
             color: wsp.gray,
-            opacity: interpolate(frame, [60, 70], [0.4, 1], clamp),
+            opacity: interpolate(frame, [typeFrom - 8, typeFrom], [0.4, 1], clamp),
           }}
         >
-          {"Atendimento ótimo!".slice(0, Math.round(interpolate(frame, [62, 80], [0, 18], clamp)))}
+          {"Atendimento ótimo!".slice(
+            0,
+            Math.round(interpolate(frame, [typeFrom, typeFrom + 30], [0, 18], clamp)),
+          )}
         </div>
         <div
           style={{
@@ -215,26 +256,27 @@ const SurveyScreen: React.FC = () => {
           {sent ? "Obrigado!" : "Enviar"}
         </div>
       </div>
-      <Tap at={56} x={330} y={520} />
-      <Tap at={84} x={226} y={830} />
+      <Tap at={starsAt + 14} x={330} y={520} />
+      <Tap at={sendAt} x={226} y={830} />
     </AbsoluteFill>
   );
 };
 
-const Phone: React.FC = () => {
+const Phone: React.FC<{ b: Beats }> = ({ b }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-  const enter = spring({ frame: frame - 6, fps, config: { damping: 14 } });
-  const leave = spring({ frame: frame - STEP3, fps, config: { damping: 16 } });
-  const swap = interpolate(frame, [STEP2 - 6, STEP2 + 4], [0, 1], clamp);
-  // makes room on the left for the topic chips during the survey
-  const side = spring({ frame: frame - STEP2, fps, config: { damping: 16 } });
+  if (frame < b.connect || frame >= b.live + 30) return null;
+  const enter = spring({ frame: frame - b.connect - 2, fps, config: { damping: 14 } });
+  // makes room on the left for the topic chips, then leaves for the dashboard
+  const side = spring({ frame: frame - b.camera, fps, config: { damping: 16 } });
+  const leave = spring({ frame: frame - b.live, fps, config: { damping: 16 } });
+  const swap = interpolate(frame, [b.survey - 6, b.survey + 4], [0, 1], clamp);
   return (
     <div
       style={{
         position: "absolute",
         left: 290,
-        top: 470,
+        top: 480,
         width: 500,
         height: 1000,
         borderRadius: 70,
@@ -255,14 +297,20 @@ const Phone: React.FC = () => {
         }}
       >
         <AbsoluteFill style={{ opacity: 1 - swap }}>
-          <ConnectScreen />
+          <Sequence from={b.connect} layout="none">
+            <ConnectScreen tap={b.tap - b.connect} />
+          </Sequence>
         </AbsoluteFill>
-        {frame >= STEP2 - 6 ? (
+        {frame >= b.survey - 6 ? (
           <AbsoluteFill
             style={{ opacity: swap, transform: `translateX(${(1 - swap) * 200}px)` }}
           >
-            <Sequence from={STEP2} layout="none">
-              <SurveyScreen />
+            <Sequence from={b.survey} layout="none">
+              <SurveyScreen
+                stars={b.stars - b.survey}
+                brand={b.brand - b.survey}
+                end={b.camera - b.survey}
+              />
             </Sequence>
           </AbsoluteFill>
         ) : null}
@@ -283,31 +331,35 @@ const Phone: React.FC = () => {
   );
 };
 
-// Topic chips that orbit the phone: the owner picks what to ask.
-const Topics: React.FC = () => {
+// Topic chips beside the phone, one per word she says.
+const Topics: React.FC<{ b: Beats }> = ({ b }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-  const items = [
-    { text: "Atendimento", at: STEP2 + 14, x: 34, y: 720, rot: -5 },
-    { text: "Produtos", at: STEP2 + 26, x: 70, y: 920, rot: 4 },
-    { text: "Experiência", at: STEP2 + 38, x: 34, y: 1120, rot: -3 },
-  ];
-  const out = spring({ frame: frame - STEP3, fps, config: { damping: 200 } });
+  if (frame < b.topics[0] || frame >= b.live) return null;
+  const items = ["Atendimento", "Produtos", "Experiência"];
+  const out = interpolate(frame, [b.live - 8, b.live], [1, 0], clamp);
   return (
-    <>
-      {items.map((it, i) => {
-        const s = spring({ frame: frame - it.at, fps, config: { damping: 10, mass: 0.7 } });
-        if (frame < it.at) return null;
+    <div
+      style={{
+        position: "absolute",
+        top: 720,
+        left: 34,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "flex-start",
+        gap: 90,
+      }}
+    >
+      {items.map((text, i) => {
+        const at = b.topics[i];
+        const s = spring({ frame: frame - at, fps, config: { damping: 11, mass: 0.7 } });
         return (
           <div
-            key={it.text}
+            key={text}
             style={{
-              position: "absolute",
-              left: it.x,
-              top: it.y,
               display: "flex",
               alignItems: "center",
-              gap: 14,
+              gap: 18,
               background: i % 2 === 0 ? wsp.white : wq.orange,
               color: i % 2 === 0 ? wsp.gray : wsp.white,
               fontWeight: 800,
@@ -315,29 +367,31 @@ const Topics: React.FC = () => {
               padding: "14px 30px 14px 16px",
               borderRadius: 999,
               boxShadow: "0 16px 40px rgba(11,60,90,0.3)",
-              transform: `scale(${s * (1 - out)}) rotate(${it.rot}deg)`,
+              marginLeft: i === 1 ? 36 : 0,
+              opacity: frame >= at ? 1 : 0,
+              transform: `scale(${s * out}) rotate(${[-5, 4, -3][i]}deg)`,
             }}
           >
-            <Sfx at={it.at} volume={0.3} />
+            {frame >= at ? <Sfx at={at} volume={0.3} /> : null}
             <Icon kind="help" size={46} color={i % 2 === 0 ? wq.orange : wsp.white} />
-            {it.text}
+            {text}
           </div>
         );
       })}
-    </>
+    </div>
   );
 };
 
 const responses = [
-  { at: STEP3 + 34, stars: 5, text: "Atendimento ótimo!" },
-  { at: STEP3 + 54, stars: 4, text: "Faltou o tamanho M" },
-  { at: STEP3 + 72, stars: 5, text: "Voltarei com certeza" },
+  { at: 16, stars: 5, text: "Atendimento ótimo!" },
+  { at: 30, stars: 4, text: "Faltou o tamanho M" },
+  { at: 44, stars: 5, text: "Voltarei com certeza" },
 ];
 
-const Dashboard: React.FC = () => {
+const Dashboard: React.FC<{ b: Beats }> = ({ b }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-  const local = frame - STEP3;
+  const local = frame - b.live;
   if (local < 0) return null;
   const enter = spring({ frame: local - 6, fps, config: { damping: 14 } });
   const count = Math.round(interpolate(local, [10, 70], [96, 127], clamp));
@@ -352,7 +406,7 @@ const Dashboard: React.FC = () => {
       style={{
         position: "absolute",
         left: 70,
-        top: 480,
+        top: 470,
         width: 940,
         transform: `translateX(${interpolate(enter, [0, 1], [1200, 0])}px)`,
       }}
@@ -460,8 +514,8 @@ const Dashboard: React.FC = () => {
       {/* new answers drop in as they arrive */}
       <div style={{ display: "flex", flexDirection: "column", gap: 18, marginTop: 30 }}>
         {responses.map((r, i) => {
-          if (frame < r.at) return null;
-          const s = spring({ frame: frame - r.at, fps, config: { damping: 12 } });
+          if (local < r.at) return null;
+          const s = spring({ frame: local - r.at, fps, config: { damping: 12 } });
           return (
             <div
               key={r.text}
@@ -478,7 +532,7 @@ const Dashboard: React.FC = () => {
                 marginLeft: i % 2 === 0 ? 0 : 60,
               }}
             >
-              <Sfx at={r.at} volume={0.28} />
+              <Sfx at={b.live + r.at} volume={0.28} />
               <Stars filled={r.stars} size={38} gap={4} />
               <div style={{ fontWeight: 800, fontSize: 34, color: wsp.gray }}>“{r.text}”</div>
             </div>
@@ -489,11 +543,12 @@ const Dashboard: React.FC = () => {
   );
 };
 
-const Caption: React.FC = () => {
+const Caption: React.FC<{ b: Beats }> = ({ b }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const lines = [
-    { from: STEP2 + 20, to: STEP3, text: "Perguntas que você escolhe, com a cara da sua marca" },
+    { from: b.choose, to: b.brand - 2, text: "Perguntas que você escolhe" },
+    { from: b.brand, to: b.camera, text: "Com a identidade da sua marca" },
   ];
   return (
     <>
@@ -508,11 +563,11 @@ const Caption: React.FC = () => {
               position: "absolute",
               left: 90,
               right: 90,
-              top: 1540,
+              top: 1560,
               textAlign: "center",
               fontWeight: 800,
-              fontSize: 52,
-              lineHeight: 1.2,
+              fontSize: 56,
+              lineHeight: 1.15,
               color: wsp.white,
               opacity: s * out,
               transform: `translateY(${interpolate(s, [0, 1], [40, 0])}px)`,
@@ -526,10 +581,23 @@ const Caption: React.FC = () => {
   );
 };
 
-export const Explainer: React.FC = () => {
+export const HowItWorks: React.FC<{ scene: HowTo }> = ({ scene }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
+  const f = (at: number) => toSceneFrame(scene, at);
+  const b: Beats = {
+    connect: f(words.connect),
+    tap: f(words.tap),
+    survey: f(words.survey),
+    stars: f(words.stars),
+    choose: f(words.choose),
+    brand: f(words.brand),
+    camera: f(words.camera),
+    topics: words.topics.map(f),
+    live: f(words.live),
+  };
   const head = spring({ frame: frame - 2, fps, config: { damping: 13 } });
+
   return (
     <AbsoluteFill style={{ background: wsp.grad, fontFamily: wsp.font, overflow: "hidden" }}>
       <Img
@@ -543,23 +611,38 @@ export const Explainer: React.FC = () => {
           transform: `rotate(${-8 + frame * 0.02}deg)`,
         }}
       />
+      {/* her take, hidden: only the voice is used */}
+      <AbsoluteFill style={{ opacity: 0 }}>
+        {scene.parts.map((part, i) => (
+          <Sequence key={part.from} from={part.from} durationInFrames={part.durationInFrames}>
+            <TalkPart src={scene.src} part={part} index={i} />
+          </Sequence>
+        ))}
+      </AbsoluteFill>
+
+      <StepLabel b={b} />
+      <Phone b={b} />
+      <Topics b={b} />
+      <Caption b={b} />
+      <Dashboard b={b} />
+
       <div
         style={{
           position: "absolute",
-          top: 120,
+          top: 190,
           left: 0,
           right: 0,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          gap: 16,
-          transform: `translateY(${interpolate(head, [0, 1], [-260, 0])}px)`,
+          gap: 14,
+          transform: `translateY(${interpolate(head, [0, 1], [-300, 0])}px)`,
         }}
       >
         <div
           style={{
             fontWeight: 800,
-            fontSize: 96,
+            fontSize: 84,
             color: wsp.white,
             letterSpacing: "-0.02em",
           }}
@@ -575,13 +658,15 @@ export const Explainer: React.FC = () => {
           }}
         />
       </div>
-      <StepLabel />
-      <Phone />
-      <Topics />
-      <Caption />
-      <Dashboard />
-      <Sfx at={STEP2} src="audio/sfx/whoosh.wav" volume={0.25} />
-      <Sfx at={STEP3} src="audio/sfx/whoosh.wav" volume={0.3} />
+
+      <Badge animateIn={false} />
+      <Img
+        src={staticFile(wsp.logoWhite)}
+        style={{ position: "absolute", bottom: 70, right: 60, width: 170, opacity: 0.85 }}
+      />
+      <Sfx at={2} />
+      <Sfx at={b.connect - 4} src="audio/sfx/whoosh.wav" volume={0.25} />
+      <Sfx at={b.live - 4} src="audio/sfx/whoosh.wav" volume={0.3} />
     </AbsoluteFill>
   );
 };

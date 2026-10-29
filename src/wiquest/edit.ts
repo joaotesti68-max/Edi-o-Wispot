@@ -1,7 +1,6 @@
 export const FPS = 30;
 // Transition overlap between neighbouring scenes (TransitionSeries).
 export const TRANSITION = 12;
-export const EXPLAINER_FRAMES = 300;
 export const END_FRAMES = 90;
 
 // A stretch of the source take that survives the silence cuts.
@@ -35,9 +34,11 @@ export type Talk = {
   cues: Cue[];
 };
 
-export type Explainer = { kind: "explainer"; id: string; durationInFrames: number };
+// The "Funciona assim" take: she shrinks into a bubble while the phone and
+// dashboard graphics play, and comes back full frame for the topics.
+export type HowTo = Omit<Talk, "kind" | "cues"> & { kind: "howto" };
 
-export type Scene = Talk | Explainer;
+export type Scene = Talk | HowTo;
 
 const talk = (id: string, speech: [number, number][], cues: Cue[]): Talk => {
   const parts: Part[] = [];
@@ -59,8 +60,8 @@ const talk = (id: string, speech: [number, number][], cues: Cue[]): Talk => {
 
 // Speech ranges (source seconds) from the Whisper transcript and a silence
 // pass. Takes follow the "WiQuest na prática" script; the alternate takes
-// (IMG_9945/46/50/57/68) are left out. The script's "Funciona assim" and
-// "Você pode perguntar" lines were not filmed, so the explainer covers them.
+// (IMG_9945/46/50/57/68/70 first half) are left out. IMG_9962 is cut off
+// mid "em um painel", so it ends on "em tempo real".
 export const scenes: Scene[] = [
   talk(
     "img9947",
@@ -76,7 +77,21 @@ export const scenes: Scene[] = [
     [[1.95, 5.9]],
     [{ type: "logo", at: 2.36, tagline: "Pesquisas da Wispot" }],
   ),
-  { kind: "explainer", id: "explainer", durationInFrames: EXPLAINER_FRAMES },
+  {
+    ...talk(
+      "img9962",
+      [
+        [1.25, 2.2],
+        [2.4, 3.95],
+        [4.2, 10.45],
+        [10.95, 12.75],
+        [13.0, 15.15],
+        [15.27, 17.17],
+      ],
+      [],
+    ),
+    kind: "howto",
+  },
   talk(
     "img9967",
     [
@@ -112,7 +127,7 @@ export const transitionAfter = (i: number): "slide" | "cut" | "end" => {
   const scene = scenes[i];
   const next = scenes[i + 1];
   if (!next) return "end";
-  if (scene.kind === "explainer" || next.kind === "explainer") return "slide";
+  if (scene.kind === "howto" || next.kind === "howto") return "slide";
   return "cut";
 };
 
@@ -133,7 +148,7 @@ export const endStart =
 export const totalDurationInFrames = endStart + END_FRAMES;
 
 // Maps a time in the source take to a frame in the cut scene.
-export const toSceneFrame = (scene: Talk, at: number) => {
+export const toSceneFrame = (scene: Pick<Talk, "parts" | "durationInFrames">, at: number) => {
   const src = at * FPS;
   for (const part of scene.parts) {
     if (src < part.srcStart) return part.from;
