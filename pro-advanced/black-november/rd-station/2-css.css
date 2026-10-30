@@ -4,7 +4,7 @@
    whose five sectors light up as the five assessed areas are read. Scoped under .pbn for RD Station. */
 html,body{overflow-x:clip}
 .pbn{width:100vw!important;max-width:100vw!important;min-width:0!important;margin-left:calc(50% - 50vw)!important;margin-right:0!important;flex:none!important;align-self:flex-start!important;box-sizing:border-box}
-.pbn h1,.pbn h2,.pbn h3,.pbn p,.pbn span,.pbn a,.pbn b,.pbn small,.pbn label,.pbn li,.pbn div,.pbn section,.pbn header,.pbn footer,.pbn form,.pbn input,.pbn select,.pbn button,.pbn em{font-family:inherit}
+.pbn h1,.pbn h2,.pbn h3,.pbn p,.pbn span,.pbn a,.pbn b,.pbn small,.pbn label,.pbn li,.pbn div,.pbn section,.pbn header,.pbn footer,.pbn form,.pbn input,.pbn select,.pbn button,.pbn em,.pbn strong{font-family:inherit}
 .pbn{
   --bg:#000c19;--s1:#08121f;--s2:#0e2a3f;--line:rgba(201,214,228,.14);
   --ink:#ffffff;--ink2:#c9d6e4;--ink3:#a8b6c6;
@@ -51,6 +51,9 @@ html,body{overflow-x:clip}
 .pbn .mega .out{color:var(--accent)}
 .pbn .hero h1{font-size:clamp(1.4rem,2vw,1.85rem);line-height:1.25;max-width:24ch;font-weight:700}
 .pbn .hero .lead{margin-top:16px;font-size:1.0625rem;max-width:46ch}
+.pbn .hero h1 em{white-space:nowrap}
+.pbn .hero .lead strong{color:var(--ink);font-weight:600}
+.pbn .hero .lead-cta{margin-top:14px;font-size:1.0625rem;font-weight:600;color:var(--accent2)}
 .pbn .count{margin-top:32px;display:grid;gap:10px}
 .pbn .count-k{font-size:.8125rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent2)}
 .pbn .count-n{display:flex;gap:8px}
@@ -82,12 +85,6 @@ html,body{overflow-x:clip}
 .pbn .legal{font-size:.75rem;line-height:1.5;color:var(--ink3)}
 .pbn .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
 
-/* deal band */
-.pbn .deal{background:var(--ink);color:var(--bg)}
-.pbn .deal-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0}
-.pbn .deal p{padding:28px 24px;font-size:.9375rem;color:#3a4652;border-left:1px solid rgba(0,12,25,.12)}
-.pbn .deal p:first-child{border-left:0;padding-left:0}
-.pbn .deal b{display:block;color:var(--bg);font-size:clamp(1.3rem,2vw,1.75rem);font-weight:800;letter-spacing:-.02em;margin-bottom:2px}
 
 /* question blocks */
 .pbn .qa h2{text-wrap:balance}
@@ -199,9 +196,6 @@ html,body{overflow-x:clip}
   .pbn .radar{right:-30vw;top:180px;width:110vw;transform:none;opacity:.45}
   .pbn .hero-grid,.pbn .fr-grid,.pbn .qa-grid,.pbn .more-grid{grid-template-columns:1fr;gap:32px}
   .pbn .q-intro{padding-block:88px 16px}
-  .pbn .deal-row{grid-template-columns:1fr}
-  .pbn .deal p,.pbn .deal p:first-child{border-left:0;border-top:1px solid rgba(0,12,25,.12);padding:20px 0}
-  .pbn .deal p:first-child{border-top:0}
   .pbn .risk{padding-block:88px 72px}
   .pbn .fr-pin{min-height:0;padding-block:72px}
   .pbn .dial{width:220px;margin-top:24px}

@@ -5,7 +5,7 @@
    whose five sectors light up as the five assessed areas are read. Scoped under .pbn for RD Station. */
 html,body{overflow-x:clip}
 .pbn{width:100vw!important;max-width:100vw!important;min-width:0!important;margin-left:calc(50% - 50vw)!important;margin-right:0!important;flex:none!important;align-self:flex-start!important;box-sizing:border-box}
-.pbn h1,.pbn h2,.pbn h3,.pbn p,.pbn span,.pbn a,.pbn b,.pbn small,.pbn label,.pbn li,.pbn div,.pbn section,.pbn header,.pbn footer,.pbn form,.pbn input,.pbn select,.pbn button,.pbn em{font-family:inherit}
+.pbn h1,.pbn h2,.pbn h3,.pbn p,.pbn span,.pbn a,.pbn b,.pbn small,.pbn label,.pbn li,.pbn div,.pbn section,.pbn header,.pbn footer,.pbn form,.pbn input,.pbn select,.pbn button,.pbn em,.pbn strong{font-family:inherit}
 .pbn{
   --bg:#000c19;--s1:#08121f;--s2:#0e2a3f;--line:rgba(201,214,228,.14);
   --ink:#ffffff;--ink2:#c9d6e4;--ink3:#a8b6c6;
@@ -52,6 +52,9 @@ html,body{overflow-x:clip}
 .pbn .mega .out{color:var(--accent)}
 .pbn .hero h1{font-size:clamp(1.4rem,2vw,1.85rem);line-height:1.25;max-width:24ch;font-weight:700}
 .pbn .hero .lead{margin-top:16px;font-size:1.0625rem;max-width:46ch}
+.pbn .hero h1 em{white-space:nowrap}
+.pbn .hero .lead strong{color:var(--ink);font-weight:600}
+.pbn .hero .lead-cta{margin-top:14px;font-size:1.0625rem;font-weight:600;color:var(--accent2)}
 .pbn .count{margin-top:32px;display:grid;gap:10px}
 .pbn .count-k{font-size:.8125rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent2)}
 .pbn .count-n{display:flex;gap:8px}
@@ -83,12 +86,6 @@ html,body{overflow-x:clip}
 .pbn .legal{font-size:.75rem;line-height:1.5;color:var(--ink3)}
 .pbn .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
 
-/* deal band */
-.pbn .deal{background:var(--ink);color:var(--bg)}
-.pbn .deal-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0}
-.pbn .deal p{padding:28px 24px;font-size:.9375rem;color:#3a4652;border-left:1px solid rgba(0,12,25,.12)}
-.pbn .deal p:first-child{border-left:0;padding-left:0}
-.pbn .deal b{display:block;color:var(--bg);font-size:clamp(1.3rem,2vw,1.75rem);font-weight:800;letter-spacing:-.02em;margin-bottom:2px}
 
 /* question blocks */
 .pbn .qa h2{text-wrap:balance}
@@ -200,9 +197,6 @@ html,body{overflow-x:clip}
   .pbn .radar{right:-30vw;top:180px;width:110vw;transform:none;opacity:.45}
   .pbn .hero-grid,.pbn .fr-grid,.pbn .qa-grid,.pbn .more-grid{grid-template-columns:1fr;gap:32px}
   .pbn .q-intro{padding-block:88px 16px}
-  .pbn .deal-row{grid-template-columns:1fr}
-  .pbn .deal p,.pbn .deal p:first-child{border-left:0;border-top:1px solid rgba(0,12,25,.12);padding:20px 0}
-  .pbn .deal p:first-child{border-top:0}
   .pbn .risk{padding-block:88px 72px}
   .pbn .fr-pin{min-height:0;padding-block:72px}
   .pbn .dial{width:220px;margin-top:24px}
@@ -245,8 +239,9 @@ html,body{overflow-x:clip}
     <div class="wrap hero-grid">
       <div class="hero-copy">
         <p class="mega" aria-hidden="true"><span class="ln"><span>BLACK</span></span><span class="ln"><span class="out">NOVEMBER</span></span></p>
-        <h1>Diagnóstico de cibersegurança <em>100% gratuito</em> para a sua empresa.</h1>
-        <p class="lead">Sua empresa está tão protegida quanto imagina? Durante novembro, a Pro Advanced avalia práticas, controles e processos do seu ambiente de TI. Sem custo e sem obrigação de contratar.</p>
+        <h1>Diagnóstico de Cibersegurança <em>100% gratuito</em> para a sua empresa.</h1>
+        <p class="lead"><strong>Sua empresa está tão protegida quanto imagina?</strong> Durante novembro, a Pro Advanced avalia práticas, controles e processos do seu ambiente de TI. Uma avaliação gratuita, sem compromisso de contratação.</p>
+        <p class="lead-cta">Agende sua avaliação gratuita até o fim de novembro.</p>
         <div class="count" data-count aria-label="Tempo restante para solicitar o diagnóstico">
           <span class="count-k">Solicitações até 30/11</span>
           <div class="count-n"><span><b data-u="d">00</b><small>dias</small></span><span><b data-u="h">00</b><small>horas</small></span><span><b data-u="m">00</b><small>min</small></span><span><b data-u="s">00</b><small>seg</small></span></div>
@@ -273,15 +268,6 @@ html,body{overflow-x:clip}
       </div>
     </div>
   </section>
-
-  <!-- THE DEAL in three facts -->
-  <div class="deal">
-    <div class="wrap deal-row">
-      <p><b>100% gratuito</b>Sem custo pelo diagnóstico</p>
-      <p><b>Sem obrigação</b>Não exige contratar outros serviços</p>
-      <p><b>Até 30/11</b>Execução agendada com a equipe</p>
-    </div>
-  </div>
 
   <!-- Q1 -->
   <section class="qa q-intro" id="q-oferta">
@@ -394,7 +380,6 @@ html,body{overflow-x:clip}
           <ul class="keys" aria-label="Principais pontos">
             <li>Preencha o formulário até 30/11/2026</li>
             <li>A equipe técnica alinha o escopo e agenda a execução</li>
-            <li>Novembro é o prazo para solicitar, não para executar</li>
           </ul>
           <div class="qa-text">
             <p>A solicitação é feita pelo formulário desta página durante novembro. Depois, a equipe da Pro Advanced entra em contato para alinhar o escopo e agendar a execução conforme a disponibilidade, e a avaliação termina com os pontos de atenção e o direcionamento para as melhorias.</p>
@@ -456,7 +441,7 @@ html,body{overflow-x:clip}
       <small>Pro Advanced | Todos os direitos reservados - 2026</small>
     </div>
   </footer>
-  <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Article", "headline": "Diagnóstico de cibersegurança 100% gratuito para a sua empresa.", "description": "Black November Pro Advanced 2026: diagnóstico de Segurança da Informação e Cibersegurança gratuito, com solicitações até 30/11/2026 e sem obrigação de contratar.", "inLanguage": "pt-BR", "author": {"@type": "Organization", "name": "Pro Advanced", "url": "https://proadvanced.com.br"}, "publisher": {"@type": "Organization", "name": "Pro Advanced", "url": "https://proadvanced.com.br"}, "dateModified": "2026-10-30"}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "O que é a Black November Pro Advanced 2026?", "acceptedAnswer": {"@type": "Answer", "text": "A Black November é a campanha de novembro da Pro Advanced. Durante todo o mês, empresas podem solicitar um Diagnóstico de Segurança da Informação e Cibersegurança sem custo, para observar práticas, controles e processos do ambiente de TI, identificar pontos de atenção e ter uma visão mais clara das oportunidades de melhoria."}}, {"@type": "Question", "name": "Por que avaliar a segurança da sua empresa agora?", "acceptedAnswer": {"@type": "Answer", "text": "O relatório Cost of a Data Breach, da IBM com o Ponemon Institute, estimou em R$ 7,19 milhões o custo médio de uma violação de dados no Brasil em 2025, alta de 6,5% sobre o ano anterior[1]. Em junho de 2026, a Check Point Research registrou média de 4.001 ataques cibernéticos por semana por organização no Brasil, contra 2.270 na média global[2]."}}, {"@type": "Question", "name": "O que o diagnóstico de cibersegurança avalia?", "acceptedAnswer": {"@type": "Answer", "text": "Cibersegurança vai além da instalação de ferramentas. Uma visão mais ampla envolve processos, pessoas, controles, sistemas e continuidade do negócio, e o diagnóstico reúne essas perspectivas:"}}, {"@type": "Question", "name": "Sua empresa está preparada para responder a um incidente?", "acceptedAnswer": {"@type": "Answer", "text": "Um incidente de segurança pode exigir decisões rápidas de diferentes áreas da empresa. Nesse momento, não basta contar com ferramentas de proteção: é importante saber como identificar o problema, quem deve agir e como preservar a continuidade da operação. A diferença está em avaliar antes ou só olhar para o tema quando aparece um problema."}}, {"@type": "Question", "name": "Como solicitar o diagnóstico gratuito?", "acceptedAnswer": {"@type": "Answer", "text": "A solicitação é feita pelo formulário desta página durante novembro. Depois, a equipe da Pro Advanced entra em contato para alinhar o escopo e agendar a execução conforme a disponibilidade, e a avaliação termina com os pontos de atenção e o direcionamento para as melhorias."}}, {"@type": "Question", "name": "Quanto custa o diagnóstico de cibersegurança da Black November?", "acceptedAnswer": {"@type": "Answer", "text": "O investimento para começar a avaliar a cibersegurança da sua empresa na Black November é zero. A Pro Advanced oferece o diagnóstico sem custo e sem obrigação de contratação, para solicitações feitas até 30 de novembro de 2026."}}, {"@type": "Question", "name": "Preciso contratar algum serviço depois do diagnóstico?", "acceptedAnswer": {"@type": "Answer", "text": "Não. O diagnóstico é gratuito e a solicitação não exige contratar outros serviços da Pro Advanced."}}, {"@type": "Question", "name": "O diagnóstico precisa ser feito em novembro?", "acceptedAnswer": {"@type": "Answer", "text": "Não. Novembro é o prazo para solicitar. A execução é agendada com a equipe técnica, conforme escopo e disponibilidade."}}, {"@type": "Question", "name": "Quem deve solicitar o diagnóstico?", "acceptedAnswer": {"@type": "Answer", "text": "Responsáveis por TI, segurança da informação ou pela gestão da empresa que querem conhecer os pontos de atenção do ambiente."}}, {"@type": "Question", "name": "O que recebo ao final da avaliação?", "acceptedAnswer": {"@type": "Answer", "text": "Uma visão sobre tecnologia, processos e práticas de proteção, com os pontos de atenção e o direcionamento para as oportunidades de melhoria, de acordo com o escopo definido."}}, {"@type": "Question", "name": "Até quando posso solicitar?", "acceptedAnswer": {"@type": "Answer", "text": "Até 30 de novembro de 2026."}}]}]}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Article", "headline": "Diagnóstico de Cibersegurança 100% gratuito para a sua empresa.", "description": "Black November Pro Advanced 2026: diagnóstico de Segurança da Informação e Cibersegurança gratuito, com solicitações até 30/11/2026 e sem obrigação de contratar.", "inLanguage": "pt-BR", "author": {"@type": "Organization", "name": "Pro Advanced", "url": "https://proadvanced.com.br"}, "publisher": {"@type": "Organization", "name": "Pro Advanced", "url": "https://proadvanced.com.br"}, "dateModified": "2026-10-30"}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "O que é a Black November Pro Advanced 2026?", "acceptedAnswer": {"@type": "Answer", "text": "A Black November é a campanha de novembro da Pro Advanced. Durante todo o mês, empresas podem solicitar um Diagnóstico de Segurança da Informação e Cibersegurança sem custo, para observar práticas, controles e processos do ambiente de TI, identificar pontos de atenção e ter uma visão mais clara das oportunidades de melhoria."}}, {"@type": "Question", "name": "Por que avaliar a segurança da sua empresa agora?", "acceptedAnswer": {"@type": "Answer", "text": "O relatório Cost of a Data Breach, da IBM com o Ponemon Institute, estimou em R$ 7,19 milhões o custo médio de uma violação de dados no Brasil em 2025, alta de 6,5% sobre o ano anterior[1]. Em junho de 2026, a Check Point Research registrou média de 4.001 ataques cibernéticos por semana por organização no Brasil, contra 2.270 na média global[2]."}}, {"@type": "Question", "name": "O que o diagnóstico de cibersegurança avalia?", "acceptedAnswer": {"@type": "Answer", "text": "Cibersegurança vai além da instalação de ferramentas. Uma visão mais ampla envolve processos, pessoas, controles, sistemas e continuidade do negócio, e o diagnóstico reúne essas perspectivas:"}}, {"@type": "Question", "name": "Sua empresa está preparada para responder a um incidente?", "acceptedAnswer": {"@type": "Answer", "text": "Um incidente de segurança pode exigir decisões rápidas de diferentes áreas da empresa. Nesse momento, não basta contar com ferramentas de proteção: é importante saber como identificar o problema, quem deve agir e como preservar a continuidade da operação. A diferença está em avaliar antes ou só olhar para o tema quando aparece um problema."}}, {"@type": "Question", "name": "Como solicitar o diagnóstico gratuito?", "acceptedAnswer": {"@type": "Answer", "text": "A solicitação é feita pelo formulário desta página durante novembro. Depois, a equipe da Pro Advanced entra em contato para alinhar o escopo e agendar a execução conforme a disponibilidade, e a avaliação termina com os pontos de atenção e o direcionamento para as melhorias."}}, {"@type": "Question", "name": "Quanto custa o diagnóstico de cibersegurança da Black November?", "acceptedAnswer": {"@type": "Answer", "text": "O investimento para começar a avaliar a cibersegurança da sua empresa na Black November é zero. A Pro Advanced oferece o diagnóstico sem custo e sem obrigação de contratação, para solicitações feitas até 30 de novembro de 2026."}}, {"@type": "Question", "name": "Preciso contratar algum serviço depois do diagnóstico?", "acceptedAnswer": {"@type": "Answer", "text": "Não. O diagnóstico é gratuito e a solicitação não exige contratar outros serviços da Pro Advanced."}}, {"@type": "Question", "name": "O diagnóstico precisa ser feito em novembro?", "acceptedAnswer": {"@type": "Answer", "text": "Não. Novembro é o prazo para solicitar. A execução é agendada com a equipe técnica, conforme escopo e disponibilidade."}}, {"@type": "Question", "name": "Quem deve solicitar o diagnóstico?", "acceptedAnswer": {"@type": "Answer", "text": "Responsáveis por TI, segurança da informação ou pela gestão da empresa que querem conhecer os pontos de atenção do ambiente."}}, {"@type": "Question", "name": "O que recebo ao final da avaliação?", "acceptedAnswer": {"@type": "Answer", "text": "Uma visão sobre tecnologia, processos e práticas de proteção, com os pontos de atenção e o direcionamento para as oportunidades de melhoria, de acordo com o escopo definido."}}, {"@type": "Question", "name": "Até quando posso solicitar?", "acceptedAnswer": {"@type": "Answer", "text": "Até 30 de novembro de 2026."}}]}]}</script>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
@@ -623,8 +608,8 @@ html,body{overflow-x:clip}
     list.forEach((li,i)=>ScrollTrigger.create({trigger:li,start:'top 70%',onEnter:()=>dialAt(Math.max(i+1,secs.filter(s=>s.classList.contains('on')).length)),onLeaveBack:()=>dialAt(i)}));
   });
 
-  /* deal facts and blocks */
-  const rv=page.querySelectorAll('.deal p,.qa-grid>*,.vs-grid>div,.vs-foot,.path li,.final h2,.final-row>*,.more-grid>*');
+  /* blocks */
+  const rv=page.querySelectorAll('.qa-grid>*,.vs-grid>div,.vs-foot,.path li,.final h2,.final-row>*,.more-grid>*');
   rv.forEach(el=>el.classList.add('rv'));
   const show=b=>gsap.to(b,{opacity:1,y:0,duration:.5,ease:'power2.out',stagger:.08,overwrite:true});
   ScrollTrigger.batch(rv,{start:'top 90%',onEnter:show,onEnterBack:show,onLeave:show});

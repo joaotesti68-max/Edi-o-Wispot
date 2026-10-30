@@ -158,8 +158,8 @@
     list.forEach((li,i)=>ScrollTrigger.create({trigger:li,start:'top 70%',onEnter:()=>dialAt(Math.max(i+1,secs.filter(s=>s.classList.contains('on')).length)),onLeaveBack:()=>dialAt(i)}));
   });
 
-  /* deal facts and blocks */
-  const rv=page.querySelectorAll('.deal p,.qa-grid>*,.vs-grid>div,.vs-foot,.path li,.final h2,.final-row>*,.more-grid>*');
+  /* blocks */
+  const rv=page.querySelectorAll('.qa-grid>*,.vs-grid>div,.vs-foot,.path li,.final h2,.final-row>*,.more-grid>*');
   rv.forEach(el=>el.classList.add('rv'));
   const show=b=>gsap.to(b,{opacity:1,y:0,duration:.5,ease:'power2.out',stagger:.08,overwrite:true});
   ScrollTrigger.batch(rv,{start:'top 90%',onEnter:show,onEnterBack:show,onLeave:show});
