@@ -137,6 +137,44 @@ html,body{overflow-x:clip}
 .ptpn .contact a:hover{color:var(--accent2)}
 .ptpn .foot small{color:var(--ink3);font-size:.8rem}
 
+
+/* question blocks: question, key points, full text */
+.ptpn .qa-grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:64px;align-items:start}
+.ptpn .keys{display:grid;gap:10px;margin-bottom:24px;padding:20px 22px;border-radius:12px;background:rgba(8,18,31,.9);border:1px solid rgba(43,163,219,.32)}
+.ptpn .keys::before{content:"Principais pontos";font-size:.75rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--accent2);margin-bottom:2px}
+.ptpn .keys li{position:relative;padding-left:28px;line-height:1.5;color:var(--ink)}
+.ptpn .keys li::before{content:"";position:absolute;left:0;top:.2em;width:18px;height:18px;border-radius:50%;background:var(--accent) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center no-repeat}
+.ptpn .qa-text{display:grid;gap:16px;color:var(--ink2);line-height:1.75}
+.ptpn sup a{color:var(--accent2);text-decoration:none;font-size:.75em;margin-left:2px}
+.ptpn .qa{padding-block:96px}
+.ptpn .what{border-top:1px solid var(--line)}
+.ptpn .video .qa-text{margin-top:16px}
+.ptpn .benefits-sec .benefits,.ptpn .why .path,.ptpn .shields .tiers{margin-top:48px}
+.ptpn .tiers{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.ptpn .tiers li{padding:28px 24px;background:rgba(8,18,31,.9);border-left:1px solid var(--line);font-size:var(--t-md)}
+.ptpn .tiers li:first-child{border-left:0}
+.ptpn .tiers li:nth-child(1) b{color:#7fb3ff}.ptpn .tiers li:nth-child(2) b{color:#d4dbe3}.ptpn .tiers li:nth-child(3) b{color:#e8c46a}.ptpn .tiers li:nth-child(4) b{color:#ffd76a}
+.ptpn .final .keys{margin-bottom:16px}
+.ptpn .final .qa-text{margin-bottom:32px}
+.ptpn .more{padding-block:96px;border-top:1px solid var(--line);background:var(--bg)}
+.ptpn .more-grid{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:64px;align-items:start}
+.ptpn .faq h2,.ptpn .sources h2{font-size:var(--t-lg);margin-bottom:16px}
+.ptpn .faq details{border-bottom:1px solid var(--line)}
+.ptpn .faq summary{list-style:none;cursor:pointer;padding:18px 36px 18px 0;position:relative;font-weight:600;font-size:1.0625rem}
+.ptpn .faq summary::-webkit-details-marker{display:none}
+.ptpn .faq summary::after{content:"+";position:absolute;right:4px;top:12px;font-size:1.6rem;line-height:1;color:var(--accent2);transition:transform .2s}
+.ptpn .faq details[open] summary::after{transform:rotate(45deg)}
+.ptpn .faq details p{padding:0 0 18px;color:var(--ink2);line-height:1.7}
+.ptpn .sources ol{display:grid;gap:10px;list-style:decimal;padding-left:20px;font-size:.875rem;color:var(--ink3);line-height:1.6}
+.ptpn .sources a{color:var(--ink2)}
+@media (max-width:960px){
+  .ptpn .qa-grid,.ptpn .more-grid{grid-template-columns:1fr;gap:24px}
+  .ptpn .qa{padding-block:72px}
+  .ptpn .tiers{grid-template-columns:1fr 1fr}
+  .ptpn .tiers li:nth-child(3){border-left:0}
+  .ptpn .tiers li:nth-child(n+3){border-top:1px solid var(--line)}
+}
+
 /* reveal (added by the script only when motion is allowed) */
 .ptpn .rv{opacity:0;transform:translateY(16px)}
 
@@ -208,18 +246,31 @@ body{margin:0;background:#000c19}
     </div>
   </section>
 
-  <!-- WHAT IS TPN: a reading statement, no box -->
-  <section class="what">
-    <div class="wrap what-grid">
+  <!-- Q1 -->
+  <section class="qa what" id="q-tpn">
+    <div class="wrap qa-grid">
       <h2>O que é a Certificação TPN?</h2>
-      <p class="statement">A <b>Trusted Partner Network</b> é um selo internacional que assegura que sua produção audiovisual segue os mais altos padrões de segurança digital. Ao obter a certificação, você evita vazamentos e demonstra aos seus parceiros que sua empresa está comprometida com a proteção dos conteúdos.</p>
+      <div>
+        <ul class="keys" aria-label="Principais pontos">
+          <li>Selo internacional de segurança de conteúdo para a indústria audiovisual</li>
+          <li>Programa da Motion Picture Association (MPA)</li>
+          <li>Avaliação baseada nas MPA Content Security Best Practices</li>
+        </ul>
+        <div class="qa-text">
+          <p>A Trusted Partner Network (TPN) é um selo internacional que assegura que sua produção audiovisual segue os mais altos padrões de segurança digital. O programa pertence e é gerido pela Motion Picture Association (MPA), e as avaliações seguem as MPA Content Security Best Practices<sup><a href="#f1">[1]</a></sup>.</p>
+          <p>Ao obter a certificação, você evita vazamentos e demonstra aos seus parceiros que sua empresa está comprometida com a proteção dos conteúdos. O vídeo abaixo mostra como isso funciona na prática.</p>
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- VIDEO: split, title beside the player -->
-  <section class="video" id="ptpn-video">
+  <!-- VIDEO -->
+  <section class="qa video" id="ptpn-video">
     <div class="wrap video-grid">
-      <h2>Assista ao nosso vídeo e entenda mais sobre a Certificação TPN</h2>
+      <div>
+        <h2>Como entender a Certificação TPN em poucos minutos?</h2>
+        <div class="qa-text"><p>Assista ao vídeo da Pro Advanced e entenda mais sobre a Certificação TPN e o que ela exige da sua produção.</p></div>
+      </div>
       <div class="player">
         <button class="yt" type="button" data-yt="7Vt1_PHt0eE" aria-label="Assistir ao vídeo sobre a Certificação TPN">
           <img src="https://i.ytimg.com/vi/7Vt1_PHt0eE/hqdefault.jpg" alt="" loading="lazy" onerror="this.remove()">
@@ -229,13 +280,37 @@ body{margin:0;background:#000c19}
     </div>
   </section>
 
-  <!-- IS IT SAFE: one lead benefit, three in a ruled list -->
-  <section class="safe">
+  <!-- Q2 -->
+  <section class="qa safe" id="q-segura">
+    <div class="wrap qa-grid">
+      <h2>Sua produção audiovisual está segura?</h2>
+      <div>
+        <ul class="keys" aria-label="Principais pontos">
+          <li>Vazamentos podem destruir anos de trabalho em um instante</li>
+          <li>Uma violação de dados custou em média R$ 7,19 milhões no Brasil (IBM, 2025)</li>
+          <li>Terceiros estiveram envolvidos em 30% das violações analisadas pela Verizon em 2025</li>
+        </ul>
+        <div class="qa-text">
+          <p>Vazamentos podem destruir anos de trabalho em um instante. Com a Certificação TPN, você protege suas produções contra pirataria e vazamentos, garantindo a segurança em todas as etapas.</p>
+          <p>O risco é concreto: o relatório Cost of a Data Breach 2025, da IBM, estimou em <b>R$ 7,19 milhões</b> o custo médio de uma violação de dados no Brasil<sup><a href="#f3">[3]</a></sup>. E o Data Breach Investigations Report 2025, da Verizon, mostrou que o envolvimento de terceiros nas violações dobrou para <b>30%</b><sup><a href="#f4">[4]</a></sup>. Na produção audiovisual, em que o conteúdo passa por muitos parceiros, cada fornecedor precisa provar que protege o material. É isso que a certificação entrega, como mostra o próximo bloco.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Q3 -->
+  <section class="qa benefits-sec" id="q-beneficios">
     <div class="wrap">
-      <div class="safe-head">
-        <h2>Sua produção audiovisual está segura?</h2>
-        <p class="pull">Vazamentos podem destruir anos de trabalho em um instante.</p>
-        <p class="lead">Com a Certificação TPN (Trusted Partner Network), você protege suas produções contra pirataria e vazamentos, garantindo a segurança em todas as etapas.</p>
+      <div class="qa-grid">
+        <h2>Quais são os benefícios da Certificação TPN?</h2>
+        <div>
+          <ul class="keys" aria-label="Principais pontos">
+            <li>Menos risco de vazamento em cada fase da produção</li>
+            <li>Práticas de segurança validadas por um selo reconhecido</li>
+            <li>Destaque como parceiro confiável no mercado audiovisual</li>
+          </ul>
+          <div class="qa-text"><p>A certificação reduz o risco de vazamentos, valida as práticas de segurança da sua empresa e mostra aos principais players da indústria que sua produção segue as diretrizes exigidas. Veja cada benefício:</p></div>
+        </div>
       </div>
       <div class="benefits">
         <div class="lead-benefit">
@@ -251,12 +326,42 @@ body{margin:0;background:#000c19}
     </div>
   </section>
 
-  <!-- WHY: the certification path, a real sequence -->
-  <section class="why">
+  <!-- Q4 -->
+  <section class="qa shields" id="q-selos">
     <div class="wrap">
-      <div class="why-head">
-        <h2>Por que escolher a Pro Advanced?</h2>
-        <p class="lead">A Pro Advanced facilita sua certificação TPN, oferecendo:</p>
+      <div class="qa-grid">
+        <h2>Quais são os níveis de selo da TPN?</h2>
+        <div>
+          <ul class="keys" aria-label="Principais pontos">
+            <li>Quatro níveis: Blue, Silver, Gold e Gold Star</li>
+            <li>Os níveis mais altos reconhecem as falhas corrigidas e revisadas pela TPN</li>
+            <li>O novo sistema substitui os antigos selos Blue e Gold</li>
+          </ul>
+          <div class="qa-text">
+            <p>A TPN passou a usar quatro níveis de selo (Shield): Blue, Silver, Gold e Gold Star, que substituem as antigas designações Blue e Gold. Os níveis novos reconhecem que o fornecedor concluiu a correção das falhas de segurança apontadas na avaliação e que a TPN revisou essas correções<sup><a href="#f2">[2]</a></sup>.</p>
+            <p>Para os donos de conteúdo, isso dá mais clareza sobre a maturidade de segurança de cada parceiro. Para a sua empresa, significa que a preparação e as correções fazem diferença no selo obtido, e é aí que a Pro Advanced entra.</p>
+          </div>
+        </div>
+      </div>
+      <ol class="tiers" aria-label="Níveis de selo da TPN">
+        <li><b>Blue</b></li><li><b>Silver</b></li><li><b>Gold</b></li><li><b>Gold Star</b></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- Q5 -->
+  <section class="qa why" id="q-pro">
+    <div class="wrap">
+      <div class="qa-grid">
+        <h2>Como a Pro Advanced ajuda na certificação TPN?</h2>
+        <div>
+          <ul class="keys" aria-label="Principais pontos">
+            <li>Gap Analysis para identificar e preencher lacunas</li>
+            <li>Conformidade com os padrões internacionais</li>
+            <li>Suporte especializado em todas as etapas</li>
+          </ul>
+          <div class="qa-text"><p>A Pro Advanced facilita sua certificação TPN em três frentes, que acompanham o processo do começo ao fim: primeiro identifica o que falta, depois adequa o ambiente aos padrões e segue ao lado da sua equipe até a conclusão.</p></div>
+        </div>
       </div>
       <ol class="path">
         <li><span class="step">1</span><h3>Gap Analysis</h3><p>Identificação e preenchimento de lacunas.</p></li>
@@ -266,13 +371,39 @@ body{margin:0;background:#000c19}
     </div>
   </section>
 
-  <!-- FINAL -->
-  <section class="final">
+  <!-- Q6 -->
+  <section class="qa final" id="q-comecar">
     <div class="wrap final-grid">
-      <h2>Proteja suas produções e garanta competitividade</h2>
+      <h2>Como começar a certificação TPN com a Pro Advanced?</h2>
       <div>
-        <p>Com a Pro Advanced, sua empresa estará em conformidade com os mais rigorosos padrões de segurança. Fale conosco e assegure a proteção que você precisa para atuar com confiança no mercado global.</p>
+        <ul class="keys" aria-label="Principais pontos">
+          <li>Preencha o formulário desta página</li>
+          <li>Um especialista em TPN entra em contato</li>
+        </ul>
+        <div class="qa-text"><p>Com a Pro Advanced, sua empresa estará em conformidade com os mais rigorosos padrões de segurança. Fale conosco e assegure a proteção que você precisa para atuar com confiança no mercado global.</p></div>
         <a class="btn" href="#ptpn-form">Falar com um especialista em TPN</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ + SOURCES -->
+  <section class="more">
+    <div class="wrap more-grid">
+      <div class="faq" id="faq">
+        <h2>Perguntas rápidas</h2>
+        <details><summary>Quem precisa da Certificação TPN?</summary><p>Empresas que prestam serviços para a indústria audiovisual e trabalham com conteúdo de estúdios e produtoras, como produção, pós-produção, efeitos visuais e distribuição.</p></details>
+        <details><summary>Quem é dono do programa TPN?</summary><p>A Trusted Partner Network pertence e é gerida pela Motion Picture Association (MPA).</p></details>
+        <details><summary>A TPN substitui certificações como ISO 27001 ou SOC 2?</summary><p>Não. São coisas diferentes, e a plataforma TPN+ permite registrar certificados como ISO e SOC 2 junto com as avaliações da TPN.</p></details>
+        <details><summary>O que a Pro Advanced faz no processo?</summary><p>Gap Analysis, adequação aos padrões internacionais e acompanhamento em todas as etapas da certificação.</p></details>
+      </div>
+      <div class="sources" id="fontes">
+        <h2>Fontes</h2>
+        <ol>
+          <li id="f1">Motion Picture Association, “TPN launches upgraded program and new TPN+ platform” (<a href="https://www.motionpictures.org/press/tpn-launches-upgraded-program-and-new-tpn-platform-to-advance-entertainment-content-security" target="_blank" rel="noopener">MPA</a>).</li>
+          <li id="f2">“TPN to launch enhanced Shield tier system to strengthen global content security” (<a href="https://www.tvtechnology.com/news/tpn-to-launch-enhanced-shield-tier-system-to-strengthen-global-content-security" target="_blank" rel="noopener">TV Technology</a>).</li>
+          <li id="f3">IBM e Ponemon Institute, <i>Cost of a Data Breach Report 2025</i>, recorte Brasil (<a href="https://tecnoblog.net/noticias/custo-medio-por-violacao-de-dados-sobe-no-brasil-e-chega-a-r-719-milhoes/" target="_blank" rel="noopener">Tecnoblog</a>).</li>
+          <li id="f4">Verizon, <i>2025 Data Breach Investigations Report</i> (<a href="https://www.verizon.com/about/news/2025-data-breach-investigations-report" target="_blank" rel="noopener">Verizon</a>).</li>
+        </ol>
       </div>
     </div>
   </section>
@@ -284,6 +415,7 @@ body{margin:0;background:#000c19}
       <small>Pro Advanced | Todos os direitos reservados - 2026</small>
     </div>
   </footer>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Article", "headline": "Segurança para suas produções audiovisuais: Certificação TPN com a Pro Advanced", "description": "O que é a Certificação TPN (Trusted Partner Network), seus benefícios, níveis de selo e como a Pro Advanced apoia empresas audiovisuais no processo.", "inLanguage": "pt-BR", "author": {"@type": "Organization", "name": "Pro Advanced", "url": "https://proadvanced.com.br"}, "publisher": {"@type": "Organization", "name": "Pro Advanced", "url": "https://proadvanced.com.br"}, "dateModified": "2026-10-30"}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "O que é a Certificação TPN?", "acceptedAnswer": {"@type": "Answer", "text": "A Trusted Partner Network (TPN) é um selo internacional que assegura que sua produção audiovisual segue os mais altos padrões de segurança digital. O programa pertence e é gerido pela Motion Picture Association (MPA), e as avaliações seguem as MPA Content Security Best Practices[1]."}}, {"@type": "Question", "name": "Como entender a Certificação TPN em poucos minutos?", "acceptedAnswer": {"@type": "Answer", "text": "Assista ao vídeo da Pro Advanced e entenda mais sobre a Certificação TPN e o que ela exige da sua produção."}}, {"@type": "Question", "name": "Sua produção audiovisual está segura?", "acceptedAnswer": {"@type": "Answer", "text": "Vazamentos podem destruir anos de trabalho em um instante. Com a Certificação TPN, você protege suas produções contra pirataria e vazamentos, garantindo a segurança em todas as etapas."}}, {"@type": "Question", "name": "Quais são os benefícios da Certificação TPN?", "acceptedAnswer": {"@type": "Answer", "text": "A certificação reduz o risco de vazamentos, valida as práticas de segurança da sua empresa e mostra aos principais players da indústria que sua produção segue as diretrizes exigidas. Veja cada benefício:"}}, {"@type": "Question", "name": "Quais são os níveis de selo da TPN?", "acceptedAnswer": {"@type": "Answer", "text": "A TPN passou a usar quatro níveis de selo (Shield): Blue, Silver, Gold e Gold Star, que substituem as antigas designações Blue e Gold. Os níveis novos reconhecem que o fornecedor concluiu a correção das falhas de segurança apontadas na avaliação e que a TPN revisou essas correções[2]."}}, {"@type": "Question", "name": "Como a Pro Advanced ajuda na certificação TPN?", "acceptedAnswer": {"@type": "Answer", "text": "A Pro Advanced facilita sua certificação TPN em três frentes, que acompanham o processo do começo ao fim: primeiro identifica o que falta, depois adequa o ambiente aos padrões e segue ao lado da sua equipe até a conclusão."}}, {"@type": "Question", "name": "Como começar a certificação TPN com a Pro Advanced?", "acceptedAnswer": {"@type": "Answer", "text": "Com a Pro Advanced, sua empresa estará em conformidade com os mais rigorosos padrões de segurança. Fale conosco e assegure a proteção que você precisa para atuar com confiança no mercado global."}}, {"@type": "Question", "name": "Quem precisa da Certificação TPN?", "acceptedAnswer": {"@type": "Answer", "text": "Empresas que prestam serviços para a indústria audiovisual e trabalham com conteúdo de estúdios e produtoras, como produção, pós-produção, efeitos visuais e distribuição."}}, {"@type": "Question", "name": "Quem é dono do programa TPN?", "acceptedAnswer": {"@type": "Answer", "text": "A Trusted Partner Network pertence e é gerida pela Motion Picture Association (MPA)."}}, {"@type": "Question", "name": "A TPN substitui certificações como ISO 27001 ou SOC 2?", "acceptedAnswer": {"@type": "Answer", "text": "Não. São coisas diferentes, e a plataforma TPN+ permite registrar certificados como ISO e SOC 2 junto com as avaliações da TPN."}}, {"@type": "Question", "name": "O que a Pro Advanced faz no processo?", "acceptedAnswer": {"@type": "Answer", "text": "Gap Analysis, adequação aos padrões internacionais e acompanhamento em todas as etapas da certificação."}}]}]}</script>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -498,7 +630,7 @@ body{margin:0;background:#000c19}
   gsap.from('.hero h1,.hero .lead,.hero .tlink',{y:16,opacity:0,duration:.5,ease:'power2.out',stagger:.08,delay:.05,clearProps:'transform,opacity'});
 
   /* one quiet entrance per block; the film strip is the page's signature motion */
-  const rv=page.querySelectorAll('.what-grid>*,.video-grid>*,.safe-head>*,.lead-benefit,.rows li,.why-head>*,.path li,.final-grid>*');
+  const rv=page.querySelectorAll('.qa-grid>*,.video-grid>*,.lead-benefit,.rows li,.tiers,.path li,.final-grid>*,.more-grid>*');
   rv.forEach(el=>el.classList.add('rv'));
   const show=b=>gsap.to(b,{opacity:1,y:0,duration:.4,ease:'power2.out',stagger:.08,overwrite:true});
   ScrollTrigger.batch(rv,{start:'top 90%',onEnter:show,onEnterBack:show,onLeave:show});

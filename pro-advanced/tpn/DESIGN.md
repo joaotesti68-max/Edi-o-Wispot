@@ -55,3 +55,4 @@ radii: 6px, 8px, 12px, 999px, 50%
 
 ## 11. Decision log
 - 2026-10-27: rebuilt with the antiwebslop skill. Removed eyebrows, the gradient headline, the rotating seal, icon-tile cards with fake 01-04 numbers, hero tick list (it repeated later copy). Benefits became one lead item plus a ruled list; Pro Advanced reasons became a 3-step path because Gap Analysis, compliance and support are an actual sequence.
+- 2026-10-30: content restructured into question blocks (question as H2, key points, full text), quick FAQ, numbered sources (MPA, TV Technology on the Shield tiers, IBM 2025, Verizon DBIR 2025) and Article + FAQPage JSON-LD, per the project rules in CLAUDE.md. Added a Shield tiers block.

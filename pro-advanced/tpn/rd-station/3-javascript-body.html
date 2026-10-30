@@ -210,7 +210,7 @@
   gsap.from('.hero h1,.hero .lead,.hero .tlink',{y:16,opacity:0,duration:.5,ease:'power2.out',stagger:.08,delay:.05,clearProps:'transform,opacity'});
 
   /* one quiet entrance per block; the film strip is the page's signature motion */
-  const rv=page.querySelectorAll('.what-grid>*,.video-grid>*,.safe-head>*,.lead-benefit,.rows li,.why-head>*,.path li,.final-grid>*');
+  const rv=page.querySelectorAll('.qa-grid>*,.video-grid>*,.lead-benefit,.rows li,.tiers,.path li,.final-grid>*,.more-grid>*');
   rv.forEach(el=>el.classList.add('rv'));
   const show=b=>gsap.to(b,{opacity:1,y:0,duration:.4,ease:'power2.out',stagger:.08,overwrite:true});
   ScrollTrigger.batch(rv,{start:'top 90%',onEnter:show,onEnterBack:show,onLeave:show});
