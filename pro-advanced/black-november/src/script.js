@@ -149,14 +149,8 @@
     .from('.hero h1,.hero .lead,.hero .count',{y:20,opacity:0,duration:.6,stagger:.08,clearProps:'transform,opacity'},'-=.5')
     .from('.fcard',{y:40,opacity:0,duration:.8,clearProps:'transform,opacity'},.2);
 
-  /* dial: pinned on desktop, the five areas light up one by one */
-  const mm=gsap.matchMedia();
-  mm.add('(min-width:961px)',()=>{
-    ScrollTrigger.create({trigger:'.fronts',start:'top top',end:'+=160%',pin:'.fr-pin',onUpdate:s=>dialAt(Math.min(5,Math.floor(s.progress*5.6))),onLeaveBack:()=>dialAt(0)});
-  });
-  mm.add('(max-width:960px)',()=>{
-    list.forEach((li,i)=>ScrollTrigger.create({trigger:li,start:'top 70%',onEnter:()=>dialAt(Math.max(i+1,secs.filter(s=>s.classList.contains('on')).length)),onLeaveBack:()=>dialAt(i)}));
-  });
+  /* dial: the five areas light up as each one scrolls into view (no pin, so the page scrolls normally) */
+  list.forEach((li,i)=>ScrollTrigger.create({trigger:li,start:'top 65%',onEnter:()=>dialAt(Math.max(i+1,secs.filter(s=>s.classList.contains('on')).length)),onLeaveBack:()=>dialAt(i)}));
 
   /* blocks */
   const rv=page.querySelectorAll('.qa-grid>*,.vs-grid>div,.vs-foot,.path li,.final h2,.final-row>*,.more-grid>*');

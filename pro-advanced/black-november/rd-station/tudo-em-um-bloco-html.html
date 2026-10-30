@@ -124,11 +124,12 @@ html,body{overflow-x:clip}
 .pbn .mf .wd.on{color:var(--ink)}
 .pbn .mf em .wd.on{color:var(--accent2)}
 
-/* fronts: pinned dial */
+/* fronts: dial sticks beside the list while it scrolls */
 .pbn .fronts{background:var(--s1);border-block:1px solid var(--line)}
-.pbn .fr-pin{min-height:100vh;display:flex;align-items:center;padding-block:96px}
+.pbn .fr-pin{padding-block:96px}
 .pbn .fr-pin>.wrap{width:100%}
-.pbn .fr-grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:72px;align-items:center}
+.pbn .fr-grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:72px;align-items:start}
+.pbn .dial-col{position:sticky;top:110px}
 .pbn .dial{width:min(100%,380px);margin-top:40px;display:block;overflow:visible}
 .pbn .d-ring{fill:none;stroke:rgba(201,214,228,.14);stroke-width:1}
 .pbn .d-sec{fill:rgba(43,163,219,.06);stroke:rgba(201,214,228,.18);stroke-width:1;transition:fill .5s,stroke .5s}
@@ -198,7 +199,8 @@ html,body{overflow-x:clip}
   .pbn .hero-grid,.pbn .fr-grid,.pbn .qa-grid,.pbn .more-grid{grid-template-columns:1fr;gap:32px}
   .pbn .q-intro{padding-block:88px 16px}
   .pbn .risk{padding-block:88px 72px}
-  .pbn .fr-pin{min-height:0;padding-block:72px}
+  .pbn .fr-pin{padding-block:72px}
+  .pbn .dial-col{position:static}
   .pbn .dial{width:220px;margin-top:24px}
   .pbn .fr-list li{opacity:1}
   .pbn .vs-grid{grid-template-columns:1fr}
@@ -599,14 +601,8 @@ html,body{overflow-x:clip}
     .from('.hero h1,.hero .lead,.hero .count',{y:20,opacity:0,duration:.6,stagger:.08,clearProps:'transform,opacity'},'-=.5')
     .from('.fcard',{y:40,opacity:0,duration:.8,clearProps:'transform,opacity'},.2);
 
-  /* dial: pinned on desktop, the five areas light up one by one */
-  const mm=gsap.matchMedia();
-  mm.add('(min-width:961px)',()=>{
-    ScrollTrigger.create({trigger:'.fronts',start:'top top',end:'+=160%',pin:'.fr-pin',onUpdate:s=>dialAt(Math.min(5,Math.floor(s.progress*5.6))),onLeaveBack:()=>dialAt(0)});
-  });
-  mm.add('(max-width:960px)',()=>{
-    list.forEach((li,i)=>ScrollTrigger.create({trigger:li,start:'top 70%',onEnter:()=>dialAt(Math.max(i+1,secs.filter(s=>s.classList.contains('on')).length)),onLeaveBack:()=>dialAt(i)}));
-  });
+  /* dial: the five areas light up as each one scrolls into view (no pin, so the page scrolls normally) */
+  list.forEach((li,i)=>ScrollTrigger.create({trigger:li,start:'top 65%',onEnter:()=>dialAt(Math.max(i+1,secs.filter(s=>s.classList.contains('on')).length)),onLeaveBack:()=>dialAt(i)}));
 
   /* blocks */
   const rv=page.querySelectorAll('.qa-grid>*,.vs-grid>div,.vs-foot,.path li,.final h2,.final-row>*,.more-grid>*');

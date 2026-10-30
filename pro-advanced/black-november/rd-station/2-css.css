@@ -123,11 +123,12 @@ html,body{overflow-x:clip}
 .pbn .mf .wd.on{color:var(--ink)}
 .pbn .mf em .wd.on{color:var(--accent2)}
 
-/* fronts: pinned dial */
+/* fronts: dial sticks beside the list while it scrolls */
 .pbn .fronts{background:var(--s1);border-block:1px solid var(--line)}
-.pbn .fr-pin{min-height:100vh;display:flex;align-items:center;padding-block:96px}
+.pbn .fr-pin{padding-block:96px}
 .pbn .fr-pin>.wrap{width:100%}
-.pbn .fr-grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:72px;align-items:center}
+.pbn .fr-grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:72px;align-items:start}
+.pbn .dial-col{position:sticky;top:110px}
 .pbn .dial{width:min(100%,380px);margin-top:40px;display:block;overflow:visible}
 .pbn .d-ring{fill:none;stroke:rgba(201,214,228,.14);stroke-width:1}
 .pbn .d-sec{fill:rgba(43,163,219,.06);stroke:rgba(201,214,228,.18);stroke-width:1;transition:fill .5s,stroke .5s}
@@ -197,7 +198,8 @@ html,body{overflow-x:clip}
   .pbn .hero-grid,.pbn .fr-grid,.pbn .qa-grid,.pbn .more-grid{grid-template-columns:1fr;gap:32px}
   .pbn .q-intro{padding-block:88px 16px}
   .pbn .risk{padding-block:88px 72px}
-  .pbn .fr-pin{min-height:0;padding-block:72px}
+  .pbn .fr-pin{padding-block:72px}
+  .pbn .dial-col{position:static}
   .pbn .dial{width:220px;margin-top:24px}
   .pbn .fr-list li{opacity:1}
   .pbn .vs-grid{grid-template-columns:1fr}
