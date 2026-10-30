@@ -159,7 +159,7 @@
   });
 
   /* deal facts and blocks */
-  const rv=page.querySelectorAll('.deal p,.risk-text p,.vs h2,.vs-grid>div,.vs-foot,.how h2,.path li,.final .q,.final-row>*');
+  const rv=page.querySelectorAll('.deal p,.qa-grid>*,.vs-grid>div,.vs-foot,.path li,.final h2,.final-row>*,.more-grid>*');
   rv.forEach(el=>el.classList.add('rv'));
   const show=b=>gsap.to(b,{opacity:1,y:0,duration:.5,ease:'power2.out',stagger:.08,overwrite:true});
   ScrollTrigger.batch(rv,{start:'top 90%',onEnter:show,onEnterBack:show,onLeave:show});

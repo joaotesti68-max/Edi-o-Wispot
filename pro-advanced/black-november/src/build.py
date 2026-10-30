@@ -3,8 +3,21 @@ import os,base64
 d=os.path.dirname(os.path.abspath(__file__))
 css=open(d+'/style.css').read(); body=open(d+'/body.html').read(); js=open(d+'/script.js').read()
 uri=lambda p:'data:image/png;base64,'+base64.b64encode(open(p,'rb').read()).decode()
+DATA_ATU='2026-10-30'   # data da última revisão dos dados (atualize a cada 60 a 90 dias)
 FIM='2026-11-30T23:59:59-03:00'   # fim do prazo para solicitar (horário de Brasília)
 body=body.replace('{{LOGO}}',uri(d+'/assets/logo-dark-sm.png')).replace('{{FIM}}',FIM)
+import re,json,html as H
+txt=lambda h:re.sub(r'\s+',' ',H.unescape(re.sub(r'<[^>]+>','',h))).strip()
+qas=[]
+for sec in re.findall(r'<section class="qa[ "][^>]*>(.*?)</section>',body,re.S):
+  q=re.search(r'<h2>(.*?)</h2>',sec,re.S);a=re.search(r'<div class="qa-text">.*?<p[^>]*>(.*?)</p>',sec,re.S)
+  if q and a:qas.append((txt(q.group(1)),txt(a.group(1))))
+qas+=[(txt(q),txt(a)) for q,a in re.findall(r'<details><summary>(.*?)</summary><p>(.*?)</p></details>',body,re.S)]
+org={'@type':'Organization','name':'Pro Advanced','url':'https://proadvanced.com.br'}
+ld={'@context':'https://schema.org','@graph':[
+  {'@type':'Article','headline':txt(re.search(r'<h1>(.*?)</h1>',body,re.S).group(1)),'description':'Black November Pro Advanced 2026: diagnóstico de Segurança da Informação e Cibersegurança gratuito, com solicitações até 30/11/2026 e sem obrigação de contratar.','inLanguage':'pt-BR','author':org,'publisher':org,'dateModified':DATA_ATU},
+  {'@type':'FAQPage','mainEntity':[{'@type':'Question','name':q,'acceptedAnswer':{'@type':'Answer','text':a}} for q,a in qas]}]}
+body=body.replace('{{JSONLD}}',json.dumps(ld,ensure_ascii=False).replace('</','<\\/'))
 assert '{{' not in body and '{{' not in js, 'token left'
 libs='''<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>

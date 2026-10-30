@@ -90,13 +90,42 @@ html,body{overflow-x:clip}
 .pbn .deal p:first-child{border-left:0;padding-left:0}
 .pbn .deal b{display:block;color:var(--bg);font-size:clamp(1.3rem,2vw,1.75rem);font-weight:800;letter-spacing:-.02em;margin-bottom:2px}
 
+/* question blocks */
+.pbn .qa h2{text-wrap:balance}
+.pbn .qa-grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:64px;align-items:start}
+.pbn .q-intro{padding-block:128px 32px}
+.pbn .keys{display:grid;gap:10px;margin-bottom:24px;padding:20px 22px;border-radius:12px;background:rgba(43,163,219,.08);border:1px solid rgba(43,163,219,.3)}
+.pbn .keys::before{content:"Principais pontos";font-size:.75rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent2);margin-bottom:2px}
+.pbn .keys li{position:relative;padding-left:28px;line-height:1.5;color:var(--ink)}
+.pbn .keys li::before{content:"";position:absolute;left:0;top:.2em;width:18px;height:18px;border-radius:50%;background:var(--accent) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center no-repeat}
+.pbn .qa-text{display:grid;gap:16px;color:var(--ink2);line-height:1.75}
+.pbn sup a{color:var(--accent2);text-decoration:none;font-size:.75em;margin-left:2px}
+.pbn .risk .qa-grid{margin-top:56px;padding-top:40px;border-top:1px solid var(--line)}
+.pbn .dial-col .keys{margin-top:24px}
+.pbn .fr-intro{margin-bottom:8px}
+.pbn .vs .qa-grid,.pbn .how .qa-grid{margin-bottom:48px}
+.pbn .final h2{font-size:var(--t-lg);font-weight:600;color:var(--ink2);max-width:30ch}
+.pbn .final-row .keys{margin-bottom:16px}
+.pbn .final-row>div{max-width:620px}
+.pbn .more{padding-block:96px;border-top:1px solid var(--line)}
+.pbn .more-grid{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:64px;align-items:start}
+.pbn .faq h2,.pbn .sources h2{font-size:var(--t-lg);margin-bottom:16px}
+.pbn .faq details{border-bottom:1px solid var(--line)}
+.pbn .faq summary{list-style:none;cursor:pointer;padding:18px 36px 18px 0;position:relative;font-weight:600;font-size:1.0625rem}
+.pbn .faq summary::-webkit-details-marker{display:none}
+.pbn .faq summary::after{content:"+";position:absolute;right:4px;top:12px;font-size:1.6rem;line-height:1;color:var(--accent2);transition:transform .2s}
+.pbn .faq details[open] summary::after{transform:rotate(45deg)}
+.pbn .faq details p{padding:0 0 18px;color:var(--ink2);line-height:1.7}
+.pbn .sources ol{display:grid;gap:10px;list-style:decimal;padding-left:20px;font-size:.875rem;color:var(--ink3);line-height:1.6}
+.pbn .sources a{color:var(--ink2)}
+.pbn .sources li:target{color:var(--ink)}
+
 /* risk */
 .pbn .risk{padding-block:128px 96px}
 .pbn .mf{font-size:clamp(2rem,4.2vw,3.6rem);line-height:1.12;font-weight:700;letter-spacing:-.025em;max-width:22ch}
 .pbn .mf .wd{color:#24313f;transition:color .3s}
 .pbn .mf .wd.on{color:var(--ink)}
 .pbn .mf em .wd.on{color:var(--accent2)}
-.pbn .risk-text{display:grid;grid-template-columns:1fr 1fr;gap:32px 48px;margin-top:56px;padding-top:32px;border-top:1px solid var(--line);color:var(--ink2);line-height:1.75}
 
 /* fronts: pinned dial */
 .pbn .fronts{background:var(--s1);border-block:1px solid var(--line)}
@@ -121,7 +150,6 @@ html,body{overflow-x:clip}
 
 /* prevent vs react */
 .pbn .vs{padding-block:128px 96px}
-.pbn .vs h2{max-width:20ch;margin-bottom:48px}
 .pbn .vs-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;border-radius:12px;overflow:hidden;border:1px solid var(--line)}
 .pbn .vs-grid>div{padding:40px}
 .pbn .vs-a{background:var(--bg)}
@@ -142,7 +170,6 @@ html,body{overflow-x:clip}
 
 /* how */
 .pbn .how{padding-block:96px 128px}
-.pbn .how h2{margin-bottom:48px}
 .pbn .path{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px;position:relative}
 .pbn .path::before{content:"";position:absolute;left:24px;right:24px;top:24px;height:1px;background:var(--accent)}
 .pbn .path li{position:relative}
@@ -171,12 +198,12 @@ html,body{overflow-x:clip}
 @media (max-width:960px){
   .pbn .hero{min-height:0;padding-block:32px 72px}
   .pbn .radar{right:-30vw;top:180px;width:110vw;transform:none;opacity:.45}
-  .pbn .hero-grid,.pbn .fr-grid{grid-template-columns:1fr;gap:40px}
+  .pbn .hero-grid,.pbn .fr-grid,.pbn .qa-grid,.pbn .more-grid{grid-template-columns:1fr;gap:32px}
+  .pbn .q-intro{padding-block:88px 16px}
   .pbn .deal-row{grid-template-columns:1fr}
   .pbn .deal p,.pbn .deal p:first-child{border-left:0;border-top:1px solid rgba(0,12,25,.12);padding:20px 0}
   .pbn .deal p:first-child{border-top:0}
   .pbn .risk{padding-block:88px 72px}
-  .pbn .risk-text{grid-template-columns:1fr}
   .pbn .fr-pin{min-height:0;padding-block:72px}
   .pbn .dial{width:220px;margin-top:24px}
   .pbn .fr-list li{opacity:1}
@@ -256,23 +283,55 @@ html,body{overflow-x:clip}
     </div>
   </div>
 
-  <!-- RISK: the statement lights up word by word -->
-  <section class="risk">
-    <div class="wrap">
-      <p class="mf" data-fill>Nem todo risco aparece como um alerta na tela. <em>Mesmo com tudo funcionando,</em> acessos, atualizações e monitoramento podem precisar de atenção.</p>
-      <div class="risk-text">
-        <p>No dia a dia, é natural que a operação esteja concentrada em manter sistemas disponíveis, equipes conectadas e atividades em andamento. Mas a segurança também exige uma análise periódica: os acessos estão adequados? Os controles acompanham as necessidades atuais? Os processos de resposta estão claros?</p>
-        <p>Para ajudar sua empresa a responder a essas questões, a Pro Advanced lançou a Black November 2026. Durante todo o mês de novembro, você pode solicitar um <b>Diagnóstico de Segurança da Informação e Cibersegurança 100% gratuito</b>.</p>
+  <!-- Q1 -->
+  <section class="qa q-intro" id="q-oferta">
+    <div class="wrap qa-grid">
+      <h2>O que é a Black November Pro Advanced 2026?</h2>
+      <div>
+        <ul class="keys" aria-label="Principais pontos">
+          <li>Diagnóstico de Segurança da Informação e Cibersegurança 100% gratuito</li>
+          <li>Solicitações de 1º a 30 de novembro de 2026</li>
+          <li>Sem obrigação de contratar outros serviços da Pro Advanced</li>
+        </ul>
+        <div class="qa-text">
+          <p>A Black November é a campanha de novembro da Pro Advanced. Durante todo o mês, empresas podem solicitar um Diagnóstico de Segurança da Informação e Cibersegurança sem custo, para observar práticas, controles e processos do ambiente de TI, identificar pontos de atenção e ter uma visão mais clara das oportunidades de melhoria.</p>
+          <p>O diagnóstico não tem custo e a solicitação não exige contratar outros serviços. A execução é agendada com a equipe técnica, conforme escopo e disponibilidade definidos em conjunto. Para entender por que vale olhar para isso agora, veja os números do próximo bloco.</p>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- FRONTS: pinned; each area lights a sector of the dial -->
-  <section class="fronts" id="frentes">
+  <!-- Q2: why now (statement + data) -->
+  <section class="qa risk" id="q-por-que">
+    <div class="wrap">
+      <p class="mf" data-fill aria-hidden="true">Nem todo risco aparece como um alerta na tela. <em>Mesmo com tudo funcionando,</em> acessos, atualizações e monitoramento podem precisar de atenção.</p>
+      <div class="qa-grid">
+        <h2>Por que avaliar a segurança da sua empresa agora?</h2>
+        <div>
+          <ul class="keys" aria-label="Principais pontos">
+            <li>Uma violação de dados custou em média R$ 7,19 milhões no Brasil (IBM, 2025)</li>
+            <li>Organizações no Brasil sofreram em média 4.001 ataques por semana em junho de 2026 (Check Point Research)</li>
+            <li>Terceiros estiveram envolvidos em 30% das violações analisadas pela Verizon em 2025</li>
+          </ul>
+          <div class="qa-text">
+            <p>O relatório Cost of a Data Breach, da IBM com o Ponemon Institute, estimou em <b>R$ 7,19 milhões</b> o custo médio de uma violação de dados no Brasil em 2025, alta de 6,5% sobre o ano anterior<sup><a href="#f1">[1]</a></sup>. Em junho de 2026, a Check Point Research registrou média de <b>4.001 ataques cibernéticos por semana</b> por organização no Brasil, contra 2.270 na média global<sup><a href="#f2">[2]</a></sup>.</p>
+            <p>O Data Breach Investigations Report 2025, da Verizon, analisou 12.195 violações confirmadas: o abuso de credenciais (22%) e a exploração de vulnerabilidades (20%) foram os principais pontos de entrada, e o envolvimento de terceiros dobrou para 30%<sup><a href="#f3">[3]</a></sup>. São riscos que nem sempre aparecem no dia a dia, e por isso o diagnóstico olha para cinco frentes diferentes, descritas a seguir.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Q3: pinned dial -->
+  <section class="qa fronts" id="q-avalia">
     <div class="fr-pin">
       <div class="wrap fr-grid">
         <div class="dial-col">
-          <h2>O que o diagnóstico avalia</h2>
+          <h2>O que o diagnóstico de cibersegurança avalia?</h2>
+          <ul class="keys" aria-label="Principais pontos">
+            <li>Cinco frentes: governança, controles, sistemas, monitoramento e cultura</li>
+            <li>Tecnologia, processos e pessoas analisados em conjunto</li>
+          </ul>
           <svg class="dial" viewBox="-110 -110 220 220" aria-hidden="true">
             <circle r="104" class="d-ring"/><circle r="72" class="d-ring"/><circle r="40" class="d-ring"/>
             <g class="d-secs"></g>
@@ -280,21 +339,35 @@ html,body{overflow-x:clip}
             <text class="d-num" y="7" text-anchor="middle">0/5</text>
           </svg>
         </div>
-        <ol class="fr-list">
-          <li><h3>Governança e gestão de riscos</h3><p>Políticas, responsabilidades e práticas para orientar decisões sobre segurança.</p></li>
-          <li><h3>Controles técnicos</h3><p>Acessos, redes, dispositivos, servidores e mecanismos de proteção do ambiente.</p></li>
-          <li><h3>Segurança de sistemas</h3><p>Identidade, autenticação e práticas de proteção de aplicações e serviços.</p></li>
-          <li><h3>Monitoramento e continuidade</h3><p>Capacidade de detectar incidentes, responder e manter a operação preparada.</p></li>
-          <li><h3>Cultura de segurança</h3><p>Conscientização e práticas adotadas pelas equipes no dia a dia.</p></li>
-        </ol>
+        <div class="qa-text">
+          <p class="fr-intro">Cibersegurança vai além da instalação de ferramentas. Uma visão mais ampla envolve processos, pessoas, controles, sistemas e continuidade do negócio, e o diagnóstico reúne essas perspectivas:</p>
+          <ol class="fr-list">
+            <li><h3>Governança e gestão de riscos</h3><p>Políticas, responsabilidades e práticas para orientar decisões sobre segurança.</p></li>
+            <li><h3>Controles técnicos</h3><p>Acessos, redes, dispositivos, servidores e mecanismos de proteção do ambiente.</p></li>
+            <li><h3>Segurança de sistemas</h3><p>Identidade, autenticação e práticas de proteção de aplicações e serviços.</p></li>
+            <li><h3>Monitoramento e continuidade</h3><p>Capacidade de detectar incidentes, responder e manter a operação preparada.</p></li>
+            <li><h3>Cultura de segurança</h3><p>Conscientização e práticas adotadas pelas equipes no dia a dia.</p></li>
+          </ol>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- PREVENT vs REACT -->
-  <section class="vs">
+  <!-- Q4: react vs prevent -->
+  <section class="qa vs" id="q-preparada">
     <div class="wrap">
-      <h2>Esperar um incidente ou avaliar antes?</h2>
+      <div class="qa-grid">
+        <h2>Sua empresa está preparada para responder a um incidente?</h2>
+        <div>
+          <ul class="keys" aria-label="Principais pontos">
+            <li>Ferramentas de proteção sozinhas não bastam</li>
+            <li>É preciso saber identificar o problema, quem age e como manter a operação</li>
+          </ul>
+          <div class="qa-text">
+            <p>Um incidente de segurança pode exigir decisões rápidas de diferentes áreas da empresa. Nesse momento, não basta contar com ferramentas de proteção: é importante saber como identificar o problema, quem deve agir e como preservar a continuidade da operação. A diferença está em avaliar antes ou só olhar para o tema quando aparece um problema.</p>
+          </div>
+        </div>
+      </div>
       <div class="vs-grid">
         <div class="vs-a">
           <p class="vs-k">Reagir</p>
@@ -308,30 +381,70 @@ html,body{overflow-x:clip}
           <a class="btn" href="#pbn-form">Quero avaliar antes</a>
         </div>
       </div>
-      <p class="vs-foot">Identificar riscos é importante. <b>Saber o que priorizar é fundamental.</b></p>
+      <p class="vs-foot">Identificar riscos é importante. <b>Saber o que priorizar é fundamental.</b> Veja como solicitar a avaliação.</p>
     </div>
   </section>
 
-  <!-- HOW IT WORKS -->
-  <section class="how">
+  <!-- Q5: how -->
+  <section class="qa how" id="q-como">
     <div class="wrap">
-      <h2>Como funciona</h2>
+      <div class="qa-grid">
+        <h2>Como solicitar o diagnóstico gratuito?</h2>
+        <div>
+          <ul class="keys" aria-label="Principais pontos">
+            <li>Preencha o formulário até 30/11/2026</li>
+            <li>A equipe técnica alinha o escopo e agenda a execução</li>
+            <li>Novembro é o prazo para solicitar, não para executar</li>
+          </ul>
+          <div class="qa-text">
+            <p>A solicitação é feita pelo formulário desta página durante novembro. Depois, a equipe da Pro Advanced entra em contato para alinhar o escopo e agendar a execução conforme a disponibilidade, e a avaliação termina com os pontos de atenção e o direcionamento para as melhorias.</p>
+          </div>
+        </div>
+      </div>
       <ol class="path">
-        <li><span class="step">1</span><h3>Solicite até 30/11</h3><p>Preencha o formulário desta página durante novembro. O período da campanha é para solicitar.</p></li>
+        <li><span class="step">1</span><h3>Solicite até 30/11</h3><p>Preencha o formulário desta página durante novembro.</p></li>
         <li><span class="step">2</span><h3>Defina o escopo com a equipe</h3><p>Nossa equipe técnica entra em contato para alinhar o escopo e agendar a execução, conforme disponibilidade.</p></li>
         <li><span class="step">3</span><h3>Receba os pontos de atenção</h3><p>Uma visão sobre tecnologia, processos e práticas de proteção, com direcionamento para as oportunidades de melhoria.</p></li>
       </ol>
     </div>
   </section>
 
-  <!-- FINAL: R$ 0 -->
-  <section class="final">
+  <!-- Q6: price -->
+  <section class="qa final" id="q-custo">
     <div class="wrap">
-      <p class="q">O investimento para começar a avaliar sua cibersegurança?</p>
-      <p class="zero" aria-label="R$ 0">R$&nbsp;<span data-zero>0</span></p>
+      <h2>Quanto custa o diagnóstico de cibersegurança da Black November?</h2>
+      <p class="zero" aria-hidden="true">R$&nbsp;0</p>
       <div class="final-row">
-        <p>Diagnóstico gratuito de Segurança da Informação e Cibersegurança. Sem custo e sem obrigação de contratar outros serviços. Solicitações até 30 de novembro de 2026.</p>
+        <div>
+          <ul class="keys" aria-label="Principais pontos">
+            <li>O diagnóstico é 100% gratuito</li>
+            <li>Não há obrigação de contratar outros serviços</li>
+          </ul>
+          <div class="qa-text"><p>O investimento para começar a avaliar a cibersegurança da sua empresa na Black November é zero. A Pro Advanced oferece o diagnóstico sem custo e sem obrigação de contratação, para solicitações feitas até 30 de novembro de 2026.</p></div>
+        </div>
         <a class="btn big" href="#pbn-form">Solicitar meu diagnóstico gratuito</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ + SOURCES -->
+  <section class="more">
+    <div class="wrap more-grid">
+      <div class="faq" id="faq">
+        <h2>Perguntas rápidas</h2>
+        <details><summary>Preciso contratar algum serviço depois do diagnóstico?</summary><p>Não. O diagnóstico é gratuito e a solicitação não exige contratar outros serviços da Pro Advanced.</p></details>
+        <details><summary>O diagnóstico precisa ser feito em novembro?</summary><p>Não. Novembro é o prazo para solicitar. A execução é agendada com a equipe técnica, conforme escopo e disponibilidade.</p></details>
+        <details><summary>Quem deve solicitar o diagnóstico?</summary><p>Responsáveis por TI, segurança da informação ou pela gestão da empresa que querem conhecer os pontos de atenção do ambiente.</p></details>
+        <details><summary>O que recebo ao final da avaliação?</summary><p>Uma visão sobre tecnologia, processos e práticas de proteção, com os pontos de atenção e o direcionamento para as oportunidades de melhoria, de acordo com o escopo definido.</p></details>
+        <details><summary>Até quando posso solicitar?</summary><p>Até 30 de novembro de 2026.</p></details>
+      </div>
+      <div class="sources" id="fontes">
+        <h2>Fontes</h2>
+        <ol>
+          <li id="f1">IBM e Ponemon Institute, <i>Cost of a Data Breach Report 2025</i>, recorte Brasil (<a href="https://tecnoblog.net/noticias/custo-medio-por-violacao-de-dados-sobe-no-brasil-e-chega-a-r-719-milhoes/" target="_blank" rel="noopener">Tecnoblog</a>).</li>
+          <li id="f2">Check Point Research, dados de junho de 2026 (<a href="https://dplnews.com/?p=323347" target="_blank" rel="noopener">DPL News</a>).</li>
+          <li id="f3">Verizon, <i>2025 Data Breach Investigations Report</i> (<a href="https://www.verizon.com/about/news/2025-data-breach-investigations-report" target="_blank" rel="noopener">Verizon</a>).</li>
+        </ol>
       </div>
     </div>
   </section>
@@ -343,6 +456,7 @@ html,body{overflow-x:clip}
       <small>Pro Advanced | Todos os direitos reservados - 2026</small>
     </div>
   </footer>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Article", "headline": "Diagnóstico de cibersegurança 100% gratuito para a sua empresa.", "description": "Black November Pro Advanced 2026: diagnóstico de Segurança da Informação e Cibersegurança gratuito, com solicitações até 30/11/2026 e sem obrigação de contratar.", "inLanguage": "pt-BR", "author": {"@type": "Organization", "name": "Pro Advanced", "url": "https://proadvanced.com.br"}, "publisher": {"@type": "Organization", "name": "Pro Advanced", "url": "https://proadvanced.com.br"}, "dateModified": "2026-10-30"}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "O que é a Black November Pro Advanced 2026?", "acceptedAnswer": {"@type": "Answer", "text": "A Black November é a campanha de novembro da Pro Advanced. Durante todo o mês, empresas podem solicitar um Diagnóstico de Segurança da Informação e Cibersegurança sem custo, para observar práticas, controles e processos do ambiente de TI, identificar pontos de atenção e ter uma visão mais clara das oportunidades de melhoria."}}, {"@type": "Question", "name": "Por que avaliar a segurança da sua empresa agora?", "acceptedAnswer": {"@type": "Answer", "text": "O relatório Cost of a Data Breach, da IBM com o Ponemon Institute, estimou em R$ 7,19 milhões o custo médio de uma violação de dados no Brasil em 2025, alta de 6,5% sobre o ano anterior[1]. Em junho de 2026, a Check Point Research registrou média de 4.001 ataques cibernéticos por semana por organização no Brasil, contra 2.270 na média global[2]."}}, {"@type": "Question", "name": "O que o diagnóstico de cibersegurança avalia?", "acceptedAnswer": {"@type": "Answer", "text": "Cibersegurança vai além da instalação de ferramentas. Uma visão mais ampla envolve processos, pessoas, controles, sistemas e continuidade do negócio, e o diagnóstico reúne essas perspectivas:"}}, {"@type": "Question", "name": "Sua empresa está preparada para responder a um incidente?", "acceptedAnswer": {"@type": "Answer", "text": "Um incidente de segurança pode exigir decisões rápidas de diferentes áreas da empresa. Nesse momento, não basta contar com ferramentas de proteção: é importante saber como identificar o problema, quem deve agir e como preservar a continuidade da operação. A diferença está em avaliar antes ou só olhar para o tema quando aparece um problema."}}, {"@type": "Question", "name": "Como solicitar o diagnóstico gratuito?", "acceptedAnswer": {"@type": "Answer", "text": "A solicitação é feita pelo formulário desta página durante novembro. Depois, a equipe da Pro Advanced entra em contato para alinhar o escopo e agendar a execução conforme a disponibilidade, e a avaliação termina com os pontos de atenção e o direcionamento para as melhorias."}}, {"@type": "Question", "name": "Quanto custa o diagnóstico de cibersegurança da Black November?", "acceptedAnswer": {"@type": "Answer", "text": "O investimento para começar a avaliar a cibersegurança da sua empresa na Black November é zero. A Pro Advanced oferece o diagnóstico sem custo e sem obrigação de contratação, para solicitações feitas até 30 de novembro de 2026."}}, {"@type": "Question", "name": "Preciso contratar algum serviço depois do diagnóstico?", "acceptedAnswer": {"@type": "Answer", "text": "Não. O diagnóstico é gratuito e a solicitação não exige contratar outros serviços da Pro Advanced."}}, {"@type": "Question", "name": "O diagnóstico precisa ser feito em novembro?", "acceptedAnswer": {"@type": "Answer", "text": "Não. Novembro é o prazo para solicitar. A execução é agendada com a equipe técnica, conforme escopo e disponibilidade."}}, {"@type": "Question", "name": "Quem deve solicitar o diagnóstico?", "acceptedAnswer": {"@type": "Answer", "text": "Responsáveis por TI, segurança da informação ou pela gestão da empresa que querem conhecer os pontos de atenção do ambiente."}}, {"@type": "Question", "name": "O que recebo ao final da avaliação?", "acceptedAnswer": {"@type": "Answer", "text": "Uma visão sobre tecnologia, processos e práticas de proteção, com os pontos de atenção e o direcionamento para as oportunidades de melhoria, de acordo com o escopo definido."}}, {"@type": "Question", "name": "Até quando posso solicitar?", "acceptedAnswer": {"@type": "Answer", "text": "Até 30 de novembro de 2026."}}]}]}</script>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
@@ -510,7 +624,7 @@ html,body{overflow-x:clip}
   });
 
   /* deal facts and blocks */
-  const rv=page.querySelectorAll('.deal p,.risk-text p,.vs h2,.vs-grid>div,.vs-foot,.how h2,.path li,.final .q,.final-row>*');
+  const rv=page.querySelectorAll('.deal p,.qa-grid>*,.vs-grid>div,.vs-foot,.path li,.final h2,.final-row>*,.more-grid>*');
   rv.forEach(el=>el.classList.add('rv'));
   const show=b=>gsap.to(b,{opacity:1,y:0,duration:.5,ease:'power2.out',stagger:.08,overwrite:true});
   ScrollTrigger.batch(rv,{start:'top 90%',onEnter:show,onEnterBack:show,onLeave:show});
