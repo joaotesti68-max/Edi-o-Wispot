@@ -23,5 +23,5 @@ Conteúdo tirado da régua "Black November 2026 | Pro Advanced": diagnóstico gr
 - O envio só acontece com a página publicada em `proadvanced.com.br` ou num domínio do RD. Faça uma conversão de teste antes de divulgar.
 
 ## Prazo
-O texto "faltam X dias" conta até 30/11/2026 às 23:59 (`FIM` em `src/build.py`). No último dia ele mostra "último dia para solicitar".
+O contador (dias, horas, minutos e segundos) vai até 30/11/2026 às 23:59 (`FIM` em `src/build.py`). Depois disso mostra "Campanha encerrada".
 Os e-mails e posts da régua devem apontar para a URL publicada desta página.
