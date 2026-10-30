@@ -52,10 +52,10 @@ html,body{overflow-x:clip}
 .pbn .hero h1{font-size:clamp(1.4rem,2vw,1.85rem);line-height:1.25;max-width:24ch;font-weight:700}
 .pbn .hero .lead{margin-top:16px;font-size:1.0625rem;max-width:46ch}
 .pbn .hero h1 em{white-space:nowrap}
-.pbn .hero .lead strong{color:var(--ink);font-weight:600}
-.pbn .hero .lead-cta{margin-top:14px;font-size:1.0625rem;font-weight:600;color:var(--accent2)}
+.pbn .hero .lead-q{color:var(--ink);font-weight:600;margin-top:20px}
+.pbn .hero .lead-q+.lead{margin-top:12px}
 .pbn .count{margin-top:32px;display:grid;gap:10px}
-.pbn .count-k{font-size:.8125rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent2)}
+.pbn .count-k{font-size:1.0625rem;font-weight:600;color:var(--accent2)}
 .pbn .count-n{display:flex;gap:8px}
 .pbn .count-n span{display:grid;justify-items:center;min-width:72px;padding:12px 8px 8px;border-radius:8px;background:var(--s1);border:1px solid var(--line)}
 .pbn .count-n b{font-size:clamp(1.6rem,2.4vw,2.2rem);line-height:1;font-weight:800;font-variant-numeric:tabular-nums}
