@@ -10,7 +10,7 @@
     publicToken:'8642f7d78d8931170d08ae3c51495718',   // token público da conta Pro Advanced
     conversion:'black-november-2026',                 // identificador da conversão
     thanks:'',                                        // página de obrigado; vazio = mensagem no próprio formulário
-    liveHosts:['proadvanced.com.br','rdstation.com','lp.rdstation.com.br']
+    previewHosts:['localhost','127.0.0.1','claude.ai','claudeusercontent.com'] // em qualquer outro endereço (RD, domínio próprio) o lead é enviado
   };
 
   const page=document.getElementById('pbn');if(!page)return;
@@ -29,7 +29,7 @@
   (function(){
     const form=document.getElementById('pbn-lead');if(!form)return;
     const msg=form.querySelector('.form-msg'),btn=form.querySelector('button[type=submit]');
-    const live=RD.liveHosts.some(h=>location.hostname===h||location.hostname.endsWith('.'+h));
+    const live=/^https?:$/.test(location.protocol)&&!RD.previewHosts.some(h=>location.hostname===h||location.hostname.endsWith('.'+h));
     function say(t,cls){msg.className='form-msg'+(cls?' '+cls:'');msg.textContent=t}
     function utm(k){try{return new URLSearchParams(location.search).get(k)||undefined}catch(e){return undefined}}
     function trackId(){try{const m=document.cookie.match(/(?:^|; )rdtrk=([^;]+)/);return m?JSON.parse(decodeURIComponent(m[1])).id:undefined}catch(e){return undefined}}
@@ -53,8 +53,11 @@
         traffic_source:utm('utm_source'),traffic_medium:utm('utm_medium'),traffic_campaign:utm('utm_campaign'),traffic_value:utm('utm_term'),
         client_tracking_id:trackId()};
       try{
-        const r=await fetch('https://api.rd.services/platform/conversions?api_key='+RD.publicToken,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({event_type:'CONVERSION',event_family:'CDP',payload})});
-        if(!r.ok)throw new Error(r.status);
+        const send=p=>fetch('https://api.rd.services/platform/conversions?api_key='+RD.publicToken,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({event_type:'CONVERSION',event_family:'CDP',payload:p})});
+        let r=await send(payload);
+        // se o RD recusar algum campo extra (ex.: campo personalizado que não existe na conta), envia de novo só com o essencial para o lead não se perder
+        if(r.status===400){console.warn('RD recusou o envio completo:',await r.text());const base={};['conversion_identifier','name','email','mobile_phone','company_name','client_tracking_id'].forEach(k=>{if(payload[k])base[k]=payload[k]});r=await send(base)}
+        if(!r.ok){console.error('RD',r.status,await r.text());throw new Error(r.status)}
         if(RD.thanks){location.href=RD.thanks;return}
         form.reset();btn.disabled=false;say('Recebemos seus dados. Nossa equipe vai entrar em contato para agendar o seu diagnóstico.','ok');
       }catch(err){

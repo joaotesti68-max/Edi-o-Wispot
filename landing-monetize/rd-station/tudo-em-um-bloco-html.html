@@ -565,7 +565,7 @@ html,body{overflow-x:clip}
     publicToken:'94ef559c92f7b1764c0d7755f063425a',           // token público (o mesmo do formulário atual)
     conversion:'monetize-seu-wi-fi',                          // identificador da conversão
     thanks:'https://material.wispot.com.br/obrigado?event=leadMonetizeSeuWifi',
-    liveHosts:['wispot.com.br','rdstation.com','lp.rdstation.com.br'] // só envia leads quando a página está publicada
+    previewHosts:['localhost','127.0.0.1','claude.ai','claudeusercontent.com'] // em qualquer outro endereço (RD, domínio próprio) o lead é enviado
   };
 
   const page=document.getElementById('wsp');if(!page)return;
@@ -584,7 +584,7 @@ html,body{overflow-x:clip}
   (function(){
     const form=document.getElementById('wsp-lead');if(!form)return;
     const msg=form.querySelector('.form-msg'),btn=form.querySelector('button[type=submit]');
-    const live=RD.liveHosts.some(h=>location.hostname===h||location.hostname.endsWith('.'+h));
+    const live=/^https?:$/.test(location.protocol)&&!RD.previewHosts.some(h=>location.hostname===h||location.hostname.endsWith('.'+h));
     const freeMail=/@(gmail|hotmail|outlook|yahoo|bol|uol|live|icloud)\./i;
     function say(t,cls){msg.className='form-msg'+(cls?' '+cls:'');msg.textContent=t}
     function utm(k){try{return new URLSearchParams(location.search).get(k)||undefined}catch(e){return undefined}}
@@ -606,8 +606,11 @@ html,body{overflow-x:clip}
         traffic_source:utm('utm_source'),traffic_medium:utm('utm_medium'),traffic_campaign:utm('utm_campaign'),traffic_value:utm('utm_term'),
         client_tracking_id:trackId()};
       try{
-        const r=await fetch('https://api.rd.services/platform/conversions?api_key='+RD.publicToken,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({event_type:'CONVERSION',event_family:'CDP',payload})});
-        if(!r.ok)throw new Error(r.status);
+        const send=p=>fetch('https://api.rd.services/platform/conversions?api_key='+RD.publicToken,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({event_type:'CONVERSION',event_family:'CDP',payload:p})});
+        let r=await send(payload);
+        // se o RD recusar algum campo extra (ex.: campo personalizado que não existe na conta), envia de novo só com o essencial para o lead não se perder
+        if(r.status===400){console.warn('RD recusou o envio completo:',await r.text());const base={};['conversion_identifier','name','email','mobile_phone','company_name','client_tracking_id'].forEach(k=>{if(payload[k])base[k]=payload[k]});r=await send(base)}
+        if(!r.ok){console.error('RD',r.status,await r.text());throw new Error(r.status)}
         say('Recebemos seus dados. Redirecionando…','ok');
         location.href=RD.thanks;
       }catch(err){
