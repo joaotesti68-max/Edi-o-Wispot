@@ -47,6 +47,9 @@
       if(el.value)return;
       if(el.tagName==='SELECT'){const o=[...el.options].find(o=>o.value);if(o)el.value=o.value}else el.value='-';
       el.dispatchEvent(new Event('change',{bubbles:true}))});
+    // the thank-you address saved in RD as http:// makes the browser show an insecure-site warning: force https
+    const aa=f.getAttribute('data-asset-action');if(aa){try{const u=atob(aa.trim());if(/^http:\/\//.test(u))f.setAttribute('data-asset-action',btoa(u.replace(/^http:/,'https:')))}catch(e){}}
+    const rt=f.querySelector('[name="redirect_to"]');if(rt)rt.value=rt.value.replace(/^http:/,'https:');
     const cap=f.querySelector('[name="captcha"]'),ex=document.getElementById('math_expression');
     if(cap&&ex){const m=ex.textContent.match(/(\d+)\s*([+\-x×*])\s*(\d+)/);if(m){const a=+m[1],b=+m[3];cap.value=m[2]==='+'?a+b:m[2]==='-'?a-b:a*b}}
     const b=f.querySelector('button[type=submit],input[type=submit],button');
