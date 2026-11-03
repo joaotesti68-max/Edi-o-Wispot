@@ -577,8 +577,12 @@ body{margin:0;background:#050608}
     if(b)b.click();else if(f.requestSubmit)f.requestSubmit();else f.submit();
     return true;
   }
-  /* keep RD's own form block off screen; ours is the one people see */
-  const hideRd=()=>document.querySelectorAll('form#conversion-form').forEach(f=>{const c=f.closest('.bricks--component')||f;c.style.cssText+=';position:absolute!important;left:-10000px!important;top:0!important;width:300px!important;height:1px!important;overflow:hidden!important'});
+  /* keep RD's own form block off screen and out of the layout: hide the largest RD block around it
+     (column, row or whole section) that does not hold our page, so no empty gap is left behind */
+  const hideRd=()=>document.querySelectorAll('form#conversion-form').forEach(f=>{
+    let c=f.closest('.bricks--component')||f;
+    for(let a=c.parentElement;a&&a!==document.body&&!a.classList.contains('bricks--container')&&!a.classList.contains('bricks--page');a=a.parentElement){if(a.querySelector('form:not(#conversion-form)'))break;c=a}
+    c.style.cssText+=';position:absolute!important;left:-10000px!important;top:0!important;width:300px!important;height:1px!important;overflow:hidden!important;margin:0!important;padding:0!important'});
   hideRd();if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',hideRd);
 
   (function(){
