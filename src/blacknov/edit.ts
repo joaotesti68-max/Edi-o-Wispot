@@ -1,9 +1,10 @@
-// Black November Wispot · ad edit (9:16, 30 fps).
+// Black Friday Wispot · ad edit (9:16, 30 fps).
 // Raw takes: 16 iPhone clips from the Drive folder. Four were picked, one per
 // line of the script, and pre-trimmed with ffmpeg into public/videos/black-november/
-// (loudness normalised to -15 LUFS). Times below are seconds inside each trimmed take.
+// (loudness normalised to -15 LUFS) and cropped from the 4K source with a small
+// bottom-anchored zoom (1.1 to 1.3) that takes the air conditioner out of the top. Times below are seconds inside each trimmed take.
 //
-//   take-0408  hook      "Começou a Black November na Wispot..."   (only take that says "November")
+//   take-0413  hook      "Começou a Black Friday na Wispot. Ganhe 3 meses grátis..."
 //   take-0414  oferta    "São 21 meses de Wi-Fi inteligente pagando apenas 18..."
 //   take-0415  público   "Ideal para restaurantes, varejo, supermercados..."
 //   take-0420  urgência  "Mas atenção, a oferta só é válida até o dia 30 de novembro..."
@@ -23,16 +24,16 @@ export type Take = {
 export const takes: Take[] = [
   {
     id: "hook",
-    src: "videos/black-november/take-0408.mp4",
-    seconds: 5.75,
+    src: "videos/black-november/take-0413.mp4",
+    seconds: 5.95,
     captions: [
-      { text: "Começou a", from: 0.15, to: 0.94 },
-      { text: "Black November", from: 0.94, to: 1.58, mark: true },
-      { text: "na Wispot!", from: 1.58, to: 2.55 },
-      { text: "Você contrata", from: 2.68, to: 3.34 },
-      { text: "18 meses", from: 3.34, to: 4.14, mark: true },
-      { text: "e ganha mais", from: 4.14, to: 4.8 },
-      { text: "3 grátis", from: 4.8, to: 5.75, mark: true },
+      { text: "Começou a", from: 0.12, to: 0.74 },
+      { text: "Black Friday", from: 0.74, to: 1.3, mark: true },
+      { text: "na Wispot!", from: 1.3, to: 2.4 },
+      { text: "Ganhe 3 meses grátis", from: 2.5, to: 3.8, mark: true },
+      { text: "na contratação", from: 3.8, to: 4.46 },
+      { text: "de um plano de", from: 4.46, to: 5.02 },
+      { text: "18 meses", from: 5.02, to: 5.95, mark: true },
     ],
   },
   {

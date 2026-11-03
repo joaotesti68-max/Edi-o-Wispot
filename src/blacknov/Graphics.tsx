@@ -73,7 +73,7 @@ export const Captions: React.FC<{ captions: Caption[] }> = ({ captions }) => {
   );
 };
 
-// --- giant BLACK / NOVEMBER (LP hero type) --------------------------------
+// --- BLACK / FRIDAY lockup (LP hero type + seal) --------------------------------
 const MaskLine: React.FC<{ at: number; color: string; children: string }> = ({
   at,
   color,
@@ -109,6 +109,7 @@ export const Giant: React.FC<{
         position: "absolute",
         left: 70,
         top,
+        width: "max-content",
         opacity: o,
         fontFamily: bn.title,
         fontWeight: 700,
@@ -123,11 +124,11 @@ export const Giant: React.FC<{
         BLACK
       </MaskLine>
       <MaskLine at={at + 0.12} color={bn.blue}>
-        NOVEMBER
+        FRIDAY
       </MaskLine>
       {sticker !== undefined && (
-        <div style={{ position: "absolute", left: size * 3.35, top: -size * 0.2 }}>
-          <Sticker at={sticker} size={size * 1.05} />
+        <div style={{ position: "absolute", left: "100%", marginLeft: size * 0.12, top: "-4%" }}>
+          <Sticker at={sticker} size={size * 1.12} />
         </div>
       )}
     </div>
@@ -138,7 +139,7 @@ export const Giant: React.FC<{
 export const Sticker: React.FC<{ at: number; size: number }> = ({ at, size }) => {
   const frame = useCurrentFrame();
   const p = useIn(at, 11);
-  const text = "18 meses · 3 grátis · 21 pagando 18 · ";
+  const text = "Meses grátis · 21 pagando 18 · "; // same as the LP seal
   return (
     <div
       style={{
@@ -196,6 +197,10 @@ export const Sticker: React.FC<{ at: number; size: number }> = ({ at, size }) =>
   );
 };
 
+// Cards sit low and narrow, over the shirt, leaving the face clear.
+export const CARD_TOP = 1380;
+const CARD_W = 700;
+
 // --- shared card shell (white body, blue header, perforation like the LP coupon)
 const Card: React.FC<{
   at: number;
@@ -204,7 +209,7 @@ const Card: React.FC<{
   kicker: string;
   children: React.ReactNode;
   header: React.ReactNode;
-}> = ({ at, out = 999, top = 1250, kicker, header, children }) => {
+}> = ({ at, out = 999, top = CARD_TOP, kicker, header, children }) => {
   const p = useIn(at, 15);
   const o = useOut(out);
   return (
@@ -212,7 +217,7 @@ const Card: React.FC<{
       style={{
         position: "absolute",
         left: 70,
-        right: 70,
+        width: CARD_W,
         top,
         opacity: o * Math.min(1, p * 1.4),
         transform: `translateY(${interpolate(p, [0, 1], [120, 0])}px)`,
@@ -225,8 +230,8 @@ const Card: React.FC<{
         style={{
           background: bn.gradient,
           color: bn.white,
-          padding: "30px 40px 34px",
-          borderRadius: "30px 30px 0 0",
+          padding: "22px 32px 26px",
+          borderRadius: "26px 26px 0 0",
           position: "relative",
         }}
       >
@@ -234,7 +239,7 @@ const Card: React.FC<{
           style={{
             fontFamily: bn.text,
             fontWeight: 700,
-            fontSize: 24,
+            fontSize: 20,
             letterSpacing: "0.22em",
             textTransform: "uppercase",
             opacity: 0.92,
@@ -242,7 +247,7 @@ const Card: React.FC<{
         >
           {kicker}
         </div>
-        <div style={{ fontFamily: bn.title, fontWeight: 700, fontSize: 64, lineHeight: 1.05, marginTop: 8 }}>
+        <div style={{ fontFamily: bn.title, fontWeight: 700, fontSize: 52, lineHeight: 1.05, marginTop: 6 }}>
           {header}
         </div>
         {/* perforation */}
@@ -262,11 +267,11 @@ const Card: React.FC<{
         style={{
           background: bn.white,
           color: bn.ink,
-          padding: "28px 40px 32px",
-          borderRadius: "0 0 30px 30px",
+          padding: "20px 32px 24px",
+          borderRadius: "0 0 26px 26px",
           fontFamily: bn.text,
           fontWeight: 700,
-          fontSize: 34,
+          fontSize: 28,
           lineHeight: 1.3,
         }}
       >
@@ -296,24 +301,12 @@ const Reveal: React.FC<{ at: number; children: React.ReactNode; inline?: boolean
   );
 };
 
-// Hook take: coupon fills in as she says "18 meses ... 3 grátis".
-export const CouponCard: React.FC<{ at: number; plus: number }> = ({ at, plus }) => (
-  <Card
-    at={at}
-    kicker="Cupom Black November"
-    header={
-      <>
-        <Reveal at={at} inline>
-          18 meses
-        </Reveal>{" "}
-        <Reveal at={plus} inline>
-          + 3 grátis
-        </Reveal>
-      </>
-    }
-  >
-    <Reveal at={plus + 0.15}>
-      Você garante <span style={{ color: bn.blueDeep }}>21 meses</span> de Wispot pagando 18.
+// Hook take: coupon fills in as she says "3 meses grátis ... 18 meses".
+export const CouponCard: React.FC<{ at: number; plan: number }> = ({ at, plan }) => (
+  <Card at={at} kicker="Cupom Black Friday" header={<Reveal at={at}>+ 3 meses grátis</Reveal>}>
+    na contratação do plano de{" "}
+    <Reveal at={plan} inline>
+      <span style={{ color: bn.blueDeep }}>18 meses</span>
     </Reveal>
   </Card>
 );
@@ -332,16 +325,16 @@ export const MonthsCard: React.FC<{ at: number; pay: number; out: number }> = ({
     <Card
       at={at}
       out={out}
-      kicker="Black November Wispot"
+      kicker="Black Friday Wispot"
       header={
-        <span style={{ fontSize: 120, lineHeight: 0.95, letterSpacing: "-0.03em" }}>
-          {n} <span style={{ fontSize: 64 }}>meses</span>
+        <span style={{ fontSize: 96, lineHeight: 0.95, letterSpacing: "-0.03em" }}>
+          {n} <span style={{ fontSize: 52 }}>meses</span>
         </span>
       }
     >
       de Wi-Fi inteligente{" "}
       <Reveal at={pay} inline>
-        pagando apenas <span style={{ color: bn.blueDeep, fontSize: 44 }}>18</span>
+        pagando apenas <span style={{ color: bn.blueDeep, fontSize: 36 }}>18</span>
       </Reveal>
     </Card>
   );
@@ -361,21 +354,21 @@ export const RevenueTag: React.FC<{ at: number }> = ({ at }) => {
       style={{
         position: "absolute",
         left: 70,
-        right: 70,
-        top: 1250,
+        width: CARD_W,
+        top: CARD_TOP,
         opacity: Math.min(1, p * 1.4),
         transform: `translateY(${interpolate(p, [0, 1], [90, 0])}px)`,
         background: "rgba(5,6,8,.82)",
         border: `2px solid ${bn.blue}`,
         borderRadius: 30,
-        padding: "34px 40px",
+        padding: "26px 32px",
         display: "flex",
         alignItems: "center",
-        gap: 34,
+        gap: 26,
         boxShadow: "0 30px 80px rgba(0,0,0,.45)",
       }}
     >
-      <svg width="170" height="120" viewBox="0 0 170 120">
+      <svg width="130" height="92" viewBox="0 0 170 120">
         <path
           d="M8 108 L52 74 L86 88 L160 14"
           fill="none"
@@ -397,7 +390,7 @@ export const RevenueTag: React.FC<{ at: number }> = ({ at }) => {
           opacity={draw > 0.85 ? 1 : 0}
         />
       </svg>
-      <div style={{ fontFamily: bn.title, fontWeight: 700, fontSize: 62, lineHeight: 1.02, color: bn.white }}>
+      <div style={{ fontFamily: bn.title, fontWeight: 700, fontSize: 50, lineHeight: 1.02, color: bn.white }}>
         Nova fonte
         <br />
         <span style={{ color: bn.blue }}>de receita</span>
@@ -414,11 +407,11 @@ export const Chips: React.FC<{ items: { text: string; at: number }[]; out: numbe
       style={{
         position: "absolute",
         left: 70,
-        right: 70,
-        top: 1250,
+        width: 760,
+        top: CARD_TOP,
         display: "flex",
         flexWrap: "wrap",
-        gap: 18,
+        gap: 14,
         opacity: o,
       }}
     >
@@ -440,8 +433,8 @@ const Chip: React.FC<{ text: string; at: number }> = ({ text, at }) => {
         color: bn.ink,
         fontFamily: bn.text,
         fontWeight: 800,
-        fontSize: 42,
-        padding: "18px 30px",
+        fontSize: 32,
+        padding: "13px 24px",
         borderRadius: 999,
         display: "flex",
         alignItems: "center",
@@ -449,7 +442,7 @@ const Chip: React.FC<{ text: string; at: number }> = ({ text, at }) => {
         boxShadow: "0 16px 40px rgba(0,0,0,.35)",
       }}
     >
-      <Img src={staticFile("wispot/wifi-symbol.png")} style={{ height: 30 }} />
+      <Img src={staticFile("wispot/wifi-symbol.png")} style={{ height: 22 }} />
       {text}
     </div>
   );
@@ -490,18 +483,16 @@ export const DeadlineCard: React.FC<{ at: number; cta: number }> = ({ at, cta })
       <Card
         at={at}
         kicker="Oferta válida até"
-        header={<span style={{ fontSize: 110, letterSpacing: "-0.03em" }}>30/11</span>}
+        header={<span style={{ fontSize: 88, letterSpacing: "-0.03em" }}>30/11</span>}
       >
         Para novos contratos de 18 meses.
       </Card>
       <div
         style={{
           position: "absolute",
-          left: 0,
-          right: 0,
-          top: 1660,
+          left: 70,
+          top: 1650,
           display: "flex",
-          justifyContent: "center",
           opacity: Math.min(1, p * 1.4),
           transform: `translateY(${interpolate(p, [0, 1], [40, 0])}px) scale(${pulse})`,
         }}
@@ -545,11 +536,9 @@ export const AttentionTag: React.FC<{ at: number; out: number }> = ({ at, out })
     <div
       style={{
         position: "absolute",
-        left: 0,
-        right: 0,
-        top: 1270,
+        left: 70,
+        top: CARD_TOP,
         display: "flex",
-        justifyContent: "center",
         opacity: o * Math.min(1, p * 1.5),
         transform: `scale(${p}) rotate(${-3 + shake}deg)`,
       }}

@@ -20,7 +20,6 @@ import {
   Giant,
   MonthsCard,
   RevenueTag,
-  Sticker,
   useIn,
 } from "./Graphics";
 import type { Take } from "./edit";
@@ -33,8 +32,8 @@ const Overlay: React.FC<{ id: Take["id"] }> = ({ id }) => {
     case "hook":
       return (
         <>
-          <Giant at={0.9} out={2.6} top={1230} size={150} sticker={1.25} />
-          <CouponCard at={3.3} plus={4.78} />
+          <Giant at={0.74} out={2.4} top={1300} size={150} sticker={1.0} />
+          <CouponCard at={2.5} plan={5.02} />
         </>
       );
     case "oferta":
@@ -152,10 +151,7 @@ const EndCard: React.FC = () => {
           transform: `translateY(${interpolate(logo, [0, 1], [-20, 0])}px)`,
         }}
       />
-      <Giant at={0.3} top={470} size={168} />
-      <div style={{ position: "absolute", right: 70, top: 380 }}>
-        <Sticker at={0.75} size={230} />
-      </div>
+      <Giant at={0.3} top={470} size={168} sticker={0.75} />
       <div
         style={{
           position: "absolute",
@@ -224,8 +220,8 @@ export const BlackNovemberVideo: React.FC = () => {
       ))}
       {/* pops on the main graphic beats */}
       {[
-        s(1.25),
-        s(4.78),
+        s(1.0),
+        s(2.5),
         timeline[1].from + s(0.1),
         timeline[2].from + s(0.92),
         timeline[2].from + s(1.84),
