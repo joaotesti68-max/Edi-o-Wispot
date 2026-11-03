@@ -46,7 +46,7 @@ export const Captions: React.FC<{ captions: Caption[] }> = ({ captions }) => {
         position: "absolute",
         left: 60,
         right: 60,
-        top: 1040,
+        top: 225,
         display: "flex",
         justifyContent: "center",
       }}

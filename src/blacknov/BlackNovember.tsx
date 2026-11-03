@@ -33,7 +33,7 @@ const Overlay: React.FC<{ id: Take["id"] }> = ({ id }) => {
     case "hook":
       return (
         <>
-          <Giant at={0.9} out={2.6} top={150} size={150} sticker={1.25} />
+          <Giant at={0.9} out={2.6} top={1230} size={150} sticker={1.25} />
           <CouponCard at={3.3} plus={4.78} />
         </>
       );
@@ -90,7 +90,7 @@ const TakeView: React.FC<{ take: Take; durationInFrames: number; index: number }
       <AbsoluteFill
         style={{
           background:
-            "linear-gradient(180deg, rgba(5,6,8,.55) 0%, rgba(5,6,8,0) 16%, rgba(5,6,8,0) 48%, rgba(5,6,8,.55) 68%, rgba(5,6,8,.85) 100%)",
+            "linear-gradient(180deg, rgba(5,6,8,.6) 0%, rgba(5,6,8,.25) 16%, rgba(5,6,8,0) 24%, rgba(5,6,8,0) 48%, rgba(5,6,8,.55) 68%, rgba(5,6,8,.85) 100%)",
         }}
       />
       <Img
