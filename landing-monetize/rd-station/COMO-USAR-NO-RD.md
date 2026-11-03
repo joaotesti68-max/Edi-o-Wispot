@@ -40,3 +40,10 @@ Se preferir usar o formulário nativo do RD, apague o `<form ...>...</form>` do 
 - **Logo da Wispot:** usa uma imagem que já está no gerenciador de arquivos do RD (a mesma da página antiga). Se aparecer outra imagem, suba o logo e troque o endereço nas tags `<img src=...>` que usam o logo.
 - **Logos de clientes:** vão embutidos no próprio código, então não precisa subir nada.
 - **Tamanho:** por causa dessas imagens, o arquivo `tudo-em-um-bloco-html.html` tem uns 280 KB. Se o RD reclamar do tamanho, use a opção B (três partes).
+
+## Importante: mantenha o formulário do próprio RD na página
+As estatísticas da LP no RD só contam conversões feitas pelo bloco de formulário do RD. Por isso:
+1. Deixe um bloco **Formulário** do RD na página (qualquer lugar), com os campos Nome, E-mail, Empresa e Cargo (ou os que a conta usar).
+2. O nosso código esconde esse formulário e, quando a pessoa envia o nosso, preenche e envia o do RD por trás (inclusive a conta de soma do captcha). Assim o lead entra e aparece nas estatísticas da LP.
+3. A página de obrigado é a que estiver configurada no formulário do RD.
+4. Se a página não tiver o formulário do RD, o lead é enviado pela API: entra na base de leads com a conversão, mas não aparece nas estatísticas da LP.

@@ -25,3 +25,10 @@ Conteúdo tirado da régua "Black November 2026 | Pro Advanced": diagnóstico gr
 ## Prazo
 O contador (dias, horas, minutos e segundos) vai até 30/11/2026 às 23:59 (`FIM` em `src/build.py`). Depois disso mostra "Campanha encerrada".
 Os e-mails e posts da régua devem apontar para a URL publicada desta página.
+
+## Importante: mantenha o formulário do próprio RD na página
+As estatísticas da LP no RD só contam conversões feitas pelo bloco de formulário do RD. Por isso:
+1. Deixe um bloco **Formulário** do RD na página (qualquer lugar), com os campos Nome, E-mail, Empresa e Cargo (ou os que a conta usar).
+2. O nosso código esconde esse formulário e, quando a pessoa envia o nosso, preenche e envia o do RD por trás (inclusive a conta de soma do captcha). Assim o lead entra e aparece nas estatísticas da LP.
+3. A página de obrigado é a que estiver configurada no formulário do RD.
+4. Se a página não tiver o formulário do RD, o lead é enviado pela API: entra na base de leads com a conversão, mas não aparece nas estatísticas da LP.

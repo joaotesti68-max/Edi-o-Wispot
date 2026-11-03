@@ -553,6 +553,24 @@ html,body{overflow-x:clip}
   })();
 
   /* ---------- form → RD Station conversion ---------- */
+  /* send through RD's own LP form: fill it, solve its math captcha and click its button */
+  function viaRdForm(f,p){
+    const map={company_name:'company'};
+    const set=(n,v)=>{if(v==null||v==='')return;let el=f.querySelector('[name="'+n+'"]');
+      if(!el){el=document.createElement('input');el.type='hidden';el.name=n;f.appendChild(el)}
+      if(el.tagName==='SELECT'&&![...el.options].some(o=>o.value===v))el.add(new Option(v,v));
+      el.value=v;el.dispatchEvent(new Event('change',{bubbles:true}))};
+    Object.keys(p).forEach(k=>{if(k==='conversion_identifier'||k==='client_tracking_id')return;set(map[k]||k,p[k])});
+    const cap=f.querySelector('[name="captcha"]'),ex=document.getElementById('math_expression');
+    if(cap&&ex){const m=ex.textContent.match(/(\d+)\s*([+\-x×*])\s*(\d+)/);if(m){const a=+m[1],b=+m[3];cap.value=m[2]==='+'?a+b:m[2]==='-'?a-b:a*b}}
+    const b=f.querySelector('button[type=submit],input[type=submit],button');
+    if(b)b.click();else if(f.requestSubmit)f.requestSubmit();else f.submit();
+    return true;
+  }
+  /* keep RD's own form block off screen; ours is the one people see */
+  const hideRd=()=>document.querySelectorAll('form#conversion-form').forEach(f=>{const c=f.closest('.bricks--component')||f;c.style.cssText+=';position:absolute!important;left:-10000px!important;top:0!important;width:300px!important;height:1px!important;overflow:hidden!important'});
+  hideRd();if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',hideRd);
+
   (function(){
     const form=document.getElementById('wbf-lead');if(!form)return;
     const msg=form.querySelector('.form-msg'),btn=form.querySelector('button[type=submit]');
@@ -583,6 +601,9 @@ html,body{overflow-x:clip}
         client_tracking_id:trackId()};
       try{
         const send=p=>fetch('https://api.rd.services/platform/conversions?api_key='+RD.publicToken,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({event_type:'CONVERSION',event_family:'CDP',payload:p})});
+        // na LP do RD: passa os dados pelo formulário nativo do RD (escondido na página), que é o que conta nas estatísticas da LP
+        const rdf=document.querySelector('form#conversion-form,form[action*="rdstation.com"]');
+        if(rdf&&viaRdForm(rdf,payload)){setTimeout(async()=>{if(document.visibilityState==='visible'&&btn.disabled){try{await send(payload)}catch(e){}if(RD.thanks)location.href=RD.thanks;else{btn.disabled=false;say('Recebemos seus dados.','ok')}}},9000);return}
         let r=await send(payload);
         // se o RD recusar algum campo extra (ex.: campo personalizado que não existe na conta), envia de novo só com o essencial para o lead não se perder
         if(r.status===400){console.warn('RD recusou o envio completo:',await r.text());const base={};['conversion_identifier','name','email','mobile_phone','company_name','client_tracking_id'].forEach(k=>{if(payload[k])base[k]=payload[k]});r=await send(base)}

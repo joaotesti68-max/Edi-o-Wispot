@@ -49,3 +49,10 @@ A página é organizada em blocos de pergunta e resposta para ser encontrada e c
 - dados estruturados (schema.org Article + FAQPage) gerados automaticamente a partir dos blocos.
 
 **Manutenção:** a cada 60 a 90 dias, revise os dados e atualize `DATA_ATU` no topo de `src/build.py`.
+
+## Importante: mantenha o formulário do próprio RD na página
+As estatísticas da LP no RD só contam conversões feitas pelo bloco de formulário do RD. Por isso:
+1. Deixe um bloco **Formulário** do RD na página (qualquer lugar), com os campos Nome, E-mail, Empresa e Cargo (ou os que a conta usar).
+2. O nosso código esconde esse formulário e, quando a pessoa envia o nosso, preenche e envia o do RD por trás (inclusive a conta de soma do captcha). Assim o lead entra e aparece nas estatísticas da LP.
+3. A página de obrigado é a que estiver configurada no formulário do RD.
+4. Se a página não tiver o formulário do RD, o lead é enviado pela API: entra na base de leads com a conversão, mas não aparece nas estatísticas da LP.
