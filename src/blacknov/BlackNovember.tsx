@@ -15,7 +15,6 @@ import {
   Captions,
   Chips,
   CouponCard,
-  CtaPill,
   DeadlineCard,
   Giant,
   MonthsCard,
@@ -117,7 +116,6 @@ const EndCard: React.FC = () => {
   const fade = interpolate(frame, [0, 10], [0, 1], { extrapolateRight: "clamp" });
   const logo = useIn(0.15, 16);
   const deal = useIn(1.0, 15);
-  const cta = useIn(1.45, 12);
   return (
     <AbsoluteFill style={{ background: bn.ink, opacity: fade, overflow: "hidden" }}>
       <div
@@ -184,18 +182,6 @@ const EndCard: React.FC = () => {
           <br />
           Válida até <span style={{ color: bn.white }}>30 de novembro</span>.
         </div>
-      </div>
-      <div
-        style={{
-          position: "absolute",
-          left: 70,
-          top: 1400,
-          opacity: cta,
-          transform: `scale(${interpolate(cta, [0, 1], [0.8, 1])})`,
-          transformOrigin: "left center",
-        }}
-      >
-        <CtaPill>Pegar meu cupom</CtaPill>
       </div>
     </AbsoluteFill>
   );
