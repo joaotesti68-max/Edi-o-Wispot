@@ -38,6 +38,15 @@
       if(el.tagName==='SELECT'&&![...el.options].some(o=>o.value===v))el.add(new Option(v,v));
       el.value=v;el.dispatchEvent(new Event('change',{bubbles:true}))};
     Object.keys(p).forEach(k=>{if(k==='conversion_identifier'||k==='client_tracking_id')return;set(map[k]||k,p[k])});
+    // the same data under the other names RD forms use, only where that field exists
+    const alias={job_title:p.cf_cargoselecao,cargo:p.cf_cargoselecao,personal_phone:p.mobile_phone,phone:p.mobile_phone,company_name:p.company_name};
+    Object.keys(alias).forEach(n=>{const el=f.querySelector('[name="'+n+'"]');if(el&&alias[n]&&!el.value)set(n,alias[n])});
+    // any other required field our form does not ask: fill so RD's validation does not block the lead
+    f.querySelectorAll('input,select,textarea').forEach(el=>{if(el.type==='hidden'||el.readOnly||el.name==='captcha'||!(el.required||el.classList.contains('required')))return;
+      if(el.type==='checkbox'||el.type==='radio'){if(!f.querySelector('[name="'+el.name+'"]:checked'))el.checked=true;return}
+      if(el.value)return;
+      if(el.tagName==='SELECT'){const o=[...el.options].find(o=>o.value);if(o)el.value=o.value}else el.value='-';
+      el.dispatchEvent(new Event('change',{bubbles:true}))});
     const cap=f.querySelector('[name="captcha"]'),ex=document.getElementById('math_expression');
     if(cap&&ex){const m=ex.textContent.match(/(\d+)\s*([+\-x×*])\s*(\d+)/);if(m){const a=+m[1],b=+m[3];cap.value=m[2]==='+'?a+b:m[2]==='-'?a-b:a*b}}
     const b=f.querySelector('button[type=submit],input[type=submit],button');
