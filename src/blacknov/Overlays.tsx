@@ -107,7 +107,7 @@ const CaptionChunk: React.FC<{ chunk: Chunk; clip: Clip }> = ({ chunk, clip }) =
           borderLeft: `8px solid ${pa.blue}`,
           padding: "20px 34px 24px",
           borderRadius: 10,
-          transform: `scale(${interpolate(pop, [0, 1], [0.8, 1])}) rotate(${interpolate(pop, [0, 1], [-2, 0])}deg)`,
+          transform: `scale(${interpolate(pop, [0, 1], [0.94, 1])})`,
           opacity: pop,
           boxShadow: "0 18px 50px rgba(0,0,0,0.5)",
         }}
@@ -127,7 +127,7 @@ const CaptionChunk: React.FC<{ chunk: Chunk; clip: Clip }> = ({ chunk, clip }) =
                 textTransform: "uppercase",
                 color: said ? (word.key ? pa.cyan : pa.white) : "rgba(255,255,255,0.38)",
                 textShadow: said && word.key ? `0 0 26px ${pa.blue}` : "none",
-                transform: `translateY(${said ? interpolate(hit, [0, 1], [10, 0]) : 0}px) scale(${said ? interpolate(hit, [0, 1], [1.15, 1]) : 1})`,
+                transform: `translateY(${said ? interpolate(hit, [0, 1], [4, 0]) : 0}px) scale(${said ? interpolate(hit, [0, 1], [1.04, 1]) : 1})`,
                 display: "inline-block",
               }}
             >
@@ -155,7 +155,7 @@ export const GlitchFlash: React.FC<{ seed: number; length?: number }> = ({
 }) => {
   const frame = useCurrentFrame();
   if (frame >= length) return null;
-  const flash = interpolate(frame, [0, 2, length], [0.85, 0.35, 0], clamp);
+  const flash = interpolate(frame, [0, 2, length], [0.3, 0.1, 0], clamp);
   const bars = Array.from({ length: 9 }, (_, i) => {
     const r = random(`${seed}-${frame}-${i}`);
     const top = random(`${seed}-${frame}-${i}-y`) * 1920;
@@ -173,7 +173,7 @@ export const GlitchFlash: React.FC<{ seed: number; length?: number }> = ({
           height: h,
           background: color,
           mixBlendMode: "screen",
-          opacity: 0.55 * (1 - frame / length),
+          opacity: 0.22 * (1 - frame / length),
         }}
       />
     );
@@ -220,14 +220,14 @@ export const Slam: React.FC<{
             config: { damping: 11, mass: 0.7 },
           });
           const jitter =
-            frame - from - i * 5 < 6 ? (random(`${from}-${i}-${frame}`) - 0.5) * 14 : 0;
+            frame - from - i * 5 < 6 ? (random(`${from}-${i}-${frame}`) - 0.5) * 4 : 0;
           const base: React.CSSProperties = {
             fontWeight: 800,
             fontSize: size,
             lineHeight: 1,
             textTransform: "uppercase",
             letterSpacing: -2,
-            transform: `scale(${interpolate(s, [0, 1], [1.8, 1])}) translateX(${jitter}px)`,
+            transform: `scale(${interpolate(s, [0, 1], [1.2, 1])}) translateX(${jitter}px)`,
             opacity: interpolate(s, [0, 0.3], [0, 1], clamp),
             whiteSpace: "nowrap",
           };
@@ -269,7 +269,7 @@ export const Slam: React.FC<{
               style={{
                 ...base,
                 color: pa.white,
-                textShadow: `4px 0 0 rgba(249,109,100,0.55), -4px 0 0 rgba(43,163,219,0.75), 0 10px 40px rgba(0,0,0,0.6)`,
+                textShadow: `0 6px 30px rgba(0,0,0,0.5)`,
               }}
             >
               {line.text}
@@ -334,7 +334,7 @@ export const AlertChip: React.FC<{
         textTransform: "uppercase",
         transform: `translateX(${(1 - s) * (side === "left" ? -700 : 700)}px)`,
         opacity: 1 - out,
-        boxShadow: `0 0 ${20 + pulse * 30}px ${color}88`,
+        boxShadow: `0 0 ${12 + pulse * 6}px ${color}55`,
       }}
     >
       <AlertIcon color={color} kind={icon} />
@@ -426,7 +426,7 @@ export const Stamp: React.FC<{ from: number; text: string; top: number }> = ({
           background: pa.grad,
           padding: "10px 44px 16px",
           borderRadius: 14,
-          transform: `rotate(-7deg) scale(${interpolate(s, [0, 1], [2.6, 1])})`,
+          transform: `rotate(-7deg) scale(${interpolate(s, [0, 1], [1.4, 1])})`,
           opacity: interpolate(s, [0, 0.25], [0, 1], clamp),
           boxShadow: `0 0 60px ${pa.blue}, 0 20px 60px rgba(0,0,0,0.6)`,
           textShadow: "0 4px 0 rgba(0,12,25,0.35)",

@@ -75,8 +75,8 @@ const Intro: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const logo = spring({ frame: frame - 16, fps, config: { damping: 14 } });
-  const sh = shake(frame, 2, 26, 12);
-  const sh2 = shake(frame, 9, 16, 9);
+  const sh = shake(frame, 2, 8, 8);
+  const sh2 = { x: 0, y: 0 };
   const glitchy = frame < 14 || (frame > 30 && frame < 34);
   const split = glitchy ? 6 + random(`i-${frame}`) * 14 : 4;
   return (
@@ -183,20 +183,15 @@ const ClipOverlays: React.FC<{ clip: Clip }> = ({ clip }) => {
 };
 
 const punches: Record<string, Punch[]> = {
-  oferta: [{ at: 5.32, amount: 0.1 }],
-  atencao: [{ at: 5.84, amount: 0.12 }],
-  avaliacao: [{ at: 3.84, amount: 0.08 }],
-  cta: [{ at: 5.48, amount: 0.1 }],
+  oferta: [{ at: 5.32, amount: 0.04 }],
+  atencao: [],
+  avaliacao: [],
+  cta: [{ at: 5.48, amount: 0.04 }],
 };
 
-const shakes: Record<string, number[]> = {
-  oferta: [4.1],
-  atencao: [5.84],
-  avaliacao: [3.84],
-  cta: [1.84, 5.48],
-};
+const shakes: Record<string, number[]> = {};
 
-const TalkScene: React.FC<{ clip: Clip; index: number }> = ({ clip, index }) => {
+const TalkScene: React.FC<{ clip: Clip }> = ({ clip }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const settle = spring({ frame, fps, config: { damping: 18 } });
@@ -206,21 +201,16 @@ const TalkScene: React.FC<{ clip: Clip; index: number }> = ({ clip, index }) => 
   }, 0);
   const scale =
     clip.zoom *
-    interpolate(settle, [0, 1], [1.08, 1]) *
+    interpolate(settle, [0, 1], [1.02, 1]) *
     interpolate(frame, [0, clip.durationInFrames], [1, 1.03]) *
     (1 + punch);
   const sh = (shakes[clip.id] ?? []).reduce(
     (acc, s) => {
-      const v = shake(frame, at(clip, s), 14, 8);
+      const v = shake(frame, at(clip, s), 6, 6);
       return { x: acc.x + v.x, y: acc.y + v.y };
     },
     { x: 0, y: 0 },
   );
-  // "atenção": pisca vermelho
-  const alarm =
-    clip.id === "atencao"
-      ? interpolate(frame - at(clip, 5.84), [0, 3, 14], [0, 0.35, 0], clamp)
-      : 0;
   return (
     <AbsoluteFill style={{ background: pa.black, overflow: "hidden" }}>
       <AbsoluteFill
@@ -237,7 +227,7 @@ const TalkScene: React.FC<{ clip: Clip; index: number }> = ({ clip, index }) => 
             layout="none"
           >
             {/* corte interno vira jump cut com leve punch-in */}
-            <AbsoluteFill style={{ transform: `scale(${k % 2 === 1 ? 1.07 : 1})`, transformOrigin: "50% 36%" }}>
+            <AbsoluteFill style={{ transform: `scale(${k % 2 === 1 ? 1.04 : 1})`, transformOrigin: "50% 36%" }}>
               <OffthreadVideo
                 src={staticFile(clip.src)}
                 startFrom={Math.round(a * FPS)}
@@ -253,10 +243,8 @@ const TalkScene: React.FC<{ clip: Clip; index: number }> = ({ clip, index }) => 
         ))}
       </AbsoluteFill>
       <Grade />
-      <AbsoluteFill style={{ background: pa.red, opacity: alarm, mixBlendMode: "screen" }} />
-      <ClipOverlays clip={clip} />
+            <ClipOverlays clip={clip} />
       <Captions clip={clip} />
-      <GlitchFlash seed={index + 1} />
     </AbsoluteFill>
   );
 };
@@ -270,7 +258,7 @@ const EndCard: React.FC = () => {
   const l1 = spring({ frame: frame - 22, fps, config: { damping: 13 } });
   const l2 = spring({ frame: frame - 30, fps, config: { damping: 10 } });
   const l3 = spring({ frame: frame - 42, fps, config: { damping: 14 } });
-  const sh = shake(frame, 1, 22, 10);
+  const sh = shake(frame, 1, 6, 8);
   const rings = [0, 20, 40, 60].map((d) => {
     const p = ((frame - d + 80) % 80) / 80;
     return (
@@ -335,7 +323,7 @@ const EndCard: React.FC = () => {
             borderRadius: 10,
             boxShadow: `0 0 50px ${pa.blue}`,
             opacity: l2,
-            transform: `scale(${interpolate(l2, [0, 1], [1.6, 1])}) rotate(-3deg)`,
+            transform: `scale(${interpolate(l2, [0, 1], [1.2, 1])}) rotate(-3deg)`,
           }}
         >
           GRATUITO
@@ -392,7 +380,7 @@ const BlackNovemberVideo: React.FC = () => {
       </Sequence>
       {clips.map((clip, i) => (
         <Sequence key={clip.id} from={clipStarts[i]} durationInFrames={clip.durationInFrames}>
-          <TalkScene clip={clip} index={i} />
+          <TalkScene clip={clip} />
         </Sequence>
       ))}
       <Sequence from={INTRO} durationInFrames={talkLength}>
@@ -404,11 +392,11 @@ const BlackNovemberVideo: React.FC = () => {
 
       {/* efeitos sonoros */}
       <Sequence from={1}>
-        <Audio src={staticFile("audio/black-november/impacto.wav")} volume={0.9} />
+        <Audio src={staticFile("audio/black-november/impacto.wav")} volume={0.5} />
       </Sequence>
-      {clipStarts.map((s, i) => (
+      {clipStarts.slice(0, 1).map((s, i) => (
         <Sequence key={`g${i}`} from={s} durationInFrames={10}>
-          <Audio src={staticFile("audio/black-november/glitch.wav")} volume={0.35} />
+          <Audio src={staticFile("audio/black-november/glitch.wav")} volume={0.2} />
         </Sequence>
       ))}
       {clips.map((clip, i) =>
@@ -419,10 +407,10 @@ const BlackNovemberVideo: React.FC = () => {
         )),
       )}
       <Sequence from={endStart - 48} durationInFrames={50}>
-        <Audio src={staticFile("audio/black-november/riser.wav")} volume={0.35} />
+        <Audio src={staticFile("audio/black-november/riser.wav")} volume={0.18} />
       </Sequence>
       <Sequence from={endStart}>
-        <Audio src={staticFile("audio/black-november/impacto.wav")} volume={0.8} />
+        <Audio src={staticFile("audio/black-november/impacto.wav")} volume={0.45} />
       </Sequence>
     </AbsoluteFill>
   );
