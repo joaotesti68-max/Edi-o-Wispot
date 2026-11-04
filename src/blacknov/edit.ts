@@ -3,7 +3,6 @@
 // palavras abaixo são do take original (Whisper) e `cut` é onde o trecho começa.
 
 export const FPS = 30;
-export const INTRO = 45;
 export const END = 108;
 
 export const pa = {
@@ -169,7 +168,7 @@ export const at = (clip: Clip, sourceSeconds: number) => {
 };
 
 export const clipStarts = clips.reduce<number[]>((acc, c, i) => {
-  acc.push(i === 0 ? INTRO : acc[i - 1] + clips[i - 1].durationInFrames);
+  acc.push(i === 0 ? 0 : acc[i - 1] + clips[i - 1].durationInFrames);
   return acc;
 }, []);
 

@@ -6,7 +6,6 @@ import {
   OffthreadVideo,
   Sequence,
   interpolate,
-  random,
   spring,
   staticFile,
   useCurrentFrame,
@@ -17,7 +16,6 @@ import type { Clip } from "./edit";
 import {
   END,
   FPS,
-  INTRO,
   at,
   clipStarts,
   clips,
@@ -66,62 +64,6 @@ const CyberBackdrop: React.FC<{ glow?: number }> = ({ glow = 1 }) => {
           WebkitMaskImage: "linear-gradient(180deg, transparent 0%, black 70%)",
         }}
       />
-    </AbsoluteFill>
-  );
-};
-
-// ---------- abertura ----------
-const Intro: React.FC = () => {
-  const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
-  const logo = spring({ frame: frame - 16, fps, config: { damping: 14 } });
-  const sh = shake(frame, 2, 8, 8);
-  const sh2 = { x: 0, y: 0 };
-  const glitchy = frame < 14 || (frame > 30 && frame < 34);
-  const split = glitchy ? 6 + random(`i-${frame}`) * 14 : 4;
-  return (
-    <AbsoluteFill style={{ fontFamily }}>
-      <CyberBackdrop glow={interpolate(frame, [0, 6, 45], [0.2, 1.2, 0.9], clamp)} />
-      <AbsoluteFill
-        style={{
-          alignItems: "center",
-          justifyContent: "center",
-          transform: `translate(${sh.x + sh2.x}px, ${sh.y + sh2.y}px)`,
-        }}
-      >
-        <Slam
-          from={2}
-          top={680}
-          size={158}
-          lines={[{ text: "BLACK" }, { text: "NOVEMBER", style: "outline" }]}
-        />
-        <div
-          style={{
-            position: "absolute",
-            top: 1180,
-            fontWeight: 800,
-            fontSize: 44,
-            letterSpacing: 18,
-            color: pa.cyan,
-            opacity: interpolate(frame, [12, 18], [0, 1], clamp),
-            textShadow: `${split}px 0 0 rgba(249,109,100,0.6), ${-split}px 0 0 rgba(43,163,219,0.8)`,
-          }}
-        >
-          CIBERSEGURANÇA
-        </div>
-      </AbsoluteFill>
-      <Img
-        src={staticFile("brand/pa-logo-white.png")}
-        style={{
-          position: "absolute",
-          bottom: 230,
-          left: 540 - 190,
-          width: 380,
-          opacity: logo,
-          transform: `translateY(${(1 - logo) * 40}px)`,
-        }}
-      />
-      <GlitchFlash seed={0} length={6} />
     </AbsoluteFill>
   );
 };
@@ -364,26 +306,22 @@ const EndCard: React.FC = () => {
 
 // ---------- montagem ----------
 const BlackNovemberVideo: React.FC = () => {
-  const talkLength = endStart - INTRO;
   const music = (f: number) =>
     interpolate(
       f,
-      [0, INTRO - 4, INTRO + 6, endStart - 50, endStart, totalDurationInFrames - 20, totalDurationInFrames],
-      [0.55, 0.55, 0.13, 0.13, 0.5, 0.5, 0],
+      [0, endStart - 50, endStart, totalDurationInFrames - 20, totalDurationInFrames],
+      [0.13, 0.13, 0.5, 0.5, 0],
       clamp,
     );
   return (
     <AbsoluteFill style={{ background: pa.black }}>
       <Audio src={staticFile("audio/black-november/trilha.mp3")} volume={music} />
-      <Sequence durationInFrames={INTRO}>
-        <Intro />
-      </Sequence>
       {clips.map((clip, i) => (
         <Sequence key={clip.id} from={clipStarts[i]} durationInFrames={clip.durationInFrames}>
           <TalkScene clip={clip} />
         </Sequence>
       ))}
-      <Sequence from={INTRO} durationInFrames={talkLength}>
+      <Sequence durationInFrames={endStart}>
         <Hud />
       </Sequence>
       <Sequence from={endStart} durationInFrames={END}>
@@ -391,14 +329,6 @@ const BlackNovemberVideo: React.FC = () => {
       </Sequence>
 
       {/* efeitos sonoros */}
-      <Sequence from={1}>
-        <Audio src={staticFile("audio/black-november/impacto.wav")} volume={0.5} />
-      </Sequence>
-      {clipStarts.slice(0, 1).map((s, i) => (
-        <Sequence key={`g${i}`} from={s} durationInFrames={10}>
-          <Audio src={staticFile("audio/black-november/glitch.wav")} volume={0.2} />
-        </Sequence>
-      ))}
       {clips.map((clip, i) =>
         (shakes[clip.id] ?? []).map((s) => (
           <Sequence key={`w${i}-${s}`} from={clipStarts[i] + at(clip, s) - 3} durationInFrames={20}>
