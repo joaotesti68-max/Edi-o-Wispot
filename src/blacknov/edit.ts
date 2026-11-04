@@ -23,6 +23,8 @@ export type Clip = {
   id: string;
   src: string;
   cut: number;
+  // Trechos mantidos, em segundos do arquivo cortado (o resto é silêncio).
+  keep: [number, number][];
   durationInFrames: number;
   zoom: number;
   words: Word[];
@@ -40,7 +42,8 @@ export const clips: Clip[] = [
     id: "oferta",
     src: "videos/black-november/fala1.mp4",
     cut: 1.3,
-    durationInFrames: 177,
+    keep: [[0.28, 5.72]],
+    durationInFrames: 0,
     zoom: 1.0,
     words: [
       w(1.48, 2.0, "Nesta"),
@@ -65,7 +68,8 @@ export const clips: Clip[] = [
     id: "atencao",
     src: "videos/black-november/fala2.mp4",
     cut: 0.98,
-    durationInFrames: 166,
+    keep: [[0.48, 5.42]],
+    durationInFrames: 0,
     zoom: 1.12,
     words: [
       w(1.16, 1.88, "Mesmo"),
@@ -87,7 +91,11 @@ export const clips: Clip[] = [
     id: "avaliacao",
     src: "videos/black-november/fala3.mp4",
     cut: 0.98,
-    durationInFrames: 178,
+    keep: [
+      [0.66, 1.52],
+      [1.72, 5.8],
+    ],
+    durationInFrames: 0,
     zoom: 1.0,
     words: [
       w(1.5, 1.96, "A"),
@@ -109,10 +117,14 @@ export const clips: Clip[] = [
     id: "cta",
     src: "videos/black-november/fala4.mp4",
     cut: 0.82,
-    durationInFrames: 171,
+    keep: [
+      [0.4, 2.36],
+      [2.62, 5.4],
+    ],
+    durationInFrames: 0,
     zoom: 1.12,
     words: [
-      w(1.0, 1.72, "Aproveite"),
+      w(1.3, 1.72, "Aproveite"),
       w(1.72, 1.84, "a"),
       w(1.84, 1.98, "Black", true),
       w(1.98, 2.26, "November", true),
@@ -129,9 +141,32 @@ export const clips: Clip[] = [
   },
 ];
 
-// Frame (dentro do trecho) em que um instante do take original acontece.
-export const at = (clip: Clip, sourceSeconds: number) =>
-  Math.round((sourceSeconds - clip.cut) * FPS);
+for (const c of clips) {
+  c.durationInFrames = c.keep.reduce((n, [a, b]) => n + Math.round((b - a) * FPS), 0);
+}
+
+// Onde cada trecho mantido começa na timeline da fala.
+export const keepStarts = (clip: Clip) => {
+  let acc = 0;
+  return clip.keep.map(([a, b]) => {
+    const start = acc;
+    acc += Math.round((b - a) * FPS);
+    return start;
+  });
+};
+
+// Frame (dentro da fala, já sem os silêncios) em que um instante do take original acontece.
+export const at = (clip: Clip, sourceSeconds: number) => {
+  const local = sourceSeconds - clip.cut;
+  const starts = keepStarts(clip);
+  for (let i = 0; i < clip.keep.length; i++) {
+    const [a, b] = clip.keep[i];
+    if (local < b || i === clip.keep.length - 1) {
+      return starts[i] + Math.round((Math.max(local, a) - a) * FPS);
+    }
+  }
+  return 0;
+};
 
 export const clipStarts = clips.reduce<number[]>((acc, c, i) => {
   acc.push(i === 0 ? INTRO : acc[i - 1] + clips[i - 1].durationInFrames);

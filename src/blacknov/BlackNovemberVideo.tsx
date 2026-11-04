@@ -22,6 +22,7 @@ import {
   clipStarts,
   clips,
   endStart,
+  keepStarts,
   pa,
   totalDurationInFrames,
 } from "./edit";
@@ -228,15 +229,28 @@ const TalkScene: React.FC<{ clip: Clip; index: number }> = ({ clip, index }) => 
           transformOrigin: "50% 36%",
         }}
       >
-        <OffthreadVideo
-          src={staticFile(clip.src)}
-          style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            filter: "contrast(1.06) saturate(0.95)",
-          }}
-        />
+        {clip.keep.map(([a, b], k) => (
+          <Sequence
+            key={k}
+            from={keepStarts(clip)[k]}
+            durationInFrames={Math.round((b - a) * FPS)}
+            layout="none"
+          >
+            {/* corte interno vira jump cut com leve punch-in */}
+            <AbsoluteFill style={{ transform: `scale(${k % 2 === 1 ? 1.07 : 1})`, transformOrigin: "50% 36%" }}>
+              <OffthreadVideo
+                src={staticFile(clip.src)}
+                startFrom={Math.round(a * FPS)}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  filter: "contrast(1.06) saturate(0.95)",
+                }}
+              />
+            </AbsoluteFill>
+          </Sequence>
+        ))}
       </AbsoluteFill>
       <Grade />
       <AbsoluteFill style={{ background: pa.red, opacity: alarm, mixBlendMode: "screen" }} />
