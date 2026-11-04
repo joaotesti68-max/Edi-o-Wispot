@@ -31,7 +31,6 @@ import {
   GlitchFlash,
   Grade,
   Hud,
-  Scanner,
   Slam,
   Stamp,
   shake,
@@ -136,13 +135,6 @@ const ClipOverlays: React.FC<{ clip: Clip }> = ({ clip }) => {
       return (
         <>
           <Slam
-            from={f(2.0)}
-            until={f(4.0)}
-            top={300}
-            size={112}
-            lines={[{ text: "BLACK FRIDAY", style: "outline" }]}
-          />
-          <Slam
             from={f(4.1)}
             top={250}
             size={118}
@@ -153,15 +145,6 @@ const ClipOverlays: React.FC<{ clip: Clip }> = ({ clip }) => {
     case "atencao":
       return (
         <>
-          <AlertChip
-            from={f(1.2)}
-            until={f(3.05)}
-            text="Tudo funcionando"
-            top={270}
-            side="left"
-            color={pa.blue}
-            icon="check"
-          />
           <AlertChip from={f(3.22)} text="Controles de acesso" top={270} side="left" />
           <AlertChip from={f(4.26)} text="Monitoramento" top={400} side="right" />
         </>
@@ -169,7 +152,6 @@ const ClipOverlays: React.FC<{ clip: Clip }> = ({ clip }) => {
     case "avaliacao":
       return (
         <>
-          <Scanner from={f(1.5)} until={f(3.8)} />
           <AlertChip from={f(3.84)} text="Riscos" top={270} side="left" />
           <AlertChip
             from={f(5.0)}
@@ -207,7 +189,7 @@ const punches: Record<string, Punch[]> = {
 };
 
 const shakes: Record<string, number[]> = {
-  oferta: [2.0, 4.64],
+  oferta: [4.1],
   atencao: [5.84],
   avaliacao: [3.84],
   cta: [1.84, 5.48],
@@ -252,7 +234,7 @@ const TalkScene: React.FC<{ clip: Clip; index: number }> = ({ clip, index }) => 
             width: "100%",
             height: "100%",
             objectFit: "cover",
-            filter: "contrast(1.2) saturate(0.8) brightness(0.84)",
+            filter: "contrast(1.06) saturate(0.95)",
           }}
         />
       </AbsoluteFill>
@@ -380,9 +362,7 @@ const EndCard: React.FC = () => {
 
 // ---------- montagem ----------
 const BlackNovemberVideo: React.FC = () => {
-  const frame = useCurrentFrame();
   const talkLength = endStart - INTRO;
-  const progress = interpolate(frame, [INTRO, endStart], [0, 1], clamp);
   const music = (f: number) =>
     interpolate(
       f,
@@ -402,7 +382,7 @@ const BlackNovemberVideo: React.FC = () => {
         </Sequence>
       ))}
       <Sequence from={INTRO} durationInFrames={talkLength}>
-        <Hud progress={progress} />
+        <Hud />
       </Sequence>
       <Sequence from={endStart} durationInFrames={END}>
         <EndCard />

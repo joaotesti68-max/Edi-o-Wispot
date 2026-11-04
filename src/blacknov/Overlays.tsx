@@ -19,53 +19,29 @@ const clamp = { extrapolateLeft: "clamp", extrapolateRight: "clamp" } as const;
 export const Grade: React.FC = () => (
   <>
     <AbsoluteFill
-      style={{ background: pa.blue, mixBlendMode: "soft-light", opacity: 0.32 }}
+      style={{ background: pa.blue, mixBlendMode: "soft-light", opacity: 0.12 }}
     />
     <AbsoluteFill
       style={{
         background:
-          "radial-gradient(ellipse 85% 60% at 50% 42%, rgba(0,12,25,0) 28%, rgba(0,12,25,0.68) 70%, rgba(2,5,9,0.95) 100%)",
+          "radial-gradient(ellipse 85% 60% at 50% 42%, rgba(0,12,25,0) 50%, rgba(0,12,25,0.18) 80%, rgba(2,5,9,0.4) 100%)",
       }}
     />
     <AbsoluteFill
       style={{
         background:
-          "linear-gradient(180deg, rgba(2,5,9,0.9) 0%, rgba(2,5,9,0) 22%, rgba(2,5,9,0) 62%, rgba(2,5,9,0.85) 100%)",
-      }}
-    />
-    <AbsoluteFill
-      style={{
-        backgroundImage:
-          "repeating-linear-gradient(0deg, rgba(255,255,255,0.035) 0px, rgba(255,255,255,0.035) 1px, transparent 1px, transparent 4px)",
+          "linear-gradient(180deg, rgba(2,5,9,0.5) 0%, rgba(2,5,9,0) 14%, rgba(2,5,9,0) 80%, rgba(2,5,9,0.3) 100%)",
       }}
     />
   </>
 );
 
-// ---------- moldura fixa: selo Black November, cantos de mira, logo ----------
-export const Hud: React.FC<{ progress: number }> = ({ progress }) => {
+// ---------- moldura fixa: selo Black November e logo ----------
+export const Hud: React.FC = () => {
   const frame = useCurrentFrame();
   const blink = Math.floor(frame / 15) % 2 === 0 ? 1 : 0.25;
-  const corner = (pos: React.CSSProperties, rot: number) => (
-    <div
-      style={{
-        position: "absolute",
-        width: 70,
-        height: 70,
-        borderTop: `5px solid ${pa.blue}`,
-        borderLeft: `5px solid ${pa.blue}`,
-        transform: `rotate(${rot}deg)`,
-        opacity: 0.85,
-        ...pos,
-      }}
-    />
-  );
   return (
     <AbsoluteFill style={{ fontFamily }}>
-      {corner({ top: 56, left: 48 }, 0)}
-      {corner({ top: 56, right: 48 }, 90)}
-      {corner({ bottom: 56, right: 48 }, 180)}
-      {corner({ bottom: 56, left: 48 }, 270)}
       <div
         style={{
           position: "absolute",
@@ -100,27 +76,6 @@ export const Hud: React.FC<{ progress: number }> = ({ progress }) => {
         src={staticFile("brand/pa-logo-white.png")}
         style={{ position: "absolute", top: 96, right: 88, width: 250 }}
       />
-      <div
-        style={{
-          position: "absolute",
-          left: 88,
-          right: 88,
-          bottom: 92,
-          height: 8,
-          background: "rgba(255,255,255,0.15)",
-          borderRadius: 4,
-          overflow: "hidden",
-        }}
-      >
-        <div
-          style={{
-            width: `${progress * 100}%`,
-            height: "100%",
-            background: pa.grad,
-            boxShadow: `0 0 16px ${pa.blue}`,
-          }}
-        />
-      </div>
     </AbsoluteFill>
   );
 };
