@@ -5,6 +5,7 @@ import {
   Img,
   OffthreadVideo,
   Sequence,
+  Still,
   interpolate,
   spring,
   staticFile,
@@ -68,6 +69,63 @@ const CyberBackdrop: React.FC<{ glow?: number }> = ({ glow = 1 }) => {
   );
 };
 
+// ---------- capa (imagem estática para o Instagram) ----------
+const Capa: React.FC = () => (
+  <AbsoluteFill style={{ fontFamily }}>
+    <CyberBackdrop glow={1} />
+    <AbsoluteFill style={{ alignItems: "center" }}>
+      <div
+        style={{
+          position: "absolute",
+          top: 690,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: 10,
+          fontWeight: 800,
+          fontSize: 158,
+          lineHeight: 1,
+          letterSpacing: -2,
+        }}
+      >
+        <div
+          style={{ color: pa.white, textShadow: "0 6px 30px rgba(0,0,0,0.5)" }}
+        >
+          BLACK
+        </div>
+        <div
+          style={{
+            color: pa.black,
+              paintOrder: "stroke fill",
+            WebkitTextStroke: `8px ${pa.white}`,
+            textShadow: "0 0 30px rgba(43,163,219,0.6)",
+          }}
+        >
+          NOVEMBER
+        </div>
+      </div>
+      <div
+        style={{
+          position: "absolute",
+          top: 1060,
+          fontWeight: 800,
+          fontSize: 44,
+          letterSpacing: 18,
+          color: pa.cyan,
+          textShadow:
+            "4px 0 0 rgba(249,109,100,0.6), -4px 0 0 rgba(43,163,219,0.8)",
+        }}
+      >
+        CIBERSEGURANÇA
+      </div>
+    </AbsoluteFill>
+    <Img
+      src={staticFile("brand/pa-logo-white.png")}
+      style={{ position: "absolute", top: 1420, left: 540 - 190, width: 380 }}
+    />
+  </AbsoluteFill>
+);
+
 // ---------- trecho falado ----------
 type Punch = { at: number; amount: number };
 
@@ -81,15 +139,28 @@ const ClipOverlays: React.FC<{ clip: Clip }> = ({ clip }) => {
             from={f(4.1)}
             top={250}
             size={118}
-            lines={[{ text: "DIAGNÓSTICO" }, { text: "100% GRATUITO", style: "box" }]}
+            lines={[
+              { text: "DIAGNÓSTICO" },
+              { text: "100% GRATUITO", style: "box" },
+            ]}
           />
         </>
       );
     case "atencao":
       return (
         <>
-          <AlertChip from={f(3.22)} text="Controles de acesso" top={270} side="left" />
-          <AlertChip from={f(4.26)} text="Monitoramento" top={400} side="right" />
+          <AlertChip
+            from={f(3.22)}
+            text="Controles de acesso"
+            top={270}
+            side="left"
+          />
+          <AlertChip
+            from={f(4.26)}
+            text="Monitoramento"
+            top={400}
+            side="right"
+          />
         </>
       );
     case "avaliacao":
@@ -138,7 +209,11 @@ const TalkScene: React.FC<{ clip: Clip }> = ({ clip }) => {
   const { fps } = useVideoConfig();
   const settle = spring({ frame, fps, config: { damping: 18 } });
   const punch = (punches[clip.id] ?? []).reduce((acc, p) => {
-    const s = spring({ frame: frame - at(clip, p.at), fps, config: { damping: 12 } });
+    const s = spring({
+      frame: frame - at(clip, p.at),
+      fps,
+      config: { damping: 12 },
+    });
     return acc + p.amount * s;
   }, 0);
   const scale =
@@ -169,7 +244,12 @@ const TalkScene: React.FC<{ clip: Clip }> = ({ clip }) => {
             layout="none"
           >
             {/* corte interno vira jump cut com leve punch-in */}
-            <AbsoluteFill style={{ transform: `scale(${k % 2 === 1 ? 1.04 : 1})`, transformOrigin: "50% 36%" }}>
+            <AbsoluteFill
+              style={{
+                transform: `scale(${k % 2 === 1 ? 1.04 : 1})`,
+                transformOrigin: "50% 36%",
+              }}
+            >
               <OffthreadVideo
                 src={staticFile(clip.src)}
                 startFrom={Math.round(a * FPS)}
@@ -185,7 +265,7 @@ const TalkScene: React.FC<{ clip: Clip }> = ({ clip }) => {
         ))}
       </AbsoluteFill>
       <Grade />
-            <ClipOverlays clip={clip} />
+      <ClipOverlays clip={clip} />
       <Captions clip={clip} />
     </AbsoluteFill>
   );
@@ -224,7 +304,9 @@ const EndCard: React.FC = () => {
     transform: `translateY(${(1 - s) * 50}px)`,
   });
   return (
-    <AbsoluteFill style={{ fontFamily, transform: `translate(${sh.x}px, ${sh.y}px)` }}>
+    <AbsoluteFill
+      style={{ fontFamily, transform: `translate(${sh.x}px, ${sh.y}px)` }}
+    >
       <CyberBackdrop />
       {rings}
       <Img
@@ -248,8 +330,19 @@ const EndCard: React.FC = () => {
           ...rise(logo),
         }}
       />
-      <AbsoluteFill style={{ alignItems: "center", color: pa.white, fontWeight: 800 }}>
-        <div style={{ position: "absolute", top: 960, fontSize: 52, textAlign: "center", lineHeight: 1.15, ...rise(l1) }}>
+      <AbsoluteFill
+        style={{ alignItems: "center", color: pa.white, fontWeight: 800 }}
+      >
+        <div
+          style={{
+            position: "absolute",
+            top: 960,
+            fontSize: 52,
+            textAlign: "center",
+            lineHeight: 1.15,
+            ...rise(l1),
+          }}
+        >
           DIAGNÓSTICO DE
           <br />
           CIBERSEGURANÇA
@@ -270,7 +363,15 @@ const EndCard: React.FC = () => {
         >
           GRATUITO
         </div>
-        <div style={{ position: "absolute", top: 1330, fontSize: 40, letterSpacing: 2, ...rise(l3) }}>
+        <div
+          style={{
+            position: "absolute",
+            top: 1330,
+            fontSize: 40,
+            letterSpacing: 2,
+            ...rise(l3),
+          }}
+        >
           Solicite até 30/11
         </div>
         <div
@@ -309,15 +410,28 @@ const BlackNovemberVideo: React.FC = () => {
   const music = (f: number) =>
     interpolate(
       f,
-      [0, endStart - 50, endStart, totalDurationInFrames - 20, totalDurationInFrames],
+      [
+        0,
+        endStart - 50,
+        endStart,
+        totalDurationInFrames - 20,
+        totalDurationInFrames,
+      ],
       [0.13, 0.13, 0.5, 0.5, 0],
       clamp,
     );
   return (
     <AbsoluteFill style={{ background: pa.black }}>
-      <Audio src={staticFile("audio/black-november/trilha.mp3")} volume={music} />
+      <Audio
+        src={staticFile("audio/black-november/trilha.mp3")}
+        volume={music}
+      />
       {clips.map((clip, i) => (
-        <Sequence key={clip.id} from={clipStarts[i]} durationInFrames={clip.durationInFrames}>
+        <Sequence
+          key={clip.id}
+          from={clipStarts[i]}
+          durationInFrames={clip.durationInFrames}
+        >
           <TalkScene clip={clip} />
         </Sequence>
       ))}
@@ -331,28 +445,41 @@ const BlackNovemberVideo: React.FC = () => {
       {/* efeitos sonoros */}
       {clips.map((clip, i) =>
         (shakes[clip.id] ?? []).map((s) => (
-          <Sequence key={`w${i}-${s}`} from={clipStarts[i] + at(clip, s) - 3} durationInFrames={20}>
+          <Sequence
+            key={`w${i}-${s}`}
+            from={clipStarts[i] + at(clip, s) - 3}
+            durationInFrames={20}
+          >
             <Audio src={staticFile("audio/sfx/whoosh.wav")} volume={0.25} />
           </Sequence>
         )),
       )}
       <Sequence from={endStart - 48} durationInFrames={50}>
-        <Audio src={staticFile("audio/black-november/riser.wav")} volume={0.18} />
+        <Audio
+          src={staticFile("audio/black-november/riser.wav")}
+          volume={0.18}
+        />
       </Sequence>
       <Sequence from={endStart}>
-        <Audio src={staticFile("audio/black-november/impacto.wav")} volume={0.45} />
+        <Audio
+          src={staticFile("audio/black-november/impacto.wav")}
+          volume={0.45}
+        />
       </Sequence>
     </AbsoluteFill>
   );
 };
 
 export const BlackNovemberComposition: React.FC = () => (
-  <Composition
-    id="BlackNovember"
-    component={BlackNovemberVideo}
-    durationInFrames={totalDurationInFrames}
-    fps={FPS}
-    width={1080}
-    height={1920}
-  />
+  <>
+    <Still id="BlackNovemberCapa" component={Capa} width={1080} height={1920} />
+    <Composition
+      id="BlackNovember"
+      component={BlackNovemberVideo}
+      durationInFrames={totalDurationInFrames}
+      fps={FPS}
+      width={1080}
+      height={1920}
+    />
+  </>
 );
