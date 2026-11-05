@@ -1,4 +1,5 @@
 import {
+  getInputProps,
   Easing,
   Img,
   interpolate,
@@ -34,7 +35,8 @@ export const Captions: React.FC<{ captions: Caption[] }> = ({ captions }) => {
   const frame = useCurrentFrame();
   const t = frame / 30;
   const cur = captions.find((c) => t >= c.from && t < c.to);
-  if (!cur) return null;
+  // `--props='{"noCaptions":true}'` renders clean frames (used for the cover).
+  if (!cur || getInputProps().noCaptions) return null;
   const local = frame - s(cur.from);
   const pop = interpolate(local, [0, 5], [0.86, 1], {
     extrapolateRight: "clamp",
