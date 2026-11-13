@@ -3,8 +3,8 @@ import os,base64
 d=os.path.dirname(os.path.abspath(__file__))
 css=open(d+'/style.css').read(); body=open(d+'/body.html').read(); js=open(d+'/script.js').read()
 uri=lambda p:'data:image/png;base64,'+base64.b64encode(open(p,'rb').read()).decode()
-DATA_ATU='2026-10-30'   # data da última revisão dos dados (atualize a cada 60 a 90 dias)
-body=body.replace('{{LOGO}}',uri(d+'/assets/logo-dark-sm.png'))
+DATA_ATU='2026-11-13'   # data da última revisão dos dados (atualize a cada 60 a 90 dias)
+body=body.replace('{{LOGO}}',uri(d+'/assets/logo-dark-sm.png')).replace('{{THUMB}}','data:image/jpeg;base64,'+base64.b64encode(open(d+'/assets/video-thumb.jpg','rb').read()).decode())
 import re,json,html as H
 txt=lambda h:re.sub(r'\s+',' ',H.unescape(re.sub(r'<[^>]+>','',h))).strip()
 qas=[]
@@ -14,12 +14,11 @@ for sec in re.findall(r'<section class="qa[ "][^>]*>(.*?)</section>',body,re.S):
 qas+=[(txt(q),txt(a)) for q,a in re.findall(r'<details><summary>(.*?)</summary><p>(.*?)</p></details>',body,re.S)]
 org={'@type':'Organization','name':'Pro Advanced','url':'https://proadvanced.com.br'}
 ld={'@context':'https://schema.org','@graph':[
-  {'@type':'Article','headline':txt(re.search(r'<h1>(.*?)</h1>',body,re.S).group(1))+': Certificação TPN com a Pro Advanced','description':'O que é a Certificação TPN (Trusted Partner Network), seus benefícios, níveis de selo e como a Pro Advanced apoia empresas audiovisuais no processo.','inLanguage':'pt-BR','author':org,'publisher':org,'dateModified':DATA_ATU},
+  {'@type':'Article','headline':txt(re.search(r'<h1>(.*?)</h1>',body,re.S).group(1)),'description':'O que é a Certificação TPN (Trusted Partner Network, da MPA), seus benefícios e níveis de selo, e como a Pro Advanced ajuda produtoras audiovisuais a se certificar.','inLanguage':'pt-BR','author':org,'publisher':org,'dateModified':DATA_ATU},
   {'@type':'FAQPage','mainEntity':[{'@type':'Question','name':q,'acceptedAnswer':{'@type':'Answer','text':a}} for q,a in qas]}]}
 body=body.replace('{{JSONLD}}',json.dumps(ld,ensure_ascii=False).replace('</','<\\/'))
 assert '{{' not in body and '{{' not in js, 'token left'
-libs='''<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+libs='''<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>'''
 out=d+'/..'

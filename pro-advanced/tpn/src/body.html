@@ -1,9 +1,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,800&display=swap">
 <div class="ptpn" id="ptpn">
-  <canvas class="vault" aria-hidden="true"></canvas>
-  <div class="scrim" aria-hidden="true"></div>
 
   <header class="top">
     <div class="wrap bar">
@@ -12,17 +10,20 @@
     </div>
   </header>
 
-  <!-- HERO + FORM -->
+  <!-- HERO: giant certification name, radar sealing the leaks, the form -->
   <section class="hero">
+    <canvas class="radar" aria-hidden="true"></canvas>
     <div class="wrap hero-grid">
       <div class="hero-copy">
-        <h1>Segurança para suas <span class="acc">produções audiovisuais</span></h1>
+        <p class="mega" aria-hidden="true"><span class="ln"><span class="pre">CERTIFICAÇÃO</span></span><span class="ln"><span class="out">TPN</span></span></p>
+        <h1>Segurança para suas <em>produções audiovisuais</em></h1>
         <p class="lead">Preencha o formulário e descubra como a Certificação TPN pode proteger seu conteúdo.</p>
-        <a class="tlink" href="#ptpn-video">Assista ao vídeo sobre a TPN</a>
+        <a class="tlink" href="#ptpn-video"><span class="tl-play" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>Assista ao vídeo sobre a TPN</a>
       </div>
+
       <div class="fcol" id="ptpn-form">
         <form class="fcard" id="ptpn-lead" novalidate>
-          <h2>Fale com um especialista</h2>
+          <h2>Fale com um especialista em TPN</h2>
           <div class="field"><label for="ptpn-name">Nome*</label><input id="ptpn-name" name="name" type="text" autocomplete="name" required></div>
           <div class="field"><label for="ptpn-email">E-mail corporativo*</label><input id="ptpn-email" name="email" type="email" autocomplete="email" required></div>
           <div class="field"><label for="ptpn-phone">Telefone / WhatsApp*</label><input id="ptpn-phone" name="mobile_phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="(11) 99999-9999" required></div>
@@ -41,7 +42,7 @@
   </section>
 
   <!-- Q1 -->
-  <section class="qa what" id="q-tpn">
+  <section class="qa q-intro" id="q-tpn">
     <div class="wrap qa-grid">
       <h2>O que é a Certificação TPN?</h2>
       <div>
@@ -58,69 +59,75 @@
     </div>
   </section>
 
-  <!-- VIDEO -->
+  <!-- Q2: video -->
   <section class="qa video" id="ptpn-video">
-    <div class="wrap video-grid">
+    <div class="wrap qa-grid">
       <div>
         <h2>Como entender a Certificação TPN em poucos minutos?</h2>
         <div class="qa-text"><p>Assista ao vídeo da Pro Advanced e entenda mais sobre a Certificação TPN e o que ela exige da sua produção.</p></div>
       </div>
       <div class="player">
         <button class="yt" type="button" data-yt="7Vt1_PHt0eE" aria-label="Assistir ao vídeo sobre a Certificação TPN">
-          <img src="https://i.ytimg.com/vi/7Vt1_PHt0eE/hqdefault.jpg" alt="" loading="lazy" onerror="this.remove()">
+          <img src="{{THUMB}}" alt="" loading="lazy">
           <span class="play" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
         </button>
       </div>
     </div>
   </section>
 
-  <!-- Q2 -->
-  <section class="qa safe" id="q-segura">
-    <div class="wrap qa-grid">
-      <h2>Sua produção audiovisual está segura?</h2>
-      <div>
-        <ul class="keys" aria-label="Principais pontos">
-          <li>Vazamentos podem destruir anos de trabalho em um instante</li>
-          <li>Uma violação de dados custou em média R$ 7,19 milhões no Brasil (IBM, 2025)</li>
-          <li>Terceiros estiveram envolvidos em 30% das violações analisadas pela Verizon em 2025</li>
-        </ul>
-        <div class="qa-text">
-          <p>Vazamentos podem destruir anos de trabalho em um instante. Com a Certificação TPN, você protege suas produções contra pirataria e vazamentos, garantindo a segurança em todas as etapas.</p>
-          <p>O risco é concreto: o relatório Cost of a Data Breach 2025, da IBM, estimou em <b>R$ 7,19 milhões</b> o custo médio de uma violação de dados no Brasil<sup><a href="#f3">[3]</a></sup>. E o Data Breach Investigations Report 2025, da Verizon, mostrou que o envolvimento de terceiros nas violações dobrou para <b>30%</b><sup><a href="#f4">[4]</a></sup>. Na produção audiovisual, em que o conteúdo passa por muitos parceiros, cada fornecedor precisa provar que protege o material. É isso que a certificação entrega, como mostra o próximo bloco.</p>
+  <!-- Q3: risk (statement + data) -->
+  <section class="qa risk" id="q-segura">
+    <div class="wrap">
+      <p class="mf" data-fill aria-hidden="true">Vazamentos podem destruir anos de trabalho <em>em um instante.</em> Cada parceiro que toca o seu conteúdo precisa provar que o protege.</p>
+      <div class="qa-grid">
+        <h2>Sua produção audiovisual está segura?</h2>
+        <div>
+          <ul class="keys" aria-label="Principais pontos">
+            <li>Vazamentos podem destruir anos de trabalho em um instante</li>
+            <li>Uma violação de dados custou em média R$ 7,19 milhões no Brasil (IBM, 2025)</li>
+            <li>Terceiros estiveram envolvidos em 30% das violações analisadas pela Verizon em 2025</li>
+          </ul>
+          <div class="qa-text">
+            <p>Vazamentos podem destruir anos de trabalho em um instante. Com a Certificação TPN, você protege suas produções contra pirataria e vazamentos, garantindo a segurança em todas as etapas.</p>
+            <p>O risco é concreto: o relatório Cost of a Data Breach 2025, da IBM, estimou em <b>R$ 7,19 milhões</b> o custo médio de uma violação de dados no Brasil<sup><a href="#f3">[3]</a></sup>. E o Data Breach Investigations Report 2025, da Verizon, mostrou que o envolvimento de terceiros nas violações dobrou para <b>30%</b><sup><a href="#f4">[4]</a></sup>. Na produção audiovisual, em que o conteúdo passa por muitos parceiros, cada fornecedor precisa provar que protege o material. É isso que a certificação entrega, como mostra o próximo bloco.</p>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Q3 -->
-  <section class="qa benefits-sec" id="q-beneficios">
-    <div class="wrap">
-      <div class="qa-grid">
-        <h2>Quais são os benefícios da Certificação TPN?</h2>
-        <div>
+  <!-- Q4: benefits with the dial -->
+  <section class="qa fronts" id="q-beneficios">
+    <div class="fr-pin">
+      <div class="wrap fr-grid">
+        <div class="dial-col">
+          <h2>Quais são os benefícios da Certificação TPN?</h2>
           <ul class="keys" aria-label="Principais pontos">
             <li>Menos risco de vazamento em cada fase da produção</li>
             <li>Práticas de segurança validadas por um selo reconhecido</li>
             <li>Destaque como parceiro confiável no mercado audiovisual</li>
           </ul>
-          <div class="qa-text"><p>A certificação reduz o risco de vazamentos, valida as práticas de segurança da sua empresa e mostra aos principais players da indústria que sua produção segue as diretrizes exigidas. Veja cada benefício:</p></div>
+          <svg class="dial" viewBox="-110 -110 220 220" aria-hidden="true">
+            <circle r="104" class="d-ring"/><circle r="72" class="d-ring"/><circle r="40" class="d-ring"/>
+            <g class="d-secs"></g>
+            <circle r="28" class="d-core"/>
+            <text class="d-num" y="7" text-anchor="middle">0/4</text>
+          </svg>
         </div>
-      </div>
-      <div class="benefits">
-        <div class="lead-benefit">
-          <h3>Evite perdas irreparáveis</h3>
-          <p><b>Minimize o risco</b> de vazamentos que podem comprometer a integridade do seu trabalho, garantindo segurança em cada fase da produção.</p>
+        <div class="qa-text">
+          <p class="fr-intro">A certificação reduz o risco de vazamentos, valida as práticas de segurança da sua empresa e mostra aos principais players da indústria que sua produção segue as diretrizes exigidas. Veja cada benefício:</p>
+          <ol class="fr-list">
+            <li><h3>Evite perdas irreparáveis</h3><p><b>Minimize o risco</b> de vazamentos que podem comprometer a integridade do seu trabalho, garantindo segurança em cada fase da produção.</p></li>
+            <li><h3>Certificação reconhecida</h3><p>A Certificação TPN valida suas <b>práticas de segurança</b>, reforçando o compromisso da sua empresa com a <b>proteção de dados sensíveis</b>.</p></li>
+            <li><h3>Destaque no setor</h3><p>Torne-se um <b>parceiro confiável no mercado audiovisual</b>, mostrando que sua produção segue as diretrizes exigidas pelos principais players da indústria.</p></li>
+            <li><h3>Apoio completo da Pro Advanced</h3><p>A Pro Advanced oferece um <b>acompanhamento contínuo</b>, assegurando que sua empresa navegue pelo processo de certificação com facilidade e eficiência.</p></li>
+          </ol>
         </div>
-        <ul class="rows">
-          <li><h3>Certificação reconhecida</h3><p>A Certificação TPN valida suas <b>práticas de segurança</b>, reforçando o compromisso da sua empresa com a <b>proteção de dados sensíveis</b>.</p></li>
-          <li><h3>Destaque no setor</h3><p>Torne-se um <b>parceiro confiável no mercado audiovisual</b>, mostrando que sua produção segue as diretrizes exigidas pelos principais players da indústria.</p></li>
-          <li><h3>Apoio completo da Pro Advanced</h3><p>A Pro Advanced oferece um <b>acompanhamento contínuo</b>, assegurando que sua empresa navegue pelo processo de certificação com facilidade e eficiência.</p></li>
-        </ul>
       </div>
     </div>
   </section>
 
-  <!-- Q4 -->
+  <!-- Q5: shield tiers -->
   <section class="qa shields" id="q-selos">
     <div class="wrap">
       <div class="qa-grid">
@@ -138,13 +145,16 @@
         </div>
       </div>
       <ol class="tiers" aria-label="Níveis de selo da TPN">
-        <li><b>Blue</b></li><li><b>Silver</b></li><li><b>Gold</b></li><li><b>Gold Star</b></li>
+        <li class="t-blue"><span class="t-bar"></span><b>Blue</b></li>
+        <li class="t-silver"><span class="t-bar"></span><b>Silver</b></li>
+        <li class="t-gold"><span class="t-bar"></span><b>Gold</b></li>
+        <li class="t-star"><span class="t-bar"></span><b>Gold Star</b></li>
       </ol>
     </div>
   </section>
 
-  <!-- Q5 -->
-  <section class="qa why" id="q-pro">
+  <!-- Q6: how Pro Advanced helps -->
+  <section class="qa how" id="q-pro">
     <div class="wrap">
       <div class="qa-grid">
         <h2>Como a Pro Advanced ajuda na certificação TPN?</h2>
@@ -165,17 +175,20 @@
     </div>
   </section>
 
-  <!-- Q6 -->
+  <!-- Q7: start -->
   <section class="qa final" id="q-comecar">
-    <div class="wrap final-grid">
+    <div class="wrap">
       <h2>Como começar a certificação TPN com a Pro Advanced?</h2>
-      <div>
-        <ul class="keys" aria-label="Principais pontos">
-          <li>Preencha o formulário desta página</li>
-          <li>Um especialista em TPN entra em contato</li>
-        </ul>
-        <div class="qa-text"><p>Com a Pro Advanced, sua empresa estará em conformidade com os mais rigorosos padrões de segurança. Fale conosco e assegure a proteção que você precisa para atuar com confiança no mercado global.</p></div>
-        <a class="btn" href="#ptpn-form">Falar com um especialista em TPN</a>
+      <p class="zero" aria-hidden="true">TPN</p>
+      <div class="final-row">
+        <div>
+          <ul class="keys" aria-label="Principais pontos">
+            <li>Preencha o formulário desta página</li>
+            <li>Um especialista em TPN entra em contato</li>
+          </ul>
+          <div class="qa-text"><p>Com a Pro Advanced, sua empresa estará em conformidade com os mais rigorosos padrões de segurança. Fale conosco e assegure a proteção que você precisa para atuar com confiança no mercado global.</p></div>
+        </div>
+        <a class="btn big" href="#ptpn-form">Falar com um especialista em TPN</a>
       </div>
     </div>
   </section>

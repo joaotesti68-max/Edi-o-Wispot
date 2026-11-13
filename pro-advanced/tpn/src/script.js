@@ -1,12 +1,11 @@
 /* Pro Advanced LP · Certificação TPN
    Needs (in this order, before this file):
-   https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js
    https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js
    https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js
    https://unpkg.com/lenis@1.1.13/dist/lenis.min.js
    Without them the page still works, just without the scroll motion. */
 (function(){
-  /* ---------- RD Station settings (the same as the current TPN page) ---------- */
+  /* ---------- RD Station settings ---------- */
   const RD={
     publicToken:'8642f7d78d8931170d08ae3c51495718',   // token público da conta Pro Advanced
     conversion:'lp-tpn',                              // identificador da conversão
@@ -104,129 +103,67 @@
     });
   })();
 
-  /* ---------- YouTube: load the player only on click ---------- */
+  /* ---------- video: load the YouTube player only on click ---------- */
   page.querySelectorAll('.yt[data-yt]').forEach(b=>b.addEventListener('click',()=>{
     const f=document.createElement('iframe');f.src=`https://www.youtube-nocookie.com/embed/${b.dataset.yt}?autoplay=1&rel=0`;f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';f.allowFullscreen=true;f.title='Vídeo sobre a Certificação TPN';
     b.replaceChildren(f);b.style.cursor='default';
   },{once:true}));
 
-  /* ---------- background: a film strip running through the TPN gate ----------
-     A strip of video frames curves through space and keeps running. Before the gate the frames are plain and leak red
-     pixels; crossing the gate they flash and turn into encrypted content (blue mosaic with a lock). The gate moves along
-     the strip with the scroll, so more of the strip is protected the further you read; the corner badge shows the share. */
+  /* ---------- hero radar: the sweep finds leaks (red) and seals them (blue) ---------- */
   (function(){
-    const c=page.querySelector('.vault');if(!c||!window.THREE)return;
-    let R;try{R=new THREE.WebGLRenderer({canvas:c,antialias:true,alpha:true,powerPreference:'high-performance'})}catch(e){return}
-    R.setClearColor(0x000000,0);
-    const pctEl=page.querySelector('[data-pct]'),bar=page.querySelector('[data-bar]');
-    const scene=new THREE.Scene(),cam=new THREE.PerspectiveCamera(36,1,.1,100);cam.position.set(0,0,9);
-    const root=new THREE.Group();scene.add(root);
-    const curve=new THREE.CatmullRomCurve3([new THREE.Vector3(5.5,4.2,-10),new THREE.Vector3(3.6,2.4,-5),new THREE.Vector3(1.6,.9,-1.6),new THREE.Vector3(1.9,-.5,1),new THREE.Vector3(3.6,-1.8,2.6),new THREE.Vector3(7.5,-3.2,3.6)]);
-
-    /* frame textures: a film cell with sprocket bands and an abstract still */
-    const STAGES=['ROTEIRO','CAPTAÇÃO','EDIÇÃO','VFX','FINALIZAÇÃO','DISTRIBUIÇÃO'];
-    function still(i){const cv=document.createElement('canvas');cv.width=320;cv.height=212;const g=cv.getContext('2d');
-      g.fillStyle='#050b14';g.fillRect(0,0,320,212);
-      g.fillStyle='rgba(201,214,228,.55)';for(let x=8;x<320;x+=22){g.fillRect(x,7,11,10);g.fillRect(x,195,11,10)}
-      const pal=[['#0e2a3f','#2ba3db'],['#045089','#68c5db'],['#14202e','#488ab7'],['#0e2a3f','#68c5db'],['#3a1f2a','#c58a5a'],['#1b2b1f','#6aa57a']][i%6];
-      const gr=g.createLinearGradient(0,24,320,188);gr.addColorStop(0,pal[0]);gr.addColorStop(1,pal[1]);g.fillStyle=gr;g.fillRect(6,24,308,164);
-      g.save();g.beginPath();g.rect(6,24,308,164);g.clip();g.globalAlpha=.45;g.fillStyle='#02060b';
-      const k=i%4;
-      if(k===0){g.beginPath();g.moveTo(6,188);g.lineTo(90,100);g.lineTo(150,150);g.lineTo(220,80);g.lineTo(314,160);g.lineTo(314,188);g.fill();g.globalAlpha=.7;g.fillStyle='#ffd9a0';g.beginPath();g.arc(250,70,16,0,7);g.fill()}
-      else if(k===1){for(let j=0;j<11;j++){const w=16+((j*37)%18),hh=40+((j*53)%80);g.fillRect(10+j*28,188-hh,w,hh)}}
-      else if(k===2){g.beginPath();g.arc(160,200,80,Math.PI,0);g.fill();g.beginPath();g.arc(160,104,30,0,7);g.fill()}
-      else{g.fillRect(6,140,308,48);g.globalAlpha=.6;g.fillStyle='#fff';for(let j=0;j<6;j++)g.fillRect(20+j*50,160,26,4)}
-      g.restore();
-      g.font='600 14px Montserrat,Arial';g.fillStyle='rgba(255,255,255,.85)';g.fillText(STAGES[i%6],16,44);
-      g.fillStyle='rgba(255,255,255,.85)';g.font='500 11px monospace';g.fillText('TC 0'+(i%6+1)+':'+(10+i*7)%60+':0'+(i%9)+':12',204,180);
-      return new THREE.CanvasTexture(cv)}
-    const texs=STAGES.map((_,i)=>still(i));
-
-    const fVert=`varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}`;
-    const fFrag=`uniform sampler2D uMap;uniform float uEnc,uFlash,uTime,uFade;varying vec2 vUv;
-      float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
-      float box(vec2 p,vec2 b){vec2 d=abs(p)-b;return length(max(d,0.))+min(max(d.x,d.y),0.);}
-      void main(){
-        vec4 o=texture2D(uMap,vUv);
-        bool content=vUv.y>.115&&vUv.y<.885&&vUv.x>.02&&vUv.x<.98;
-        vec3 enc=o.rgb;
-        if(content){
-          vec2 cells=vec2(26.,13.);vec2 q=(floor(vUv*cells)+.5)/cells;vec3 s=texture2D(uMap,q).rgb;
-          float l=dot(s,vec3(.3,.59,.11));float n=hash(floor(vUv*cells)+floor(uTime*3.));
-          enc=mix(vec3(.02,.10,.18),vec3(.17,.64,.86),l*1.3+n*.25);
-          vec2 g=fract(vUv*cells);enc+=vec3(.25,.6,.75)*.18*step(.9,max(g.x,g.y));
-          vec2 p=(vUv-.5)*vec2(1.5,1.);float body=box(p-vec2(0.,-.06),vec2(.075,.06));float ring=abs(length(p-vec2(0.,.0))-.05)-.012;ring=max(ring,-(p.y-0.));
-          float lockA=smoothstep(.006,0.,min(body,ring));
-          float plate=smoothstep(.02,0.,box(p-vec2(0.,-.02),vec2(.13,.13))-.02);
-          enc=mix(enc,vec3(.0,.05,.1),plate*.6);enc=mix(enc,vec3(.86,.95,1.),lockA);
-        }
-        vec3 col=mix(o.rgb,enc,uEnc)+vec3(.4,.8,1.)*uFlash;
-        float a=o.a*uFade;
-        gl_FragColor=vec4(col,a);
-      }`;
-    const N=18,FW=1.5,FH=FW*212/320;
-    const frames=[];
-    for(let i=0;i<N;i++){
-      const m=new THREE.Mesh(new THREE.PlaneGeometry(FW,FH),new THREE.ShaderMaterial({transparent:true,depthWrite:false,side:THREE.DoubleSide,
-        uniforms:{uMap:{value:texs[i%6]},uEnc:{value:0},uFlash:{value:0},uTime:{value:0},uFade:{value:1}},vertexShader:fVert,fragmentShader:fFrag}));
-      m.userData={off:i/N,enc:0};root.add(m);frames.push(m)}
-
-    /* the gate: a glowing portal the strip passes through */
-    const gate=new THREE.Group();root.add(gate);
-    const gw=FW*1.28,gh=FH*1.45,th=.035,gm=new THREE.MeshBasicMaterial({color:0x68c5db,transparent:true,opacity:.95,depthWrite:false,blending:THREE.AdditiveBlending});
-    [[0,gh/2,gw,th],[0,-gh/2,gw,th],[-gw/2,0,th,gh],[gw/2,0,th,gh]].forEach(([x,y,w,h])=>{const b=new THREE.Mesh(new THREE.PlaneGeometry(w,h),gm);b.position.set(x,y,0);gate.add(b)});
-    const glowC=document.createElement('canvas');glowC.width=glowC.height=128;{const g=glowC.getContext('2d');const gr=g.createRadialGradient(64,64,0,64,64,64);gr.addColorStop(0,'rgba(104,197,219,.6)');gr.addColorStop(.5,'rgba(43,163,219,.18)');gr.addColorStop(1,'rgba(43,163,219,0)');g.fillStyle=gr;g.fillRect(0,0,128,128)}
-    const halo=new THREE.Mesh(new THREE.PlaneGeometry(gw*2.4,gh*2.4),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(glowC),transparent:true,depthWrite:false,blending:THREE.AdditiveBlending}));gate.add(halo);
-    const scan=new THREE.Mesh(new THREE.PlaneGeometry(gw,.02),new THREE.MeshBasicMaterial({color:0xbfefff,transparent:true,opacity:.8,depthWrite:false,blending:THREE.AdditiveBlending}));gate.add(scan);
-    const tagC=document.createElement('canvas');tagC.width=256;tagC.height=64;{const g=tagC.getContext('2d');g.fillStyle='rgba(0,12,25,.85)';g.strokeStyle='#68c5db';g.lineWidth=3;g.beginPath();g.moveTo(32,6);g.arcTo(250,6,250,58,26);g.arcTo(250,58,6,58,26);g.arcTo(6,58,6,6,26);g.arcTo(6,6,250,6,26);g.closePath();g.fill();g.stroke();g.fillStyle='#fff';g.font='700 26px Montserrat,Arial';g.textAlign='center';g.textBaseline='middle';g.fillText('TPN ✓',128,33)}
-    const tag=new THREE.Mesh(new THREE.PlaneGeometry(.8,.2),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(tagC),transparent:true,depthWrite:false}));tag.position.set(0,gh/2+.2,0);gate.add(tag);
-
-    /* leaking pixels from frames that are not protected yet */
-    const LP=260,lPos=new Float32Array(LP*3),lLife=new Float32Array(LP),lVel=[];for(let i=0;i<LP;i++)lVel.push(new THREE.Vector3());
-    const lGeo=new THREE.BufferGeometry();lGeo.setAttribute('position',new THREE.BufferAttribute(lPos,3));lGeo.setAttribute('aLife',new THREE.BufferAttribute(lLife,1));
-    const leak=new THREE.Points(lGeo,new THREE.ShaderMaterial({transparent:true,depthWrite:false,uniforms:{uPR:{value:1}},
-      vertexShader:`attribute float aLife;uniform float uPR;varying float vL;void main(){vL=aLife;vec4 mv=modelViewMatrix*vec4(position,1.);gl_Position=projectionMatrix*mv;gl_PointSize=uPR*5.*(9./-mv.z);}`,
-      fragmentShader:`varying float vL;void main(){if(vL<=0.)discard;gl_FragColor=vec4(.976,.427,.392,vL*.75);}`}));
-    root.add(leak);let lIx=0;
-
-    let W=1,H=1;
-    function size(){W=innerWidth;H=innerHeight;const pr=Math.min(2,devicePixelRatio||1);R.setPixelRatio(pr);R.setSize(W,H,false);cam.aspect=W/H;cam.updateProjectionMatrix();leak.material.uniforms.uPR.value=pr}
+    const c=page.querySelector('.radar');if(!c)return;const x=c.getContext('2d');let S=0,pts=[],a=0,last=performance.now(),vis=true;
+    function size(){const r=c.getBoundingClientRect(),d=Math.min(2,devicePixelRatio||1);S=r.width;c.width=c.height=S*d;x.setTransform(d,0,0,d,0,0);
+      pts=Array.from({length:26},()=>{const rr=.12+Math.random()*.82,th=Math.random()*Math.PI*2;return{r:rr,th,ok:0,seen:0,born:Math.random()*6}})}
     size();addEventListener('resize',size);
-    function scrollP(){const max=document.documentElement.scrollHeight-innerHeight;return max>0?Math.min(1,Math.max(0,scrollY/max)):1}
-
-    const X=new THREE.Vector3(),Y=new THREE.Vector3(),Z=new THREE.Vector3(),P=new THREE.Vector3(),M=new THREE.Matrix4();
-    function basis(t,obj){t=Math.min(.9999,Math.max(0,t));curve.getPointAt(t,P);curve.getTangentAt(t,X);Z.copy(cam.position).sub(P).normalize();Z.addScaledVector(X,-Z.dot(X)).normalize();Y.crossVectors(Z,X);M.makeBasis(X,Y,Z);obj.quaternion.setFromRotationMatrix(M);obj.position.copy(P)}
-    let flow=0,gT=.8,shown=0,last=performance.now(),lastY=scrollY,vel=0,vis=true;
-    document.addEventListener('visibilitychange',()=>{vis=!document.hidden;if(vis){last=performance.now();requestAnimationFrame(loop)}});
-    function loop(now){
-      if(!vis)return;const dt=Math.max(0,Math.min(.05,(now-last)/1000));last=now;const t=now/1000;
-      const sp=scrollP(),mob=W<900;vel+=((scrollY-lastY)-vel)*.1;lastY=scrollY;
-      flow+=reduce?0:dt*(.018+Math.min(.08,Math.abs(vel)*.0008));
-      const goal=.78-.62*sp;gT+=(goal-gT)*Math.min(1,dt*2.5);
-      root.position.x=mob?-1.2:0;root.position.y=mob?-.6:0;root.scale.setScalar(mob?.8:1);
-      basis(gT,gate);scan.position.y=Math.sin(t*2.2)*gh*.45;halo.material.opacity=.7+.3*Math.sin(t*3);
-      let enc=0,cnt=0;
-      for(const f of frames){
-        const u=(f.userData.off+flow)%1;basis(u,f);
-        const U=f.material.uniforms;U.uTime.value=t;
-        const after=u>gT;const target=after?1:0;
-        if(after&&f.userData.enc<.5&&target===1)U.uFlash.value=1;
-        f.userData.enc+=(target-f.userData.enc)*Math.min(1,dt*(after?8:20));U.uEnc.value=f.userData.enc;
-        U.uFlash.value=Math.max(0,U.uFlash.value-dt*2.2);
-        U.uFade.value=Math.min(1,u*8,(1-u)*6)*(mob?.5:(sp<.04?.9:.5));
-        if(u>.06&&u<.94){cnt++;if(after)enc++}
-        if(!after&&!reduce&&Math.random()<dt*(mob?2:4)){const i=lIx;lIx=(lIx+1)%LP;lPos[i*3]=f.position.x+(Math.random()-.5)*FW;lPos[i*3+1]=f.position.y+(Math.random()-.5)*FH;lPos[i*3+2]=f.position.z;lVel[i].set((Math.random()-.5)*.6,.3+Math.random()*.5,(Math.random()-.5)*.4);lLife[i]=1}
+    new IntersectionObserver(e=>{vis=e[0].isIntersecting}).observe(c);
+    function draw(now){
+      const dt=Math.min(.05,(now-last)/1000);last=now;
+      if(vis&&S){const R=S/2,cx=R,cy=R;x.clearRect(0,0,S,S);
+        x.strokeStyle='rgba(201,214,228,.10)';x.lineWidth=1;
+        for(let k=1;k<=4;k++){x.beginPath();x.arc(cx,cy,R*k/4.2,0,7);x.stroke()}
+        for(let k=0;k<5;k++){const t=k/5*Math.PI*2-Math.PI/2;x.beginPath();x.moveTo(cx,cy);x.lineTo(cx+Math.cos(t)*R*.95,cy+Math.sin(t)*R*.95);x.stroke()}
+        if(!reduce)a=(a+dt*.9)%(Math.PI*2);
+        const g=x.createConicGradient?x.createConicGradient(a-1.1,cx,cy):null;
+        if(g){g.addColorStop(0,'rgba(43,163,219,0)');g.addColorStop(.17,'rgba(43,163,219,.28)');g.addColorStop(.175,'rgba(43,163,219,0)');x.fillStyle=g;x.beginPath();x.arc(cx,cy,R*.95,0,7);x.fill()}
+        x.strokeStyle='rgba(104,197,219,.85)';x.lineWidth=1.5;x.beginPath();x.moveTo(cx,cy);x.lineTo(cx+Math.cos(a)*R*.95,cy+Math.sin(a)*R*.95);x.stroke();
+        for(const p of pts){
+          p.born-=dt;if(p.born>0)continue;
+          const d=((a-p.th)%(Math.PI*2)+Math.PI*2)%(Math.PI*2);
+          if(d<.08){if(!p.seen)p.seen=1;else if(!p.ok)p.ok=1}
+          if(p.ok&&d>Math.PI*1.9&&Math.random()<.004){p.ok=0;p.seen=0;p.th=Math.random()*Math.PI*2;p.r=.12+Math.random()*.82}
+          if(!p.seen)continue;
+          const px=cx+Math.cos(p.th)*p.r*R*.95,py=cy+Math.sin(p.th)*p.r*R*.95,col=p.ok?'104,197,219':'249,109,100',fade=Math.max(.35,1-d/5);
+          x.fillStyle=`rgba(${col},${fade})`;x.beginPath();x.arc(px,py,p.ok?3:4,0,7);x.fill();
+          if(!p.ok){x.strokeStyle=`rgba(${col},${fade*.5})`;x.beginPath();x.arc(px,py,9,0,7);x.stroke()}
+        }
+        x.fillStyle='rgba(104,197,219,.9)';x.beginPath();x.arc(cx,cy,4,0,7);x.fill();
       }
-      for(let i=0;i<LP;i++){if(lLife[i]>0){lLife[i]-=dt*.6;lPos[i*3]+=lVel[i].x*dt;lPos[i*3+1]+=lVel[i].y*dt;lPos[i*3+2]+=lVel[i].z*dt}}
-      lGeo.attributes.position.needsUpdate=true;lGeo.attributes.aLife.needsUpdate=true;
-      const real=1-gT;shown+=(real-shown)*Math.min(1,dt*4);
-      const pct=Math.round(Math.min(1,shown/0.84)*100)+'%';if(pctEl&&pctEl.textContent!==pct){pctEl.textContent=pct;if(bar)bar.style.width=pct}
-      R.render(scene,cam);requestAnimationFrame(loop);
+      if(!reduce)requestAnimationFrame(draw);
     }
-    requestAnimationFrame(loop);
+    requestAnimationFrame(draw);
   })();
 
-  if(!HAS||reduce)return;
+  /* ---------- risk statement: words light up as it crosses the screen ---------- */
+  (function(){
+    const mf=page.querySelector('[data-fill]');if(!mf)return;
+    const wrap=n=>{if(n.nodeType===3){const f=document.createDocumentFragment();n.textContent.split(/(\s+)/).forEach(p=>{if(!p)return;if(/^\s+$/.test(p))f.appendChild(document.createTextNode(p));else{const s=document.createElement('span');s.className='wd';s.textContent=p;f.appendChild(s)}});n.replaceWith(f)}else[...n.childNodes].forEach(wrap)};
+    [...mf.childNodes].forEach(wrap);
+    const words=[...mf.querySelectorAll('.wd')];
+    if(reduce){words.forEach(w=>w.classList.add('on'));return}
+    function upd(){const r=mf.getBoundingClientRect(),h=innerHeight;const p=Math.min(1,Math.max(0,(h*.85-r.top)/(r.height+h*.3)));const n=Math.round(p*words.length*1.05);words.forEach((w,i)=>w.classList.toggle('on',i<n))}
+    addEventListener('scroll',upd,{passive:true});addEventListener('resize',upd);upd();
+  })();
+
+  /* ---------- dial: one sector per benefit ---------- */
+  const dial=page.querySelector('.dial'),list=[...page.querySelectorAll('.fr-list li')],num=page.querySelector('.d-num');
+  const secs=[],N=list.length||4;
+  if(dial){const g=dial.querySelector('.d-secs'),ns='http://www.w3.org/2000/svg';
+    for(let k=0;k<N;k++){const a0=k/N*Math.PI*2-Math.PI/2+.03,a1=(k+1)/N*Math.PI*2-Math.PI/2-.03,R=100,r=34;
+      const P=(rr,aa)=>`${(Math.cos(aa)*rr).toFixed(2)} ${(Math.sin(aa)*rr).toFixed(2)}`;
+      const p=document.createElementNS(ns,'path');p.setAttribute('d',`M${P(r,a0)} L${P(R,a0)} A${R} ${R} 0 0 1 ${P(R,a1)} L${P(r,a1)} A${r} ${r} 0 0 0 ${P(r,a0)}Z`);p.setAttribute('class','d-sec');g.appendChild(p);secs.push(p)}}
+  function dialAt(n){secs.forEach((s,i)=>{s.classList.toggle('on',i<n);s.classList.toggle('cur',i===n-1)});list.forEach((l,i)=>l.classList.toggle('on',i<n));if(num)num.textContent=n+'/'+N}
+
+  if(!HAS||reduce){dialAt(N);return}
   gsap.registerPlugin(ScrollTrigger);
 
   /* smooth scroll */
@@ -241,13 +178,20 @@
     if(lenis)lenis.scrollTo(el,{offset:-90,duration:1.2});else el.scrollIntoView({behavior:'smooth'});
   }));
 
-  /* hero in */
-  gsap.from('.hero h1,.hero .lead,.hero .tlink',{y:16,opacity:0,duration:.5,ease:'power2.out',stagger:.08,delay:.05,clearProps:'transform,opacity'});
+  /* hero: the certification name slams up, then the rest */
+  const tl=gsap.timeline({defaults:{ease:'power4.out'}});
+  tl.from('.mega .ln>span',{yPercent:105,duration:1,stagger:.1})
+    .from('.hero h1,.hero .lead,.hero .tlink',{y:20,opacity:0,duration:.6,stagger:.08,clearProps:'transform,opacity'},'-=.5')
+    .from('.fcard',{y:40,opacity:0,duration:.8,clearProps:'transform,opacity'},.2);
 
-  /* one quiet entrance per block; the film strip is the page's signature motion */
-  const rv=page.querySelectorAll('.qa-grid>*,.video-grid>*,.lead-benefit,.rows li,.tiers,.path li,.final-grid>*,.more-grid>*');
+  /* dial: the benefits light up as each one scrolls into view (no pin, so the page scrolls normally) */
+  list.forEach((li,i)=>ScrollTrigger.create({trigger:li,start:'top 65%',onEnter:()=>dialAt(Math.max(i+1,secs.filter(s=>s.classList.contains('on')).length)),onLeaveBack:()=>dialAt(i)}));
+
+  /* blocks */
+  const rv=page.querySelectorAll('.qa-grid>*,.tiers li,.path li,.final h2,.final-row>*,.more-grid>*');
   rv.forEach(el=>el.classList.add('rv'));
-  const show=b=>gsap.to(b,{opacity:1,y:0,duration:.4,ease:'power2.out',stagger:.08,overwrite:true});
+  const show=b=>gsap.to(b,{opacity:1,y:0,duration:.5,ease:'power2.out',stagger:.08,overwrite:true});
   ScrollTrigger.batch(rv,{start:'top 90%',onEnter:show,onEnterBack:show,onLeave:show});
+  gsap.from('.zero',{yPercent:40,opacity:0,duration:1,ease:'power4.out',scrollTrigger:{trigger:'.final',start:'top 70%'},clearProps:'transform,opacity'});
   ScrollTrigger.refresh();
 })();

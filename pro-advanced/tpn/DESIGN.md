@@ -15,7 +15,7 @@ Reading this as: TPN certification landing page for audiovisual companies, a per
 | LP TPN | persuade | 7 | 6 | 4 |
 
 ## 3. Visual direction and project bans
-- One signature: the 3D film strip running through the TPN gate in the fixed background (frames before the gate leak, frames after it turn into an encrypted mosaic with a lock). Everything else stays quiet.
+- Same system as the Black November LP: giant certification name in the hero, a radar that finds leaks (red) and seals them (blue), a word-fill statement, a dial for the four benefits, rising shield-tier bars and a 3-step path.
 - Each section has its own shape: reading statement, split video, one lead benefit plus a ruled list, a 3-step path, a plain closing band.
 - Bans: eyebrows above headings, decorative 01/02 numbers, icon tiles on cards, gradient text, selos/badges as decoration, glass panels (the form is opaque).
 - Allowed exception: light blur on the sticky header only, because the moving film scrolls under it. The gradient on the primary button is the site's own button.
@@ -24,7 +24,7 @@ Reading this as: TPN certification landing page for audiovisual companies, a per
 
 ```design-tokens
 fonts: Montserrat
-colors: #000c19, #08121f, #0e2a3f, #ffffff, #c9d6e4, #a8b6c6, #2ba3db, #68c5db, #f96d64, #7d8ea1, #050b14, #045089, #14202e, #488ab7, #3a1f2a, #c58a5a, #1b2b1f, #6aa57a, #02060b, #ffd9a0
+colors: #000c19, #08121f, #0e2a3f, #ffffff, #c9d6e4, #a8b6c6, #2ba3db, #68c5db, #f96d64, #7d8ea1, #045089, #022647, #e4ebf2, #e8c46a, #ffd76a
 radii: 6px, 8px, 12px, 999px, 50%
 ```
 
@@ -36,7 +36,8 @@ radii: 6px, 8px, 12px, 999px, 50%
 | `--accent` | #2ba3db | primary action, the headline highlight, the path line |
 | `--accent2` | #68c5db | focus ring, links, gradient end of the button |
 | `--danger` | #f96d64 | form errors and the leak pixels in the film |
-| film stills | #050b14, #045089, #14202e, #488ab7, #3a1f2a, #c58a5a, #1b2b1f, #6aa57a, #02060b, #ffd9a0 | only inside the drawn frames of the film strip (they are pictures, not UI); the warm tones make the frames read as footage before they turn blue |
+| `--royal` / final gradient | #045089 / #022647 | dial and closing band, same as the Black November LP |
+| shield tiers | #e4ebf2, #e8c46a, #ffd76a | only on the Silver, Gold and Gold Star bars and labels (the tier names are colors) |
 
 ## 5. Typography
 - The font Montserrat, weights 400/500/600 (display at 600, body 400/500).
@@ -56,3 +57,4 @@ radii: 6px, 8px, 12px, 999px, 50%
 ## 11. Decision log
 - 2026-10-27: rebuilt with the antiwebslop skill. Removed eyebrows, the gradient headline, the rotating seal, icon-tile cards with fake 01-04 numbers, hero tick list (it repeated later copy). Benefits became one lead item plus a ruled list; Pro Advanced reasons became a 3-step path because Gap Analysis, compliance and support are an actual sequence.
 - 2026-10-30: content restructured into question blocks (question as H2, key points, full text), quick FAQ, numbered sources (MPA, TV Technology on the Shield tiers, IBM 2025, Verizon DBIR 2025) and Article + FAQPage JSON-LD, per the project rules in CLAUDE.md. Added a Shield tiers block.
+- 2026-11-13: rebuilt on the Black November LP system at the client's request (same layout, components and RD form bridge). The three.js film strip was replaced by the hero radar; benefits moved to the dial (4 sectors), Shield tiers became rising bars, the video thumbnail is embedded at build.
