@@ -10,6 +10,7 @@
     publicToken:'94ef559c92f7b1764c0d7755f063425a',           // token público (o mesmo do formulário atual)
     conversion:'monetize-seu-wi-fi',                          // identificador da conversão
     thanks:'https://material.wispot.com.br/obrigado?event=leadMonetizeSeuWifi',
+    metaPixel:'',                              // ID do pixel da Meta da Wispot (Gerenciador de Eventos); vazio = sem pixel
     previewHosts:['localhost','127.0.0.1','claude.ai','claudeusercontent.com'] // em qualquer outro endereço (RD, domínio próprio) o lead é enviado
   };
 
@@ -24,6 +25,16 @@
   bleed();addEventListener('resize',()=>{bleed();if(window.ScrollTrigger)ScrollTrigger.refresh()});addEventListener('load',bleed);
   const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
   const HAS=!!(window.gsap&&window.ScrollTrigger);
+
+  /* ---------- Meta pixel: PageView on load, Lead when the form is sent (only on the published page) ---------- */
+  const onLive=/^https?:$/.test(location.protocol)&&!RD.previewHosts.some(h=>location.hostname===h||location.hostname.endsWith('.'+h));
+  if(RD.metaPixel&&onLive){
+    if(!window.fbq){!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js')}
+    // the same pixel may already be on the page (RD settings or GTM): do not start it twice
+    const st=window.fbq.getState?window.fbq.getState():null;
+    if(!st||!st.pixels||!st.pixels.some(x=>x.id===RD.metaPixel)){fbq('init',RD.metaPixel);fbq('trackSingle',RD.metaPixel,'PageView')}
+  }
+  const pixelLead=()=>{try{if(RD.metaPixel&&window.fbq)fbq('trackSingle',RD.metaPixel,'Lead')}catch(e){}};
 
   /* ---------- form → RD Station conversion ---------- */
   /* send through RD's own LP form: fill it, solve its math captcha and click its button */
@@ -49,7 +60,7 @@
     const cap=f.querySelector('[name="captcha"]'),ex=document.getElementById('math_expression');
     if(cap&&ex){const m=ex.textContent.match(/(\d+)\s*([+\-x×*])\s*(\d+)/);if(m){const a=+m[1],b=+m[3];cap.value=m[2]==='+'?a+b:m[2]==='-'?a-b:a*b}}
     const b=f.querySelector('button[type=submit],input[type=submit],button');
-    if(b)b.click();else if(f.requestSubmit)f.requestSubmit();else f.submit();
+    setTimeout(()=>{if(b)b.click();else if(f.requestSubmit)f.requestSubmit();else f.submit()},400);
     return true;
   }
   /* keep RD's own form block off screen and out of the layout: hide the largest RD block around it
@@ -79,7 +90,7 @@
       if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){form.email.closest('.field').classList.add('err');say('Confira o e-mail: falta o @ ou o domínio.','bad');form.email.focus();return}
       if(freeMail.test(email)){form.email.closest('.field').classList.add('err');say('Use o e-mail da sua empresa, não um e-mail pessoal.','bad');form.email.focus();return}
       if(!live){say('Prévia: tudo certo com o preenchimento. Na página publicada no RD Station, o lead é enviado e a pessoa vai para a página de obrigado.','ok');return}
-      btn.disabled=true;say('Enviando…');
+      btn.disabled=true;say('Enviando…');pixelLead();
       const payload={conversion_identifier:RD.conversion,email,company_name:form.company.value.trim(),
         cf_numero_de_funcionarios:form.cf_numero_de_funcionarios.value,cf_segmento_da_empresa:form.cf_segmento_da_empresa.value,
         traffic_source:utm('utm_source'),traffic_medium:utm('utm_medium'),traffic_campaign:utm('utm_campaign'),traffic_value:utm('utm_term'),

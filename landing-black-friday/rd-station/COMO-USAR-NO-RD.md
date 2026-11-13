@@ -56,3 +56,7 @@ As estatísticas da LP no RD só contam conversões feitas pelo bloco de formul�
 2. O nosso código esconde esse formulário e, quando a pessoa envia o nosso, preenche e envia o do RD por trás (inclusive a conta de soma do captcha). Assim o lead entra e aparece nas estatísticas da LP.
 3. A página de obrigado é a que estiver configurada no formulário do RD.
 4. Se a página não tiver o formulário do RD, o lead é enviado pela API: entra na base de leads com a conversão, mas não aparece nas estatísticas da LP.
+
+## Pixel da Meta
+O código já carrega o pixel da Meta (evento PageView ao abrir a página) e dispara o evento Lead quando a pessoa envia o formulário. Não precisa colar o pixel nas configurações de scripts do RD. Se colar lá também, o código percebe e não inicia o mesmo pixel duas vezes.
+O ID fica em `metaPixel`, no começo de `src/script.js`. Na prévia do Claude o pixel não carrega; ele só roda na página publicada.
